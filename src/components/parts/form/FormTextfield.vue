@@ -1,0 +1,75 @@
+<template>
+  <v-row align="center" justify="center">
+    <v-col cols="3">
+      <p>
+        {{ title }}
+        <span v-if="required" class="red--text">※</span>
+      </p>
+    </v-col>
+    <v-col cols="8">
+      <ValidationProvider v-slot="{ errors }" :name="title" :rules="valrule">
+        <v-text-field
+          dense
+          outlined
+          single-line
+          :type="number ? 'number' : 'text'"
+          :disabled="!editable"
+          :placeholder="placeholder"
+          :value="value"
+          :error-messages="errors"
+          :label="label"
+          @input="inputValue"
+          @blur="handleBlur"
+        ></v-text-field>
+      </ValidationProvider>
+    </v-col>
+  </v-row>
+</template>
+
+<script>
+export default {
+  props: {
+    title: {
+      type: String,
+      required: true,
+      default: ""
+    },
+    required: {
+      type: Boolean,
+      default: false
+    },
+    placeholder: {
+      type: String,
+      default: ""
+    },
+    label: {
+      type: String,
+      default: ""
+    },
+    editable: {
+      type: Boolean,
+      default: true
+    },
+    value: {
+      type: [String, Number],
+      default: ""
+    },
+    valrule: {
+      type: String,
+      default: ""
+    },
+    number: {
+      type: Boolean,
+      default: false
+    }
+  },
+  methods: {
+    inputValue: function(e) {
+      this.$emit("input", e);
+    },
+    handleBlur: function(e) {
+      this.$emit("blur", e);
+    }
+  }
+};
+</script>
