@@ -1,0 +1,15 @@
+@charset "UTF-8";
+
+@import "styles/base.scss";
+@import "styles/module.scss";
+@import "styles/layout.scss";
+@import "styles/index.scss";
+@import "styles/auctionbid.scss";
+
+
+/* -------------------
+CSS記述方法
+BEMベース
+BlockName_element-modifier
+block,elementが2単語の場合はキャメルケース
+------------------- */

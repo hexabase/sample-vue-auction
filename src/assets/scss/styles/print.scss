@@ -1,0 +1,16 @@
+@charset "UTF-8";
+@media print {
+
+  /* Margins */
+
+  @page {
+    margin: 2cm;
+  }
+
+  body {
+    background: #fff !important;
+    color: #000;
+    font: 13pt Georgia, "Times New Roman", Times, serif;
+    line-height: 1.3;
+  }
+}

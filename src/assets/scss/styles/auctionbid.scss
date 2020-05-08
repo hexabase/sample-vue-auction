@@ -1,0 +1,254 @@
+@charset "UTF-8";
+@import "../utils/variables.scss";
+@import "../utils/functions.scss";
+
+/* auction detail */
+.v-application.theme--light {
+
+.musicInfo {
+    padding: 80px 0;
+
+    .content {
+        display: flex;
+    }
+
+    &_img {
+        flex: 1 1;
+        width: 300px;
+        max-width: 30%;
+    }
+
+    &_wrap {
+        flex: 1 1;
+        padding-left: 5%;
+        text-align: left;
+    }
+
+    &_title {
+        margin-bottom: 10px;
+        font-size: 3rem;
+        font-weight: bold;
+
+        &::before {
+            content: "♪";
+            margin-right: 5px;
+            color: $color-theme-center;
+        }
+    }
+
+    &_artist {
+        margin-bottom: 40px;
+        font-size: 1.4rem;
+        color: $color-text-lightgray;
+    }
+    
+    &_text {
+        margin-bottom: 40px;
+        font-size: 1.2rem;
+        color: $color-text-sub;
+    }
+
+    &_data {
+        width: 100%;
+        border-top: 15px solid $color-bg;
+        border-bottom: 15px solid $color-bg;
+        background: $color-bg;
+
+        th {
+            padding: 0 15px;
+            font-size: 1.5rem;
+            font-weight: normal;
+            vertical-align: top;
+            border-right: $border-default;
+
+            span {
+                display: block;
+                font-size: 1.1rem;
+                color: $color-text-lightgray;
+            }
+        }
+
+        td {
+            padding: 5px 15px 0;
+            border-right: $border-default;
+            font-size: 3.4rem;
+            font-weight: 400;
+            font-family: $font-mix;
+            letter-spacing: -0.02em;
+            color: $color-theme-center;
+        }
+
+        th:last-child, td:last-child {
+            border-right: none;
+        }
+
+        .unit {
+            font-size: 1.4rem;
+        }
+    }
+}
+
+.auctionInfo {
+    border-top: $border-default;
+    @extend %padding-contents;
+
+    &_title {
+        @extend %section-title;
+        margin-bottom: 60px;
+    }
+
+    &_wrap {
+        display: flex;
+    }
+
+    &_left {
+        width: 50%;
+    }
+
+    .bidList {
+        width: 100%;
+        @extend %table-default;
+        font-size: 1.6rem;
+
+        &_total {
+            font-size: 2.4rem;
+        }
+
+        tfoot td {
+            padding-top: 15px;
+        }
+    }
+
+    &_right {
+        width: 50%;
+        padding-left: 4%;
+    }
+
+    .bidBox {
+        margin-bottom: 40px;
+        padding: 40px;
+        border: $border-blue;
+
+        &_title {
+            margin-bottom: 30px;
+            font-size: 2.4rem;
+            font-weight: normal;
+        }
+
+        &_field {
+            position: relative;
+            margin-bottom: 20px;
+            text-align: left;
+
+            label {
+                display: block;
+                margin-bottom: 10px;
+                font-size: 1.4rem;
+                color: $color-theme-center;
+                font-weight: bold;
+            }
+
+            .form-box {
+                display: block;
+                width: 100%;
+                padding-right: 30px;
+                padding-bottom: 7px;
+                font-size: 3rem;
+                font-family: $font-en;
+                text-align: right;
+            }
+
+            .note {
+                margin-top: 5px;
+                font-size: 1.2rem;
+                font-weight: normal;
+                color: $color-text-gray;
+            }
+
+            .bidBox_unit {
+                position: absolute;
+                top: 50%;
+                right: 10px;
+            }
+        }
+
+        &_total {
+            margin: 20px 0;
+            color: $color-theme-center;
+
+            .price {
+                font-size: 3rem;
+            }
+        }
+
+        .button-action {
+            width: 100%;
+            height: 60px;
+            line-height: 60px;
+            margin-bottom: 40px;
+            font-size: 2.2rem;
+        }
+    }
+
+    .bidPolicy {
+        padding: 0 10px;
+        font-size: 1.2rem;
+        text-align: left;
+        line-height: 1.6;
+
+        dd {
+            margin-bottom: 15px;
+            color: $color-text-gray;
+        }
+    }
+}
+
+.trend {
+    background: $color-bg;
+    border-top: $border-light;
+    border-bottom: $border-light;
+    @extend %padding-contents;
+
+    &_title {
+        margin-bottom: 30px;
+        font-size: 2.2rem;
+        font-weight: normal;
+    }
+}
+
+.royaltyInfo {
+    @extend %padding-contents;
+
+    &_title {
+        margin-bottom: 30px;
+        font-size: 2.2rem;
+        font-weight: normal;
+    }
+
+    &_list {
+        display: flex;
+        flex-wrap: wrap;
+        color: $color-text-sub;
+        line-height: 1.4;
+        
+        li {
+            width: 50%;
+            box-sizing: border-box;
+            padding: 5px 10px;
+            font-size: 1.4rem;
+            text-align: left;
+        }
+    }
+
+    &_label {
+        margin-right: 5px;
+        color: $color-text-gray;
+
+        &::after {
+            content: "：";
+        }
+    }
+
+}
+
+}

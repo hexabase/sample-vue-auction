@@ -1,0 +1,78 @@
+@charset "UTF-8";
+
+// url
+$img-directory: '../img/';
+
+// color
+$color-theme-left: #1b80cb;
+$color-theme-center: #2358d1;
+$color-theme-right: #5255d1;
+$color-theme: $color-theme-center;
+
+// bg
+$color-bg-theme: linear-gradient(to right, $color-theme-left, $color-theme-center 50%, $color-theme-right);
+$color-bg-theme-hover: linear-gradient(to right, $color-theme-left, $color-theme-center);
+$color-bg: #f5f5f5;
+$color-bg-thin: #fafafa;
+$color-bg-gray: #eee;
+$color-bg-dark: #0b0b0b;
+$color-error: #cf0e0e;
+
+
+// text color
+$color-text-default: #222;
+$color-text-sub: #444;
+$color-text-gray: #888;
+$color-text-lightgray: #aaa;
+// $color-text-lightgray: #ccc;
+$color-text-lightblue: rgba($color-theme-center, 0.3);
+
+// border
+$border-default: 1px solid #ddd;
+$border-light: 1px solid #eee;
+$border-blue: 3px solid rgba($color-theme-center, 0.3);
+$border-input: 1px solid #ddd;
+$border-input-hover: 1px solid #888;
+$border-input-focus: 1px solid $color-theme-center;
+
+
+// size
+$header-height: 80px;
+$header-height_mobile: 50px;
+
+// z-index
+$zIndex-header: 500;
+$zIndex-contents: 10;
+$zIndex-contents-bg: -1;
+
+
+// font
+$font-default: 'Noto Sans JP', 'Hiragino Kaku Gothic Pro', 'ヒラギノ角ゴ Pro W3', 'メイリオ', Meiryo, 'ＭＳ Ｐゴシック', sans-serif;
+$font-mix: 'Barlow', 'Noto Sans JP', 'Hiragino Kaku Gothic Pro', 'ヒラギノ角ゴ Pro W3', 'メイリオ', Meiryo, 'ＭＳ Ｐゴシック', sans-serif;
+$font-en: 'Barlow', sans-serif;
+
+// media query
+$breakpoint-pc: 1000px;
+$breakpoint-mobile: 640px;
+
+
+
+// $break-point
+
+@mixin max-screen($break-point) { 
+    @media screen and (max-width: $break-point) {
+      @content;
+    }
+  }
+  
+  @mixin min-screen($break-point) { 
+    @media screen and (min-width: $break-point) {
+      @content;
+    }
+  }
+  
+  @mixin screen($break-point-min, $break-point-max) { 
+    @media screen and (min-width: $break-point-min) and (max-width: $break-point-max) {
+      @content;
+    }
+  }

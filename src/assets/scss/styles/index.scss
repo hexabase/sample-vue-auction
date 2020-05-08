@@ -1,0 +1,170 @@
+@charset "UTF-8";
+@import "../utils/variables.scss";
+@import "../utils/functions.scss";
+
+/* home */
+.v-application.theme--light {
+.heroHeader {
+    position: relative;
+    height: 100vh;
+    margin-top: -80px;
+    overflow: hidden;
+    background-size: cover;
+    background-image: url("~@/assets/img/main-img.jpg");
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+    &_title {
+        margin-bottom: 50px;
+        font-size: 4.6rem;
+        font-weight: bold;
+        letter-spacing: 0.2em;
+    }
+
+    &_enText {
+        margin-bottom: 10px;
+        font-family: $font-en;
+        letter-spacing: 0.2em;
+        font-size: 1.4rem;
+    }
+
+    &_text {
+        margin-bottom: 55px;
+        font-size: 2rem;
+    }
+
+    .button-main {
+        width: 220px;
+    }
+
+    @include max-screen($breakpoint-mobile) {
+        &_title {
+            margin-bottom: 100px;
+            font-size: 3.5rem;
+        }
+
+        &_enText {
+            color: #FFF;
+        }
+
+        &_text {
+            width: 10em;
+            line-height: 1.6;
+            font-size: 1.5rem;
+            color: #FFF;
+        }
+
+        .button-main {
+            width: 180px;
+        }
+    }
+}
+
+// common
+.index_title {
+    margin-bottom: 60px;
+
+    &-en {
+        display: inline-block;
+        margin-bottom: 10px;
+        font-size: 5rem;
+        font-family: $font-en;
+        font-weight: 300;
+        @extend %text-themeColor;
+    }
+
+    &-jp {
+        display: block;
+        font-size: 1.4rem;
+    }
+}
+
+.pickupAuction {
+    @extend %padding-contents;
+
+    &_list {
+        margin-bottom: 80px;
+        display: flex;
+        justify-content: center;
+    }
+
+    &_item {
+        width: 25%;
+        padding: 0 1%;
+        text-align: left;
+        position: relative;
+    }
+
+    &_img {
+        position: relative;
+        margin-bottom: 15px;
+
+        img {
+            width: 100%;
+        }
+
+        figcaption {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            padding: 5px 5px 7px;
+            background: rgba(#000, 0.8);
+            color: #fff;
+            font-size: 2.4rem;
+            text-align: center;
+
+            span {
+                font-size: 1.4rem;
+            }
+        }
+    }
+
+    &_title {
+        margin-bottom: 5px;
+        font-size: 1.6rem;
+        font-weight: bold;
+    }
+
+    &_artist {
+        margin-bottom: 15px;
+        font-size: 1.2rem;
+        color: $color-text-lightgray;
+    }
+
+    &_price, &_stock {
+        font-size: 1.6rem;
+        margin-bottom: 5px;
+
+        .unit {
+            content: "円〜";
+            font-size: 1.2rem;
+        }
+    }
+
+    &_bidRate {
+        position: absolute;
+        right: 1vw;
+        bottom: 0;
+        font-size: 3.6rem;
+        color: $color-text-lightblue;
+
+        &::after {
+            content: "%";
+            font-size: 1.8rem;
+        }
+    }
+
+    .button-main {
+        min-width: 280px;
+    }
+}
+
+
+
+
+
+
+
+}

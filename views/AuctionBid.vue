@@ -1,204 +1,210 @@
 <template>
-  <v-row>
-    <v-col align="center" justify="center">
-      <div id="page_auction" data-role="page">
-        <div class="detail_zone">
-          <div class="row-col-2">
-            <div class="detail_left">
-              <div class="detail_txt">
-                <div class="thumbnail">
-                  <a :href="videoUrl" target="_blank">
-                    <img :src="videoThumbnailUrl" />
-                  </a>
-                </div>
-                <ul class="song_info">
-                  <li class="song_title">
-                    <strong>{{ title }}</strong>
-                  </li>
-                  <li class="artist">{{ singer1 }}</li>
-                  <li class="pb10">{{ explanatoryText }}</li>
-                </ul>
+  <div id="page_auction" data-role="page">
+    <section class="musicInfo">
+      <div class="content">
+        <figure class="musicInfo_img">
+          <img :src="videoThumbnailUrl" />
+        </figure>
+        <div class="musicInfo_wrap">
+          <h2 class="musicInfo_title">{{ title }}</h2>
+          <p class="musicInfo_artist">{{ singer1 }}</p>
+          <p class="musicInfo_text">{{ explanatoryText }}</p>
+          <table class="musicInfo_data">
+            <tr>
+              <th>残り時間</th>
+              <th>オークション数量</th>
+              <th>オークション開始価格<span>（1週、消費税を含む）</span></th>
+            </tr>
+            <tr>
+              <td>{{ remainingTime || "Closed" }}</td>
+              <td>
+                {{ auctionAmount }}
+                <span class="unit">株</span>
+              </td>
+              <td>
+                {{ auctionStartPrice }}
+                <span class="unit">円</span>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </section>
+    <section class="auctionInfo">
+      <div class="content">
+        <h2 class="auctionInfo_title">オークションの状況</h2>
+        <div class="auctionInfo_wrap">
+          <div class="auctionInfo_left">
+            <table class="bidList">
+              <thead>
+                <tr>
+                  <th>入札価格（1株）</th>
+                  <th>入札数量</th>
+                  <th>オークション結果</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  v-for="value in auctionListsGroup"
+                  :key="value.入札金額"
+                  class="option"
+                >
+                  <td>{{ value.入札金額 }} 円</td>
+                  <td>{{ value.数量 }}</td>
+                  <td>{{ value.落札状況 }}</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td>合計</td>
+                  <td class="bidList_total">{{ bidTotalAmount }}</td>
+                  <td></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+          <div class="auctionInfo_right">
+            <section class="bidBox">
+              <h3 class="bidBox_title">入札</h3>
+              <div class="bidBox_field">
+                <label>入札価格<span>（1週、消費税を含む）</span></label>
+                <input
+                  id="amount"
+                  v-model="bidPrice"
+                  type="text"
+                  name="amount"
+                  class="form-box"
+                />
+                <span class="bidBox_unit">円</span>
+                <p class="note">※500円の倍数から入札可能です。</p>
               </div>
-            </div>
-            <div class="detail_right order1">
-              <input type="hidden" name="cmd" value="bid" />
-              <input type="hidden" name="id" value="500" />
-              <h4>オークションの進行状況</h4>
-              <ul>
-                <li>
-                  <img :src="image1" class="thumb_img" />
-                  <div class="thumb_wrap">{{ title }}</div>
-                </li>
-                <li>
-                  <span>残り時間</span>
-                  <strong id="time_remaining">{{ remainingTime }}</strong>
-                </li>
-                <li>
-                  <span>オークション数量</span>
-                  <strong>{{ auctionAmount }}株</strong>
-                </li>
-                <li>
-                  <span>オークション開始価格（1週、消費税を含む）</span>
-                  <strong>{{ auctionStartPrice }}</strong>
-                </li>
-                <li class="multi_option">
-                  <div class="option_tit">
-                    <span>入札価格（1株）</span>
-                    <span>入札数量</span>
-                    <span>オークション結果</span>
-                  </div>
-                  <div
-                    v-for="value in auctionListsGroup"
-                    :key="value.入札金額"
-                    class="option"
-                  >
-                    <ul>
-                      <li>{{ value.入札金額 }}円</li>
-                      <li>{{ value.数量 }}</li>
-                      <li>{{ value.落札状況 }}</li>
-                    </ul>
-                  </div>
-                  <div class="option total">
-                    <ul>
-                      <li>合計</li>
-                      <li>{{ bidTotalAmount }}</li>
-                      <li></li>
-                    </ul>
-                  </div>
-                </li>
-                <li class="cb bid_box">
-                  <span>入札数量</span>
-                  <p>
-                    <input
-                      id="cnt_units"
-                      v-model="bidAmount"
-                      type="text"
-                      name="cnt_units"
-                    />
-                  </p>
-                </li>
-                <li class="cb bid_box">
-                  <span>入札価格（1週、消費税を含む）</span>
-                  <p>
-                    <input
-                      id="amount"
-                      v-model="bidPrice"
-                      type="text"
-                      name="amount"
-                    />
-                  </p>
-                  <em class="tar" style="padding-bottom:0">
-                    *500円の倍数で入札可能です。
-                  </em>
-                </li>
-                <!-- <li class="txt_s bid_box">
-                  <span>参加規定：</span>
-                  5万ウォンを超える入札時入札保証金（入札金の5％）が自動的に差し引かれます。
-                  <br />再入札時差額入札保証金が差し引か・返されます。
-                  <br />入札最終日には、親の数量・上位金額の再入札のみ可能です。
-                  <br />最終未落札時入札保証金は、自動的に返されます。
-                </li>
-                <li class="txt_s bid_box">
-                  <span>キャンセルポリシー：</span>
-                  入札キャンセル入札保証金は、私の財布に自動的に返されます。
-                  <br />入札最終日はキャンセルが不可で上位数量・上位金額の再入札のみ可能です。
-                  <br />落札後未入金などの理由で落札取り消しの際入札保証金は返されません。
-                </li>
-                <li>
-                  <span>私の入札価格に比べ、最近1年著作権料（％）</span>
-                  <strong id="ratio_amount_royalty">7.6％</strong>
-                </li> -->
-                <!-- <li>
-                  <span>総入札価格（消費税を含む）</span>
-                  <strong id="amount_total">29,500ウォン</strong>
-                </li> -->
-                <div class="one_btn">
-                  <div class="one_red">
-                    <div class="bid_button" @click="openModal">
-                      入札する
-                    </div>
-                  </div>
-                </div>
-              </ul>
-            </div>
+              <div class="bidBox_field">
+                <label>入札数量</label>
+                <input
+                  id="cnt_units"
+                  v-model="bidAmount"
+                  type="text"
+                  name="cnt_units"
+                  class="form-box"
+                />
+              </div>
+              <p class="bidBox_total">
+                総入札価格（税込）：
+                <span class="price">{{ bidPrice * bidAmount }}</span>
+                円
+              </p>
+              <button class="button-action" @click="openModal">入札する</button>
+            </section>
+            <dl class="bidPolicy">
+              <dt>参加規定</dt>
+              <dd>
+                5万円を超える入札時入札保証金（入札金の５％）が自動的に差し引かれます。<br />
+                再入札時差額入札保証金が差し引か返されます。<br />
+                入札最終日には、親の数量・上位金額の再入札のみ可能です。<br />
+                最終未落札時入札保証金は、自動的に返されます。
+              </dd>
+              <dt>キャンセルポリシー</dt>
+              <dd>
+                入札キャンセル入札保証金は、私の財布に自動的に返されます。<br />
+                入札最終日はキャンセルが不可で上位数量・上位金額の再入札のみ可能です。<br />
+                落札後未入金などの理由で落札取り消しの際入札保証金は返されません。<br />
+                私の入札価格に比べ、最近１年著作権料（％）<br />
+                7.7％
+              </dd>
+              <dd>
+                *住民登録番号を提供していただければ他の所得税最低限（取引単位あたり50,000円以下課税額なしで分離課税可能）を適用した源泉徴収業務をSYZYGYから代理して進めています。分離課税が適用されても、年間その他の所得が300万円を超過する場合には、お客様が全額を総合所得課税標準に加算することにより申告する必要がありする義務があります。
+              </dd>
+            </dl>
           </div>
         </div>
-        <!-- 옥션 결과 -->
-        <!-- 곡 상세 정보 v2 -->
-        <section class="song_detail">
-          <div class="col-12">
-            <h3>著作権情報</h3>
-            <div class="box_gray">
-              <div class="lst_bul">
-                <dl>
-                  <dt>公表日</dt>
-                  <dd>{{ publicationDate }}</dd>
-                </dl>
-                <dl>
-                  <dt>歌手</dt>
-                  <dd>{{ singer1 }}</dd>
-                </dl>
-                <dl>
-                  <dt>作曲</dt>
-                  <dd>{{ composer1 }}</dd>
-                </dl>
-                <dl>
-                  <dt>作詞</dt>
-                  <dd>{{ lyricist1 }}</dd>
-                </dl>
-                <dl>
-                  <dt>編曲</dt>
-                  <dd>{{ arranger1 }}</dd>
-                </dl>
-                <dl>
-                  <dt>著作権保護期間</dt>
-                  <dd>{{ protectionPeriod }}</dd>
-                </dl>
-                <!-- <dl>
-                  <dt>最近12ヶ月のロイヤリティ（1週間あたり）</dt>
-                  <dd>2,234ウォン</dd>
-                </dl> -->
-                <!-- <dl>
-                  <dt>より比最近12ヶ月の収益率</dt>
-                  <dd>8％</dd>
-                </dl> -->
-                <dl>
-                  <dt>管理出版社</dt>
-                  <dd>{{ managementPublisher }}</dd>
-                </dl>
-                <dl>
-                  <dt>著作権株式</dt>
-                  <dd>
-                    <p>{{ copyrightType }}</p>
-                  </dd>
-                </dl>
-                <dl>
-                  <dt>その他の主な事項</dt>
-                  <dd>
-                    {{ otherNotes }}
-                  </dd>
-                </dl>
-              </div>
-            </div>
-          </div>
+      </div>
+    </section>
+    <section class="trend">
+      <div class="content">
+        <h2 class="trend_title">最近の動向</h2>
+        <section class="trend_barChart">
+          <h3 class="trend_subTitle">最近5年間の著作権料（1週間あたり）</h3>
+        </section>
+        <section class="trend_royalty">
+          <h3 class="trend_subTitle">
+            最近12ヶ月のロイヤリティ（1週間あたり）
+          </h3>
         </section>
       </div>
-      <div class="example-modal-window">
-        <!-- コンポーネント MyModal -->
-        <MyModal v-if="modal" @close="closeModal">
-          <!-- default スロットコンテンツ -->
-          <div>入札数量：{{ bidAmount }}</div>
-          <div>入札価格：{{ bidPrice }}</div>
-          <!-- /default -->
-          <!-- footer スロットコンテンツ -->
-          <template slot="footer">
-            <button @click="doSend">入札</button>
-          </template>
-          <!-- /footer -->
-        </MyModal>
+    </section>
+    <section class="royaltyInfo">
+      <div class="content">
+        <h2 class="royaltyInfo_title">著作権情報</h2>
+        <ul class="royaltyInfo_list">
+          <li>
+            <span class="royaltyInfo_label">公表日</span>
+            2015-04-08
+          </li>
+          <li>
+            <span class="royaltyInfo_label">歌手</span>
+            徳永ゆうき（渋谷節だよ青春は！）
+          </li>
+          <li>
+            <span class="royaltyInfo_label">作曲</span>
+            徳永ゆうき
+          </li>
+          <li>
+            <span class="royaltyInfo_label">作詞</span>
+            徳永ゆうき
+          </li>
+          <li>
+            <span class="royaltyInfo_label">編曲</span>
+            徳永ゆうき
+          </li>
+          <li>
+            <span class="royaltyInfo_label">著作権保護期間</span>
+            原作者死後70年
+          </li>
+          <li>
+            <span class="royaltyInfo_label">
+              最近12ヶ月のロイヤリティ（1週間あたり）
+            </span>
+            1,116円
+          </li>
+          <li>
+            <span class="royaltyInfo_label">最近12ヶ月の収益率</span>
+            8％
+          </li>
+          <li>
+            <span class="royaltyInfo_label">著作権信託</span>
+            社団法人日本音楽著作権協会
+          </li>
+          <li>
+            <span class="royaltyInfo_label">代表信託者</span>
+            SYZYGY
+          </li>
+          <li>
+            <span class="royaltyInfo_label">著作権株式</span>
+            1 / 17,170<br />
+            二次的著作物の作成巻（O）
+          </li>
+          <li>
+            <span class="royaltyInfo_label">その他の主な事項</span>
+            * KOMCAの管理範囲に該当する地域の著作権
+          </li>
+        </ul>
       </div>
-    </v-col>
-  </v-row>
+    </section>
+    <div class="example-modal-window">
+      <!-- コンポーネント MyModal -->
+      <MyModal v-if="modal" @close="closeModal">
+        <!-- default スロットコンテンツ -->
+        <div>入札数量：{{ bidAmount }}</div>
+        <div>入札価格：{{ bidPrice }}</div>
+        <!-- /default -->
+        <!-- footer スロットコンテンツ -->
+        <template slot="footer">
+          <button @click="doSend">入札</button>
+        </template>
+        <!-- /footer -->
+      </MyModal>
+    </div>
+  </div>
 </template>
 <script>
 import mapping from "@/assets/json/auctionDBMapping.json";

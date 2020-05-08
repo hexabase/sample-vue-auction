@@ -12,6 +12,8 @@ import "./assets/css/loading.css";
 import vuetify from "./plugins/vuetify";
 import validate from "./service/validation";
 
+require("./assets/scss/styles.scss");
+
 Vue.use(hexalink);
 Vue.use(validate);
 Vue.use(sendgrid);

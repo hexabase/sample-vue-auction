@@ -1,7 +1,7 @@
 module.exports = {
   publicPath: "/",
   devServer: {
-    port: 5003,
+    port: 5004,
     proxy: {
       "/linker-api": {
         target: "https://az-api.hexabase.com",
@@ -23,6 +23,13 @@ module.exports = {
   },
   configureWebpack: {
     devtool: "source-map"
+  },
+  css: {
+    loaderOptions: {
+      scss: {
+        prependData: '@import "./src/assets/scss/utils/variables.scss";'
+      }
+    }
   },
   transpileDependencies: ["vuetify", "vue-json-csv"]
 };

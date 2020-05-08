@@ -1,0 +1,38 @@
+@charset "UTF-8";
+
+/* 
+ * mixin
+ *
+*/
+
+// $break-point
+
+@mixin max-screen($break-point) { 
+  @media screen and (max-width: $break-point) {
+    @content;
+  }
+}
+
+@mixin min-screen($break-point) { 
+  @media screen and (min-width: $break-point) {
+    @content;
+  }
+}
+
+@mixin screen($break-point-min, $break-point-max) { 
+  @media screen and (min-width: $break-point-min) and (max-width: $break-point-max) {
+    @content;
+  }
+}
+
+// div {
+//   @include max-screen($breakpoint-mobile) { /* 640px以下のとき */
+//     width: 100%;
+//   }
+//   @include min-screen($breakpoint-tablet) { 1024px以上のとき
+//     width: 50%;
+//   }
+//   @include screen($breakpoint-mobile, $breakpoint-tablet) { /* 640px以上1024px以下のとき */
+//     width: 80%;
+//   }
+// }
