@@ -22,6 +22,21 @@
     padding-bottom: 100px;
 }
 
+// breakline
+%breakline {
+    position: relative;
+
+    &::before {
+        position: absolute;
+        content: "";
+        top: 0;
+        left: 50%;
+        width: 60%;
+        height: 1px;
+        margin-left: -30%;
+        background: linear-gradient(to right, rgba(#ddd, 0%), #ddd 50%, rgba(#ddd, 0));
+    }
+}
 // page title
 
 
@@ -82,6 +97,8 @@
     transition: all .5s;
     color: #FFF;
     border-radius: 2px;
+    text-align: center;
+    font-weight: bold;
     
     &:hover {
         background: $color-theme-center;
@@ -95,6 +112,7 @@
 }
 
 .button-action {
+    display: inline-block;
     border-radius: 2px;
     background: $color-bg-theme;
     color: #fff;
@@ -102,6 +120,12 @@
     
     &:hover {
         background: $color-bg-theme-hover;
+        color: #fff;
+    }
+    
+    &:visited {
+        background: initial;
+        color: #FFF !important;
     }
 }
 

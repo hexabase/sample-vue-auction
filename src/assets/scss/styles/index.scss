@@ -3,6 +3,15 @@
 @import "../utils/functions.scss";
 
 /* home */
+
+%index-button-main {
+    width: 220px;
+
+    @include max-screen($breakpoint-mobile) {
+        width: 180px;
+    }
+}
+
 .v-application.theme--light {
 .heroHeader {
     position: relative;
@@ -36,7 +45,7 @@
     }
 
     .button-main {
-        width: 220px;
+        @extend %index-button-main;
     }
 
     @include max-screen($breakpoint-mobile) {
@@ -56,9 +65,6 @@
             color: #FFF;
         }
 
-        .button-main {
-            width: 180px;
-        }
     }
 }
 
@@ -100,9 +106,14 @@
     &_img {
         position: relative;
         margin-bottom: 15px;
+        transition: all .3s;
 
         img {
             width: 100%;
+        }
+
+        &:hover {
+            opacity: .8;
         }
 
         figcaption {
@@ -157,14 +168,166 @@
     }
 
     .button-main {
-        min-width: 280px;
+        @extend %index-button-main;
     }
 }
 
+.userMarket {
+    @extend %breakline;
+    @extend %padding-contents;
+
+    &_list {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 80px;
+    }
+
+    &_item {
+        flex: 0 0 18%;
+        max-width: 18%;
+        border: $border-default;
+        margin: 0 1% 20px;
+        padding: 0 15px 20px 15px;
+        text-align: left;
+        transition: all .3s;
+
+        &:hover {
+            border-color: $color-theme-center;
+        }
+
+        a {
+            display: block;
+        }
+    }
 
 
+    &_img {
+        display: block;
+        margin: 0 -15px 20px;
+    }
 
+    &_title {
+        margin-bottom: 5px;
+        font-size: 1.6rem;
+        font-weight: bold;
+    }
 
+    &_artist {
+        margin-bottom: 15px;
+        font-size: 1.2rem;
+        color: $color-text-lightgray;
+    }
 
+    &_price {
+        font-size: 1.2rem;
+        color: $color-theme-center;
+
+        .price {
+            font-size: 1.8rem;
+        }
+    }
+
+    .button-main {
+        @extend %index-button-main;
+    }
+
+}
+
+.news {
+    padding: 60px 0;
+    background: $color-bg-gray;
+    text-align: left;
+
+    .content {
+        display: flex;
+        align-items: center;
+    }
+
+    .index_title {
+        flex: 0 0 190px;
+        margin: 0;
+        border-right: $border-default;
+    }
+
+    &_list {
+        flex: 1 1 auto;
+        padding-left: 60px;
+    }
+
+    &_item {
+        position: relative;
+        margin-bottom: 10px;
+        padding-left: 8em;
+        font-size: 1.5rem;
+    }
+
+    &_date {
+        position: absolute;
+        top: -2px;
+        left: 0;
+        color: $color-text-lightblue;
+        font-family: $font-en;
+        font-size: 1.8rem;
+    }
+}
+
+.about {
+    @extend %padding-contents;
+    position: relative;
+    text-align: left;
+
+    .content {
+        margin-top: -20px;
+        background: url("~@/assets/img/top-about.jpg") no-repeat 0 40px;
+        background-size: 50% auto;
+    }
+
+    .index_title {
+        margin: 0 0 30px -50%;
+        text-align: right;
+
+        &-en {
+            font-size: 6rem;
+        }
+    }
+
+    &_wrap {
+        margin-left: calc(50% + 40px);
+    }
+
+    &_title {
+        margin-bottom: 30px;
+        font-size: 2.6rem;
+        font-weight: bold;
+        line-height: 1.6;
+    }
+
+    &_text {
+        margin-bottom: 30px;
+        line-height: 2;
+    }
+
+    .button-main {
+        width: 200px;
+    }
+
+}
+
+.indexFooter {
+    @extend %breakline;
+    @extend %padding-contents;
+
+    &_text {
+        margin-bottom: 60px;
+        font-size: 2.8rem;
+    }
+
+    .button-action {
+        width: 280px;
+        height: 60px;
+        line-height: 60px;
+        font-size: 1.8rem;
+    }
+}
 
 }
