@@ -68,25 +68,6 @@
     }
 }
 
-// common
-.index_title {
-    margin-bottom: 60px;
-
-    &-en {
-        display: inline-block;
-        margin-bottom: 10px;
-        font-size: 5rem;
-        font-family: $font-en;
-        font-weight: 300;
-        @extend %text-themeColor;
-    }
-
-    &-jp {
-        display: block;
-        font-size: 1.4rem;
-    }
-}
-
 .pickupAuction {
     @extend %padding-contents;
 
@@ -243,7 +224,7 @@
         align-items: center;
     }
 
-    .index_title {
+    .contents_title {
         flex: 0 0 190px;
         margin: 0;
         border-right: $border-default;
@@ -282,7 +263,7 @@
         background-size: 50% auto;
     }
 
-    .index_title {
+    .contents_title {
         margin: 0 0 30px -50%;
         text-align: right;
 

@@ -1,0 +1,78 @@
+@charset "UTF-8";
+@import "../utils/variables.scss";
+@import "../utils/functions.scss";
+
+/* login */
+
+.v-application.theme--light {
+
+    .login {
+        height: 100%;
+        background: url("~@/assets/img/main-img.jpg") no-repeat center top;
+        background-size: cover;
+        backdrop-filter: blur(5px);
+        overflow: hidden;
+
+        &::before{
+            content: '';
+            background: inherit;
+            -ms-filter: blur(5px);
+            filter: blur(5px);
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            z-index: -1;
+          }
+    }
+
+    .loginBox {
+        width: 460px;
+        max-width: 80%;
+        margin: 80px 0;
+        padding: 60px 5%;
+        background: #fff;
+
+        &_footer {
+
+        }
+
+        .button-action {
+            width: 240px;
+            height: 50px;
+            line-height: 50px;
+        }
+
+        &_link {
+            margin-top: 40px;
+            font-size: 1.2rem;
+
+            li {
+                display: inline-block;
+                padding: 0 10px;
+
+                & + li {
+                    border-left: $border-default;
+                }
+
+                a {
+                    text-decoration: underline;
+                    display: block;
+
+                    &:hover {
+                        text-decoration: none;
+                    }
+                }
+            }
+        }
+    }
+
+    .error_msg {
+        margin: 10px 0;
+        color: $color-error;
+    }
+
+
+
+}

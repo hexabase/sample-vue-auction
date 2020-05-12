@@ -9,9 +9,9 @@
       <a href="/about" class="button-main">どんなサービス</a>
     </section>
     <section class="pickupAuction">
-      <h3 class="index_title">
-        <span class="index_title-en">Pickup Auction</span>
-        <span class="index_title-jp">開催中のオークション</span>
+      <h3 class="contents_title">
+        <span class="contents_title-en">Pickup Auction</span>
+        <span class="contents_title-jp">開催中のオークション</span>
       </h3>
       <ul class="pickupAuction_list">
         <li class="pickupAuction_item">
@@ -45,9 +45,9 @@
     </section>
     <section class="userMarket">
       <div class="content">
-        <h3 class="index_title">
-          <span class="index_title-en">User Market</span>
-          <span class="index_title-jp">ユーザー間取引</span>
+        <h3 class="contents_title">
+          <span class="contents_title-en">User Market</span>
+          <span class="contents_title-jp">ユーザー間取引</span>
         </h3>
         <ul class="userMarket_list">
           <li class="userMarket_item">
@@ -143,9 +143,9 @@
     </section>
     <section class="news">
       <div class="content">
-        <h3 class="index_title">
-          <span class="index_title-en">News</span>
-          <span class="index_title-jp">
+        <h3 class="contents_title">
+          <span class="contents_title-en">News</span>
+          <span class="contents_title-jp">
             お知らせ
             <a href="">一覧</a>
           </span>
@@ -162,8 +162,8 @@
     </section>
     <section class="about">
       <div class="content">
-        <h3 class="index_title">
-          <span class="index_title-en">What is “Music royalty”</span>
+        <h3 class="contents_title">
+          <span class="contents_title-en">What is “Music royalty”</span>
         </h3>
         <div class="about_wrap">
           <h4 class="about_title">

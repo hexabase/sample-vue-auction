@@ -1,64 +1,59 @@
 <template>
-  <v-app id="inspire">
-    <v-content>
-      <v-container class="fill-height" fluid>
-        <v-row align="center" justify="center">
-          <v-col cols="12" sm="8" md="4">
-            <v-card class="elevation-12">
-              <v-toolbar color="primary" dark flat>
-                <v-toolbar-title>ログイン</v-toolbar-title>
-              </v-toolbar>
-              <template v-if="errorMess != ''">
-                <section
-                  style="padding-top: 10px;padding-left: 10px;color: red;"
-                >
-                  {{ errorMess }}
-                </section>
-              </template>
-              <v-card-text>
-                <v-form>
-                  <ValidationObserver ref="signin" v-slot="{}">
-                    <validation-provider
-                      ref="address"
-                      v-slot="{ errors }"
-                      name="メールアドレス"
-                      rules="required|email"
-                    >
-                      <v-text-field
-                        v-model="email"
-                        type="text"
-                        placeholder="メールアドレス"
-                        :error-messages="errors"
-                        required
-                      />
-                    </validation-provider>
-                    <validation-provider
-                      ref="password"
-                      v-slot="{ errors }"
-                      name="パスワード"
-                      rules="required"
-                    >
-                      <v-text-field
-                        v-model="password"
-                        type="password"
-                        placeholder="パスワード"
-                        :error-messages="errors"
-                        required
-                      />
-                    </validation-provider>
-                  </ValidationObserver>
-                </v-form>
-              </v-card-text>
-              <v-card-actions>
-                <v-spacer />
-                <v-btn color="primary" @click="signin">Login</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-content>
-  </v-app>
+  <v-row align="center" justify="center" class="login">
+    <div class="loginBox">
+      <h1 class="contents_title">
+        <span class="contents_title-en">Login</span>
+        <span class="contents_title-jp">ログイン</span>
+      </h1>
+      <div v-if="errorMess != ''" class="error_msg">
+        <v-alert text color="red">
+          {{ errorMess }}
+        </v-alert>
+      </div>
+      <v-form>
+        <ValidationObserver ref="signin" v-slot="{}">
+          <validation-provider
+            ref="address"
+            v-slot="{ errors }"
+            name="メールアドレス"
+            rules="required|email"
+          >
+            <v-text-field
+              v-model="email"
+              type="text"
+              placeholder="メールアドレス"
+              :error-messages="errors"
+              required
+            />
+          </validation-provider>
+          <validation-provider
+            ref="password"
+            v-slot="{ errors }"
+            name="パスワード"
+            rules="required"
+          >
+            <v-text-field
+              v-model="password"
+              type="password"
+              placeholder="パスワード"
+              :error-messages="errors"
+              required
+            />
+          </validation-provider>
+        </ValidationObserver>
+      </v-form>
+      <div class="loginBox_footer">
+        <v-checkbox v-model="checkbox" label="ログイン状態を保持"></v-checkbox>
+        <button type="submit" class="button-action" @click="signin">
+          ログイン
+        </button>
+        <ul class="loginBox_link">
+          <li><a href="">パスワードを忘れたかた</a></li>
+          <li><a href="">新規登録</a></li>
+        </ul>
+      </div>
+    </div>
+  </v-row>
 </template>
 
 <script>
