@@ -144,6 +144,11 @@
         background: initial;
         color: #FFF !important;
     }
+
+    &[disabled] {
+        background: $color-bg-disabled;
+        color: $color-text-disabled;
+    }
 }
 
 // table

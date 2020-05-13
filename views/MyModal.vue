@@ -2,13 +2,16 @@
   <transition name="modal" appear>
     <div class="modal modal-overlay" @click.self="$emit('close')">
       <div class="modal-window">
+        <header class="modal-header">
+          <h2 class="modal-title"><slot name="title"></slot></h2>
+          <v-icon @click="modal = false">mdi-close</v-icon>
+        </header>
         <div class="modal-content">
           <slot />
         </div>
         <footer class="modal-footer">
-          <slot name="footer">
-            <button @click="$emit('close')">Close</button>
-          </slot>
+          <button class="cancel" @click="$emit('close')">キャンセル</button>
+          <slot name="footer"></slot>
         </footer>
       </div>
     </div>
@@ -21,7 +24,7 @@
   align-items: center;
   justify-content: center;
   position: fixed;
-  z-index: 30;
+  z-index: 100;
   top: 0;
   left: 0;
   width: 100%;
@@ -32,17 +35,57 @@
   background: #fff;
   border-radius: 4px;
   overflow: hidden;
+  max-width: 80%;
+  max-height: 80%;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-header {
+  padding: 0 10px;
+  background: #eee;
+  display: flex;
+  flex: 0 0 60px;
+  justify-content: center;
+  position: relative;
+  height: 60px;
+  line-height: 60px;
+}
+
+.modal-header .v-icon {
+  position: absolute;
+  top: 15px;
+  right: 10px;
+}
+
+.modal-title {
+  font-size: 2rem;
 }
 
 .modal-content {
-  padding: 10px 20px;
+  padding: 40px;
+  flex: 1 1 auto;
+  overflow: auto;
 }
 
 .modal-footer {
-  background: #ccc;
+  flex: 0 0 90px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 10px;
-  text-align: right;
+  border-top: 1px solid #eee;
 }
+
+.cancel {
+  margin-right: 30px;
+  text-decoration: underline;
+}
+
+.cancel:hover {
+  text-decoration: none;
+}
+
 .modal-enter-active,
 .modal-leave-active {
   transition: opacity 0.4s;
