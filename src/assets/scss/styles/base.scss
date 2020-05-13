@@ -93,6 +93,12 @@ footer,header,hgroup,menu,nav,section {
         }
     }
 
+    button {
+        &[disabled] {
+            cursor: not-allowed;
+        }
+    }
+
     img {
         vertical-align: top;
         max-width: 100%;
