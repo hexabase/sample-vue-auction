@@ -3,7 +3,9 @@
     <section class="musicInfo">
       <div class="content">
         <figure class="musicInfo_img">
-          <img :src="videoThumbnailUrl" />
+          <a :href="videoUrl" target="_blank">
+            <img :src="videoThumbnailUrl" />
+          </a>
         </figure>
         <div class="musicInfo_wrap">
           <h2 class="musicInfo_title">{{ title }}</h2>
@@ -138,27 +140,27 @@
         <ul class="royaltyInfo_list">
           <li>
             <span class="royaltyInfo_label">公表日</span>
-            2015-04-08
+            {{ publicationDate }}
           </li>
           <li>
             <span class="royaltyInfo_label">歌手</span>
-            徳永ゆうき（渋谷節だよ青春は！）
+            {{ singer1 }}
           </li>
           <li>
             <span class="royaltyInfo_label">作曲</span>
-            徳永ゆうき
+            {{ composer1 }}
           </li>
           <li>
             <span class="royaltyInfo_label">作詞</span>
-            徳永ゆうき
+            {{ lyricist1 }}
           </li>
           <li>
             <span class="royaltyInfo_label">編曲</span>
-            徳永ゆうき
+            {{ arranger1 }}
           </li>
           <li>
             <span class="royaltyInfo_label">著作権保護期間</span>
-            原作者死後70年
+            {{ protectionPeriod }}
           </li>
           <li>
             <span class="royaltyInfo_label">
@@ -185,7 +187,7 @@
           </li>
           <li>
             <span class="royaltyInfo_label">その他の主な事項</span>
-            * KOMCAの管理範囲に該当する地域の著作権
+            {{ otherNotes }}
           </li>
         </ul>
       </div>
@@ -210,6 +212,7 @@
 import mapping from "@/assets/json/auctionDBMapping.json";
 import DatabaseSchema from "@/assets/json/DBSchema.json";
 import MyModal from "./MyModal.vue";
+import moment from "moment-timezone";
 export default {
   components: { MyModal },
   data() {
@@ -284,10 +287,12 @@ export default {
       bidTotalAmount: 0,
       bidPrice: 0,
       bidAmount: 1,
-      remainingTime: ""
+      remainingTime: "",
+      musicId: ""
     };
   },
   created: async function() {
+    this.musicId = this.$route.query.id;
     var dataLists = [];
     dataLists = await this.$hexalink.getItems(
       this.token,
@@ -297,7 +302,7 @@ export default {
         conditions: [
           {
             id: "著作権番号", // Hexalink画⾯で⼊⼒したIDを指定
-            search_value: ["著作権番号1"],
+            search_value: [this.musicId],
             exact_match: true // 完全⼀致で検索
           }
         ],
@@ -379,7 +384,7 @@ export default {
         conditions: [
           {
             id: "著作権番号", // Hexalink画⾯で⼊⼒したIDを指定
-            search_value: ["著作権番号1"],
+            search_value: [this.musicId],
             exact_match: true // 完全⼀致で検索
           }
         ],
@@ -437,6 +442,9 @@ export default {
 
     console.log(this.auctionListsGroup);
   },
+  mounted: function() {
+    setInterval(this.updateMessage, 1000);
+  },
   methods: {
     openModal() {
       this.modal = true;
@@ -446,7 +454,7 @@ export default {
     },
     async doSend() {
       var setData = {};
-      setData["著作権番号"] = "著作権番号1";
+      setData["著作権番号"] = this.musicId;
       setData["会員番号"] = "会員番号E";
       setData["数量"] = Number(this.bidAmount);
       setData["入札金額"] = Number(this.bidPrice);
@@ -487,6 +495,27 @@ export default {
         datasotreId,
         itemId
       );
+    },
+    updateMessage() {
+      // diffメソッドを使って、日時の差を、ミリ秒で取得
+      const diff = moment(this.auctionEndDate).diff(moment());
+      if (diff < 0) {
+        this.remainingTime = "Closed";
+        return;
+      }
+
+      // ミリ秒からdurationオブジェクトを生成
+      const duration = moment.duration(diff);
+
+      // 日・時・分・秒を取得
+      const days = Math.floor(duration.asDays());
+      const hours = duration.hours();
+      const minutes = duration.minutes();
+      const seconds = duration.seconds();
+
+      //カウントダウンの結果を変数に代入
+      this.remainingTime =
+        days + "日" + hours + "時間" + minutes + "分" + seconds + "秒";
     }
   }
 };
