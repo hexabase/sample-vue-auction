@@ -4,13 +4,15 @@
       <div class="modal-window">
         <header class="modal-header">
           <h2 class="modal-title"><slot name="title"></slot></h2>
-          <v-icon @click="modal = false">mdi-close</v-icon>
+          <v-icon @click.self="$emit('close')">mdi-close</v-icon>
         </header>
         <div class="modal-content">
           <slot />
         </div>
         <footer class="modal-footer">
-          <button class="cancel" @click="$emit('close')">キャンセル</button>
+          <button class="cancel" @click="$emit('close')">
+            <v-icon>mdi-chevron-left</v-icon>戻る
+          </button>
           <slot name="footer"></slot>
         </footer>
       </div>
@@ -69,7 +71,8 @@
 }
 
 .modal-footer {
-  flex: 0 0 90px;
+  position: relative;
+  flex: 0 0 80px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -78,12 +81,12 @@
 }
 
 .cancel {
-  margin-right: 30px;
-  text-decoration: underline;
+  position: absolute;
+  left: 20px;
 }
 
 .cancel:hover {
-  text-decoration: none;
+  opacity: 0.8;
 }
 
 .modal-enter-active,

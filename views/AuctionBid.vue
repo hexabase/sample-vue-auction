@@ -67,6 +67,28 @@
           </div>
           <div class="auctionInfo_right">
             <section class="bidBox">
+              <!-- ▼入札済みの表示：ここから▼ -->
+              <div class="currentBid">
+                <h3 class="currentBid_title">現在以下の内容で入札しています</h3>
+                <div class="currentBid_body">
+                  <p class="currentBid_detail">
+                    20,000
+                    <span class="unit">円&nbsp;×&nbsp;</span>
+                    1
+                    <span class="unit">株</span>
+                  </p>
+                  <p class="currentBid_total">（総入札価格：20,000円）</p>
+                  <p class="currentBid_status">
+                    オークション結果：先着順の部分落札
+                  </p>
+                  <button class="button-sub" @click="openModal('cancelModal')">
+                    キャンセル
+                    <span class="currentBid_remain">（残り可能回数：3回）</span>
+                  </button>
+                </div>
+              </div>
+              <!-- ▲入札済みの表示：ここまで▲ -->
+              <!-- TODO：以下、入札済みの場合「入札→再入札」 -->
               <h3 class="bidBox_title">入札</h3>
               <div class="bidBox_field">
                 <label>入札価格<span>（1週、消費税を含む）</span></label>
@@ -95,7 +117,9 @@
                 <span class="price">{{ bidPrice * bidAmount }}</span>
                 円
               </p>
-              <button class="button-action" @click="openModal">入札する</button>
+              <button class="button-action" @click="openModal('modal')">
+                入札する
+              </button>
             </section>
             <dl class="bidPolicy">
               <dt>参加規定</dt>
@@ -194,7 +218,7 @@
     </section>
     <div class="modal_wrapper">
       <!-- コンポーネント MyModal -->
-      <MyModal v-if="modal" class="modal-bid" @close="closeModal">
+      <MyModal v-if="modal" class="modal-bid" @close="closeModal('modal')">
         <template slot="title">入札する</template>
         <!-- default スロットコンテンツ -->
         <table class="modal-bid_table">
@@ -274,6 +298,30 @@
         </template>
         <!-- /footer -->
       </MyModal>
+      <MyModal
+        v-if="cancelModal"
+        class="modal-bid"
+        @close="closeModal('cancelModal')"
+      >
+        <template slot="title">入札キャンセル</template>
+        <p class="modal-bid_text">山田花子様 現在の入札状況</p>
+        <ul class="modal-bid_list">
+          <li>入札価格：25,000円</li>
+          <li>入札数量：4株</li>
+          <li>総入札価格：100,000円</li>
+        </ul>
+        <p class="modal-bid_confirm">
+          こちらキャンセルしてよろしいでしょうか？
+        </p>
+        <p class="modal-bid_announce">
+          ※一つの著作権でのキャンセルは3回までしかできません。残り<strong>3回</strong>キャンセルできます。
+        </p>
+        <template slot="footer">
+          <Button class="button-sub" @click="doSend">
+            入札をキャンセルする
+          </Button>
+        </template>
+      </MyModal>
     </div>
   </div>
 </template>
@@ -287,6 +335,7 @@ export default {
   data() {
     return {
       modal: false,
+      cancelModal: false,
       currentStep: 1,
       page: 1,
       pageCount: 0,
@@ -519,11 +568,11 @@ export default {
     isProcessing() {
       return this.agreeGuideline;
     },
-    openModal() {
-      this.modal = true;
+    openModal(target) {
+      this[target] = true;
     },
-    closeModal() {
-      this.modal = false;
+    closeModal(target) {
+      this[target] = false;
     },
     async doSend() {
       var setData = {};

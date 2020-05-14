@@ -151,6 +151,18 @@
     }
 }
 
+.button-sub {
+    background: $color-sub;
+    border-radius: 2px;
+    color: #fff;
+    display: inline-block;
+    transition: all .3s;
+    
+    &:hover {
+        background: lighten($color-sub, 5%);
+    }
+}
+
 // table
 %table-default {
     thead {
