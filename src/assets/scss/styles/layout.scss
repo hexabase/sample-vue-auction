@@ -10,7 +10,8 @@ body {
 
 /* header */
 .v-application.theme--light {
-    padding-top: $header-height;
+    // padding-top: $header-height;
+    padding-top: calc(#{$header-height} + #{$userNav-height});
 
     .siteHeader {
         position: fixed;
@@ -350,6 +351,11 @@ body {
             height: 240px;
             justify-content: center;
             align-items: center;
+        }
+
+        &_title {
+            font-size: 3.2rem;
+            font-weight: normal;
         }
 
         &_lead {

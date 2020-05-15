@@ -1,0 +1,82 @@
+@charset "UTF-8";
+@import "../utils/variables.scss";
+@import "../utils/functions.scss";
+
+/* mypage */
+#page_mypage {
+    .pageHeader {
+        &_img {
+            background: url("~@/assets/img/bg-mypage-title.jpg") no-repeat center center;
+            background-size: cover;
+            backdrop-filter: none;
+        }
+        .content {
+            height: 180px;
+        }
+    }
+
+    .balance {
+        background:  $color-bg-theme-light;
+        padding: 80px 0;
+
+        &_title {
+            margin-bottom: 20px;
+            @extend %section-title;
+        }
+
+        &_box {
+            margin: 0 4%;
+            padding: 30px;
+            background: #fff;
+            border-radius: $radius-box;
+        }
+
+        &_price {
+            margin: 10px 0 40px;
+            font-size: 5rem;
+            color: $color-theme-center;
+
+            &::after {
+                content: '円';
+                margin-left: 5px;
+                font-size: 2rem;
+                font-weight: bold;
+            }
+        }
+
+        &_link {
+            display: flex;
+            justify-content: center;
+
+            .button-action {
+                margin: 0 5px;
+                width: 220px;
+                height: 46px;
+                line-height: 46px;
+                font-size: 1.6rem;
+            }
+        }
+    }
+
+    .transaction {
+        @extend %padding-contents;
+
+        &_title {
+            margin-bottom: 60px;
+            @extend %section-title;
+        }
+
+        &_search {
+            margin-bottom: 40px;
+        }
+
+        &_list {
+            width: 100%;
+            @extend %table-default;
+
+            thead th {
+                padding: 12px 5px !important;
+            }
+        }
+    }
+}

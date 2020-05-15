@@ -5,6 +5,7 @@ import Top from "../../views/Top.vue";
 import Signin from "../../views/Signin.vue";
 import AuctionList from "../../views/AuctionList.vue";
 import AuctionBid from "../../views/AuctionBid.vue";
+import Mypage from "../../views/Mypage.vue";
 
 Vue.use(VueRouter);
 
@@ -30,6 +31,11 @@ const routes = [
     name: "AuctionBid",
     component: AuctionBid,
     meta: { requiresAuth: true }
+  },
+  {
+    path: "/mypage",
+    name: "Mypage",
+    component: Mypage
   }
 ];
 
