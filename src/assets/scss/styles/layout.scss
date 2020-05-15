@@ -212,6 +212,109 @@ body {
     .v-content {
         border-top: $border-default;
     }
+
+    .pageHeader {
+        position: relative;
+        display: flex;
+        justify-content: center;
+
+        &_img {
+            width: 100%;
+            height: 100%;
+            background: url("~@/assets/img/main-img.jpg") no-repeat center 10%;
+            background-size: cover;
+            backdrop-filter: blur(3px);
+            overflow: hidden;
+
+            &::before{
+                content: '';
+                background: inherit;
+                -ms-filter: blur(3px);
+                filter: blur(3px);
+                position: absolute;
+                top: -5px;
+                left: -5px;
+                right: -5px;
+                bottom: -5px;
+                z-index: -1;
+            }
+        }
+
+        &::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: transparent;
+            box-shadow: 0 -2px 3px rgba(#444, .2);
+        }
+
+        .content {
+            display: flex;
+            height: 240px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        &_lead {
+            font-size: 2.2rem;
+            line-height: 1.8;
+            letter-spacing: .1em;
+        }
+
+        &_tab {
+            position: absolute;
+            display: flex;
+            bottom: 0;
+            width: 600px;
+            max-width: 80%;
+            height: 50px;
+            margin: auto;
+            background: #fff;
+            border: 1px solid rgba(#ccc, .3);
+            border-bottom: none;
+            border-radius: 8px 8px 0 0;
+            line-height: 50px;
+
+            li:first-child {
+                border-top-left-radius: 8px;
+            }
+
+            li:last-child {
+                border-top-right-radius: 8px;
+            }
+        }
+
+        &_tabItem, &_tabItem-current {
+            width: 50%;
+            flex: 0 0 50%;
+            font-size: 1.5rem;
+        }
+
+        &_tabItem-current {
+            position: relative;
+            background: $color-bg-theme;
+            color: #fff;
+            font-weight: bold;
+
+            &::after {
+                content: '';
+                display: block;
+                position: absolute;
+                top: 100%;
+                left: 50%;
+                width: 0;
+                height: 0;
+                background: transparent;
+                margin-left: -7px;
+                border-right: 7px solid transparent;
+                border-left: 7px solid transparent;
+                border-top: 7px solid $color-theme-center;
+            }
+        }
+    }
     
     /* Footer */
     .siteFooter {

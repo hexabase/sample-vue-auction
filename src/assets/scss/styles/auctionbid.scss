@@ -193,7 +193,7 @@
 
     .currentBid {
         margin: 0 -40px;
-        background: rgba($color-theme-center, .05);
+        background: $color-bg-theme-light;
         border-bottom: $border-blue;
 
         &_title {
