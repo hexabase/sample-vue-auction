@@ -40,10 +40,17 @@ $border-input: 1px solid #ddd;
 $border-input-hover: 1px solid #888;
 $border-input-focus: 1px solid $color-theme-center;
 
+// border-radius
+$radius-btn: 2px;
+$radius-form: 2px;
+$radius-tab: 8px;
+$radius-box: 5px;
+$radius-circle: 50%;
 
 // size
 $header-height: 80px;
 $header-height_mobile: 50px;
+$userNav-height: 38px;
 
 // z-index
 $zIndex-header: 50;

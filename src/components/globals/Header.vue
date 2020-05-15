@@ -19,23 +19,64 @@
             <a href="">BATONについて</a>
           </li>
           <li class="siteHeader_gnav-link">
-            <a href="">Q&A</a>
+            <a href="">Q&amp;A</a>
           </li>
         </ul>
       </nav>
-      <ul class="siteHeader_userMenu">
+      <!-- ログアウト時 -->
+      <ul v-if="false" class="siteHeader_userMenu">
         <li>
           <a href="">新規登録</a>
         </li>
         <li>
-          <a href="">ログイン</a>
+          <a href="/login">ログイン</a>
+        </li>
+      </ul>
+      <!-- ログイン時 -->
+      <v-menu offset-y class="siteHeader_userInfo">
+        <template v-slot:activator="{ on }">
+          <button class="siteHeader_userName" v-on="on">
+            <v-icon>mdi-chevron-right</v-icon>
+            山田 花子
+          </button>
+        </template>
+        <ul class="siteHeader_loginMenu">
+          <li>
+            <a href="mypage">マイページ</a>
+          </li>
+          <li>
+            <a href="mypage">登録情報の変更</a>
+          </li>
+          <li class="break">
+            <button @click="signout">ログアウト</button>
+          </li>
+        </ul>
+      </v-menu>
+    </div>
+    <div class="siteHeader_userNav">
+      <ul class="siteHeader_userNav_wrap">
+        <li>
+          <a href="/mypage" class="siteHeader_userNav_link-current">
+            マイページ
+          </a>
+        </li>
+        <li>
+          <a href="" class="siteHeader_userNav_link">お知らせ</a>
+        </li>
+        <li>
+          <a href="" class="siteHeader_userNav_link">保有する楽曲権利</a>
+        </li>
+        <li>
+          <a href="" class="siteHeader_userNav_link">お財布</a>
+        </li>
+        <li>
+          <a href="" class="siteHeader_userNav_link">ユーザー情報</a>
         </li>
       </ul>
     </div>
     <a class="menu-trigger" href="#">
       <span></span><span></span><span></span>
     </a>
-    <v-btn absolute right @click="signout">ログアウト</v-btn>
   </header>
 </template>
 

@@ -19,7 +19,7 @@ body {
         left: 0;
         z-index: $zIndex-header;
         height: $header-height;
-        background: rgba(#fff, .1);
+        background: rgba(#fff, 1);
         
         .content {
             display: flex;
@@ -69,7 +69,7 @@ body {
             height: 40px;
             margin-top: 20px;
             background: $color-bg-theme;
-            border-radius: 2px;
+            border-radius: $radius-btn;
             font-size: 1.3rem;
             
             &::after {
@@ -154,6 +154,100 @@ body {
 
             .menu-trigger {
                 display: inline-block;
+            }
+        }
+
+        &_userInfo {
+        }
+
+        &_userName {
+            margin: 20px 0;
+            padding-right: 10px;
+            font-size: 1.3rem;
+            outline: none;
+            transition: all .3s;
+
+            &::after {
+                content: 'さん';
+                margin-left: 5px;
+                font-size: 1.1rem;
+            }
+
+            &:hover {
+                color: $color-theme-center;
+            }
+
+            .v-icon {
+                font-size: 1.8rem;
+            }
+        }
+
+        &_loginMenu {
+            width: 200px;
+            background: #fff;
+
+            a, button {
+                display: block;
+                width: 100%;
+                box-sizing: border-box;
+                padding: 18px 20px;
+                font-size: 1.4rem;
+                text-align: left;
+                transition: all .3s;
+
+                &:hover {
+                    background: $color-bg;
+                    color: $color-text-sub;
+                }
+            }
+
+            .break {
+                margin-top: 5px;
+                border-top: $border-default;
+            }
+        }
+
+        &_userNav {
+            position: absolute;
+            top: $header-height;
+            background: $color-bg-dark;
+            width: 100%;
+            height: $userNav-height;
+
+            li {
+                display: inline-block;
+                position: relative;
+
+                + li:before {
+                    position: absolute;
+                    left: 0;
+                    top: calc(#{$userNav-height} / 2 - 5px);
+                    content: '';
+                    width: 1px;
+                    height: 10px;
+                    background: $color-text-gray;
+                }
+            }
+
+            &_link, &_link-current {
+                display: inline-block;
+                padding: 0 20px;
+                color: #fff;
+                line-height: $userNav-height;
+                font-size: 1.3rem;
+                transition: all .3s;
+
+                &:visited:hover {
+                    color: lighten($color-theme-left, 23%);
+                }
+
+                &:visited {
+                    color: #fff;
+                }
+            }
+
+            &_link-current {
+                background: rgba($color-theme-center, .2);
             }
         }
     }
@@ -273,17 +367,17 @@ body {
             height: 50px;
             margin: auto;
             background: #fff;
-            border: 1px solid rgba(#ccc, .3);
+            box-shadow: 0 0 3px rgba(#000, .05);
             border-bottom: none;
-            border-radius: 8px 8px 0 0;
+            border-radius: $radius-tab $radius-tab 0 0;
             line-height: 50px;
 
             li:first-child {
-                border-top-left-radius: 8px;
+                border-top-left-radius: $radius-tab;
             }
 
             li:last-child {
-                border-top-right-radius: 8px;
+                border-top-right-radius: $radius-tab;
             }
         }
 
