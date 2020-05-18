@@ -3,9 +3,18 @@
     <section class="musicInfo">
       <div class="content">
         <figure class="musicInfo_img">
-          <a :href="videoUrl" target="_blank">
+          <iframe
+            width="320"
+            height="240"
+            :src="videoSourceUrl"
+            frameborder="0"
+            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          >
+          </iframe>
+          <!-- <a :href="videoUrl" target="_blank">
             <img :src="videoThumbnailUrl" />
-          </a>
+          </a> -->
         </figure>
         <div class="musicInfo_wrap">
           <h2 class="musicInfo_title">{{ title }}</h2>
@@ -47,12 +56,16 @@
               </thead>
               <tbody>
                 <tr
-                  v-for="value in auctionListsGroup"
-                  :key="value.入札金額"
+                  v-for="(value, index) in auctionListsGroup"
+                  :key="index"
                   class="option"
                 >
-                  <td>{{ value.入札金額 }} 円</td>
-                  <td>{{ value.数量 }}</td>
+                  <td>
+                    {{ value["d2813a9b-33e5-405f-9116-ff9c97a0bf06"] }} 円
+                  </td>
+                  <td>
+                    {{ value["4384d821-8e19-4e08-949b-44cab6efa408"] }}
+                  </td>
                   <td>{{ value.落札状況 }}</td>
                 </tr>
               </tbody>
@@ -352,6 +365,7 @@ export default {
       auctionStartPrice: "",
       auctionEndPrice: "",
       videoThumbnailUrl: "",
+      videoSourceUrl: "",
       auctionListsGroup: [],
       bidTotalAmount: 0,
       bidPrice: 0,
@@ -381,6 +395,7 @@ export default {
         use_display_id: true
       }
     );
+
     console.log(dataLists);
     var titleEn = "タイトル（英語）";
     var titleKr = "タイトル（韓国）";
@@ -444,57 +459,45 @@ export default {
       dataLists[0].動画URL.split("v=")[1] +
       "/hqdefault.jpg";
     this.bidPrice = dataLists[0].オークション開始金額;
+    this.videoSourceUrl =
+      "https://www.youtube.com/embed/" + dataLists[0].動画URL.split("v=")[1];
+
+    var rpf_bidAmount = "4384d821-8e19-4e08-949b-44cab6efa408";
+    var rpf_copyrightNumber = "d3e553f2-7281-47b7-96ef-3ac55a72f1ee";
+    var rpf_bidPrice = "d2813a9b-33e5-405f-9116-ff9c97a0bf06";
 
     var auctionLists = [];
-    auctionLists = await this.$hexalink.getItems(
+    auctionLists = await this.$hexalink.getReports(
       this.token,
       this.applicationId,
-      this.datastoreIds["オークション入札状況DB"],
+      "5ea69310206c0d0006e494ab",
       {
         conditions: [
           {
-            id: "著作権番号", // Hexalink画⾯で⼊⼒したIDを指定
-            search_value: [this.musicId],
-            exact_match: true // 完全⼀致で検索
+            rpf_id: "d3e553f2-7281-47b7-96ef-3ac55a72f1ee",
+            search_value: [this.musicId]
           }
-        ],
-        page: 1,
-        per_page: 9000,
-        use_display_id: true
+        ]
       }
     );
     console.log(auctionLists);
 
-    var auctionListsGroupSort = auctionLists
-      .reduce(function(result, current) {
-        var element = result.find(function(p) {
-          return p.入札金額 === current.入札金額;
-        });
-        if (element) {
-          element.count++; // count
-          element.数量 = Number(element.数量) + Number(current.数量); // sum
-        } else {
-          result.push({
-            入札金額: current.入札金額,
-            count: 1,
-            数量: current.数量
-          });
-        }
-        return result;
-      }, [])
-      .sort(function(a, b) {
-        if (a.入札金額 < b.入札金額) {
-          return 1;
-        } else {
-          return -1;
-        }
-      });
+    var auctionListsGroupSort = auctionLists.report_results.sort(function(
+      a,
+      b
+    ) {
+      if (a.rpf_bidPrice < b.rpf_bidPrice) {
+        return 1;
+      } else {
+        return -1;
+      }
+    });
 
     var auctionAmountCount = 0;
     var orderOfArraivalFlag = true;
 
     Object.keys(auctionListsGroupSort).forEach(function(key) {
-      auctionAmountCount += Number(auctionListsGroupSort[key].数量);
+      auctionAmountCount += Number(auctionListsGroupSort[key][rpf_bidAmount]);
       if (auctionAmountCount <= dataLists[0].オークション数量) {
         auctionListsGroupSort[key].落札状況 = "落札";
         if (auctionAmountCount >= dataLists[0].オークション数量) {
