@@ -146,7 +146,7 @@ export default {
             ? userInfo.data.email
             : userMaster.メールアドレス;
         const hexaID =
-          userMaster.userID == undefined ? userInfo.u_id : userMaster.userID;
+          userMaster.userID == undefined ? userInfo.data.u_id : userMaster.userID;
         const isApproval = userMaster.承認管理 == 1 ? true : false;
         const isAppHist = userMaster.承認履歴 == 1 ? true : false;
         const isUser = userMaster.ユーザ管理 == 1 ? true : false;
@@ -185,7 +185,7 @@ export default {
         this.$store.commit("user/setId", userID);
         this.$store.commit("user/setName", userNameKanji);
         this.$store.commit("user/setEmail", userMail);
-        // this.$store.commit("user/setHexaID", hexaID);
+        this.$store.commit("user/setHexaID", hexaID);
         // this.$store.commit("user/setIsAdmin", userInfo.data.is_ws_admin);
         // this.$store.commit("user/setIsApproval", isApproval);
         // this.$store.commit("user/setIsAppHist", isAppHist);
