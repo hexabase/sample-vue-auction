@@ -8,10 +8,12 @@ $color-theme-left: #1b80cb;
 $color-theme-center: #2358d1;
 $color-theme-right: #5255d1;
 $color-theme: $color-theme-center;
+$color-sub: #0eb54d;
 
 // bg
 $color-bg-theme: linear-gradient(to right, $color-theme-left, $color-theme-center 50%, $color-theme-right);
 $color-bg-theme-hover: linear-gradient(to right, $color-theme-left, $color-theme-center 99%, $color-theme-right 100%);
+$color-bg-theme-light: rgba($color-theme-center, 0.08);
 $color-bg: #f5f5f5;
 $color-bg-thin: #fafafa;
 $color-bg-gray: #eee;
@@ -38,10 +40,17 @@ $border-input: 1px solid #ddd;
 $border-input-hover: 1px solid #888;
 $border-input-focus: 1px solid $color-theme-center;
 
+// border-radius
+$radius-btn: 2px;
+$radius-form: 2px;
+$radius-tab: 8px;
+$radius-box: 5px;
+$radius-circle: 50%;
 
 // size
 $header-height: 80px;
 $header-height_mobile: 50px;
+$userNav-height: 38px;
 
 // z-index
 $zIndex-header: 50;
