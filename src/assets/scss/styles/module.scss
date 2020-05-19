@@ -39,6 +39,12 @@
 }
 
 // page title
+.page_title {
+    margin-bottom: 20px;
+    font-size: 2.8rem;
+    font-weight: normal;
+}
+
 .contents_title {
     margin-bottom: 60px;
 
@@ -90,7 +96,7 @@
 // form 
 .form-box {
     border: $border-input;
-    border-radius: 2px;
+    border-radius: $radius-form;
     padding: 5px 10px;
     transition: all 0.3s;
 
@@ -113,7 +119,7 @@
     background: $color-bg-dark;
     transition: all .5s;
     color: #FFF;
-    border-radius: 2px;
+    border-radius: $radius-btn;
     text-align: center;
     font-weight: bold;
     
@@ -130,7 +136,7 @@
 
 .button-action {
     display: inline-block;
-    border-radius: 2px;
+    border-radius: $radius-btn;
     background: $color-bg-theme;
     color: #fff;
     transition: all .5s;
@@ -148,6 +154,18 @@
     &[disabled] {
         background: $color-bg-disabled;
         color: $color-text-disabled;
+    }
+}
+
+.button-sub {
+    background: $color-sub;
+    border-radius: $radius-btn;
+    color: #fff;
+    display: inline-block;
+    transition: all .3s;
+    
+    &:hover {
+        background: lighten($color-sub, 5%);
     }
 }
 
@@ -245,4 +263,35 @@
 .delay_800 {
     transition-delay: .8s;
 }
+}
+
+// overight Vuetify
+.v-pagination.theme--light {
+    .v-pagination__item, .v-pagination__navigation {
+        box-shadow: none;
+        font-family: $font-en;
+        font-size: 2rem;
+        color: $color-text-gray;
+        border-radius: $radius-circle;
+
+        &:not(.v-pagination__item--active):hover {
+            color: $color-text-sub;
+            background: $color-bg;
+        }
+    }
+
+    li .v-pagination__item--active {
+        background-color: $color-bg-theme-light !important;
+        color: $color-theme-center;
+        font-weight: bold;
+        cursor: default;
+    }
+}
+
+body {
+    .v-menu__content {
+        overflow: hidden;
+        border-radius: $radius-box;
+        box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.1), 0px 8px 10px 1px rgba(0, 0, 0, 0.05), 0px 3px 14px 2px rgba(0, 0, 0, 0.05);
+    }
 }

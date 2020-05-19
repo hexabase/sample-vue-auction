@@ -126,11 +126,13 @@
 
     .bidBox {
         margin-bottom: 40px;
-        padding: 40px;
+        padding: 0 40px 40px;
         border: $border-blue;
+        overflow: hidden;
 
         &_title {
             margin-bottom: 30px;
+            padding-top: 40px;
             font-size: 2.4rem;
             font-weight: normal;
         }
@@ -189,11 +191,67 @@
         }
     }
 
+    .currentBid {
+        margin: 0 -40px;
+        background: $color-bg-theme-light;
+        border-bottom: $border-blue;
+
+        &_title {
+            line-height: 48px;
+            white-space: nowrap;
+            font-size: 1.6rem;
+            font-weight: normal;
+        }
+
+        &_body {
+            margin: 0 10px 10px;
+            padding: 10px 30px;
+            background: #fff;
+            border-radius: 5px;
+        }
+
+        &_detail {
+            margin-bottom: 5px;
+            font-size: 2.4rem;
+
+            .unit {
+                font-size: 1.4rem;
+            }
+        }
+
+        &_total {
+            margin-bottom: 10px;
+            font-size: 1.6rem;
+            color: $color-theme-center;
+        }
+
+        &_status {
+            margin-bottom: 10px;
+            color: $color-text-gray;
+            font-size: 1.4rem;
+        }
+
+        .button-sub {
+            width: 100%;
+            height: 40px;
+            line-height: 40px;
+            font-size: 1.6rem;
+        }
+
+        &_remain {
+            font-size: 1.2rem;
+        }
+    }
+
     .bidPolicy {
         padding: 0 10px;
         font-size: 1.2rem;
         text-align: left;
         line-height: 1.6;
+
+        dt {
+            font-weight: bold;
+        }
 
         dd {
             margin-bottom: 15px;
@@ -218,6 +276,13 @@
             font-size: 1.2rem;
             font-weight: normal;
         }
+    }
+
+    .button-sub {
+        height: 40px;
+        line-height: 40px;
+        padding: 0 20px;
+        font-weight: bold;
     }
 
     &_table {
@@ -279,6 +344,33 @@
                 flex: 0 0 auto;
             }
         }
+    }
+
+    &_text {
+        margin-bottom: 20px;
+        font-size: 1.4rem;
+    }
+
+    &_list {
+        border: $border-default;
+        margin-bottom: 30px;
+        padding: 20px;
+        color: $color-theme-center;
+        font-size: 1.8rem;
+
+        li + li {
+            margin-top: 10px;
+        }
+    }
+
+    &_confirm {
+        margin-bottom: 10px;
+        font-size: 1.6rem;
+    }
+
+    &_announce {
+        color: $color-text-lightgray;
+        font-size: 1.2rem;
     }
 }
 
