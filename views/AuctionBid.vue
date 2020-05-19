@@ -81,16 +81,18 @@
           <div class="auctionInfo_right">
             <section class="bidBox">
               <!-- ▼入札済みの表示：ここから▼ -->
-              <div class="currentBid">
+              <div v-if="myAuctionBidList.length > 0" class="currentBid">
                 <h3 class="currentBid_title">現在以下の内容で入札しています</h3>
                 <div class="currentBid_body">
                   <p class="currentBid_detail">
-                    20,000
+                    {{ bidPrice }}
                     <span class="unit">円&nbsp;×&nbsp;</span>
-                    1
+                    {{ bidAmount }}
                     <span class="unit">株</span>
                   </p>
-                  <p class="currentBid_total">（総入札価格：20,000円）</p>
+                  <p class="currentBid_total">
+                    （総入札価格：{{ bidPrice * bidAmount }}円）
+                  </p>
                   <p class="currentBid_status">
                     オークション結果：先着順の部分落札
                   </p>
@@ -427,7 +429,7 @@ export default {
     };
   },
   created: function() {
-    this.initialDisplay()
+    this.initialDisplay();
   },
   mounted: function() {
     setInterval(this.updateMessage, 1000);
@@ -444,33 +446,37 @@ export default {
     },
     async getAuctionBidList() {
       return await this.$hexalink.getItems(
-      this.token,
-      this.applicationId,
-      this.datastoreIds["オークション入札状況DB"],
-      {
-        conditions: [
-          {
-            id: "著作権番号", // Hexalink画⾯で⼊⼒したIDを指定
-            search_value: [this.musicId],
-            exact_match: true // 完全⼀致で検索
-          },
-          {
-            id: "会員番号", // Hexalink画⾯で⼊⼒したIDを指定
-            search_value: [this.userId],
-            exact_match: true // 完全⼀致で検索
-          }
-        ],
-        page: 1,
-        per_page: 9000,
-        use_display_id: true
-      });
+        this.token,
+        this.applicationId,
+        this.datastoreIds["オークション入札状況DB"],
+        {
+          conditions: [
+            {
+              id: "著作権番号", // Hexalink画⾯で⼊⼒したIDを指定
+              search_value: [this.musicId],
+              exact_match: true // 完全⼀致で検索
+            },
+            {
+              id: "会員番号", // Hexalink画⾯で⼊⼒したIDを指定
+              search_value: [this.userId],
+              exact_match: true // 完全⼀致で検索
+            }
+          ],
+          page: 1,
+          per_page: 9000,
+          use_display_id: true
+        }
+      );
     },
     async doSend() {
       this.myAuctionBidList = await this.getAuctionBidList();
       console.log(this.myAuctionBidList);
 
       for (var key in this.myAuctionBidList) {
-        await this.deleteItem(this.datastoreIds["オークション入札状況DB"], this.myAuctionBidList[key].i_id);
+        await this.deleteItem(
+          this.datastoreIds["オークション入札状況DB"],
+          this.myAuctionBidList[key].i_id
+        );
       }
 
       var setData = {};
@@ -542,7 +548,7 @@ export default {
       this.musicId = this.$route.query.id;
 
       this.myAuctionBidList = await this.getAuctionBidList();
-      
+
       var dataLists = [];
       dataLists = await this.$hexalink.getItems(
         this.token,
@@ -624,8 +630,12 @@ export default {
         "http://img.youtube.com/vi/" +
         dataLists[0].動画URL.split("v=")[1] +
         "/hqdefault.jpg";
-      this.bidPrice = this.myAuctionBidList.length > 0 ? this.myAuctionBidList[0].入札金額 : dataLists[0].オークション開始金額;
-      this.bidAmount = this.myAuctionBidList.length > 0 ? this.myAuctionBidList[0].数量 : 1;
+      this.bidPrice =
+        this.myAuctionBidList.length > 0
+          ? this.myAuctionBidList[0].入札金額
+          : dataLists[0].オークション開始金額;
+      this.bidAmount =
+        this.myAuctionBidList.length > 0 ? this.myAuctionBidList[0].数量 : 1;
       this.videoSourceUrl =
         "https://www.youtube.com/embed/" + dataLists[0].動画URL.split("v=")[1];
 

@@ -146,7 +146,9 @@ export default {
             ? userInfo.data.email
             : userMaster.メールアドレス;
         const hexaID =
-          userMaster.userID == undefined ? userInfo.data.u_id : userMaster.userID;
+          userMaster.userID == undefined
+            ? userInfo.data.u_id
+            : userMaster.userID;
         const isApproval = userMaster.承認管理 == 1 ? true : false;
         const isAppHist = userMaster.承認履歴 == 1 ? true : false;
         const isUser = userMaster.ユーザ管理 == 1 ? true : false;
