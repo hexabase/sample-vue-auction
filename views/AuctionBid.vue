@@ -24,13 +24,13 @@
             <tr>
               <th>残り時間</th>
               <th>オークション数量</th>
-              <th>オークション開始価格<span>（1週、消費税を含む）</span></th>
+              <th>オークション開始価格<span>（1口、消費税を含む）</span></th>
             </tr>
             <tr>
               <td>{{ remainingTime || "Closed" }}</td>
               <td>
                 {{ auctionAmount }}
-                <span class="unit">株</span>
+                <span class="unit">口</span>
               </td>
               <td>
                 {{ auctionStartPrice }}
@@ -49,7 +49,7 @@
             <table class="bidList">
               <thead>
                 <tr>
-                  <th>入札価格（1株）</th>
+                  <th>入札価格（1口）</th>
                   <th>入札数量</th>
                   <th>オークション結果</th>
                 </tr>
@@ -81,24 +81,25 @@
           <div class="auctionInfo_right">
             <section class="bidBox">
               <!-- ▼入札済みの表示：ここから▼ -->
-              <div v-if="myAuctionBidList.length > 0" class="currentBid">
+              <div v-if="displayBidResultFlg" class="currentBid">
                 <h3 class="currentBid_title">現在以下の内容で入札しています</h3>
                 <div class="currentBid_body">
                   <p class="currentBid_detail">
-                    {{ bidPrice }}
+                    {{ this.myAuctionBidList[0].入札金額 }}
                     <span class="unit">円&nbsp;×&nbsp;</span>
-                    {{ bidAmount }}
-                    <span class="unit">株</span>
+                    {{ this.myAuctionBidList[0].数量 }}
+                    <span class="unit">口</span>
                   </p>
                   <p class="currentBid_total">
-                    （総入札価格：{{ bidPrice * bidAmount }}円）
+                    （総入札価格：{{ this.myAuctionBidList[0].入札金額 * this.myAuctionBidList[0].数量 }}円）
                   </p>
                   <p class="currentBid_status">
-                    オークション結果：先着順の部分落札
+                    オークション結果：{{ myAuctionResult }}
                   </p>
-                  <button class="button-sub" @click="openModal('cancelModal')">
+                  <!-- <button class="button-sub" @click="openModal('cancelModal')"> -->
+                  <button class="button-sub" @click="doCancel()">
                     キャンセル
-                    <span class="currentBid_remain">（残り可能回数：3回）</span>
+                    <span class="currentBid_remain">（残り可能回数：{{ 3 - Number(this.myAuctionBidList[0].キャンセル回数) }}回）</span>
                   </button>
                 </div>
               </div>
@@ -106,13 +107,14 @@
               <!-- TODO：以下、入札済みの場合「入札→再入札」 -->
               <h3 class="bidBox_title">入札</h3>
               <div class="bidBox_field">
-                <label>入札価格<span>（1週、消費税を含む）</span></label>
+                <label>入札価格<span>（1口、消費税を含む）</span></label>
                 <input
                   id="amount"
                   v-model="bidPrice"
-                  type="text"
+                  type="number"
                   name="amount"
                   class="form-box"
+                  step="500"
                 />
                 <span class="bidBox_unit">円</span>
                 <p class="note">※500円の倍数から入札可能です。</p>
@@ -122,7 +124,7 @@
                 <input
                   id="cnt_units"
                   v-model="bidAmount"
-                  type="text"
+                  type="number"
                   name="cnt_units"
                   class="form-box"
                 />
@@ -135,6 +137,7 @@
               <button class="button-action" @click="openModal('modal')">
                 入札する
               </button>
+              {{ alertMessage }}
             </section>
             <dl class="bidPolicy">
               <dt>参加規定</dt>
@@ -164,11 +167,11 @@
       <div class="content">
         <h2 class="trend_title">最近の動向</h2>
         <section class="trend_barChart">
-          <h3 class="trend_subTitle">最近5年間の著作権料（1週間あたり）</h3>
+          <h3 class="trend_subTitle">最近5年間の著作権料（1口あたり）</h3>
         </section>
         <section class="trend_royalty">
           <h3 class="trend_subTitle">
-            最近12ヶ月のロイヤリティ（1週間あたり）
+            最近12ヶ月のロイヤリティ（1口あたり）
           </h3>
         </section>
       </div>
@@ -203,7 +206,7 @@
           </li>
           <li>
             <span class="royaltyInfo_label">
-              最近12ヶ月のロイヤリティ（1週間あたり）
+              最近12ヶ月のロイヤリティ（1口あたり）
             </span>
             1,116円
           </li>
@@ -322,7 +325,7 @@
         <p class="modal-bid_text">山田花子様 現在の入札状況</p>
         <ul class="modal-bid_list">
           <li>入札価格：25,000円</li>
-          <li>入札数量：4株</li>
+          <li>入札数量：4口</li>
           <li>総入札価格：100,000円</li>
         </ul>
         <p class="modal-bid_confirm">
@@ -425,7 +428,10 @@ export default {
       remainingTime: "",
       agreeGuideline: false,
       musicId: "",
-      myAuctionBidList: {}
+      myAuctionBidList: {},
+      myAuctionResult: "",
+      alertMessage: "",
+      displayBidResultFlg: false
     };
   },
   created: function() {
@@ -438,7 +444,31 @@ export default {
     isProcessing() {
       return this.agreeGuideline;
     },
-    openModal() {
+    async openModal() {
+      if (this.bidPrice == 0 || this.bidPrice == "" || this.bidAmount == 0 || this.bidAmount == "" || this.bidPrice % 500 > 0) {
+        this.alertMessage = "500円の倍数で有効な数値を入力してください。";
+        return false;
+      }
+      if(Number(this.bidPrice) < Number(this.auctionStartPrice)) {
+          this.alertMessage = "オークション開始価格より低い金額では入札できません。"
+          return false;
+      }
+      this.myAuctionBidList = await this.getAuctionBidList();
+      if(this.displayBidResultFlg) {
+        if(Number(this.bidPrice) < Number(this.myAuctionBidList[0].入札金額)) {
+          this.alertMessage = "前回の入札金額より少ない金額では入札できません。※キャンセル（回数制限有）から入札は可能です"
+          return false;
+        }
+        else if(Number(this.bidPrice) == Number(this.myAuctionBidList[0].入札金額) && Number(this.bidAmount) < Number(this.myAuctionBidList[0].数量)) {
+          this.alertMessage = "前回の数量より少ない数量では入札できません。※キャンセル（回数制限有）から入札は可能です"
+          return false;
+        }
+        else if(Number(this.bidPrice) == Number(this.myAuctionBidList[0].入札金額) && Number(this.bidAmount) == Number(this.myAuctionBidList[0].数量)) {
+          this.alertMessage = "前回と同じ金額・数量では入札できません。"
+          return false;
+        }
+      }
+      this.alertMessage = "";
       this.modal = true;
     },
     closeModal() {
@@ -469,30 +499,106 @@ export default {
       );
     },
     async doSend() {
-      this.myAuctionBidList = await this.getAuctionBidList();
-      console.log(this.myAuctionBidList);
-
-      for (var key in this.myAuctionBidList) {
-        await this.deleteItem(
+      // 入札履歴があった場合は更新処理
+      if(this.myAuctionBidList.length > 0) {
+        var result = await this.updatedDataItem(
           this.datastoreIds["オークション入札状況DB"],
-          this.myAuctionBidList[key].i_id
+          this.myAuctionBidList[0].i_id,
+          {
+            "history": {
+              "comment": "再入札"
+            },
+            "changes": [
+              {
+                "id": "数量",
+                "value": Number(this.bidAmount)
+              },
+              {
+                "id": "入札金額",
+                "value": Number(this.bidPrice)
+              },
+              {
+                "id": "入札時間",
+                "value": moment()
+              },
+              {
+                "id": "連続入札回数",
+                "value": Number(this.myAuctionBidList[0].連続入札回数) + 1
+              },
+              {
+                "id": "落札状況",
+                "value": "入札中"
+              }
+            ],
+            "use_display_id" : true,
+            "is_force_update": true
+          }
         );
       }
+      // 初回入札は登録処理
+      else {
+        var setData = {};
+        setData["著作権番号"] = this.musicId;
+        setData["会員番号"] = this.userId;
+        setData["数量"] = Number(this.bidAmount);
+        setData["入札金額"] = Number(this.bidPrice);
+        setData["入札時間"] = moment();
+        setData["連続入札回数"] = 0;
+        setData["キャンセル回数"] = 0;
+        setData["落札状況"] = "入札中";
 
-      var setData = {};
-      setData["著作権番号"] = this.musicId;
-      setData["会員番号"] = this.userId;
-      setData["数量"] = Number(this.bidAmount);
-      setData["入札金額"] = Number(this.bidPrice);
-      var param = {};
-      param["item"] = setData;
-      var result = await this.insertNewItem(
-        this.datastoreIds["オークション入札状況DB"],
-        param
-      );
-      console.log(result.data);
+        var param = {};
+        param["item"] = setData;
+        var result = await this.insertNewItem(
+          this.datastoreIds["オークション入札状況DB"],
+          param
+        );
+      }      
       this.initialDisplay();
       this.closeModal();
+    },
+    async doCancel() {
+      if(Number(this.myAuctionBidList[0].キャンセル回数) > 2) {
+        return false;
+      }
+      var result = await this.updatedDataItem(
+          this.datastoreIds["オークション入札状況DB"],
+          this.myAuctionBidList[0].i_id,
+          {
+            "history": {
+              "comment": "キャンセル"
+            },
+            "changes": [
+              {
+                "id": "数量",
+                "value": Number(this.bidAmount)
+              },
+              {
+                "id": "入札金額",
+                "value": Number(this.bidPrice)
+              },
+              {
+                "id": "入札時間",
+                "value": moment()
+              },
+              {
+                "id": "連続入札回数",
+                "value": 0
+              },
+              {
+                "id": "キャンセル回数",
+                "value": Number(this.myAuctionBidList[0].キャンセル回数) + 1
+              },
+              {
+                "id": "落札状況",
+                "value": "キャンセル済"
+              }
+            ],
+            "use_display_id" : true,
+            "is_force_update": true
+          }
+        );
+        this.initialDisplay();
     },
     // 新規Itemを作成します
     async insertNewItem(datasotreId, param) {
@@ -510,6 +616,18 @@ export default {
         result = {};
       }
       return result;
+    },
+    // データアイテムを更新します
+    async updatedDataItem(datasotreId, itemId, payload) {
+      const applicationId = this.$store.getters["datas/getApplicationId"];
+      const token = this.$store.getters["auth/getToken"];
+      return await this.$hexalink.editItem(
+        token,
+        applicationId,
+        datasotreId,
+        itemId,
+        payload
+      );
     },
     async deleteItem(datasotreId, itemId) {
       // 削除処理作成
@@ -546,9 +664,12 @@ export default {
     },
     async initialDisplay() {
       this.musicId = this.$route.query.id;
-
       this.myAuctionBidList = await this.getAuctionBidList();
-
+      if(this.myAuctionBidList.length > 0 && this.myAuctionBidList[0].落札状況 != "キャンセル済") {
+        this.displayBidResultFlg = true;
+      } else {
+        this.displayBidResultFlg = false;
+      }
       var dataLists = [];
       dataLists = await this.$hexalink.getItems(
         this.token,
@@ -568,7 +689,6 @@ export default {
         }
       );
 
-      console.log(dataLists);
       var titleEn = "タイトル（英語）";
       var titleKr = "タイトル（韓国）";
       var explanatoryTextEn = "説明文（英語）";
@@ -657,7 +777,6 @@ export default {
           ]
         }
       );
-      console.log(auctionLists);
 
       var auctionListsGroupSort = auctionLists.report_results.sort(function(
         a,
@@ -687,10 +806,18 @@ export default {
           auctionListsGroupSort[key].落札状況 = "-";
         }
       }
+      if (this.myAuctionBidList.length > 0) {
+        for(var key in auctionListsGroupSort) {
+          if(this.myAuctionBidList[0].入札金額 == auctionListsGroupSort[key][rpf_bidPrice]) {
+            this.myAuctionResult = auctionListsGroupSort[key].落札状況;
+            break;
+          }
+        }
+      }
+      
       this.bidTotalAmount = auctionAmountCount;
       this.auctionListsGroup = auctionListsGroupSort;
 
-      console.log(this.auctionListsGroup);
     }
   }
 };
