@@ -21,27 +21,58 @@
       <div class="content">
         <div class="auctionList_wrap">
           <article
-            v-for="(x, index) in sample"
+            v-for="(x, index) in displayAuctionList"
             :key="index"
             class="auctionList_item"
           >
             <figure class="auctionList_item_img">
-              <img src="https://higedanparabora.com/img/jkt-parabora.jpg" />
+              <img :src="displayAuctionList[index].image1" />
             </figure>
-            <h3 class="auctionList_item_title">パラボラ</h3>
-            <p class="auctionList_item_artist">Official髭男dism</p>
+            <h3 class="auctionList_item_title">
+              {{ displayAuctionList[index].タイトル }}
+            </h3>
+            <p class="auctionList_item_artist">
+              {{ displayAuctionList[index].歌手1 }}
+            </p>
             <dl class="auctionList_item_info">
               <dt>最高値</dt>
-              <dd>10000<span class="unit">円（年2.2%）</span></dd>
+              <dd>
+                {{
+                  displayAuctionList[index].最高入札額
+                    ? displayAuctionList[index].最高入札額
+                    : displayAuctionList[index].オークション開始金額
+                }}<span class="unit">円（年2.2%）</span>
+              </dd>
               <dt>スタート金額</dt>
-              <dd>3000<span class="unit">円（年2.2%）</span></dd>
+              <dd>
+                {{ displayAuctionList[index].オークション開始金額
+                }}<span class="unit">円（年2.2%）</span>
+              </dd>
               <dt>競争率</dt>
-              <dd>99<span class="unit">%</span></dd>
+              <dd>
+                {{
+                  displayAuctionList[index].入札数量
+                    ? (displayAuctionList[index].入札数量 /
+                        displayAuctionList[index].オークション数量) *
+                      100
+                    : 0
+                }}
+                <span class="unit">%</span>
+              </dd>
             </dl>
-            <button class="button-action">入札する</button>
+            <button
+              class="button-action"
+              @click="selectItem(displayAuctionList[index].著作権番号)"
+            >
+              入札する
+            </button>
           </article>
         </div>
-        <v-pagination v-model="page" :length="6"></v-pagination>
+        <v-pagination
+          v-model="page"
+          :length="length"
+          @input="pageChange(page)"
+        ></v-pagination>
       </div>
     </section>
   </div>
@@ -50,13 +81,93 @@
 export default {
   data() {
     return {
-      sample: [1, 2, 3],
-      page: 1
+      page: 1,
+      pageSize: 4,
+      length: 0,
+      token: this.$store.getters["auth/getToken"],
+      applicationId: this.$store.getters["datas/getApplicationId"],
+      datasotreIdList: this.$store.getters["datas/getDatastores"],
+      datastoreIds: this.$store.getters["datas/getDatastoreIds"],
+      userId: this.$store.getters["user/getHexaID"],
+      auctionList: [],
+      displayAuctionList: []
     };
   },
   created: async function() {},
-  mounted: function() {},
-  methods: {}
+  mounted: async function() {
+    this.auctionList = await this.getAuctionList();
+    var auctionBidReport = {};
+    auctionBidReport = await this.$hexalink.getReports(
+      this.token,
+      this.applicationId,
+      "5ec76bffaa8a6c0007136f92",
+      {
+        conditions: []
+      }
+    );
+    for (const listKey in this.auctionList) {
+      for (const reportKey in auctionBidReport.report_results) {
+        if (
+          this.auctionList[listKey].著作権番号 ==
+          auctionBidReport.report_results[reportKey][
+            "ba62cfe6-dcd4-46b7-9028-2ccd73240e52"
+          ]
+        ) {
+          this.$set(
+            this.auctionList[listKey],
+            "最高入札額",
+            auctionBidReport.report_results[reportKey][
+              "c68b0a4d-d409-45b2-9ff8-fca331787921"
+            ]
+          );
+          this.$set(
+            this.auctionList[listKey],
+            "入札数量",
+            auctionBidReport.report_results[reportKey][
+              "a1101930-fbc0-43eb-8b7c-ae3510f5c989"
+            ]
+          );
+        }
+      }
+    }
+    console.log(this.auctionList);
+
+    this.length = Math.ceil(this.auctionList.length / this.pageSize);
+    this.displayAuctionList = this.auctionList.slice(
+      this.pageSize * (this.page - 1),
+      this.pageSize * this.page
+    );
+  },
+  methods: {
+    async getAuctionList() {
+      return await this.$hexalink.getItems(
+        this.token,
+        this.applicationId,
+        this.datastoreIds["著作権DB"],
+        {
+          conditions: [
+            {
+              id: "オークション状況", // Hexalink画⾯で⼊⼒したIDを指定
+              search_value: ["オークション中"],
+              exact_match: true // 完全⼀致で検索
+            }
+          ],
+          page: 1,
+          per_page: 9000,
+          use_display_id: true
+        }
+      );
+    },
+    selectItem(musicId) {
+      this.$router.push("/auctionbid?id=" + musicId);
+    },
+    pageChange(pageNumber) {
+      this.displayAuctionList = this.auctionList.slice(
+        this.pageSize * (pageNumber - 1),
+        this.pageSize * pageNumber
+      );
+    }
+  }
 };
 </script>
 
