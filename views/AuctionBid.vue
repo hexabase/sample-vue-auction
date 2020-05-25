@@ -85,13 +85,15 @@
                 <h3 class="currentBid_title">現在以下の内容で入札しています</h3>
                 <div class="currentBid_body">
                   <p class="currentBid_detail">
-                    {{ this.myAuctionBidList[0].入札金額 }}
+                    {{ myAuctionBidList[0].入札金額 }}
                     <span class="unit">円&nbsp;×&nbsp;</span>
-                    {{ this.myAuctionBidList[0].数量 }}
+                    {{ myAuctionBidList[0].数量 }}
                     <span class="unit">口</span>
                   </p>
                   <p class="currentBid_total">
-                    （総入札価格：{{ this.myAuctionBidList[0].入札金額 * this.myAuctionBidList[0].数量 }}円）
+                    （総入札価格：{{
+                      myAuctionBidList[0].入札金額 * myAuctionBidList[0].数量
+                    }}円）
                   </p>
                   <p class="currentBid_status">
                     オークション結果：{{ myAuctionResult }}
@@ -99,7 +101,11 @@
                   <!-- <button class="button-sub" @click="openModal('cancelModal')"> -->
                   <button class="button-sub" @click="doCancel()">
                     キャンセル
-                    <span class="currentBid_remain">（残り可能回数：{{ 3 - Number(this.myAuctionBidList[0].キャンセル回数) }}回）</span>
+                    <span class="currentBid_remain">
+                      （残り可能回数：{{
+                        3 - Number(myAuctionBidList[0].キャンセル回数)
+                      }}回
+                    </span>
                   </button>
                 </div>
               </div>
@@ -445,26 +451,39 @@ export default {
       return this.agreeGuideline;
     },
     async openModal() {
-      if (this.bidPrice == 0 || this.bidPrice == "" || this.bidAmount == 0 || this.bidAmount == "" || this.bidPrice % 500 > 0) {
+      if (
+        this.bidPrice == 0 ||
+        this.bidPrice == "" ||
+        this.bidAmount == 0 ||
+        this.bidAmount == "" ||
+        this.bidPrice % 500 > 0
+      ) {
         this.alertMessage = "500円の倍数で有効な数値を入力してください。";
         return false;
       }
-      if(Number(this.bidPrice) < Number(this.auctionStartPrice)) {
-          this.alertMessage = "オークション開始価格より低い金額では入札できません。"
-          return false;
+      if (Number(this.bidPrice) < Number(this.auctionStartPrice)) {
+        this.alertMessage =
+          "オークション開始価格より低い金額では入札できません。";
+        return false;
       }
       this.myAuctionBidList = await this.getAuctionBidList();
-      if(this.displayBidResultFlg) {
-        if(Number(this.bidPrice) < Number(this.myAuctionBidList[0].入札金額)) {
-          this.alertMessage = "前回の入札金額より少ない金額では入札できません。※キャンセル（回数制限有）から入札は可能です"
+      if (this.displayBidResultFlg) {
+        if (Number(this.bidPrice) < Number(this.myAuctionBidList[0].入札金額)) {
+          this.alertMessage =
+            "前回の入札金額より少ない金額では入札できません。※キャンセル（回数制限有）から入札は可能です";
           return false;
-        }
-        else if(Number(this.bidPrice) == Number(this.myAuctionBidList[0].入札金額) && Number(this.bidAmount) < Number(this.myAuctionBidList[0].数量)) {
-          this.alertMessage = "前回の数量より少ない数量では入札できません。※キャンセル（回数制限有）から入札は可能です"
+        } else if (
+          Number(this.bidPrice) == Number(this.myAuctionBidList[0].入札金額) &&
+          Number(this.bidAmount) < Number(this.myAuctionBidList[0].数量)
+        ) {
+          this.alertMessage =
+            "前回の数量より少ない数量では入札できません。※キャンセル（回数制限有）から入札は可能です";
           return false;
-        }
-        else if(Number(this.bidPrice) == Number(this.myAuctionBidList[0].入札金額) && Number(this.bidAmount) == Number(this.myAuctionBidList[0].数量)) {
-          this.alertMessage = "前回と同じ金額・数量では入札できません。"
+        } else if (
+          Number(this.bidPrice) == Number(this.myAuctionBidList[0].入札金額) &&
+          Number(this.bidAmount) == Number(this.myAuctionBidList[0].数量)
+        ) {
+          this.alertMessage = "前回と同じ金額・数量では入札できません。";
           return false;
         }
       }
@@ -500,38 +519,38 @@ export default {
     },
     async doSend() {
       // 入札履歴があった場合は更新処理
-      if(this.myAuctionBidList.length > 0) {
+      if (this.myAuctionBidList.length > 0) {
         var result = await this.updatedDataItem(
           this.datastoreIds["オークション入札状況DB"],
           this.myAuctionBidList[0].i_id,
           {
-            "history": {
-              "comment": "再入札"
+            history: {
+              comment: "再入札"
             },
-            "changes": [
+            changes: [
               {
-                "id": "数量",
-                "value": Number(this.bidAmount)
+                id: "数量",
+                value: Number(this.bidAmount)
               },
               {
-                "id": "入札金額",
-                "value": Number(this.bidPrice)
+                id: "入札金額",
+                value: Number(this.bidPrice)
               },
               {
-                "id": "入札時間",
-                "value": moment()
+                id: "入札時間",
+                value: moment()
               },
               {
-                "id": "連続入札回数",
-                "value": Number(this.myAuctionBidList[0].連続入札回数) + 1
+                id: "連続入札回数",
+                value: Number(this.myAuctionBidList[0].連続入札回数) + 1
               },
               {
-                "id": "落札状況",
-                "value": "入札中"
+                id: "落札状況",
+                value: "入札中"
               }
             ],
-            "use_display_id" : true,
-            "is_force_update": true
+            use_display_id: true,
+            is_force_update: true
           }
         );
       }
@@ -549,56 +568,56 @@ export default {
 
         var param = {};
         param["item"] = setData;
-        var result = await this.insertNewItem(
+        var insertResult = await this.insertNewItem(
           this.datastoreIds["オークション入札状況DB"],
           param
         );
-      }      
+      }
       this.initialDisplay();
       this.closeModal();
     },
     async doCancel() {
-      if(Number(this.myAuctionBidList[0].キャンセル回数) > 2) {
+      if (Number(this.myAuctionBidList[0].キャンセル回数) > 2) {
         return false;
       }
       var result = await this.updatedDataItem(
-          this.datastoreIds["オークション入札状況DB"],
-          this.myAuctionBidList[0].i_id,
-          {
-            "history": {
-              "comment": "キャンセル"
+        this.datastoreIds["オークション入札状況DB"],
+        this.myAuctionBidList[0].i_id,
+        {
+          history: {
+            comment: "キャンセル"
+          },
+          changes: [
+            {
+              id: "数量",
+              value: Number(this.bidAmount)
             },
-            "changes": [
-              {
-                "id": "数量",
-                "value": Number(this.bidAmount)
-              },
-              {
-                "id": "入札金額",
-                "value": Number(this.bidPrice)
-              },
-              {
-                "id": "入札時間",
-                "value": moment()
-              },
-              {
-                "id": "連続入札回数",
-                "value": 0
-              },
-              {
-                "id": "キャンセル回数",
-                "value": Number(this.myAuctionBidList[0].キャンセル回数) + 1
-              },
-              {
-                "id": "落札状況",
-                "value": "キャンセル済"
-              }
-            ],
-            "use_display_id" : true,
-            "is_force_update": true
-          }
-        );
-        this.initialDisplay();
+            {
+              id: "入札金額",
+              value: Number(this.bidPrice)
+            },
+            {
+              id: "入札時間",
+              value: moment()
+            },
+            {
+              id: "連続入札回数",
+              value: 0
+            },
+            {
+              id: "キャンセル回数",
+              value: Number(this.myAuctionBidList[0].キャンセル回数) + 1
+            },
+            {
+              id: "落札状況",
+              value: "キャンセル済"
+            }
+          ],
+          use_display_id: true,
+          is_force_update: true
+        }
+      );
+      this.initialDisplay();
     },
     // 新規Itemを作成します
     async insertNewItem(datasotreId, param) {
@@ -665,7 +684,10 @@ export default {
     async initialDisplay() {
       this.musicId = this.$route.query.id;
       this.myAuctionBidList = await this.getAuctionBidList();
-      if(this.myAuctionBidList.length > 0 && this.myAuctionBidList[0].落札状況 != "キャンセル済") {
+      if (
+        this.myAuctionBidList.length > 0 &&
+        this.myAuctionBidList[0].落札状況 != "キャンセル済"
+      ) {
         this.displayBidResultFlg = true;
       } else {
         this.displayBidResultFlg = false;
@@ -792,7 +814,7 @@ export default {
       var auctionAmountCount = 0;
       var orderOfArraivalFlag = true;
 
-      for (var key in auctionListsGroupSort) {
+      for (const key in auctionListsGroupSort) {
         auctionAmountCount += Number(auctionListsGroupSort[key][rpf_bidAmount]);
         if (auctionAmountCount <= dataLists[0].オークション数量) {
           auctionListsGroupSort[key].落札状況 = "落札";
@@ -807,17 +829,19 @@ export default {
         }
       }
       if (this.myAuctionBidList.length > 0) {
-        for(var key in auctionListsGroupSort) {
-          if(this.myAuctionBidList[0].入札金額 == auctionListsGroupSort[key][rpf_bidPrice]) {
+        for (const key in auctionListsGroupSort) {
+          if (
+            this.myAuctionBidList[0].入札金額 ==
+            auctionListsGroupSort[key][rpf_bidPrice]
+          ) {
             this.myAuctionResult = auctionListsGroupSort[key].落札状況;
             break;
           }
         }
       }
-      
+
       this.bidTotalAmount = auctionAmountCount;
       this.auctionListsGroup = auctionListsGroupSort;
-
     }
   }
 };
