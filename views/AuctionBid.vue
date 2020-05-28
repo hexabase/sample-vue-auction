@@ -172,14 +172,18 @@
     <section class="trend">
       <div class="content">
         <h2 class="trend_title">最近の動向</h2>
-        <section class="trend_barChart">
-          <h3 class="trend_subTitle">最近5年間の著作権料（1口あたり）</h3>
-        </section>
-        <section class="trend_royalty">
-          <h3 class="trend_subTitle">
-            最近12ヶ月のロイヤリティ（1口あたり）
-          </h3>
-        </section>
+        <div class="trend_wrap">
+          <section class="trend_barChart">
+            <h3 class="trend_subTitle">最近5年間の著作権料（1週間あたり）</h3>
+            <img src="~@/assets/img/auction-detail-graph1.png" alt="" />
+          </section>
+          <section class="trend_royalty">
+            <h3 class="trend_subTitle">
+              最近12ヶ月のロイヤリティ（1週間あたり）
+            </h3>
+            <img src="~@/assets/img/auction-detail-graph2.png" alt="" />
+          </section>
+        </div>
       </div>
     </section>
     <section class="royaltyInfo">

@@ -7,7 +7,7 @@
       <nav class="siteHeader_gnav" role="navigation">
         <ul>
           <li class="siteHeader_gnav-link">
-            <a href="/auctionbid">オークション</a>
+            <a href="/auctionlist">オークション</a>
           </li>
           <li class="siteHeader_gnav-link">
             <a href="/trade">ユーザー間売買</a>
@@ -64,7 +64,9 @@
           <a href="" class="siteHeader_userNav_link">お知らせ</a>
         </li>
         <li>
-          <a href="" class="siteHeader_userNav_link">保有する楽曲権利</a>
+          <a href="/mycopyrights" class="siteHeader_userNav_link">
+            保有する楽曲権利
+          </a>
         </li>
         <li>
           <a href="" class="siteHeader_userNav_link">お財布</a>

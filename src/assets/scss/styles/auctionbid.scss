@@ -375,15 +375,31 @@
 }
 
 .trend {
-    background: $color-bg;
-    border-top: $border-light;
-    border-bottom: $border-light;
+    @extend %section-gray;
     @extend %padding-contents;
 
+    &_wrap {
+        display: flex;
+        justify-content: space-between;
+    }
+
     &_title {
-        margin-bottom: 30px;
+        margin-bottom: 40px;
         font-size: 2.2rem;
         font-weight: normal;
+    }
+
+    &_barChart,
+    &_royalty {
+        flex: 0 0 48%;
+        padding: 40px 10px;
+        background: #fff;
+        border: $border-default;
+        border-radius: $radius-box;
+    }
+
+    &_subTitle {
+        margin-bottom: 20px;
     }
 }
 

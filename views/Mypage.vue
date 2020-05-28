@@ -29,48 +29,98 @@
         <div class="transaction_search">
           <dl class="transaction_search_list">
             <dt>照会期間</dt>
-            <dd></dd>
+            <dd>
+              <!-- <FormCalendar></FormCalendar> -->
+              <v-text-field
+                type="date"
+                outlined
+                single-line
+                hint="照会開始日"
+              ></v-text-field>
+              〜
+              <v-text-field
+                type="date"
+                outlined
+                single-line
+                value="2020-03-03"
+                hint="照会終了日"
+              ></v-text-field>
+              <v-btn-toggle v-model="period" rounded borderless>
+                <v-btn>当日</v-btn>
+                <v-btn>１週間</v-btn>
+                <v-btn>１ヶ月</v-btn>
+                <v-btn>３ヶ月</v-btn>
+                <v-btn>６ヶ月</v-btn>
+              </v-btn-toggle>
+            </dd>
             <dt>照会内容</dt>
-            <dd></dd>
+            <dd>
+              <v-radio-group v-model="searchTarget" row>
+                <v-radio label="全体" value="all"></v-radio>
+                <v-radio label="入金内容のみ" value="in"></v-radio>
+                <v-radio label="出金内容のみ" value="out"></v-radio>
+              </v-radio-group>
+              <v-select :items="searchTargetItems" outlined></v-select>
+            </dd>
             <dt>検索順序</dt>
-            <dd></dd>
+            <dd>
+              <v-radio-group v-model="searchOrder" row>
+                <v-radio label="最近の取引履歴が上" value="0"></v-radio>
+                <v-radio label="過去の取引履歴を上" value="1"></v-radio>
+              </v-radio-group>
+            </dd>
           </dl>
           <button class="button-main">照会する</button>
         </div>
         <div class="transaction_result">
-          <table class="transaction_list">
-            <thead>
-              <th>リクエスト日</th>
-              <th>内訳</th>
-              <th>曲名</th>
-              <th>歌手</th>
-              <th>数量</th>
-              <th>金額</th>
-              <th>その他所得税</th>
-              <th>地方所得税</th>
-              <th>残高</th>
-            </thead>
-            <tbody>
-              <td>2020/01/10</td>
-              <td>全体</td>
-              <td>パラボラ</td>
-              <td>Official髭男dism</td>
-              <td>1</td>
-              <td>10000 円</td>
-              <td>1000 円</td>
-              <td>500 円</td>
-              <td>100000 円</td>
-            </tbody>
-          </table>
+          <template>
+            <v-data-table
+              :headers="transactionHeaders"
+              :items="desserts"
+              :items-per-page="5"
+              class="transaction_list"
+            ></v-data-table>
+          </template>
         </div>
       </div>
     </section>
   </div>
 </template>
 <script>
+// import FormCalendar from "../src/components/parts/form/FormCalendar.vue";
 export default {
+  // components: { FormCalendar },
   data() {
-    return {};
+    return {
+      period: 4,
+      searchTarget: "",
+      searchTargetItems: ["全体", "あああ"],
+      searchOrder: "",
+      transactionHeaders: [
+        { text: "リクエスト日", value: "date" },
+        { text: "内訳", value: "breakdown" },
+        { text: "曲名", value: "title" },
+        { text: "歌手", value: "artist" },
+        { text: "数量", value: "amount" },
+        { text: "金額", value: "price" },
+        { text: "その他所得税", value: "incometax" },
+        { text: "地方所得税", value: "localincometax" },
+        { text: "残高", value: "balance" }
+      ],
+      desserts: [
+        {
+          date: "2020/01/01",
+          breakdown: "入金",
+          title: "パラボラ",
+          artist: "Officialヒゲ男dism",
+          amount: "1",
+          price: "100000",
+          incometax: "0",
+          localincometax: "0",
+          balance: "0"
+        }
+      ]
+    };
   },
   created: async function() {},
   mounted: function() {},

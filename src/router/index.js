@@ -4,8 +4,10 @@ import Store from "../store/index";
 import Top from "../../views/Top.vue";
 import Signin from "../../views/Signin.vue";
 import AuctionList from "../../views/AuctionList.vue";
+import ClosedAuction from "../../views/ClosedAuction.vue";
 import AuctionBid from "../../views/AuctionBid.vue";
 import Mypage from "../../views/Mypage.vue";
+import MyCopyrights from "../../views/MyCopyrights.vue";
 
 Vue.use(VueRouter);
 
@@ -27,6 +29,11 @@ const routes = [
     component: AuctionList
   },
   {
+    path: "/closedauction",
+    name: "ClosedAuction",
+    component: ClosedAuction
+  },
+  {
     path: "/auctionbid",
     name: "AuctionBid",
     component: AuctionBid,
@@ -36,6 +43,11 @@ const routes = [
     path: "/mypage",
     name: "Mypage",
     component: Mypage
+  },
+  {
+    path: "/mycopyrights",
+    name: "MyCopyrights",
+    component: MyCopyrights
   }
 ];
 
@@ -43,11 +55,11 @@ const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes,
-  scrollBehavior (to, from, savedPosition) {
+  scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
-      return savedPosition
+      return savedPosition;
     } else {
-      return { x: 0, y: 0 }
+      return { x: 0, y: 0 };
     }
   }
 });

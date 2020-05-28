@@ -1,5 +1,5 @@
 <template>
-  <div id="page_auctionlist" data-role="page">
+  <div id="page_closedAuction" data-role="page">
     <header class="pageHeader">
       <div class="pageHeader_img">
         <div class="content">
@@ -22,10 +22,8 @@
       </v-tabs>
     </header>
     <section class="auctionList">
-      <h2 class="page_title">取引中オークション</h2>
-      <p class="auctionList_lead">
-        BATONでは毎週新しい音楽がオークションに出品されます
-      </p>
+      <h2 class="page_title">終了オークション</h2>
+      <p class="auctionList_lead"></p>
       <div class="content">
         <div class="auctionList_wrap">
           <article
@@ -42,38 +40,7 @@
             <p class="auctionList_item_artist">
               {{ displayAuctionList[index].歌手1 }}
             </p>
-            <dl class="auctionList_item_info">
-              <dt>最高値</dt>
-              <dd>
-                {{
-                  displayAuctionList[index].最高入札額
-                    ? displayAuctionList[index].最高入札額
-                    : displayAuctionList[index].オークション開始金額
-                }}<span class="unit">円（年2.2%）</span>
-              </dd>
-              <dt>スタート金額</dt>
-              <dd>
-                {{ displayAuctionList[index].オークション開始金額
-                }}<span class="unit">円（年2.2%）</span>
-              </dd>
-              <dt>競争率</dt>
-              <dd>
-                {{
-                  displayAuctionList[index].入札数量
-                    ? (displayAuctionList[index].入札数量 /
-                        displayAuctionList[index].オークション数量) *
-                      100
-                    : 0
-                }}
-                <span class="unit">%</span>
-              </dd>
-            </dl>
-            <button
-              class="button-action"
-              @click="selectItem(displayAuctionList[index].著作権番号)"
-            >
-              入札する
-            </button>
+            <p class="auctionList_item_enddate">2020年1月31日 終了</p>
           </article>
         </div>
         <v-pagination
