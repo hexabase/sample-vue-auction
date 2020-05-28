@@ -154,7 +154,7 @@
 }
 
 .userMarket {
-    @extend %breakline;
+    @extend %breakline-contents;
     @extend %padding-contents;
 
     &_list {
@@ -295,7 +295,7 @@
 }
 
 .indexFooter {
-    @extend %breakline;
+    @extend %breakline-contents;
     @extend %padding-contents;
 
     &_text {

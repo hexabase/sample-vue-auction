@@ -3,18 +3,9 @@
     <section class="musicInfo">
       <div class="content">
         <figure class="musicInfo_img">
-          <iframe
-            width="320"
-            height="240"
-            :src="videoSourceUrl"
-            frameborder="0"
-            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen
-          >
-          </iframe>
-          <!-- <a :href="videoUrl" target="_blank">
+          <a :href="videoUrl" target="_blank">
             <img :src="videoThumbnailUrl" />
-          </a> -->
+          </a>
         </figure>
         <div class="musicInfo_wrap">
           <h2 class="musicInfo_title">{{ title }}</h2>
@@ -99,12 +90,16 @@
                     オークション結果：{{ myAuctionResult }}
                   </p>
                   <!-- <button class="button-sub" @click="openModal('cancelModal')"> -->
-                  <button class="button-sub" @click="doCancel()">
+                  <button
+                    class="button-sub"
+                    @click="doCancel()"
+                    :disabled="Number(myAuctionBidList[0].キャンセル回数) > 2"
+                  >
                     キャンセル
                     <span class="currentBid_remain">
                       （残り可能回数：{{
                         3 - Number(myAuctionBidList[0].キャンセル回数)
-                      }}回
+                      }}回）
                     </span>
                   </button>
                 </div>
@@ -143,7 +138,9 @@
               <button class="button-action" @click="openModal('modal')">
                 入札する
               </button>
-              {{ alertMessage }}
+              <v-alert v-if="alertMessage != ''" text color="red">
+                {{ alertMessage }}
+              </v-alert>
             </section>
             <dl class="bidPolicy">
               <dt>参加規定</dt>
@@ -172,13 +169,46 @@
     <section class="trend">
       <div class="content">
         <h2 class="trend_title">最近の動向</h2>
-        <section class="trend_barChart">
-          <h3 class="trend_subTitle">最近5年間の著作権料（1口あたり）</h3>
-        </section>
-        <section class="trend_royalty">
-          <h3 class="trend_subTitle">
-            最近12ヶ月のロイヤリティ（1口あたり）
-          </h3>
+        <div class="trend_wrap">
+          <section class="trend_barChart">
+            <h3 class="trend_subTitle">最近5年間の著作権料（1週間あたり）</h3>
+            <img src="~@/assets/img/auction-detail-graph1.png" alt="" />
+          </section>
+          <section class="trend_royalty">
+            <h3 class="trend_subTitle">
+              最近12ヶ月のロイヤリティ（1週間あたり）
+            </h3>
+            <img src="~@/assets/img/auction-detail-graph2.png" alt="" />
+          </section>
+        </div>
+      </div>
+    </section>
+    <section class="musicDetail">
+      <div class="content">
+        <h2 class="musicDetail_title">Music Information</h2>
+        <section class="musicDetailContent">
+          <iframe
+            width="640"
+            height="360"
+            :src="videoSourceUrl"
+            frameborder="0"
+            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          >
+          </iframe>
+          <h3 class="musicDetailContent_title">{{ title }}</h3>
+          <p class="musicDetailContent_artist">{{ singer1 }}</p>
+          <p class="musicDetailContent_text">{{ explanatoryText }}</p>
+          <div class="musicDetailContent_link">
+            <a
+              href="https://100wani.life/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <v-icon>mdi-chevron-right</v-icon>
+              <span>オフィシャルサイト</span>
+            </a>
+          </div>
         </section>
       </div>
     </section>

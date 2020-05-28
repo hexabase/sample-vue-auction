@@ -34,6 +34,7 @@
         &_price {
             margin: 10px 0 40px;
             font-size: 5rem;
+            font-family: $font-en;
             color: $color-theme-center;
 
             &::after {
@@ -68,6 +69,93 @@
 
         &_search {
             margin-bottom: 40px;
+
+            .button-main {
+                width: 180px;
+                height: 40px;
+                margin-top: 10px;
+                line-height: 40px;
+                font-size: 1.4rem;
+            }
+        }
+
+        &_search_list {
+            display: flex;
+            flex-wrap: wrap;
+            line-height: 4rem;
+
+            dt {
+                flex: 0 0 6em;
+                color: $color-text-gray;
+                font-size: 1.4rem;
+
+                &::after {
+                    content: '：';
+                }
+            }
+
+            dd {
+                flex: 0 0 calc(100% - 6em);
+                display: flex;
+            }
+
+            .v-input.v-text-field {
+                width: 180px;
+                max-width: 180px;
+                margin: 0 5px;
+            }
+
+            .v-text-field--outlined .v-input__slot {
+                min-height: 40px;
+                margin-bottom: 0;
+            }
+
+            .v-text-field--outlined fieldset {
+                height: 44px;
+                padding-top: 1px;
+            }
+
+            .v-text-field--outlined .v-text-field__slot {
+                height: 36px;
+                font-size: 1.4rem;
+            }
+
+            .v-btn-toggle {
+                margin-left: 20px;
+
+                .v-btn--active {
+                    color: $color-theme-center;
+                }
+            }
+
+            .v-btn-toggle:not(.v-btn-toggle--dense) .v-btn.v-btn.v-size--default {
+                height: 40px;
+                font-size: 13px;
+                padding: 0 10px;
+
+                &.v-btn:first-child {
+                    padding-left: 20px;
+                }
+                &.v-btn:last-child {
+                    padding-right: 20px;
+                }
+            }
+
+            .v-input--selection-controls {
+                margin-top: 5px;
+            }
+
+            .v-select {
+                .v-input__append-inner {
+                    margin-top: 8px;
+                }
+
+                .v-select__selections {
+                    padding: 0;
+                    font-size: 1.4rem;
+                }
+            }
+
         }
 
         &_list {
@@ -75,7 +163,8 @@
             @extend %table-default;
 
             thead th {
-                padding: 12px 5px !important;
+                padding: 10px 5px !important;
+                line-height: 1;
             }
         }
     }

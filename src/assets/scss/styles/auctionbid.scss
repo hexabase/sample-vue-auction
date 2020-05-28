@@ -189,6 +189,11 @@
             line-height: 60px;
             font-size: 2.2rem;
         }
+
+        .v-alert {
+            margin-top: 10px;
+            font-size: 1.3rem;
+        }
     }
 
     .currentBid {
@@ -375,16 +380,101 @@
 }
 
 .trend {
-    background: $color-bg;
-    border-top: $border-light;
-    border-bottom: $border-light;
+    @extend %section-gray;
     @extend %padding-contents;
 
+    &_wrap {
+        display: flex;
+        justify-content: space-between;
+    }
+
     &_title {
-        margin-bottom: 30px;
+        margin-bottom: 40px;
         font-size: 2.2rem;
         font-weight: normal;
     }
+
+    &_barChart,
+    &_royalty {
+        flex: 0 0 48%;
+        padding: 40px 10px;
+        background: #fff;
+        border: $border-default;
+        border-radius: $radius-box;
+    }
+
+    &_subTitle {
+        margin-bottom: 20px;
+    }
+}
+
+.musicDetail {
+    padding-top: 80px;
+
+    &_title {
+        margin-bottom: 40px;
+        font-size: 3rem;
+        font-weight: 200;
+        font-family: $font-en;
+    }
+
+    &Content {
+        position: relative;
+        width: 640px;
+        max-width: 98%;
+        margin: auto;
+        padding: 60px 0 80px;
+
+        &::before, &::after {
+            @extend %breakline;
+        }
+
+        &::after {
+            top: 100%;
+        }
+
+        iframe {
+            margin-top: -60px;
+            margin-bottom: 30px;
+        }
+
+        &_title {
+            margin-bottom: 10px;
+            font-size: 2.4rem;
+        }
+
+        &_artist {
+            margin-bottom: 30px;
+            font-size: 1.4rem;
+            color: $color-text-lightgray;
+        }
+
+        &_text {
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+            text-align: left;
+        }
+
+        &_link {
+            text-align: left;
+
+            a {
+                span {
+                    text-decoration: underline;
+                }
+
+                .v-icon {
+                    margin-right: 5px;
+                    font-size: 1.2rem;
+                }
+
+                &:hover span {
+                    text-decoration: none;
+                }
+            }
+        }
+    }
+
 }
 
 .royaltyInfo {

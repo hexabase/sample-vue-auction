@@ -248,7 +248,7 @@ body {
             }
 
             &_link-current {
-                background: rgba($color-theme-center, .2);
+                background: rgba($color-theme-center, .4);
             }
         }
     }
@@ -363,37 +363,48 @@ body {
             line-height: 1.8;
             letter-spacing: .1em;
         }
+    }
 
-        &_tab {
-            position: absolute;
-            display: flex;
-            bottom: 0;
-            width: 600px;
-            max-width: 80%;
-            height: 50px;
-            margin: auto;
-            background: #fff;
-            box-shadow: 0 0 3px rgba(#000, .05);
-            border-bottom: none;
-            border-radius: $radius-tab $radius-tab 0 0;
-            line-height: 50px;
+    .tabMenu {
+        position: absolute;
+        display: flex;
+        bottom: 0;
+        width: 600px;
+        max-width: 80%;
+        height: 50px;
+        margin: auto;
+        background: #fff;
+        box-shadow: 0 0 3px rgba(#000, .05);
+        border-bottom: none;
+        border-radius: $radius-tab $radius-tab 0 0;
+        line-height: 50px;
 
-            li:first-child {
+        .v-tabs-bar {
+            height: 60px;
+        }
+
+        .v-tabs-bar__content {
+            a:first-child {
                 border-top-left-radius: $radius-tab;
             }
 
-            li:last-child {
+            a:last-child {
                 border-top-right-radius: $radius-tab;
             }
         }
 
-        &_tabItem, &_tabItem-current {
+        .v-item-group {
+            width: 100%;
+        }
+
+        &_tabItem {
+            height: 50px;
             width: 50%;
             flex: 0 0 50%;
             font-size: 1.5rem;
         }
 
-        &_tabItem-current {
+        .v-tab--active {
             position: relative;
             background: $color-bg-theme;
             color: #fff;
