@@ -3,18 +3,9 @@
     <section class="musicInfo">
       <div class="content">
         <figure class="musicInfo_img">
-          <iframe
-            width="320"
-            height="240"
-            :src="videoSourceUrl"
-            frameborder="0"
-            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen
-          >
-          </iframe>
-          <!-- <a :href="videoUrl" target="_blank">
+          <a :href="videoUrl" target="_blank">
             <img :src="videoThumbnailUrl" />
-          </a> -->
+          </a>
         </figure>
         <div class="musicInfo_wrap">
           <h2 class="musicInfo_title">{{ title }}</h2>
@@ -184,6 +175,35 @@
             <img src="~@/assets/img/auction-detail-graph2.png" alt="" />
           </section>
         </div>
+      </div>
+    </section>
+    <section class="musicDetail">
+      <div class="content">
+        <h2 class="musicDetail_title">Music Information</h2>
+        <section class="musicDetailContent">
+          <iframe
+            width="640"
+            height="360"
+            :src="videoSourceUrl"
+            frameborder="0"
+            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          >
+          </iframe>
+          <h3 class="musicDetailContent_title">{{ title }}</h3>
+          <p class="musicDetailContent_artist">{{ singer1 }}</p>
+          <p class="musicDetailContent_text">{{ explanatoryText }}</p>
+          <div class="musicDetailContent_link">
+            <a
+              href="https://100wani.life/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <v-icon>mdi-chevron-right</v-icon>
+              <span>オフィシャルサイト</span>
+            </a>
+          </div>
+        </section>
       </div>
     </section>
     <section class="royaltyInfo">
