@@ -72,7 +72,7 @@
           <div class="auctionInfo_right">
             <section class="bidBox">
               <!-- ▼入札済みの表示：ここから▼ -->
-              <div v-if="displayBidResultFlg" class="currentBid">
+              <div v-if="displayBidResultFlag" class="currentBid">
                 <h3 class="currentBid_title">現在以下の内容で入札しています</h3>
                 <div class="currentBid_body">
                   <p class="currentBid_detail">
@@ -467,7 +467,8 @@ export default {
       myAuctionBidList: {},
       myAuctionResult: "",
       alertMessage: "",
-      displayBidResultFlg: false
+      displayBidResultFlag: false,
+      auctionFinishedFlag: false
     };
   },
   created: function() {
@@ -497,7 +498,7 @@ export default {
         return false;
       }
       this.myAuctionBidList = await this.getAuctionBidList();
-      if (this.displayBidResultFlg) {
+      if (this.displayBidResultFlag) {
         if (Number(this.bidPrice) < Number(this.myAuctionBidList[0].入札金額)) {
           this.alertMessage =
             "前回の入札金額より少ない金額では入札できません。※キャンセル（回数制限有）から入札は可能です";
@@ -691,12 +692,11 @@ export default {
       );
     },
     updateMessage() {
-      // diffメソッドを使って、日時の差を、ミリ秒で取得
-      const diff = moment(this.auctionEndDate).diff(moment());
-      if (diff < 0) {
-        this.remainingTime = "Closed";
+      if (this.auctionFinishedFlag) {
         return;
       }
+      // diffメソッドを使って、日時の差を、ミリ秒で取得
+      const diff = moment(this.auctionEndDate).diff(moment());
 
       // ミリ秒からdurationオブジェクトを生成
       const duration = moment.duration(diff);
@@ -718,9 +718,9 @@ export default {
         this.myAuctionBidList.length > 0 &&
         this.myAuctionBidList[0].落札状況 != "キャンセル済"
       ) {
-        this.displayBidResultFlg = true;
+        this.displayBidResultFlag = true;
       } else {
-        this.displayBidResultFlg = false;
+        this.displayBidResultFlag = false;
       }
       var dataLists = [];
       dataLists = await this.$hexalink.getItems(
@@ -815,6 +815,12 @@ export default {
       var rpf_copyrightNumber = "d3e553f2-7281-47b7-96ef-3ac55a72f1ee";
       var rpf_bidPrice = "d2813a9b-33e5-405f-9116-ff9c97a0bf06";
 
+      // diffメソッドを使って、日時の差を、ミリ秒で取得
+      const diff = moment(this.auctionEndDate).diff(moment());
+      if (diff < 0) {
+        this.auctionFinishedFlag = true;
+      }
+
       var auctionLists = [];
       auctionLists = await this.$hexalink.getReports(
         this.token,
@@ -847,12 +853,16 @@ export default {
       for (const key in auctionListsGroupSort) {
         auctionAmountCount += Number(auctionListsGroupSort[key][rpf_bidAmount]);
         if (auctionAmountCount <= dataLists[0].オークション数量) {
-          auctionListsGroupSort[key].落札状況 = "落札";
+          auctionListsGroupSort[key].落札状況 = this.auctionFinishedFlag
+            ? "落札"
+            : "落札圏内";
           if (auctionAmountCount >= dataLists[0].オークション数量) {
             orderOfArraivalFlag = false;
           }
         } else if (orderOfArraivalFlag) {
-          auctionListsGroupSort[key].落札状況 = "先着順の部分落札";
+          auctionListsGroupSort[key].落札状況 = this.auctionFinishedFlag
+            ? "先着順の部分落札"
+            : "先着順の部分落札圏内";
           orderOfArraivalFlag = false;
         } else {
           auctionListsGroupSort[key].落札状況 = "-";

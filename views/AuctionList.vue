@@ -60,9 +60,11 @@
               <dd>
                 {{
                   displayAuctionList[index].入札数量
-                    ? (displayAuctionList[index].入札数量 /
-                        displayAuctionList[index].オークション数量) *
-                      100
+                    ? (
+                        (displayAuctionList[index].入札数量 /
+                          displayAuctionList[index].オークション数量) *
+                        100
+                      ).toFixed(1)
                     : 0
                 }}
                 <span class="unit">%</span>
@@ -138,7 +140,6 @@ export default {
         }
       }
     }
-    console.log(this.auctionList);
 
     this.length = Math.ceil(this.auctionList.length / this.pageSize);
     this.displayAuctionList = this.auctionList.slice(
@@ -157,6 +158,25 @@ export default {
             {
               id: "オークション状況", // Hexalink画⾯で⼊⼒したIDを指定
               search_value: ["オークション中"],
+              exact_match: true // 完全⼀致で検索
+            }
+          ],
+          page: 1,
+          per_page: 9000,
+          use_display_id: true
+        }
+      );
+    },
+    async getFinishedAuctionList() {
+      return await this.$hexalink.getItems(
+        this.token,
+        this.applicationId,
+        this.datastoreIds["著作権DB"],
+        {
+          conditions: [
+            {
+              id: "オークション状況", // Hexalink画⾯で⼊⼒したIDを指定
+              search_value: ["オークション完了"],
               exact_match: true // 完全⼀致で検索
             }
           ],

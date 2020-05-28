@@ -194,7 +194,7 @@ export default {
         // this.$store.commit("user/setIsUser", isUser);
         this.$store.commit("datas/setDatastoreIds", datastoreIds);
         this.$store.commit("datas/setFields", fields);
-        this.$router.push("/auctionbid");
+        this.$router.push("/");
       } catch (e) {
         const { status, statusText } = e.response;
         console.log(`Error! HTTP Status: ${status} ${statusText}`);
