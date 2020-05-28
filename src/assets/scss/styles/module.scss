@@ -215,10 +215,6 @@
         color: #FFF !important;
     }
 
-    &[disabled] {
-        background: $color-bg-disabled;
-        color: $color-text-disabled;
-    }
 }
 
 .button-sub {
@@ -231,6 +227,11 @@
     &:hover {
         background: lighten($color-sub, 5%);
     }
+}
+
+&#app [disabled] {
+        background: $color-bg-disabled;
+        color: $color-text-disabled;
 }
 
 // table

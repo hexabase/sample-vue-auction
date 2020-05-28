@@ -90,12 +90,16 @@
                     オークション結果：{{ myAuctionResult }}
                   </p>
                   <!-- <button class="button-sub" @click="openModal('cancelModal')"> -->
-                  <button class="button-sub" @click="doCancel()">
+                  <button
+                    class="button-sub"
+                    @click="doCancel()"
+                    :disabled="Number(myAuctionBidList[0].キャンセル回数) > 2"
+                  >
                     キャンセル
                     <span class="currentBid_remain">
                       （残り可能回数：{{
                         3 - Number(myAuctionBidList[0].キャンセル回数)
-                      }}回
+                      }}回）
                     </span>
                   </button>
                 </div>
@@ -134,7 +138,9 @@
               <button class="button-action" @click="openModal('modal')">
                 入札する
               </button>
-              {{ alertMessage }}
+              <v-alert v-if="alertMessage != ''" text color="red">
+                {{ alertMessage }}
+              </v-alert>
             </section>
             <dl class="bidPolicy">
               <dt>参加規定</dt>
