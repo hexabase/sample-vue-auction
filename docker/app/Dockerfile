@@ -6,6 +6,7 @@ RUN npm install
 COPY *.js ./
 COPY src ./src/
 COPY public ./public/
+COPY views ./views/
 RUN npm run build
 
 FROM nginx:1.17.9-alpine
