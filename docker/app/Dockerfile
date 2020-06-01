@@ -1,4 +1,6 @@
 FROM node:lts-alpine as builder
+# no console and no unused vars choose building env execpt production
+ENV NODE_ENV=staging
 RUN apk update && apk add --no-cache make git nodejs
 WORKDIR /app
 COPY package*.json ./
