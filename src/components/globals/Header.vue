@@ -2,7 +2,12 @@
   <header class="siteHeader" role="banner">
     <div class="content">
       <h1 class="siteHeader_logo">
-        <a href="/">BATON</a>
+        <a href="/">
+          <img
+            src="~@/assets/img/logo.png"
+            alt="BATON Marketplace for music royalty"
+          />
+        </a>
       </h1>
       <nav class="siteHeader_gnav" role="navigation">
         <ul>

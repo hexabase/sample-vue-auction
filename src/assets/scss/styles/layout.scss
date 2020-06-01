@@ -28,12 +28,17 @@ body {
         }
         
         &_logo {
-            flex: 0 0 100px;
+            flex: 0 0 123px;
+            display: flex;
+            align-items: center;
             font-size: 2.5rem;
             font-family: $font-en;
-            line-height: $header-height;
             font-weight: bold;
             text-align: left;
+
+            a {
+                display: block;
+            }
         }
 
         &_gnav {
@@ -448,9 +453,9 @@ body {
         }
         
         &_logo {
-            font-weight: bold;
-            margin-bottom: 40px;
-            font-size: 2.5rem;
+            display: block;
+            width: 124px;
+            margin: 0 auto 40px;
         }
 
         &_nav {
