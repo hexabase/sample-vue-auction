@@ -109,7 +109,9 @@ export default {
       page: 1
     };
   },
-  created: async function() {},
+  created: async function() {
+    console.log(this.$route.path);
+  },
   mounted: function() {},
   methods: {}
 };

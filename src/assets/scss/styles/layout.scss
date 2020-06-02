@@ -51,7 +51,7 @@ body {
                 text-align: center;
             }
 
-            a {
+            &_link {
                 position: relative;
                 display: inline-block;
                 width: 100%;
@@ -61,6 +61,22 @@ body {
                 transition: all .3s;
                 font-size: 1.3rem;
                 font-weight: bold;
+            }
+
+            &_link-current {
+                position: relative;
+                color: $color-theme-center !important;
+
+                &::after {
+                    content: "";
+                    position: absolute;
+                    top: 20px;
+                    left: 50%;
+                    width: 20px;
+                    height: 3px;
+                    margin-left: -10px;
+                    background: $color-theme-center;
+                }
             }
         }
 
@@ -235,7 +251,7 @@ body {
                 }
             }
 
-            &_link, &_link-current {
+            &_link {
                 display: inline-block;
                 padding: 0 20px;
                 color: #fff;
