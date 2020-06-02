@@ -16,7 +16,7 @@
               <th>オークション開始価格<span>（1口、消費税を含む）</span></th>
             </tr>
             <tr>
-              <td>{{ remainingTime || "Closed" }}</td>
+              <td>{{ auctionFinishedFlag ? "Closed" : remainingTime }}</td>
               <td>
                 {{ auctionAmount }}
                 <span class="unit">口</span>
@@ -724,12 +724,14 @@ export default {
       );
     },
     updateMessage() {
+      // diffメソッドを使って、日時の差を、ミリ秒で取得
+      const diff = moment(this.auctionEndDate).diff(moment());
+      if (diff < 0) {
+        this.auctionFinishedFlag = true;
+      }
       if (this.auctionFinishedFlag) {
         return;
       }
-      // diffメソッドを使って、日時の差を、ミリ秒で取得
-      const diff = moment(this.auctionEndDate).diff(moment());
-
       // ミリ秒からdurationオブジェクトを生成
       const duration = moment.duration(diff);
 
@@ -926,6 +928,7 @@ export default {
 
       this.bidTotalAmount = auctionAmountCount;
       this.auctionListsGroup = auctionListsGroupSort;
+      this.updateMessage();
     }
   }
 };
