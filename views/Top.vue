@@ -6,7 +6,9 @@
         The marketplace for buying music royalties
       </p>
       <p class="heroHeader_text">ロイヤリティ共有プラットフォーム ”BATON”</p>
-      <a href="/about" class="button-main">どんなサービス</a>
+      <router-link to="/about">
+        <a class="button-main">どんなサービス</a>
+      </router-link>
     </section>
     <section class="pickupAuction">
       <h3 class="contents_title">
@@ -87,9 +89,11 @@
         </li> -->
       </ul>
       <div class="pickupAuction_link">
-        <a href="/auctionList" class="button-main">
-          すべてのオークションを見る
-        </a>
+        <router-link to="/auctionList">
+          <a class="button-main">
+            すべてのオークションを見る
+          </a>
+        </router-link>
       </div>
     </section>
     <section class="userMarket">
@@ -296,7 +300,7 @@ export default {
       this.pageSize * (this.page - 1),
       this.pageSize * this.page
     );
-
+    this.updateMessage();
     setInterval(this.updateMessage, 1000);
   },
   methods: {
