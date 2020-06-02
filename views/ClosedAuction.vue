@@ -130,13 +130,15 @@ export default {
           conditions: [
             {
               id: "オークション終了時間", // Hexalink画⾯で⼊⼒したIDを指定
-              search_value: [moment(), null],
+              search_value: [null, moment()],
               exact_match: false // 完全⼀致で検索
             }
           ],
           page: 1,
           per_page: 9000,
-          use_display_id: true
+          use_display_id: true,
+          sort_field_id: "オークション終了時間", // Hexalink画⾯で⼊⼒したIDを指定
+          sort_order: "desc"
         }
       );
     },

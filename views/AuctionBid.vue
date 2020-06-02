@@ -81,7 +81,9 @@
                   </p>
                   <p class="currentBid_total">
                     （総入札価格：{{
-                      myAuctionBidList[0].入札金額 * myAuctionBidList[0].数量
+                      changeYen(
+                        myAuctionBidList[0].入札金額 * myAuctionBidList[0].数量
+                      )
                     }}円）
                   </p>
                   <p class="currentBid_status">
@@ -91,7 +93,7 @@
                   <button
                     class="button-sub"
                     :disabled="Number(myAuctionBidList[0].キャンセル回数) > 2"
-                    @click="doCancel()"
+                    @click="openModal('cancelModal')"
                   >
                     キャンセル
                     <span class="currentBid_remain">
@@ -130,7 +132,7 @@
               </div>
               <p class="bidBox_total">
                 総入札価格（税込）：
-                <span class="price">{{ bidPrice * bidAmount }}</span>
+                <span class="price">{{ changeYen(bidPrice * bidAmount) }}</span>
                 円
               </p>
               <button class="button-action" @click="openModal('modal')">
@@ -285,7 +287,8 @@
           <tr class="modal-bid_table_total">
             <th>総入札価格：</th>
             <td>
-              <span class="amount">{{ bidPrice * bidAmount }}</span> 円
+              <span class="amount">{{ changeYen(bidPrice * bidAmount) }}</span>
+              円
             </td>
           </tr>
         </table>
@@ -352,20 +355,32 @@
         @close="closeModal('cancelModal')"
       >
         <template slot="title">入札キャンセル</template>
-        <p class="modal-bid_text">山田花子様 現在の入札状況</p>
+        <p class="modal-bid_text">{{ userName }} 様 現在の入札状況</p>
         <ul class="modal-bid_list">
-          <li>入札価格：25,000円</li>
-          <li>入札数量：4口</li>
-          <li>総入札価格：100,000円</li>
+          <li>入札価格：{{ myAuctionBidList[0].入札金額 }}円</li>
+          <li>入札数量：{{ myAuctionBidList[0].数量 }}口</li>
+          <li>
+            総入札価格：
+            {{
+              changeYen(
+                myAuctionBidList[0].入札金額 * myAuctionBidList[0].数量
+              )
+            }}円
+          </li>
         </ul>
         <p class="modal-bid_confirm">
           こちらキャンセルしてよろしいでしょうか？
         </p>
         <p class="modal-bid_announce">
-          ※一つの著作権でのキャンセルは3回までしかできません。残り<strong>3回</strong>キャンセルできます。
+          ※一つの著作権でのキャンセルは3回までしかできません。残り
+          <strong>
+            {{ 3 - Number(myAuctionBidList[0].キャンセル回数) }}
+            回
+          </strong>
+          キャンセルできます。
         </p>
         <template slot="footer">
-          <Button class="button-sub" @click="doSend">
+          <Button class="button-sub" @click="doCancel()">
             入札をキャンセルする
           </Button>
         </template>
@@ -384,18 +399,15 @@ export default {
     return {
       modal: false,
       cancelModal: false,
-      currentStep: 1,
       page: 1,
-      pageCount: 0,
       mapping: JSON.parse(JSON.stringify(mapping)),
       DBSchema: JSON.parse(JSON.stringify(DatabaseSchema)),
-      options: { page: 1, itemsPerPage: 100 },
       token: this.$store.getters["auth/getToken"],
       applicationId: this.$store.getters["datas/getApplicationId"],
       datasotreIdList: this.$store.getters["datas/getDatastores"],
       datastoreIds: this.$store.getters["datas/getDatastoreIds"],
       userId: this.$store.getters["user/getHexaID"],
-      searchParams: {},
+      userName: this.$store.getters["auth/getUserNameKanji"],
       copyrightNumber: "",
       jasracCode: "",
       image1: "",
@@ -476,48 +488,72 @@ export default {
     isProcessing() {
       return this.agreeGuideline;
     },
-    async openModal() {
-      if (
-        this.bidPrice == 0 ||
-        this.bidPrice == "" ||
-        this.bidAmount == 0 ||
-        this.bidAmount == "" ||
-        this.bidPrice % 500 > 0
-      ) {
-        this.alertMessage = "500円の倍数で有効な数値を入力してください。";
-        return false;
-      }
-      if (Number(this.bidPrice) < Number(this.auctionStartPrice)) {
-        this.alertMessage =
-          "オークション開始価格より低い金額では入札できません。";
-        return false;
-      }
-      this.myAuctionBidList = await this.getAuctionBidList();
-      if (this.displayBidResultFlag) {
-        if (Number(this.bidPrice) < Number(this.myAuctionBidList[0].入札金額)) {
-          this.alertMessage =
-            "前回の入札金額より少ない金額では入札できません。※キャンセル（回数制限有）から入札は可能です";
-          return false;
-        } else if (
-          Number(this.bidPrice) == Number(this.myAuctionBidList[0].入札金額) &&
-          Number(this.bidAmount) < Number(this.myAuctionBidList[0].数量)
+    async openModal(modalType) {
+      if (modalType == "modal") {
+        if (
+          this.bidPrice == 0 ||
+          this.bidPrice == "" ||
+          this.bidAmount == 0 ||
+          this.bidAmount == "" ||
+          this.bidPrice % 500 > 0
         ) {
-          this.alertMessage =
-            "前回の数量より少ない数量では入札できません。※キャンセル（回数制限有）から入札は可能です";
-          return false;
-        } else if (
-          Number(this.bidPrice) == Number(this.myAuctionBidList[0].入札金額) &&
-          Number(this.bidAmount) == Number(this.myAuctionBidList[0].数量)
-        ) {
-          this.alertMessage = "前回と同じ金額・数量では入札できません。";
+          this.alertMessage = "500円の倍数で有効な数値を入力してください。";
           return false;
         }
+        if (Number(this.bidPrice) < Number(this.auctionStartPrice)) {
+          this.alertMessage =
+            "オークション開始価格より低い入札価格では入札できません。";
+          return false;
+        }
+        if (Number(this.bidPrice) > Number(this.auctionStartPrice) * 10) {
+          this.alertMessage =
+            "オークション開始価格の10倍より多い入札価格では入札できません。";
+          return false;
+        }
+        if (Number(this.bidAmount) > (Number(this.auctionAmount) * 25) / 100) {
+          this.alertMessage =
+            "オークション数量の25%より多い数量では入札できません（" +
+            Math.floor((Number(this.auctionAmount) * 25) / 100) +
+            "まで入札可）";
+          return false;
+        }
+        this.myAuctionBidList = await this.getAuctionBidList();
+        if (this.displayBidResultFlag) {
+          if (
+            Number(this.bidPrice) < Number(this.myAuctionBidList[0].入札金額)
+          ) {
+            this.alertMessage =
+              "前回の入札価格より少ない入札価格では入札できません。※キャンセル（回数制限有）から入札は可能です";
+            return false;
+          } else if (
+            Number(this.bidPrice) ==
+              Number(this.myAuctionBidList[0].入札金額) &&
+            Number(this.bidAmount) < Number(this.myAuctionBidList[0].数量)
+          ) {
+            this.alertMessage =
+              "前回の数量より少ない数量では入札できません。※キャンセル（回数制限有）から入札は可能です";
+            return false;
+          } else if (
+            Number(this.bidPrice) ==
+              Number(this.myAuctionBidList[0].入札金額) &&
+            Number(this.bidAmount) == Number(this.myAuctionBidList[0].数量)
+          ) {
+            this.alertMessage = "前回と同じ入札価格・数量では入札できません。";
+            return false;
+          }
+        }
+        this.alertMessage = "";
+        this.modal = true;
+      } else {
+        this.cancelModal = true;
       }
-      this.alertMessage = "";
-      this.modal = true;
     },
-    closeModal() {
-      this.modal = false;
+    closeModal(modalType) {
+      if (modalType == "modal") {
+        this.modal = false;
+      } else {
+        this.cancelModal = false;
+      }
     },
     async getAuctionBidList() {
       return await this.$hexalink.getItems(
@@ -600,7 +636,7 @@ export default {
         );
       }
       this.initialDisplay();
-      this.closeModal();
+      this.modal = false;
     },
     async doCancel() {
       if (Number(this.myAuctionBidList[0].キャンセル回数) > 2) {
@@ -644,6 +680,7 @@ export default {
         }
       );
       this.initialDisplay();
+      this.cancelModal = false;
     },
     // 新規Itemを作成します
     async insertNewItem(datasotreId, param) {
@@ -705,6 +742,17 @@ export default {
       //カウントダウンの結果を変数に代入
       this.remainingTime =
         days + "日" + hours + "時間" + minutes + "分" + seconds + "秒";
+    },
+    changeYen(num) {
+      return String(num)
+        .split("")
+        .reverse()
+        .join("")
+        .match(/\d{1,3}/g)
+        .join(",")
+        .split("")
+        .reverse()
+        .join("");
     },
     async initialDisplay() {
       this.musicId = this.$route.query.id;
@@ -883,63 +931,4 @@ export default {
 };
 </script>
 
-<style scoped>
->>> .multi_option .option_tit span {
-  display: inline-block;
-  width: 33.3%;
-  color: #888;
-}
->>> li.multi_option {
-  flex: 1;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.16);
-  border-radius: 8px;
-  border: 1px solid #e6e3e3;
-  font-size: 17px;
-}
->>> .total {
-  border-top: 1px solid #e6e3e3;
-}
->>> .option_tit {
-  border-bottom: 1px solid #e6e3e3;
-  padding: 20px 32px;
-}
->>> .multi_option > .option > ul > li {
-  display: inline-block;
-  width: 33.3%;
-  padding: 16px 32px;
-  vertical-align: middle;
-  margin: 0;
-}
->>> dl,
-ul,
-ol,
-menu,
-li {
-  list-style: none;
-}
->>> input {
-  background-color: transparent;
-  border-style: inset;
-}
-.bid_button {
-  display: block;
-  background-color: #e62f47;
-  padding: 10px;
-  color: #fff;
-  text-align: center;
-  font-weight: 700;
-}
-.song_detail .lst_bul dl {
-  width: 50%;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  padding: 0.5rem 0;
-}
-.box_gray {
-  border-radius: 8px;
-  background-color: #f7f5f5;
-  padding: 20px;
-  font-size: 14px;
-}
-</style>
+<style scoped></style>
