@@ -30,6 +30,7 @@
             v-for="(x, index) in displayAuctionList"
             :key="index"
             class="auctionList_item"
+            @click="selectItem(displayAuctionList[index].著作権番号)"
           >
             <figure class="auctionList_item_img">
               <img :src="displayAuctionList[index].image1" />
@@ -40,7 +41,9 @@
             <p class="auctionList_item_artist">
               {{ displayAuctionList[index].歌手1 }}
             </p>
-            <p class="auctionList_item_enddate">2020年1月31日 終了</p>
+            <p class="auctionList_item_enddate">
+              {{ displayAuctionList[index].オークション終了時間 }} 終了
+            </p>
           </article>
         </div>
         <v-pagination
@@ -53,6 +56,7 @@
   </div>
 </template>
 <script>
+import moment from "moment-timezone";
 export default {
   data() {
     return {
@@ -70,7 +74,7 @@ export default {
   },
   created: async function() {},
   mounted: async function() {
-    this.auctionList = await this.getAuctionList();
+    this.auctionList = await this.getClosedAuctionList();
     var auctionBidReport = {};
     auctionBidReport = await this.$hexalink.getReports(
       this.token,
@@ -81,6 +85,9 @@ export default {
       }
     );
     for (const listKey in this.auctionList) {
+      this.auctionList[listKey].オークション終了時間 = moment(
+        this.auctionList[listKey].オークション終了時間
+      ).format("YYYY年MM月DD日");
       for (const reportKey in auctionBidReport.report_results) {
         if (
           this.auctionList[listKey].著作権番号 ==
@@ -114,7 +121,7 @@ export default {
     );
   },
   methods: {
-    async getAuctionList() {
+    async getClosedAuctionList() {
       return await this.$hexalink.getItems(
         this.token,
         this.applicationId,
@@ -122,9 +129,12 @@ export default {
         {
           conditions: [
             {
-              id: "オークション状況", // Hexalink画⾯で⼊⼒したIDを指定
-              search_value: ["オークション中"],
-              exact_match: true // 完全⼀致で検索
+              id: "オークション終了時間", // Hexalink画⾯で⼊⼒したIDを指定
+              search_value: [
+                null,
+                moment()
+              ],
+              exact_match: false // 完全⼀致で検索
             }
           ],
           page: 1,

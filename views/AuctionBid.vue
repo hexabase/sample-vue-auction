@@ -3,9 +3,7 @@
     <section class="musicInfo">
       <div class="content">
         <figure class="musicInfo_img">
-          <a :href="videoUrl" target="_blank">
-            <img :src="videoThumbnailUrl" />
-          </a>
+          <img :src="image1" />
         </figure>
         <div class="musicInfo_wrap">
           <h2 class="musicInfo_title">{{ title }}</h2>
@@ -69,7 +67,7 @@
               </tfoot>
             </table>
           </div>
-          <div class="auctionInfo_right">
+          <div v-if="!auctionFinishedFlag" class="auctionInfo_right">
             <section class="bidBox">
               <!-- ▼入札済みの表示：ここから▼ -->
               <div v-if="displayBidResultFlag" class="currentBid">
@@ -92,8 +90,8 @@
                   <!-- <button class="button-sub" @click="openModal('cancelModal')"> -->
                   <button
                     class="button-sub"
-                    @click="doCancel()"
                     :disabled="Number(myAuctionBidList[0].キャンセル回数) > 2"
+                    @click="doCancel()"
                   >
                     キャンセル
                     <span class="currentBid_remain">
@@ -200,11 +198,7 @@
           <p class="musicDetailContent_artist">{{ singer1 }}</p>
           <p class="musicDetailContent_text">{{ explanatoryText }}</p>
           <div class="musicDetailContent_link">
-            <a
-              href="https://100wani.life/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <a :href="officialUrl" target="_blank" rel="noopener noreferrer">
               <v-icon>mdi-chevron-right</v-icon>
               <span>オフィシャルサイト</span>
             </a>
@@ -457,6 +451,7 @@ export default {
       auctionEndPrice: "",
       videoThumbnailUrl: "",
       videoSourceUrl: "",
+      officialUrl: "",
       auctionListsGroup: [],
       bidTotalAmount: 0,
       bidPrice: 0,
@@ -798,6 +793,7 @@ export default {
       this.auctionAmount = dataLists[0].オークション数量;
       this.auctionStartPrice = dataLists[0].オークション開始金額;
       this.auctionEndPrice = dataLists[0].オークション落札金額;
+      this.officialUrl = dataLists[0].公式URL;
       this.videoThumbnailUrl =
         "http://img.youtube.com/vi/" +
         dataLists[0].動画URL.split("v=")[1] +

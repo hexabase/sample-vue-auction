@@ -14,7 +14,54 @@
         <span class="contents_title-jp">開催中のオークション</span>
       </h3>
       <ul class="pickupAuction_list">
-        <li class="pickupAuction_item">
+        <article
+          v-for="(x, index) in displayAuctionList"
+          :key="index"
+          class="pickupAuction_item"
+          @click="selectItem(displayAuctionList[index].著作権番号)"
+        >
+          <figure class="pickupAuction_img">
+            <img :src="displayAuctionList[index].image1" />
+            <figcaption>
+              <span>あと</span>
+              {{ displayAuctionList[index].カウントダウン日 }}
+              <span>日</span>
+              {{ displayAuctionList[index].カウントダウン時分秒 }}
+            </figcaption>
+          </figure>
+          <div class="pickupAuction_title">
+            {{ displayAuctionList[index].タイトル }}
+          </div>
+          <div class="pickupAuction_artist">
+            {{ displayAuctionList[index].歌手1 }}
+          </div>
+          <div class="pickupAuction_price">
+            {{ displayAuctionList[index].オークション開始金額 }}
+            <span class="unit">円〜</span>
+          </div>
+          <div class="pickupAuction_stock">
+            {{
+              displayAuctionList[index].入札数量
+                ? displayAuctionList[index].入札数量
+                : 0
+            }}
+            <span class="unit">株入札 / </span>
+            {{ displayAuctionList[index].オークション数量 }}
+            <span class="unit">株</span>
+          </div>
+          <div class="pickupAuction_bidRate">
+            {{
+              displayAuctionList[index].入札数量
+                ? (
+                    (displayAuctionList[index].入札数量 /
+                      displayAuctionList[index].オークション数量) *
+                    100
+                  ).toFixed(1)
+                : 0
+            }}
+          </div>
+        </article>
+        <!-- <li class="pickupAuction_item">
           <a href="">
             <figure class="pickupAuction_img">
               <img
@@ -37,10 +84,10 @@
             </div>
             <div class="pickupAuction_bidRate">125</div>
           </a>
-        </li>
+        </li> -->
       </ul>
       <div class="pickupAuction_link">
-        <a href="" class="button-main">すべてのオークションを見る</a>
+        <a href="/auctionList" class="button-main">すべてのオークションを見る</a>
       </div>
     </section>
     <section class="userMarket">
@@ -187,4 +234,124 @@
   </div>
 </template>
 
-<script></script>
+<script>
+import moment from "moment-timezone";
+export default {
+  data() {
+    return {
+      page: 1,
+      pageSize: 4,
+      length: 0,
+      token: this.$store.getters["auth/getToken"],
+      applicationId: this.$store.getters["datas/getApplicationId"],
+      datasotreIdList: this.$store.getters["datas/getDatastores"],
+      datastoreIds: this.$store.getters["datas/getDatastoreIds"],
+      userId: this.$store.getters["user/getHexaID"],
+      auctionList: [],
+      displayAuctionList: []
+    };
+  },
+  created: async function() {},
+  mounted: async function() {
+    this.auctionList = await this.getAuctionList();
+    var auctionBidReport = {};
+    auctionBidReport = await this.$hexalink.getReports(
+      this.token,
+      this.applicationId,
+      "5ec76bffaa8a6c0007136f92",
+      {
+        conditions: []
+      }
+    );
+    for (const listKey in this.auctionList) {
+      for (const reportKey in auctionBidReport.report_results) {
+        if (
+          this.auctionList[listKey].著作権番号 ==
+          auctionBidReport.report_results[reportKey][
+            "ba62cfe6-dcd4-46b7-9028-2ccd73240e52"
+          ]
+        ) {
+          this.$set(
+            this.auctionList[listKey],
+            "最高入札額",
+            auctionBidReport.report_results[reportKey][
+              "c68b0a4d-d409-45b2-9ff8-fca331787921"
+            ]
+          );
+          this.$set(
+            this.auctionList[listKey],
+            "入札数量",
+            auctionBidReport.report_results[reportKey][
+              "a1101930-fbc0-43eb-8b7c-ae3510f5c989"
+            ]
+          );
+        }
+      }
+    }
+
+    this.length = Math.ceil(this.auctionList.length / this.pageSize);
+    this.displayAuctionList = this.auctionList.slice(
+      this.pageSize * (this.page - 1),
+      this.pageSize * this.page
+    );
+
+    setInterval(this.updateMessage, 1000);
+  },
+  methods: {
+    async getAuctionList() {
+      return await this.$hexalink.getItems(
+        this.token,
+        this.applicationId,
+        this.datastoreIds["著作権DB"],
+        {
+          conditions: [
+            {
+              id: "オークション終了時間", // Hexalink画⾯で⼊⼒したIDを指定
+              search_value: [
+                moment(),
+                null
+              ],
+              exact_match: false // 完全⼀致で検索
+            }
+          ],
+          page: 1,
+          per_page: 9000,
+          use_display_id: true
+        }
+      );
+    },
+    updateMessage() {
+      for (const key in this.displayAuctionList) {
+        // diffメソッドを使って、日時の差を、ミリ秒で取得
+        const diff = moment(
+          this.displayAuctionList[key].オークション終了時間
+        ).diff(moment());
+
+        // ミリ秒からdurationオブジェクトを生成
+        const duration = moment.duration(diff);
+
+        // 日・時・分・秒を取得
+        const days = Math.floor(duration.asDays());
+        const hours = duration.hours();
+        const minutes = duration.minutes();
+        const seconds = duration.seconds();
+
+        //カウントダウンの結果を変数に代入
+        this.$set(
+          this.displayAuctionList[key],
+          "カウントダウン日",
+          diff > 0 ? days : "Closed"
+        );
+        this.$set(
+          this.displayAuctionList[key],
+          "カウントダウン時分秒",
+          diff > 0 ? hours + ":" + minutes + ":" + seconds : ""
+        );
+      }
+    },
+    selectItem(musicId) {
+      this.$router.push("/auctionbid?id=" + musicId);
+    }
+  }
+};
+</script>

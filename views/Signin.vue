@@ -149,10 +149,6 @@ export default {
           userMaster.userID == undefined
             ? userInfo.data.u_id
             : userMaster.userID;
-        const isApproval = userMaster.承認管理 == 1 ? true : false;
-        const isAppHist = userMaster.承認履歴 == 1 ? true : false;
-        const isUser = userMaster.ユーザ管理 == 1 ? true : false;
-        const isCsv = userMaster.CSV一括 == 1 ? true : false;
         // フィールド一覧の取得
         let datastoreList = [];
         let getFieldPromise = [];
@@ -188,10 +184,6 @@ export default {
         this.$store.commit("user/setName", userNameKanji);
         this.$store.commit("user/setEmail", userMail);
         this.$store.commit("user/setHexaID", hexaID);
-        // this.$store.commit("user/setIsAdmin", userInfo.data.is_ws_admin);
-        // this.$store.commit("user/setIsApproval", isApproval);
-        // this.$store.commit("user/setIsAppHist", isAppHist);
-        // this.$store.commit("user/setIsUser", isUser);
         this.$store.commit("datas/setDatastoreIds", datastoreIds);
         this.$store.commit("datas/setFields", fields);
         this.$router.push("/");
