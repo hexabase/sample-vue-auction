@@ -13,7 +13,10 @@
         <li class="pageHeader_tabItem">オークション終了</li>
       </ul> -->
       <v-tabs hide-slider class="tabMenu">
-        <v-tab :to="{ name: 'Auctionlist' }" class="tabMenu_tabItem v-tab--active">
+        <v-tab
+          :to="{ name: 'Auctionlist' }"
+          class="tabMenu_tabItem v-tab--active"
+        >
           取引中オークション
         </v-tab>
         <v-tab :to="{ name: 'ClosedAuction' }" class="tabMenu_tabItem">
@@ -158,10 +161,7 @@ export default {
           conditions: [
             {
               id: "オークション終了時間", // Hexalink画⾯で⼊⼒したIDを指定
-              search_value: [
-                moment(),
-                null
-              ],
+              search_value: [moment(), null],
               exact_match: false // 完全⼀致で検索
             }
           ],

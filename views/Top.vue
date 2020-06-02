@@ -87,7 +87,9 @@
         </li> -->
       </ul>
       <div class="pickupAuction_link">
-        <a href="/auctionList" class="button-main">すべてのオークションを見る</a>
+        <a href="/auctionList" class="button-main">
+          すべてのオークションを見る
+        </a>
       </div>
     </section>
     <section class="userMarket">
@@ -307,10 +309,7 @@ export default {
           conditions: [
             {
               id: "オークション終了時間", // Hexalink画⾯で⼊⼒したIDを指定
-              search_value: [
-                moment(),
-                null
-              ],
+              search_value: [moment(), null],
               exact_match: false // 完全⼀致で検索
             }
           ],

@@ -130,10 +130,7 @@ export default {
           conditions: [
             {
               id: "オークション終了時間", // Hexalink画⾯で⼊⼒したIDを指定
-              search_value: [
-                null,
-                moment()
-              ],
+              search_value: [moment(), null],
               exact_match: false // 完全⼀致で検索
             }
           ],
