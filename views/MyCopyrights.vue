@@ -1,5 +1,5 @@
 <template>
-  <div id="page_mypage" data-role="page">
+  <div id="page_myCopyrights" data-role="page">
     <header class="pageHeader">
       <div class="pageHeader_img">
         <div class="content">
@@ -7,7 +7,97 @@
         </div>
       </div>
     </header>
-    <img src="~@/assets/img/my_copyrights_02.jpg" alt="" />
+    <section class="trend">
+      <div class="content">
+        <h2 class="trend_title">取引の詳細</h2>
+        <p class="trend_lead">保有著作権と著作権料をチェックしてください</p>
+        <div class="trend_wrap">
+          <section class="trend_barChart">
+            <h3 class="trend_subTitle">最近5年間の著作権料（1週間あたり）</h3>
+            <img src="~@/assets/img/auction-detail-graph1.png" alt="" />
+          </section>
+          <section class="trend_royalty">
+            <h3 class="trend_subTitle">
+              投資総額
+            </h3>
+            <dl class="trend_totalList">
+              <dt>累積購入金額</dt>
+              <dd>500,000 円</dd>
+              <dt>累積販売金額</dt>
+              <dd>3,000 円</dd>
+              <dt>累積著作権料収入</dt>
+              <dd>80,000 円</dd>
+              <dt>現在保有している著作権の購入額合計</dt>
+              <dd>300,000 円</dd>
+            </dl>
+          </section>
+        </div>
+      </div>
+      <v-tabs hide-slider class="tabMenu">
+        <v-tab :to="{ name: 'MyCopyrights' }" class="tabMenu_tabItem">
+          保有中
+        </v-tab>
+        <v-tab :to="{ name: 'ClosedAuction' }" class="tabMenu_tabItem">
+          販売中
+        </v-tab>
+        <v-tab :to="{ name: 'ClosedAuction' }" class="tabMenu_tabItem">
+          購入の著作権
+        </v-tab>
+      </v-tabs>
+    </section>
+    <section class="myCopyright">
+      <div class="content">
+        <h2 class="myCopyright_title">保有中の著作権</h2>
+        <p class="myCopyright_lead">
+          販売したい曲がありましたら、その曲をクリックしてください
+        </p>
+        <div class="myCopyright_wrap">
+          <article class="myCopyright_item">
+            <figure class="myCopyright_item_img">
+              <img
+                src="https://m.media-amazon.com/images/I/71L4atTJQhL._SS500_.jpg"
+              />
+            </figure>
+            <div class="myCopyright_item_content">
+              <h3 class="myCopyright_item_title">
+                パラボラ
+              </h3>
+              <p class="myCopyright_item_artist">
+                Officialヒゲ男dism
+              </p>
+              <p class="myCopyright_item_date">
+                終了：2020年04月07日
+              </p>
+              <button class="button-action" @click="console.log('あとで')">
+                販売
+              </button>
+            </div>
+          </article>
+          <article class="myCopyright_item">
+            <figure class="myCopyright_item_img">
+              <img
+                src="https://m.media-amazon.com/images/I/71L4atTJQhL._SS500_.jpg"
+              />
+            </figure>
+            <div class="myCopyright_item_content">
+              <h3 class="myCopyright_item_title">
+                パラボラ
+              </h3>
+              <p class="myCopyright_item_artist">
+                Officialヒゲ男dism
+              </p>
+              <p class="myCopyright_item_date">
+                終了：2020年04月07日
+              </p>
+              <button class="button-action" @click="console.log('あとで')">
+                販売
+              </button>
+            </div>
+          </article>
+        </div>
+        <v-pagination v-model="page" :length="5"></v-pagination>
+      </div>
+    </section>
   </div>
 </template>
 <script>
@@ -16,37 +106,12 @@ export default {
   // components: { FormCalendar },
   data() {
     return {
-      period: 4,
-      searchTarget: "",
-      searchTargetItems: ["全体", "あああ"],
-      searchOrder: "",
-      transactionHeaders: [
-        { text: "リクエスト日", value: "date" },
-        { text: "内訳", value: "breakdown" },
-        { text: "曲名", value: "title" },
-        { text: "歌手", value: "artist" },
-        { text: "数量", value: "amount" },
-        { text: "金額", value: "price" },
-        { text: "その他所得税", value: "incometax" },
-        { text: "地方所得税", value: "localincometax" },
-        { text: "残高", value: "balance" }
-      ],
-      desserts: [
-        {
-          date: "2020/01/01",
-          breakdown: "入金",
-          title: "パラボラ",
-          artist: "Officialヒゲ男dism",
-          amount: "1",
-          price: "100000",
-          incometax: "0",
-          localincometax: "0",
-          balance: "0"
-        }
-      ]
+      page: 1
     };
   },
-  created: async function() {},
+  created: async function() {
+    console.log(this.$route.path);
+  },
   mounted: function() {},
   methods: {}
 };

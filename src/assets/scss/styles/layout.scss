@@ -28,12 +28,17 @@ body {
         }
         
         &_logo {
-            flex: 0 0 100px;
+            flex: 0 0 123px;
+            display: flex;
+            align-items: center;
             font-size: 2.5rem;
             font-family: $font-en;
-            line-height: $header-height;
             font-weight: bold;
             text-align: left;
+
+            a {
+                display: block;
+            }
         }
 
         &_gnav {
@@ -46,7 +51,7 @@ body {
                 text-align: center;
             }
 
-            a {
+            &_link {
                 position: relative;
                 display: inline-block;
                 width: 100%;
@@ -56,6 +61,22 @@ body {
                 transition: all .3s;
                 font-size: 1.3rem;
                 font-weight: bold;
+            }
+
+            &_link-current {
+                position: relative;
+                color: $color-theme-center !important;
+
+                &::after {
+                    content: "";
+                    position: absolute;
+                    top: 20px;
+                    left: 50%;
+                    width: 20px;
+                    height: 3px;
+                    margin-left: -10px;
+                    background: $color-theme-center;
+                }
             }
         }
 
@@ -230,7 +251,7 @@ body {
                 }
             }
 
-            &_link, &_link-current {
+            &_link {
                 display: inline-block;
                 padding: 0 20px;
                 color: #fff;
@@ -365,68 +386,6 @@ body {
         }
     }
 
-    .tabMenu {
-        position: absolute;
-        display: flex;
-        bottom: 0;
-        width: 600px;
-        max-width: 80%;
-        height: 50px;
-        margin: auto;
-        background: #fff;
-        box-shadow: 0 0 3px rgba(#000, .05);
-        border-bottom: none;
-        border-radius: $radius-tab $radius-tab 0 0;
-        line-height: 50px;
-
-        .v-tabs-bar {
-            height: 60px;
-        }
-
-        .v-tabs-bar__content {
-            a:first-child {
-                border-top-left-radius: $radius-tab;
-            }
-
-            a:last-child {
-                border-top-right-radius: $radius-tab;
-            }
-        }
-
-        .v-item-group {
-            width: 100%;
-        }
-
-        &_tabItem {
-            height: 50px;
-            width: 50%;
-            flex: 0 0 50%;
-            font-size: 1.5rem;
-        }
-
-        .v-tab--active {
-            position: relative;
-            background: $color-bg-theme;
-            color: #fff;
-            font-weight: bold;
-
-            &::after {
-                content: '';
-                display: block;
-                position: absolute;
-                top: 100%;
-                left: 50%;
-                width: 0;
-                height: 0;
-                background: transparent;
-                margin-left: -7px;
-                border-right: 7px solid transparent;
-                border-left: 7px solid transparent;
-                border-top: 7px solid $color-theme-center;
-            }
-        }
-    }
-    
     /* Footer */
     .siteFooter {
         padding: 70px 0 40px;
@@ -448,9 +407,9 @@ body {
         }
         
         &_logo {
-            font-weight: bold;
-            margin-bottom: 40px;
-            font-size: 2.5rem;
+            display: block;
+            width: 124px;
+            margin: 0 auto 40px;
         }
 
         &_nav {

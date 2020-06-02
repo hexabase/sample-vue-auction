@@ -10,7 +10,7 @@
     </section>
     <section class="pickupAuction">
       <h3 class="contents_title">
-        <span class="contents_title-en">Pickup Auction</span>
+        <span class="contents_title-en">On Going</span>
         <span class="contents_title-jp">開催中のオークション</span>
       </h3>
       <ul class="pickupAuction_list">
