@@ -38,7 +38,7 @@
             {{ displayAuctionList[index].歌手1 }}
           </div>
           <div class="pickupAuction_price">
-            {{ displayAuctionList[index].オークション開始金額 }}
+            {{ changeYen(displayAuctionList[index].オークション開始金額) }}
             <span class="unit">円〜</span>
           </div>
           <div class="pickupAuction_stock">
@@ -260,6 +260,15 @@ export default {
   created: async function() {},
   mounted: async function() {
     this.auctionList = await this.getAuctionList();
+    this.auctionList = this.auctionList.filter(function(value) {
+      const diff = moment(
+        moment(value.オークション終了時間)
+          .tz("Asia/Tokyo")
+          .format()
+          .slice(0, -14) + value.オークション終了時刻
+      ).diff(moment());
+      return diff > 0;
+    });
     var auctionBidReport = {};
     auctionBidReport = await this.$hexalink.getReports(
       this.token,
@@ -294,7 +303,10 @@ export default {
         }
       }
     }
-
+    this.auctionList = this.multiSort(this.auctionList, [
+      "オークション終了時間",
+      "オークション終了時刻"
+    ]);
     this.length = Math.ceil(this.auctionList.length / this.pageSize);
     this.displayAuctionList = this.auctionList.slice(
       this.pageSize * (this.page - 1),
@@ -310,13 +322,7 @@ export default {
         this.applicationId,
         this.datastoreIds["著作権DB"],
         {
-          conditions: [
-            {
-              id: "オークション終了時間", // Hexalink画⾯で⼊⼒したIDを指定
-              search_value: [moment(), null],
-              exact_match: false // 完全⼀致で検索
-            }
-          ],
+          conditions: [],
           page: 1,
           per_page: 9000,
           use_display_id: true,
@@ -329,7 +335,10 @@ export default {
       for (const key in this.displayAuctionList) {
         // diffメソッドを使って、日時の差を、ミリ秒で取得
         const diff = moment(
-          this.displayAuctionList[key].オークション終了時間
+          moment(this.displayAuctionList[key].オークション終了時間)
+            .tz("Asia/Tokyo")
+            .format()
+            .slice(0, -14) + this.displayAuctionList[key].オークション終了時刻
         ).diff(moment());
 
         // ミリ秒からdurationオブジェクトを生成
@@ -356,6 +365,37 @@ export default {
     },
     selectItem(musicId) {
       this.$router.push("/auctionbid?id=" + musicId);
+    },
+    changeYen(num) {
+      return String(num)
+        .split("")
+        .reverse()
+        .join("")
+        .match(/\d{1,3}/g)
+        .join(",")
+        .split("")
+        .reverse()
+        .join("");
+    },
+    defaultSortFunc(a, b, key, direction = -1, nullsFirst = -1) {
+      if (a[key] == undefined && b[key] == undefined) return 0;
+      if (a[key] == undefined) return nullsFirst * -1;
+      if (b[key] == undefined) return nullsFirst * 1;
+      if (a[key] > b[key]) return direction * -1;
+      if (a[key] < b[key]) return direction * 1;
+      return 0;
+    },
+    multiSort(data, keys) {
+      const _data = data.slice();
+      _data.sort((a, b) => {
+        let order = 0;
+        keys.some(key => {
+          order = this.defaultSortFunc(a, b, key);
+          return !!order;
+        });
+        return order;
+      });
+      return _data;
     }
   }
 };
