@@ -22,7 +22,7 @@
                 <span class="unit">口</span>
               </td>
               <td>
-                {{ auctionStartPrice }}
+                {{ changeYen(Number(auctionStartPrice)) }}
                 <span class="unit">円</span>
               </td>
             </tr>
@@ -50,7 +50,10 @@
                   class="option"
                 >
                   <td>
-                    {{ value["d2813a9b-33e5-405f-9116-ff9c97a0bf06"] }} 円
+                    {{
+                      changeYen(value["d2813a9b-33e5-405f-9116-ff9c97a0bf06"])
+                    }}
+                    円
                   </td>
                   <td>
                     {{ value["4384d821-8e19-4e08-949b-44cab6efa408"] }}
@@ -74,7 +77,7 @@
                 <h3 class="currentBid_title">現在以下の内容で入札しています</h3>
                 <div class="currentBid_body">
                   <p class="currentBid_detail">
-                    {{ myAuctionBidList[0].入札金額 }}
+                    {{ changeYen(myAuctionBidList[0].入札金額) }}
                     <span class="unit">円&nbsp;×&nbsp;</span>
                     {{ myAuctionBidList[0].数量 }}
                     <span class="unit">口</span>
@@ -725,7 +728,12 @@ export default {
     },
     updateMessage() {
       // diffメソッドを使って、日時の差を、ミリ秒で取得
-      const diff = moment(this.auctionEndDate).diff(moment());
+      const diff = moment(
+        moment(this.auctionEndDate)
+          .tz("Asia/Tokyo")
+          .format()
+          .slice(0, -14) + this.auctionEndTime
+      ).diff(moment());
       if (diff < 0) {
         this.auctionFinishedFlag = true;
       }
@@ -840,6 +848,7 @@ export default {
       this.auctionStatus = dataLists[0].オークション状況;
       this.auctionStartDate = dataLists[0].オークション開始時間;
       this.auctionEndDate = dataLists[0].オークション終了時間;
+      this.auctionEndTime = dataLists[0].オークション終了時刻;
       this.auctionAmount = dataLists[0].オークション数量;
       this.auctionStartPrice = dataLists[0].オークション開始金額;
       this.auctionEndPrice = dataLists[0].オークション落札金額;
