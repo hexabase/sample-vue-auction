@@ -583,6 +583,12 @@ export default {
       );
     },
     async doSend() {
+      if (this.auctionFinishedFlag) {
+        alert("既にオークションが終了しているため入札できません");
+        this.initialDisplay();
+        this.modal = false;
+        return;
+      }
       // 入札履歴があった場合は更新処理
       if (this.myAuctionBidList.length > 0) {
         var result = await this.updatedDataItem(
@@ -736,9 +742,9 @@ export default {
       ).diff(moment());
       if (diff < 0) {
         this.auctionFinishedFlag = true;
-      }
-      if (this.auctionFinishedFlag) {
-        return;
+        return false;
+      } else {
+        this.auctionFinishedFlag = false;
       }
       // ミリ秒からdurationオブジェクトを生成
       const duration = moment.duration(diff);
