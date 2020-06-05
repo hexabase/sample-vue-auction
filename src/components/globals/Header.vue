@@ -81,7 +81,7 @@
         </v-menu>
       </template>
     </div>
-    <div class="siteHeader_userNav">
+    <div v-if="token" class="siteHeader_userNav">
       <ul class="siteHeader_userNav_wrap">
         <li>
           <router-link to="/mypage">
