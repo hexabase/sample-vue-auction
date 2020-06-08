@@ -11,7 +11,7 @@ body {
 /* header */
 .v-application.theme--light {
     // padding-top: $header-height;
-    padding-top: calc(#{$header-height} + #{$userNav-height});
+    // padding-top: calc(#{$header-height} + #{$userNav-height});
 
     .siteHeader {
         position: fixed;
@@ -21,6 +21,14 @@ body {
         z-index: $zIndex-header;
         height: $header-height;
         background: rgba(#fff, 1);
+
+        + main {
+            margin-top: $header-height;
+        }
+        
+        &-login + main {
+            margin-top: $header-height + $userNav-height;
+        }
         
         .content {
             display: flex;
@@ -28,7 +36,7 @@ body {
         }
         
         &_logo {
-            flex: 0 0 123px;
+            flex: 0 0 162px;
             display: flex;
             align-items: center;
             font-size: 2.5rem;
@@ -408,7 +416,7 @@ body {
         
         &_logo {
             display: block;
-            width: 124px;
+            width: 162px;
             margin: 0 auto 40px;
         }
 
