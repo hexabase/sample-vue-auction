@@ -14,8 +14,7 @@
 
     &_img {
         flex: 1 1;
-        width: 300px;
-        max-width: 30%;
+        max-width: 20%;
     }
 
     &_wrap {
@@ -25,7 +24,7 @@
     }
 
     &_title {
-        margin-bottom: 10px;
+        margin-bottom: 15px;
         font-size: 3rem;
         font-weight: bold;
 
@@ -37,17 +36,11 @@
     }
 
     &_artist {
-        margin-bottom: 40px;
-        font-size: 1.4rem;
+        margin: 0 0 40px 35px;
+        font-size: 1.6rem;
         color: $color-text-lightgray;
     }
     
-    &_text {
-        margin-bottom: 40px;
-        font-size: 1.2rem;
-        color: $color-text-sub;
-    }
-
     &_data {
         width: 100%;
         border-top: 15px solid $color-bg;
@@ -76,6 +69,10 @@
             font-family: $font-mix;
             letter-spacing: -0.02em;
             color: $color-theme-center;
+
+            div {
+                min-width: 240px;
+            }
         }
 
         th:last-child, td:last-child {
@@ -83,6 +80,7 @@
         }
 
         .unit {
+            margin-right: 7px;
             font-size: 1.4rem;
         }
     }
@@ -102,7 +100,7 @@
     }
 
     &_left {
-        width: 50%;
+        flex: 1 1 100%;
     }
 
     .bidList {
@@ -120,7 +118,7 @@
     }
 
     &_right {
-        width: 50%;
+        flex: 1 1 100%;
         padding-left: 4%;
     }
 

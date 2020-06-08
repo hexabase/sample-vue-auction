@@ -308,6 +308,8 @@
         height: 50px;
         width: 100%;
         font-size: 1.5rem;
+        padding: 0 10px;
+        letter-spacing: 0;
 
         &:not(.v-tab--active) {
             color: $color-theme-center !important;

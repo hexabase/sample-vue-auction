@@ -31,6 +31,9 @@
       </p>
       <div class="content">
         <div class="auctionList_wrap">
+          <p v-if="displayAuctionList.length < 1" class="auctionList_none">
+            現在、開催中のオークションはございません
+          </p>
           <article
             v-for="(x, index) in displayAuctionList"
             :key="index"
@@ -82,6 +85,7 @@
           </article>
         </div>
         <v-pagination
+          v-if="displayAuctionList.length > 0"
           v-model="page"
           :length="length"
           @input="pageChange(page)"
