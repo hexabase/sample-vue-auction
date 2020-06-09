@@ -20,6 +20,13 @@
             padding: 0 5%;
         }
 
+        &_none {
+            margin: 40px 0 80px;
+            padding: 25px 50px;
+            background: $color-bg;
+            font-size: 1.6rem;
+        }
+
         &_item {
             width: 40%;
             flex: 0 0 40%;
@@ -28,17 +35,8 @@
             transition: all .3s;
 
             &_img {
-                display: flex;
-                justify-content: center;
-                align-items: center;
+                @extend .figure-center;
                 margin-bottom: 15px;
-                background: $color-bg-thin;
-
-                &::after {
-                    content: "";
-                    width: 0;
-                    padding-bottom: 100%;
-                }
             }
 
             &_title {

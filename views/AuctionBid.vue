@@ -8,7 +8,6 @@
         <div class="musicInfo_wrap">
           <h2 class="musicInfo_title">{{ title }}</h2>
           <p class="musicInfo_artist">{{ singer1 }}</p>
-          <p class="musicInfo_text">{{ explanatoryText }}</p>
           <table class="musicInfo_data">
             <tr>
               <th>残り時間</th>
@@ -16,7 +15,10 @@
               <th>オークション開始価格<span>（1口、消費税を含む）</span></th>
             </tr>
             <tr>
-              <td>{{ auctionFinishedFlag ? "Closed" : remainingTime }}</td>
+              <td>
+                <div v-if="auctionFinishedFlag">Closed</div>
+                <div v-if="! auctionFinishedFlag" v-html="remainingTime"></div>
+              </td>
               <td>
                 {{ auctionAmount }}
                 <span class="unit">口</span>
@@ -32,7 +34,7 @@
     </section>
     <section class="auctionInfo">
       <div class="content">
-        <h2 class="auctionInfo_title">オークションの状況</h2>
+        <h2 class="auctionInfo_title">オークションの{{ auctionFinishedFlag ? "結果" : "状況" }}</h2>
         <div class="auctionInfo_wrap">
           <div class="auctionInfo_left">
             <table class="bidList">
@@ -757,7 +759,7 @@ export default {
 
       //カウントダウンの結果を変数に代入
       this.remainingTime =
-        days + "日" + hours + "時間" + minutes + "分" + seconds + "秒";
+        days + "<span class='unit'>日</span>" + hours + "<span class='unit'>時間</span>" + minutes + "<span class='unit'>分</span>" + seconds + "<span class='unit'>秒</span>";
     },
     changeYen(num) {
       return String(num)

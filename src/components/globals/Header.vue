@@ -1,35 +1,24 @@
 <template>
-  <header class="siteHeader" role="banner">
+  <header class="siteHeader" :class="{'siteHeader-login': token}" role="banner">
     <div class="content">
       <h1 class="siteHeader_logo">
         <router-link to="/">
-          <a>
-            <img
-              src="~@/assets/img/logo.png"
-              alt="BATON Marketplace for music royalty"
-            />
-          </a>
+          <img
+            src="~@/assets/img/logo.png"
+            alt="BATON Marketplace for music royalty"
+          />
         </router-link>
       </h1>
       <nav class="siteHeader_gnav" role="navigation">
         <ul>
           <li>
             <router-link to="/auctionlist">
-              <a
-                class="siteHeader_gnav_link"
-                :class="{
-                  'siteHeader_gnav_link-current':
-                    currentPage == 'Auctionlist' ||
-                    currentPage == 'ClosedAuction'
-                }"
-              >
-                オークション
-              </a>
+              オークション
             </router-link>
           </li>
           <li>
             <router-link to="/trade">
-              <a class="siteHeader_gnav_link">ユーザー間売買</a>
+              ユーザー間売買
             </router-link>
           </li>
           <li>
@@ -50,7 +39,7 @@
         </li>
         <li>
           <router-link to="/signin">
-            <a>ログイン</a>
+            ログイン
           </router-link>
         </li>
       </ul>
@@ -66,12 +55,12 @@
           <ul class="siteHeader_loginMenu">
             <li>
               <router-link to="mypage">
-                <a>マイページ</a>
+                マイページ
               </router-link>
             </li>
             <li>
               <router-link to="mypage">
-                <a>登録情報の変更</a>
+                登録情報の変更
               </router-link>
             </li>
             <li class="break">
@@ -85,36 +74,22 @@
       <ul class="siteHeader_userNav_wrap">
         <li>
           <router-link to="/mypage">
-            <a
-              class="siteHeader_userNav_link"
-              :class="{
-                'siteHeader_userNav_link-current': currentPage == 'Mypage'
-              }"
-            >
-              マイページ
-            </a>
+            マイページ
           </router-link>
         </li>
         <li>
-          <a href="" class="siteHeader_userNav_link">お知らせ</a>
+          <a href="">お知らせ</a>
         </li>
         <li>
           <router-link to="/mycopyrights">
-            <a
-              class="siteHeader_userNav_link"
-              :class="{
-                'siteHeader_userNav_link-current': currentPage == 'MyCopyrights'
-              }"
-            >
-              保有する楽曲権利
-            </a>
+            保有する楽曲権利
           </router-link>
         </li>
         <li>
-          <a href="" class="siteHeader_userNav_link">お財布</a>
+          <a href="">お財布</a>
         </li>
         <li>
-          <a href="" class="siteHeader_userNav_link">ユーザー情報</a>
+          <a href="">ユーザー情報</a>
         </li>
       </ul>
     </div>
