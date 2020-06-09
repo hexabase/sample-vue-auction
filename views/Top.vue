@@ -15,79 +15,81 @@
         <span class="contents_title-en">On Going</span>
         <span class="contents_title-jp">開催中のオークション</span>
       </h3>
-      <ul class="pickupAuction_list">
-        <article
-          v-for="(x, index) in displayAuctionList"
-          :key="index"
-          class="pickupAuction_item"
-          @click="selectItem(displayAuctionList[index].著作権番号)"
-        >
-          <figure class="pickupAuction_img">
-            <img :src="displayAuctionList[index].image1" />
-            <figcaption>
-              <span>あと</span>
-              {{ displayAuctionList[index].カウントダウン日 }}
-              <span>日</span>
-              {{ displayAuctionList[index].カウントダウン時分秒 }}
-            </figcaption>
-          </figure>
-          <div class="pickupAuction_title">
-            {{ displayAuctionList[index].タイトル }}
-          </div>
-          <div class="pickupAuction_artist">
-            {{ displayAuctionList[index].歌手1 }}
-          </div>
-          <div class="pickupAuction_price">
-            {{ changeYen(displayAuctionList[index].オークション開始金額) }}
-            <span class="unit">円〜</span>
-          </div>
-          <div class="pickupAuction_stock">
-            {{
-              displayAuctionList[index].入札数量
-                ? displayAuctionList[index].入札数量
-                : 0
-            }}
-            <span class="unit">株入札 / </span>
-            {{ displayAuctionList[index].オークション数量 }}
-            <span class="unit">株</span>
-          </div>
-          <div class="pickupAuction_bidRate">
-            {{
-              displayAuctionList[index].入札数量
-                ? (
-                    (displayAuctionList[index].入札数量 /
-                      displayAuctionList[index].オークション数量) *
-                    100
-                  ).toFixed(1)
-                : 0
-            }}
-          </div>
-        </article>
-        <!-- <li class="pickupAuction_item">
-          <a href="">
+      <div class="content">
+        <ul class="pickupAuction_list">
+          <article
+            v-for="(x, index) in displayAuctionList"
+            :key="index"
+            class="pickupAuction_item"
+            @click="selectItem(displayAuctionList[index].著作権番号)"
+          >
             <figure class="pickupAuction_img">
-              <img
-                src="https://pbs.twimg.com/media/EWCIGfqVAAQ8q9A?format=jpg&name=4096x4096"
-                alt=""
-              />
-              <figcaption><span>あと</span>1<span>日</span>12:34:56</figcaption>
+              <img :src="displayAuctionList[index].image1" />
+              <figcaption>
+                <span>あと</span>
+                {{ displayAuctionList[index].カウントダウン日 }}
+                <span>日</span>
+                {{ displayAuctionList[index].カウントダウン時分秒 }}
+              </figcaption>
             </figure>
-            <div class="pickupAuction_title">パラボラ</div>
-            <div class="pickupAuction_artist">Official髭男dism</div>
+            <div class="pickupAuction_title">
+              {{ displayAuctionList[index].タイトル }}
+            </div>
+            <div class="pickupAuction_artist">
+              {{ displayAuctionList[index].歌手1 }}
+            </div>
             <div class="pickupAuction_price">
-              1,500
+              {{ changeYen(displayAuctionList[index].オークション開始金額) }}
               <span class="unit">円〜</span>
             </div>
             <div class="pickupAuction_stock">
-              1200
+              {{
+                displayAuctionList[index].入札数量
+                  ? displayAuctionList[index].入札数量
+                  : 0
+              }}
               <span class="unit">株入札 / </span>
-              1500
+              {{ displayAuctionList[index].オークション数量 }}
               <span class="unit">株</span>
             </div>
-            <div class="pickupAuction_bidRate">125</div>
-          </a>
-        </li> -->
-      </ul>
+            <div class="pickupAuction_bidRate">
+              {{
+                displayAuctionList[index].入札数量
+                  ? (
+                      (displayAuctionList[index].入札数量 /
+                        displayAuctionList[index].オークション数量) *
+                      100
+                    ).toFixed(1)
+                  : 0
+              }}
+            </div>
+          </article>
+          <!-- <li class="pickupAuction_item">
+            <a href="">
+              <figure class="pickupAuction_img">
+                <img
+                  src="https://pbs.twimg.com/media/EWCIGfqVAAQ8q9A?format=jpg&name=4096x4096"
+                  alt=""
+                />
+                <figcaption><span>あと</span>1<span>日</span>12:34:56</figcaption>
+              </figure>
+              <div class="pickupAuction_title">パラボラ</div>
+              <div class="pickupAuction_artist">Official髭男dism</div>
+              <div class="pickupAuction_price">
+                1,500
+                <span class="unit">円〜</span>
+              </div>
+              <div class="pickupAuction_stock">
+                1200
+                <span class="unit">株入札 / </span>
+                1500
+                <span class="unit">株</span>
+              </div>
+              <div class="pickupAuction_bidRate">125</div>
+            </a>
+          </li> -->
+        </ul>
+      </div>
       <div class="pickupAuction_link">
         <router-link to="/auctionList">
           <a class="button-main">

@@ -59,7 +59,7 @@ body {
                 text-align: center;
             }
 
-            &_link {
+            a {
                 position: relative;
                 display: inline-block;
                 width: 100%;
@@ -71,7 +71,7 @@ body {
                 font-weight: bold;
             }
 
-            &_link-current {
+            .router-link-active {
                 position: relative;
                 color: $color-theme-center !important;
 
@@ -259,7 +259,7 @@ body {
                 }
             }
 
-            &_link {
+            a {
                 display: inline-block;
                 padding: 0 20px;
                 color: #fff;
@@ -267,6 +267,7 @@ body {
                 font-size: 1.3rem;
                 transition: all .3s;
 
+                &:hover,
                 &:visited:hover {
                     color: lighten($color-theme-left, 23%);
                 }
@@ -276,8 +277,12 @@ body {
                 }
             }
 
-            &_link-current {
+            .router-link-active {
                 background: rgba($color-theme-center, .4);
+
+                &:hover {
+                    color: #fff;
+                }
             }
         }
     }

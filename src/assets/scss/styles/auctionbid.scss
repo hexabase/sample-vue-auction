@@ -15,6 +15,8 @@
     &_img {
         flex: 1 1;
         max-width: 20%;
+        @extend .figure-fix;
+        padding-bottom: inherit;
     }
 
     &_wrap {
@@ -71,7 +73,7 @@
             color: $color-theme-center;
 
             div {
-                min-width: 240px;
+                min-width: 200px;
             }
         }
 

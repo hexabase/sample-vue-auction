@@ -35,17 +35,8 @@
             transition: all .3s;
 
             &_img {
-                display: flex;
-                justify-content: center;
-                align-items: center;
+                @extend .figure-center;
                 margin-bottom: 15px;
-                background: $color-bg-thin;
-
-                &::after {
-                    content: "";
-                    width: 0;
-                    padding-bottom: 100%;
-                }
             }
 
             &_title {

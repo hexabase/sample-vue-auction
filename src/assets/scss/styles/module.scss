@@ -112,6 +112,35 @@
     -webkit-text-fill-color: transparent;
 }
 
+// image box
+.figure-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: $color-bg-thin;
+
+    &::after {
+        content: "";
+        width: 0;
+        padding-bottom: 100%;
+    }
+}
+
+.figure-fix {
+    position: relative;
+    // width: 100%;
+    padding-bottom: 100%;
+
+    img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
 // form 
 .form-box {
     border: $border-input;

@@ -79,19 +79,15 @@
 
     &_item {
         width: 25%;
-        padding: 0 1%;
+        padding: 0 1.5%;
         text-align: left;
         position: relative;
+        cursor: pointer;
     }
 
     &_img {
-        position: relative;
+        @extend .figure-fix;
         margin-bottom: 15px;
-        transition: all .3s;
-
-        img {
-            width: 100%;
-        }
 
         &:hover {
             opacity: .8;
