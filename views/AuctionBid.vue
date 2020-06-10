@@ -17,7 +17,7 @@
             <tr>
               <td>
                 <div v-if="auctionFinishedFlag">Closed</div>
-                <div v-if="! auctionFinishedFlag" v-html="remainingTime"></div>
+                <div v-if="!auctionFinishedFlag" v-html="remainingTime"></div>
               </td>
               <td>
                 {{ auctionAmount }}
@@ -34,7 +34,9 @@
     </section>
     <section class="auctionInfo">
       <div class="content">
-        <h2 class="auctionInfo_title">オークションの{{ auctionFinishedFlag ? "結果" : "状況" }}</h2>
+        <h2 class="auctionInfo_title">
+          オークションの{{ auctionFinishedFlag ? "結果" : "状況" }}
+        </h2>
         <div class="auctionInfo_wrap">
           <div class="auctionInfo_left">
             <table class="bidList">
@@ -193,6 +195,7 @@
         <h2 class="musicDetail_title">Music Information</h2>
         <section class="musicDetailContent">
           <iframe
+            v-if="videoUrl"
             width="640"
             height="360"
             :src="videoSourceUrl"
@@ -204,7 +207,7 @@
           <h3 class="musicDetailContent_title">{{ title }}</h3>
           <p class="musicDetailContent_artist">{{ singer1 }}</p>
           <p class="musicDetailContent_text">{{ explanatoryText }}</p>
-          <div class="musicDetailContent_link">
+          <div v-if="officialUrl" class="musicDetailContent_link">
             <a :href="officialUrl" target="_blank" rel="noopener noreferrer">
               <v-icon>mdi-chevron-right</v-icon>
               <span>オフィシャルサイト</span>
@@ -759,7 +762,14 @@ export default {
 
       //カウントダウンの結果を変数に代入
       this.remainingTime =
-        days + "<span class='unit'>日</span>" + hours + "<span class='unit'>時間</span>" + minutes + "<span class='unit'>分</span>" + seconds + "<span class='unit'>秒</span>";
+        days +
+        "<span class='unit'>日</span>" +
+        hours +
+        "<span class='unit'>時間</span>" +
+        minutes +
+        "<span class='unit'>分</span>" +
+        seconds +
+        "<span class='unit'>秒</span>";
     },
     changeYen(num) {
       return String(num)
