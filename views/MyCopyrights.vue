@@ -58,17 +58,17 @@
             class="myCopyright_item"
           >
             <figure class="myCopyright_item_img">
-              <img :src="displayMyCopyrightsList[index].image1" />
+              <img :src="displayMyCopyrightsList[index][image1]" />
             </figure>
             <div class="myCopyright_item_content">
               <h3 class="myCopyright_item_title">
-                {{ displayMyCopyrightsList[index].タイトル }}
+                {{ displayMyCopyrightsList[index][タイトル] }}
               </h3>
               <p class="myCopyright_item_artist">
-                {{ displayMyCopyrightsList[index].歌手1 }}
+                {{ displayMyCopyrightsList[index][歌手1] }}
               </p>
               <p class="myCopyright_item_date">
-                保有数：{{ displayMyCopyrightsList[index].数量 }} 口
+                保有数：{{ displayMyCopyrightsList[index][数量] }} 口
               </p>
               <button class="button-action" @click="console.log('あとで')">
                 販売
@@ -138,9 +138,15 @@ export default {
       datasotreIdList: this.$store.getters["datas/getDatastores"],
       datastoreIds: this.$store.getters["datas/getDatastoreIds"],
       userId: this.$store.getters["user/getHexaID"],
-      myCopyrightsList: [],
+      myCopyrightsList: {},
       displayMyCopyrightsList: [],
-      auctionList: []
+      auctionList: [],
+      image1: "b29008ee-af07-4012-93c5-7d396a987611",
+      タイトル: "d31e8808-5644-419b-afd3-89f6b4dcbade",
+      歌手1: "dfb7990a-c6cb-47fc-9435-509fb2ce02d6",
+      数量: "fbf47629-632a-4887-b8e2-ed0340b90380",
+      会員番号: "e41d9dbf-41f9-480c-bacb-3289a35d2c57",
+      楽曲状況: "645efd1c-889e-432b-8877-b940e0b3576a"
     };
   },
   created: async function() {
@@ -148,61 +154,31 @@ export default {
   },
   mounted: async function() {
     this.myCopyrightsList = await this.getMyCopyrightsList();
-    this.auctionList = await this.getAuctionList();
-    for (const myCopyrightsKey in this.myCopyrightsList) {
-      for (const auctionKey in this.auctionList) {
-        if (
-          this.myCopyrightsList[myCopyrightsKey].著作権番号 ==
-          this.auctionList[auctionKey].著作権番号
-        ) {
-          this.$set(
-            this.myCopyrightsList[myCopyrightsKey],
-            "タイトル",
-            this.auctionList[auctionKey].タイトル
-          );
-          this.$set(
-            this.myCopyrightsList[myCopyrightsKey],
-            "歌手1",
-            this.auctionList[auctionKey].歌手1
-          );
-          this.$set(
-            this.myCopyrightsList[myCopyrightsKey],
-            "image1",
-            this.auctionList[auctionKey].image1
-          );
-        }
-      }
-    }
-    this.length = Math.ceil(this.myCopyrightsList.length / this.pageSize);
-    this.displayMyCopyrightsList = this.myCopyrightsList.slice(
+    this.length = Math.ceil(
+      this.myCopyrightsList.report_results.length / this.pageSize
+    );
+    this.displayMyCopyrightsList = this.myCopyrightsList.report_results.slice(
       this.pageSize * (this.page - 1),
       this.pageSize * this.page
     );
   },
   methods: {
     async getMyCopyrightsList() {
-      return await this.$hexalink.getItems(
+      return await this.$hexalink.getReports(
         this.token,
         this.applicationId,
-        this.datastoreIds["ユーザ所有著作権一覧"],
+        "5edf2233d7def3000650a6c5",
         {
           conditions: [
             {
-              id: "会員番号", // Hexalink画⾯で⼊⼒したIDを指定
-              search_value: [this.userId],
-              exact_match: true // 完全⼀致で検索
+              rpf_id: this.会員番号,
+              search_value: [this.userId]
             },
             {
-              id: "楽曲状況", // Hexalink画⾯で⼊⼒したIDを指定
-              search_value: ["保有中"],
-              exact_match: true // 完全⼀致で検索
+              rpf_id: this.楽曲状況,
+              search_value: ["保有中"]
             }
-          ],
-          page: 1,
-          per_page: 9000,
-          use_display_id: true,
-          sort_field_id: "取得日付", // Hexalink画⾯で⼊⼒したIDを指定
-          sort_order: "desc"
+          ]
         }
       );
     },
@@ -222,7 +198,7 @@ export default {
       );
     },
     pageChange(pageNumber) {
-      this.displayMyCopyrightsList = this.myCopyrightsList.slice(
+      this.displayMyCopyrightsList = this.myCopyrightsList.report_results.slice(
         this.pageSize * (pageNumber - 1),
         this.pageSize * pageNumber
       );
