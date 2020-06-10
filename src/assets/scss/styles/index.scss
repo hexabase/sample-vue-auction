@@ -110,9 +110,10 @@
     }
 
     &_title {
-        margin-bottom: 5px;
+        padding-bottom: 10px;
         font-size: 1.6rem;
         font-weight: bold;
+        @extend .text_ellipsis;
     }
 
     &_artist {
@@ -184,13 +185,14 @@
     }
 
     &_title {
-        margin-bottom: 5px;
+        padding-bottom: 8px;
         font-size: 1.6rem;
         font-weight: bold;
+        @extend .text_ellipsis;
     }
 
     &_artist {
-        margin-bottom: 15px;
+        margin-bottom: 20px;
         font-size: 1.2rem;
         color: $color-text-lightgray;
     }

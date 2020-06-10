@@ -112,6 +112,12 @@
     -webkit-text-fill-color: transparent;
 }
 
+.text_ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 // image box
 .figure-center {
     display: flex;

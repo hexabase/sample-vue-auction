@@ -16,7 +16,7 @@
         <span class="contents_title-jp">開催中のオークション</span>
       </h3>
       <div class="content">
-        <ul class="pickupAuction_list">
+        <div class="pickupAuction_list">
           <article
             v-for="(x, index) in displayAuctionList"
             :key="index"
@@ -64,31 +64,7 @@
               }}
             </div>
           </article>
-          <!-- <li class="pickupAuction_item">
-            <a href="">
-              <figure class="pickupAuction_img">
-                <img
-                  src="https://pbs.twimg.com/media/EWCIGfqVAAQ8q9A?format=jpg&name=4096x4096"
-                  alt=""
-                />
-                <figcaption><span>あと</span>1<span>日</span>12:34:56</figcaption>
-              </figure>
-              <div class="pickupAuction_title">パラボラ</div>
-              <div class="pickupAuction_artist">Official髭男dism</div>
-              <div class="pickupAuction_price">
-                1,500
-                <span class="unit">円〜</span>
-              </div>
-              <div class="pickupAuction_stock">
-                1200
-                <span class="unit">株入札 / </span>
-                1500
-                <span class="unit">株</span>
-              </div>
-              <div class="pickupAuction_bidRate">125</div>
-            </a>
-          </li> -->
-        </ul>
+        </div>
       </div>
       <div class="pickupAuction_link">
         <router-link to="/auctionList">
@@ -113,11 +89,11 @@
                   alt=""
                 />
               </figure>
-              <div class="userMarket_title">パラボラ</div>
-              <div class="userMarket_artist">Official髭男dism</div>
+              <div class="userMarket_title">Lemon</div>
+              <div class="userMarket_artist">米津玄師</div>
               <div class="userMarket_price">
                 最安値：
-                <span class="price">1,500</span>
+                <span class="price">100</span>
                 円
               </div>
             </a>
@@ -126,15 +102,15 @@
             <a href="">
               <figure class="userMarket_img">
                 <img
-                  src="https://pbs.twimg.com/media/EWCIGfqVAAQ8q9A?format=jpg&name=4096x4096"
+                  src="https://img.lap.recochoku.jp/p1/imgkp?p=%2F12%2F1430%2F147360000.jpg&f=776E72&FFh=300&FFw=300&h=53650&option=FFenl%3Don"
                   alt=""
                 />
               </figure>
-              <div class="userMarket_title">パラボラ</div>
-              <div class="userMarket_artist">Official髭男dism</div>
+              <div class="userMarket_title">瞬間的シックスセンス</div>
+              <div class="userMarket_artist">あいみょん</div>
               <div class="userMarket_price">
                 最安値：
-                <span class="price">1,500</span>
+                <span class="price">200</span>
                 円
               </div>
             </a>
@@ -143,15 +119,15 @@
             <a href="">
               <figure class="userMarket_img">
                 <img
-                  src="https://pbs.twimg.com/media/EWCIGfqVAAQ8q9A?format=jpg&name=4096x4096"
+                  src="https://img.lap.recochoku.jp/p1/imgkp?p=%2F12%2F1010%2F158862530.jpg&f=736E79&FFh=300&FFw=300&h=3C188&option=FFenl%3Don"
                   alt=""
                 />
               </figure>
-              <div class="userMarket_title">パラボラ</div>
-              <div class="userMarket_artist">Official髭男dism</div>
+              <div class="userMarket_title">from the edge</div>
+              <div class="userMarket_artist">FictionJunction feat. Lisa</div>
               <div class="userMarket_price">
                 最安値：
-                <span class="price">1,500</span>
+                <span class="price">1,200</span>
                 円
               </div>
             </a>
@@ -160,15 +136,15 @@
             <a href="">
               <figure class="userMarket_img">
                 <img
-                  src="https://pbs.twimg.com/media/EWCIGfqVAAQ8q9A?format=jpg&name=4096x4096"
+                  src="https://img.lap.recochoku.jp/p1/imgkp?p=%2F12%2F3126%2F126606037.jpg&f=617678&FFh=300&FFw=300&h=2A69E&option=FFenl%3Don"
                   alt=""
                 />
               </figure>
-              <div class="userMarket_title">パラボラ</div>
-              <div class="userMarket_artist">Official髭男dism</div>
+              <div class="userMarket_title">THE GUERRiLLA BiSH</div>
+              <div class="userMarket_artist">BiSH</div>
               <div class="userMarket_price">
                 最安値：
-                <span class="price">1,500</span>
+                <span class="price">1,200</span>
                 円
               </div>
             </a>
@@ -177,15 +153,15 @@
             <a href="">
               <figure class="userMarket_img">
                 <img
-                  src="https://pbs.twimg.com/media/EWCIGfqVAAQ8q9A?format=jpg&name=4096x4096"
+                  src="https://img.lap.recochoku.jp/p1/imgkp?p=%2F12%2F5659%2F151270506.jpg&f=776E72&FFh=300&FFw=300&h=862FB&option=FFenl%3Don"
                   alt=""
                 />
               </figure>
-              <div class="userMarket_title">パラボラ</div>
-              <div class="userMarket_artist">Official髭男dism</div>
+              <div class="userMarket_title">ハルノ匕</div>
+              <div class="userMarket_artist">あいみょん</div>
               <div class="userMarket_price">
                 最安値：
-                <span class="price">1,500</span>
+                <span class="price">1,200</span>
                 円
               </div>
             </a>
