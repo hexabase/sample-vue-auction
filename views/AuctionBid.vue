@@ -283,7 +283,7 @@
           <tr>
             <th>入札価格：</th>
             <td>
-              <span class="amount">{{ bidPrice }}</span> 円
+              <span class="amount">{{ changeYen(bidPrice) }}</span> 円
             </td>
           </tr>
           <tr>
@@ -956,6 +956,7 @@ export default {
       this.bidTotalAmount = auctionAmountCount;
       this.auctionListsGroup = auctionListsGroupSort;
       this.updateMessage();
+      this.agreeGuideline = false;
     }
   }
 };
