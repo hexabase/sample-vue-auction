@@ -454,6 +454,31 @@
     font-size: 1.3rem;
 }
 
+// breakpoint show/hide
+.show-tab {
+    display: none;
+    
+    @include max-screen($breakpoint-tab) {
+        display: block;
+    }
+}
+.hide-tab {
+    display: block;
+    
+    @include max-screen($breakpoint-tab) {
+        display: none;
+    }
+}
+
+.show-mobile {
+    display: none;
+    
+    @include max-screen($breakpoint-mobile) {
+        display: block;
+    }
+}
+
+
 // parallax
 .parallax-window {
     min-height: 300px;
