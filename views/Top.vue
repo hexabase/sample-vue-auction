@@ -300,7 +300,12 @@ export default {
         this.applicationId,
         this.datastoreIds["著作権DB"],
         {
-          conditions: [],
+          conditions: [
+            {
+              id: "HPに掲載可否", // Hexalink画⾯で⼊⼒したIDを指定
+              search_value: ["bb8de5a3-0f70-4369-b49a-6197ad8f1bff"]
+            }
+          ],
           page: 1,
           per_page: 9000,
           use_display_id: true,

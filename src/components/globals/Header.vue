@@ -1,5 +1,9 @@
 <template>
-  <header class="siteHeader" :class="{'siteHeader-login': token, 'menu-open': isMenuOpen}" role="banner">
+  <header
+    class="siteHeader"
+    :class="{ 'siteHeader-login': token, 'menu-open': isMenuOpen }"
+    role="banner"
+  >
     <div class="content">
       <h1 class="siteHeader_logo">
         <router-link to="/">
