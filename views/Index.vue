@@ -16,10 +16,7 @@
         <span class="contents_title-jp">開催中のオークション</span>
       </h3>
       <div class="pickupAuction_list">
-        <img
-          src="~@/assets/img/top_auction.png"
-          alt=""
-        />
+        <img src="~@/assets/img/top_auction.png" alt="" />
       </div>
       <div class="pickupAuction_link">
         <router-link to="/auctionList">

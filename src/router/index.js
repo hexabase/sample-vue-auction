@@ -13,7 +13,8 @@ import Index from "../../views/Index.vue";
 Vue.use(VueRouter);
 
 const routes = [
-  {// Movie用仮ページ
+  {
+    // Movie用仮ページ
     path: "/index",
     name: "index",
     component: Index

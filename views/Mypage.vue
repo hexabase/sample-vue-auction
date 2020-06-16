@@ -72,7 +72,10 @@
           </dl>
           <button class="button-main">照会する</button>
         </div>
-        <div class="transaction_result" @click="$router.push('/auctionbid?id=著作権番号2')">
+        <div
+          class="transaction_result"
+          @click="$router.push('/auctionbid?id=著作権番号2')"
+        >
           <template>
             <v-data-table
               :headers="transactionHeaders"
@@ -162,7 +165,7 @@ export default {
           incometax: "3,000",
           localincometax: "1,000",
           balance: "1,500,000"
-        },
+        }
       ]
     };
   },
