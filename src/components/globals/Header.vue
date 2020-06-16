@@ -1,7 +1,7 @@
 <template>
   <header
     class="siteHeader"
-    :class="{ 'siteHeader-login': token, 'menu-open': isMenuOpen }"
+    :class="{ 'siteHeader-login': token, 'menu-open': isMenuOpen, 'topOfPage': isPagetop }"
     role="banner"
   >
     <div class="content">
@@ -149,7 +149,8 @@ export default {
       token: this.$store.getters["auth/getToken"],
       currentPage: "",
       userName: "",
-      isMenuOpen: false
+      isMenuOpen: false,
+      isPagetop: true
     };
   },
   watch: {
@@ -165,6 +166,12 @@ export default {
     this.currentPage = this.$route.name || "";
     this.userName = this.$store.getters["auth/getUserNameKanji"];
   },
+  mounted() {
+   window.addEventListener('scroll', this.calculateScrollY);
+  },
+  beforeDestroy() {
+   window.removeEventListener('scroll', this.calculateScrollY);
+  },
   methods: {
     async signout() {
       // store 初期化
@@ -175,6 +182,10 @@ export default {
     },
     toggleMenu() {
       this.isMenuOpen = !this.isMenuOpen;
+    },
+    calculateScrollY() {// TODO:処理が重いのであとで実行タイミングを調整（堀
+      this.scrollY = window.scrollY;
+      this.isPagetop = this.scrollY == 0 ? true : false;
     }
   }
 };

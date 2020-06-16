@@ -21,6 +21,7 @@ body {
         z-index: $zIndex-header;
         height: $header-height;
         background: rgba(#fff, 1);
+        transition: all .5s;
 
         @include max-screen($breakpoint-tab) {
             height: $header-height_mobile;
@@ -40,6 +41,10 @@ body {
             @include max-screen($breakpoint-tab) {
                 margin-top: $header-height_mobile;
             }
+        }
+
+        &.topOfPage:not(.siteHeader-login) {
+            background: rgba(#fff, .1);
         }
         
         .content {
