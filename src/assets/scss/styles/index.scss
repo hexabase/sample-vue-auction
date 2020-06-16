@@ -12,7 +12,7 @@
     }
 }
 
-.v-application.theme--light {
+.top {
 .heroHeader {
     position: relative;
     height: 100vh;
@@ -24,12 +24,26 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
+    .v-content & {
+        @include max-screen($breakpoint-mobile) {
+            height: calc(100vh - #{$header-height_mobile});
+            margin-top: 0;
+        }
+    }
+
     
     &_title {
         margin-bottom: 50px;
         font-size: 4.6rem;
         font-weight: bold;
         letter-spacing: 0.2em;
+
+        @include max-screen($breakpoint-mobile) {
+            width: 7.5em;
+            line-height: 1.4;
+            margin-bottom: 40px;
+        }
     }
 
     &_enText {
@@ -110,9 +124,10 @@
     }
 
     &_title {
-        margin-bottom: 5px;
+        padding-bottom: 10px;
         font-size: 1.6rem;
         font-weight: bold;
+        @extend .text_ellipsis;
     }
 
     &_artist {
@@ -184,13 +199,14 @@
     }
 
     &_title {
-        margin-bottom: 5px;
+        padding-bottom: 8px;
         font-size: 1.6rem;
         font-weight: bold;
+        @extend .text_ellipsis;
     }
 
     &_artist {
-        margin-bottom: 15px;
+        margin-bottom: 20px;
         font-size: 1.2rem;
         color: $color-text-lightgray;
     }
@@ -226,7 +242,7 @@
         border-right: $border-default;
     }
 
-    &_list {
+    .news_list {
         flex: 1 1 auto;
         padding-left: 60px;
     }

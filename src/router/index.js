@@ -8,10 +8,16 @@ import ClosedAuction from "../../views/ClosedAuction.vue";
 import AuctionBid from "../../views/AuctionBid.vue";
 import Mypage from "../../views/Mypage.vue";
 import MyCopyrights from "../../views/MyCopyrights.vue";
+import Index from "../../views/Index.vue";
 
 Vue.use(VueRouter);
 
 const routes = [
+  {// Movie用仮ページ
+    path: "/index",
+    name: "index",
+    component: Index
+  },
   {
     path: "/",
     name: "top",

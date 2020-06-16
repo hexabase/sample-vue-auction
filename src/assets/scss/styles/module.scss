@@ -112,6 +112,12 @@
     -webkit-text-fill-color: transparent;
 }
 
+.text_ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 // image box
 .figure-center {
     display: flex;
@@ -447,6 +453,31 @@
 .v-data-footer__select .v-select__selections .v-select__selection--comma {
     font-size: 1.3rem;
 }
+
+// breakpoint show/hide
+.show-tab {
+    display: none;
+    
+    @include max-screen($breakpoint-tab) {
+        display: block;
+    }
+}
+.hide-tab {
+    display: block;
+    
+    @include max-screen($breakpoint-tab) {
+        display: none;
+    }
+}
+
+.show-mobile {
+    display: none;
+    
+    @include max-screen($breakpoint-mobile) {
+        display: block;
+    }
+}
+
 
 // parallax
 .parallax-window {

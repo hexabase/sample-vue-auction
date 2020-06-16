@@ -11,7 +11,7 @@
       <div class="content">
         <h3 class="balance_title">残高</h3>
         <div class="balance_box">
-          <p class="balance_price">100000</p>
+          <p class="balance_price">100,000</p>
           <ul class="balance_link">
             <li>
               <button class="button-action">＋&nbsp;入金する</button>
@@ -72,7 +72,7 @@
           </dl>
           <button class="button-main">照会する</button>
         </div>
-        <div class="transaction_result">
+        <div class="transaction_result" @click="$router.push('/auctionbid?id=著作権番号2')">
           <template>
             <v-data-table
               :headers="transactionHeaders"
@@ -102,23 +102,67 @@ export default {
         { text: "曲名", value: "title" },
         { text: "歌手", value: "artist" },
         { text: "数量", value: "amount" },
-        { text: "金額", value: "price" },
-        { text: "その他所得税", value: "incometax" },
-        { text: "地方所得税", value: "localincometax" },
-        { text: "残高", value: "balance" }
+        { text: "金額", value: "price", align: "right" },
+        { text: "その他所得税", value: "incometax", align: "right" },
+        { text: "地方所得税", value: "localincometax", align: "right" },
+        { text: "残高", value: "balance", align: "right" }
       ],
       desserts: [
         {
-          date: "2020/01/01",
-          breakdown: "入金",
+          date: "2020/05/20",
+          breakdown: "入札",
           title: "パラボラ",
           artist: "Officialヒゲ男dism",
-          amount: "1",
-          price: "100000",
+          amount: "10",
+          price: "100,000",
           incometax: "0",
           localincometax: "0",
-          balance: "0"
-        }
+          balance: "900,000"
+        },
+        {
+          date: "2020/05/02",
+          breakdown: "出金",
+          title: "",
+          artist: "",
+          amount: "",
+          price: "-410,000",
+          incometax: "0",
+          localincometax: "0",
+          balance: "1,000,000"
+        },
+        {
+          date: "2020/04/18",
+          breakdown: "入札",
+          title: "プロローグ",
+          artist: "Uru",
+          amount: "1",
+          price: "-100,000",
+          incometax: "0",
+          localincometax: "0",
+          balance: "1,410,000"
+        },
+        {
+          date: "2020/03/30",
+          breakdown: "配当",
+          title: "パプリカ",
+          artist: "米津玄師",
+          amount: "100",
+          price: "10,000",
+          incometax: "1500",
+          localincometax: "500",
+          balance: "1,510,000"
+        },
+        {
+          date: "2020/02/08",
+          breakdown: "売却",
+          title: "パプリカ",
+          artist: "米津玄師",
+          amount: "50",
+          price: "200,000",
+          incometax: "3,000",
+          localincometax: "1,000",
+          balance: "1,500,000"
+        },
       ]
     };
   },

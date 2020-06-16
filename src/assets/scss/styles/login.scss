@@ -12,6 +12,7 @@
         background-size: cover;
         backdrop-filter: blur(5px);
         overflow: hidden;
+        margin: 0;
 
         &::before{
             content: '';
@@ -34,12 +35,15 @@
         padding: 60px 5%;
         background: #fff;
 
-        &_footer {
+        @include max-screen($breakpoint-mobile) {
+            margin: 20px 0;
+            padding: 20px 10%;
 
         }
 
         .button-action {
             width: 240px;
+            max-width: 80%;
             height: 50px;
             line-height: 50px;
         }
