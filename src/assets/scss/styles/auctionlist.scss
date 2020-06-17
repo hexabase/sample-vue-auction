@@ -37,6 +37,11 @@
             &_img {
                 @extend .figure-center;
                 margin-bottom: 15px;
+                cursor: pointer;
+
+                &:hover {
+                    opacity: .8;
+                }
             }
 
             &_title {

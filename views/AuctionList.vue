@@ -39,7 +39,7 @@
             :key="index"
             class="auctionList_item"
           >
-            <figure class="auctionList_item_img">
+            <figure class="auctionList_item_img" @click="selectItem(displayAuctionList[index].著作権番号)">
               <img :src="displayAuctionList[index].image1" />
             </figure>
             <h3 class="auctionList_item_title">
