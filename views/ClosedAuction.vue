@@ -98,6 +98,14 @@ export default {
       }
     );
     for (const listKey in this.auctionList) {
+      let image1Binary = this.auctionList[listKey].image1;
+      if (image1Binary) {
+        var ab = await this.$hexalink.getFile(this.token, image1Binary);
+        var blob = new Blob([ab], { type: "image/jpeg" });
+        this.auctionList[listKey].image1 = window.URL.createObjectURL(blob);
+      } else {
+        this.auctionList[listKey].image1 = "";
+      }
       this.auctionList[listKey].オークション終了時間 = moment(
         this.auctionList[listKey].オークション終了時間
       ).format("YYYY年MM月DD日");
