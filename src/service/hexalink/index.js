@@ -480,6 +480,15 @@ export default {
           config
         );
         return result.data;
+      },
+      async getItemSearchConditions(token, applicationId, datastoreId) {
+        let config = JSON.parse(JSON.stringify(defaultConfig));
+        config.headers["Authorization"] = `Bearer ${token}`;
+        const result = await axios.get(
+          `/linker-api/applications/${applicationId}/datastores/${datastoreId}/items/conditions`,
+          config
+        );
+        return result.data.result;
       }
     };
   }
