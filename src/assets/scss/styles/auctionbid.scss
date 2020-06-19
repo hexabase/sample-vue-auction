@@ -71,9 +71,10 @@
             font-family: $font-mix;
             letter-spacing: -0.02em;
             color: $color-theme-center;
+            text-align: center;
 
             div {
-                min-width: 200px;
+                min-width: 240px;
             }
         }
 

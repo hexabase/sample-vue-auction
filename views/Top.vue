@@ -15,7 +15,7 @@
         <span class="contents_title-en">On Going</span>
         <span class="contents_title-jp">開催中のオークション</span>
       </h3>
-      <div class="content">
+      <div class="pickupAuction_wrap">
         <div class="pickupAuction_list">
           <article
             v-for="(x, index) in displayAuctionList"
@@ -26,10 +26,8 @@
             <figure class="pickupAuction_img">
               <img :src="displayAuctionList[index].image1" />
               <figcaption>
-                <span>あと</span>
-                {{ displayAuctionList[index].カウントダウン日 }}
-                <span>日</span>
-                {{ displayAuctionList[index].カウントダウン時分秒 }}
+                <span class="pickupAuction_day">{{ displayAuctionList[index].カウントダウン日 }}</span>
+                <span v-html="displayAuctionList[index].カウントダウン時分秒"></span>
               </figcaption>
             </figure>
             <div class="pickupAuction_title">
@@ -48,9 +46,9 @@
                   ? displayAuctionList[index].入札数量
                   : 0
               }}
-              <span class="unit">株入札 / </span>
+              <span class="unit">口入札 / </span>
               {{ displayAuctionList[index].オークション数量 }}
-              <span class="unit">株</span>
+              <span class="unit">口</span>
             </div>
             <div class="pickupAuction_bidRate">
               {{
@@ -67,10 +65,8 @@
         </div>
       </div>
       <div class="pickupAuction_link">
-        <router-link to="/auctionList">
-          <a class="button-main">
-            すべてのオークションを見る
-          </a>
+        <router-link to="/auctionList" class="button-main">
+          すべてのオークションを見る
         </router-link>
       </div>
     </section>
@@ -220,6 +216,7 @@
 
 <script>
 import moment from "moment-timezone";
+import _ from 'lodash';
 export default {
   data() {
     return {
@@ -342,7 +339,14 @@ export default {
         this.$set(
           this.displayAuctionList[key],
           "カウントダウン時分秒",
-          diff > 0 ? hours + ":" + minutes + ":" + seconds : ""
+          diff > 0 ? //hours + ":" + minutes + ":" + seconds : ""
+          _.padStart(hours, 2, 0) +
+          "<span class='unit'>時間</span>" +
+          _.padStart(minutes, 2, 0) +
+          "<span class='unit'>分</span>" +
+          _.padStart(seconds, 2, 0) +
+          "<span class='unit'>秒</span>"
+          : ""
         );
       }
     },

@@ -401,6 +401,7 @@ import mapping from "@/assets/json/auctionDBMapping.json";
 import DatabaseSchema from "@/assets/json/DBSchema.json";
 import MyModal from "./MyModal.vue";
 import moment from "moment-timezone";
+import _ from 'lodash';
 export default {
   components: { MyModal },
   data() {
@@ -764,11 +765,11 @@ export default {
       this.remainingTime =
         days +
         "<span class='unit'>日</span>" +
-        hours +
+        _.padStart(hours,2, 0) +
         "<span class='unit'>時間</span>" +
-        minutes +
+        _.padStart(minutes,2, 0) +
         "<span class='unit'>分</span>" +
-        seconds +
+        _.padStart(seconds,2, 0) +
         "<span class='unit'>秒</span>";
     },
     changeYen(num) {
