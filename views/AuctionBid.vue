@@ -123,6 +123,8 @@
                   name="amount"
                   class="form-box"
                   step="500"
+                  max="999999999"
+                  @keydown="multipleHandler"
                 />
                 <span class="bidBox_unit">円</span>
                 <p class="note">※500円の倍数から入札可能です。</p>
@@ -135,6 +137,8 @@
                   type="number"
                   name="cnt_units"
                   class="form-box"
+                  max="99999"
+                  @keydown="multipleHandler"
                 />
               </div>
               <p class="bidBox_total">
@@ -469,7 +473,6 @@ export default {
       auctionAmount: "",
       auctionStartPrice: "",
       auctionEndPrice: "",
-      videoThumbnailUrl: "",
       videoSourceUrl: "",
       officialUrl: "",
       auctionListsGroup: [],
@@ -745,7 +748,7 @@ export default {
           .format()
           .slice(0, -14) + this.auctionEndTime
       ).diff(moment());
-      if (diff < 0) {
+      if (diff < 0 || this.applicabilityOnHomepage !== "掲載する") {
         this.auctionFinishedFlag = true;
         return false;
       } else {
@@ -781,6 +784,40 @@ export default {
         .split("")
         .reverse()
         .join("");
+    },
+    checkDigits(event) {
+      if (
+        event.target.value.length > event.target.max.length - 1 &&
+        event.keyCode !== 8 &&
+        event.keyCode !== 46 &&
+        event.keyCode !== 37 &&
+        event.keyCode !== 39 &&
+        event.keyCode !== 9
+      ) {
+        switch (event.target.id) {
+          case "amount":
+            event.preventDefault();
+            break;
+          case "cnt_units":
+            event.preventDefault();
+            break;
+        }
+      }
+    },
+    checkKeyDown(event) {
+      if (
+        event.keyCode == "190" ||
+        event.keyCode == "69" ||
+        event.keyCode == "109" ||
+        event.keyCode == "110" ||
+        event.keyCode == "189"
+      ) {
+        event.preventDefault();
+      }
+    },
+    multipleHandler(event) {
+      this.checkDigits(event);
+      this.checkKeyDown(event);
     },
     async initialDisplay() {
       this.musicId = this.$route.query.id;
@@ -818,7 +855,6 @@ export default {
       var explanatoryTextKr = "説明文（韓国）";
       this.copyrightNumber = dataLists[0].著作権番号;
       this.jasracCode = dataLists[0].JASRAC作品コード;
-      this.image1 = dataLists[0].image1;
       this.image2 = dataLists[0].image2;
       this.image3 = dataLists[0].image3;
       this.copyrightType = dataLists[0].著作権タイプ;
@@ -871,10 +907,6 @@ export default {
       this.auctionStartPrice = dataLists[0].オークション開始金額;
       this.auctionEndPrice = dataLists[0].オークション落札金額;
       this.officialUrl = dataLists[0].公式URL;
-      this.videoThumbnailUrl =
-        "http://img.youtube.com/vi/" +
-        dataLists[0].動画URL.split("v=")[1] +
-        "/hqdefault.jpg";
       this.bidPrice =
         this.myAuctionBidList.length > 0
           ? this.myAuctionBidList[0].入札金額
@@ -884,13 +916,22 @@ export default {
       this.videoSourceUrl =
         "https://www.youtube.com/embed/" + dataLists[0].動画URL.split("v=")[1];
 
+      let image1Binary = dataLists[0].image1;
+      if (image1Binary) {
+        var ab = await this.$hexalink.getFile(this.token, image1Binary);
+        var blob = new Blob([ab], { type: "image/jpeg" });
+        this.image1 = window.URL.createObjectURL(blob);
+      } else {
+        this.image1 = "";
+      }
+
       var rpf_bidAmount = "4384d821-8e19-4e08-949b-44cab6efa408";
       var rpf_copyrightNumber = "d3e553f2-7281-47b7-96ef-3ac55a72f1ee";
       var rpf_bidPrice = "d2813a9b-33e5-405f-9116-ff9c97a0bf06";
 
       // diffメソッドを使って、日時の差を、ミリ秒で取得
       const diff = moment(this.auctionEndDate).diff(moment());
-      if (diff < 0) {
+      if (diff < 0 || this.applicabilityOnHomepage !== "掲載する") {
         this.auctionFinishedFlag = true;
       }
 
