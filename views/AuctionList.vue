@@ -113,7 +113,28 @@ export default {
   },
   created: async function() {},
   mounted: async function() {
-    this.auctionList = await this.getAuctionList();
+    var searchConditions = await this.$hexalink.getItemSearchConditions(
+      this.token,
+      this.applicationId,
+      this.datastoreIds["著作権DB"]
+    );
+    var searchConditonApplicabilityOnHomepage = "";
+    for (const conditionKey in searchConditions) {
+      if (searchConditions[conditionKey].name.indexOf("HPに掲載可否") !== -1) {
+        for (const optionKey in searchConditions[conditionKey].options) {
+          if (
+            searchConditions[conditionKey].options[optionKey].value ==
+            "掲載する"
+          ) {
+            searchConditonApplicabilityOnHomepage =
+              searchConditions[conditionKey].options[optionKey].option_id;
+          }
+        }
+      }
+    }
+    this.auctionList = await this.getAuctionList(
+      searchConditonApplicabilityOnHomepage
+    );
     this.auctionList = this.auctionList.filter(function(value) {
       const diff = moment(
         moment(value.オークション終了時間)
@@ -133,6 +154,14 @@ export default {
       }
     );
     for (const listKey in this.auctionList) {
+      let image1Binary = this.auctionList[listKey].image1;
+      if (image1Binary) {
+        var ab = await this.$hexalink.getFile(this.token, image1Binary);
+        var blob = new Blob([ab], { type: "image/jpeg" });
+        this.auctionList[listKey].image1 = window.URL.createObjectURL(blob);
+      } else {
+        this.auctionList[listKey].image1 = "";
+      }
       for (const reportKey in auctionBidReport.report_results) {
         if (
           this.auctionList[listKey].著作権番号 ==
@@ -168,7 +197,7 @@ export default {
     );
   },
   methods: {
-    async getAuctionList() {
+    async getAuctionList(searchConditonApplicabilityOnHomepage) {
       return await this.$hexalink.getItems(
         this.token,
         this.applicationId,
@@ -177,7 +206,7 @@ export default {
           conditions: [
             {
               id: "HPに掲載可否", // Hexalink画⾯で⼊⼒したIDを指定
-              search_value: ["bb8de5a3-0f70-4369-b49a-6197ad8f1bff"]
+              search_value: [searchConditonApplicabilityOnHomepage]
             }
           ],
           page: 1,
