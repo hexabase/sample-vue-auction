@@ -820,6 +820,8 @@ export default {
       this.checkKeyDown(event);
     },
     async initialDisplay() {
+      // loading overlay表示
+      this.$store.commit("common/setLoading", true);
       this.musicId = this.$route.query.id;
       this.myAuctionBidList = await this.getAuctionBidList();
       if (
@@ -916,10 +918,10 @@ export default {
       this.videoSourceUrl =
         "https://www.youtube.com/embed/" + dataLists[0].動画URL.split("v=")[1];
 
-      let image1Binary = dataLists[0].image1;
+      const image1Binary = dataLists[0].image1;
       if (image1Binary) {
-        var ab = await this.$hexalink.getFile(this.token, image1Binary);
-        var blob = new Blob([ab], { type: "image/jpeg" });
+        const ab = await this.$hexalink.getFile(this.token, image1Binary);
+        const blob = new Blob([ab], { type: "image/jpeg" });
         this.image1 = window.URL.createObjectURL(blob);
       } else {
         this.image1 = "";
@@ -998,6 +1000,8 @@ export default {
       this.auctionListsGroup = auctionListsGroupSort;
       this.updateMessage();
       this.agreeGuideline = false;
+      // loading overlay非表示
+      this.$store.commit("common/setLoading", false);
     }
   }
 };
