@@ -189,6 +189,11 @@ export default {
               id: "会員番号", // Hexalink画⾯で⼊⼒したIDを指定
               search_value: [this.userId],
               exact_match: true // 完全⼀致で検索
+            },
+            {
+              id: "楽曲状況", // Hexalink画⾯で⼊⼒したIDを指定
+              search_value: ["保有中"],
+              exact_match: true // 完全⼀致で検索
             }
           ],
           page: 1,
