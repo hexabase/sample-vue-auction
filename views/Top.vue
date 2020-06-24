@@ -234,6 +234,8 @@ export default {
   },
   created: async function() {},
   mounted: async function() {
+    // loading overlay表示
+    this.$store.commit("common/setLoading", true);
     this.auctionList = await this.getAuctionList();
     this.auctionList = this.auctionList.filter(function(value) {
       const diff = moment(
@@ -254,10 +256,10 @@ export default {
       }
     );
     for (const listKey in this.auctionList) {
-      let image1Binary = this.auctionList[listKey].image1;
+      const image1Binary = this.auctionList[listKey].image1;
       if (image1Binary) {
-        var ab = await this.$hexalink.getFile(this.token, image1Binary);
-        var blob = new Blob([ab], { type: "image/jpeg" });
+        const ab = await this.$hexalink.getFile(this.token, image1Binary);
+        const blob = new Blob([ab], { type: "image/jpeg" });
         this.auctionList[listKey].image1 = window.URL.createObjectURL(blob);
       } else {
         this.auctionList[listKey].image1 = "";
@@ -297,6 +299,8 @@ export default {
     );
     this.updateMessage();
     setInterval(this.updateMessage, 1000);
+    // loading overlay非表示
+    this.$store.commit("common/setLoading", false);
   },
   methods: {
     async getAuctionList() {
@@ -347,14 +351,14 @@ export default {
         this.$set(
           this.displayAuctionList[key],
           "カウントダウン時分秒",
-          diff > 0 ? //hours + ":" + minutes + ":" + seconds : ""
-          _.padStart(hours, 2, 0) +
-          "<span class='unit'>時間</span>" +
-          _.padStart(minutes, 2, 0) +
-          "<span class='unit'>分</span>" +
-          _.padStart(seconds, 2, 0) +
-          "<span class='unit'>秒</span>"
-          : ""
+          diff > 0
+            ? ("00" + hours).slice(-2) +
+                "<span class='unit'>時間</span>" +
+                ("00" + minutes).slice(-2) +
+                "<span class='unit'>分</span>" +
+                ("00" + seconds).slice(-2) +
+                "<span class='unit'>秒</span>"
+            : ""
         );
       }
     },

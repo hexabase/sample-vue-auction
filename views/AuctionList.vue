@@ -39,7 +39,10 @@
             :key="index"
             class="auctionList_item"
           >
-            <figure class="auctionList_item_img" @click="selectItem(displayAuctionList[index].著作権番号)">
+            <figure
+              class="auctionList_item_img"
+              @click="selectItem(displayAuctionList[index].著作権番号)"
+            >
               <img :src="displayAuctionList[index].image1" />
             </figure>
             <h3 class="auctionList_item_title">
@@ -113,6 +116,8 @@ export default {
   },
   created: async function() {},
   mounted: async function() {
+    // loading overlay表示
+    this.$store.commit("common/setLoading", true);
     var searchConditions = await this.$hexalink.getItemSearchConditions(
       this.token,
       this.applicationId,
@@ -154,10 +159,10 @@ export default {
       }
     );
     for (const listKey in this.auctionList) {
-      let image1Binary = this.auctionList[listKey].image1;
+      const image1Binary = this.auctionList[listKey].image1;
       if (image1Binary) {
-        var ab = await this.$hexalink.getFile(this.token, image1Binary);
-        var blob = new Blob([ab], { type: "image/jpeg" });
+        const ab = await this.$hexalink.getFile(this.token, image1Binary);
+        const blob = new Blob([ab], { type: "image/jpeg" });
         this.auctionList[listKey].image1 = window.URL.createObjectURL(blob);
       } else {
         this.auctionList[listKey].image1 = "";
@@ -195,6 +200,8 @@ export default {
       this.pageSize * (this.page - 1),
       this.pageSize * this.page
     );
+    // loading overlay非表示
+    this.$store.commit("common/setLoading", false);
   },
   methods: {
     async getAuctionList(searchConditonApplicabilityOnHomepage) {

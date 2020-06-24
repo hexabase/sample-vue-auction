@@ -768,11 +768,11 @@ export default {
       this.remainingTime =
         days +
         "<span class='unit'>日</span>" +
-        _.padStart(hours,2, 0) +
+        ("00" + hours).slice(-2) +
         "<span class='unit'>時間</span>" +
-        _.padStart(minutes,2, 0) +
+        ("00" + minutes).slice(-2) +
         "<span class='unit'>分</span>" +
-        _.padStart(seconds,2, 0) +
+        ("00" + seconds).slice(-2) +
         "<span class='unit'>秒</span>";
     },
     changeYen(num) {
@@ -821,6 +821,8 @@ export default {
       this.checkKeyDown(event);
     },
     async initialDisplay() {
+      // loading overlay表示
+      this.$store.commit("common/setLoading", true);
       this.musicId = this.$route.query.id;
       this.myAuctionBidList = await this.getAuctionBidList();
       if (
@@ -917,10 +919,10 @@ export default {
       this.videoSourceUrl =
         "https://www.youtube.com/embed/" + dataLists[0].動画URL.split("v=")[1];
 
-      let image1Binary = dataLists[0].image1;
+      const image1Binary = dataLists[0].image1;
       if (image1Binary) {
-        var ab = await this.$hexalink.getFile(this.token, image1Binary);
-        var blob = new Blob([ab], { type: "image/jpeg" });
+        const ab = await this.$hexalink.getFile(this.token, image1Binary);
+        const blob = new Blob([ab], { type: "image/jpeg" });
         this.image1 = window.URL.createObjectURL(blob);
       } else {
         this.image1 = "";
@@ -999,6 +1001,8 @@ export default {
       this.auctionListsGroup = auctionListsGroupSort;
       this.updateMessage();
       this.agreeGuideline = false;
+      // loading overlay非表示
+      this.$store.commit("common/setLoading", false);
     }
   }
 };
