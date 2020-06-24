@@ -2,12 +2,15 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Store from "../store/index";
 import Top from "../../views/Top.vue";
+import Registration from "../../views/Registration.vue";
+import Signup from "../../views/Signup.vue";
 import Signin from "../../views/Signin.vue";
 import AuctionList from "../../views/AuctionList.vue";
 import ClosedAuction from "../../views/ClosedAuction.vue";
 import AuctionBid from "../../views/AuctionBid.vue";
 import Mypage from "../../views/Mypage.vue";
 import MyCopyrights from "../../views/MyCopyrights.vue";
+import UserInfo from "../../views/UserInfo.vue";
 import Index from "../../views/Index.vue";
 
 Vue.use(VueRouter);
@@ -24,6 +27,16 @@ const routes = [
     name: "top",
     component: Top,
     meta: { requiresAuth: true }
+  },
+  {
+    path: "/registration",
+    name: "Registration",
+    component: Registration
+  },
+  {
+    path: "/signup",
+    name: "signup",
+    component: Signup
   },
   {
     path: "/signin",
@@ -55,6 +68,11 @@ const routes = [
     path: "/mycopyrights",
     name: "MyCopyrights",
     component: MyCopyrights
+  },
+  {
+    path: "/userinfo",
+    name: "UserInfo",
+    component: UserInfo
   }
 ];
 

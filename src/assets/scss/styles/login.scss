@@ -41,11 +41,24 @@
 
         }
 
+        .contents_title {
+            margin-bottom: 40px;
+        }
+
+        .v-form {
+            min-height: 100px;
+        }
+
         .button-action {
             width: 240px;
             max-width: 80%;
             height: 50px;
             line-height: 50px;
+        }
+
+        &_lead {
+            font-size: 1.4rem;
+            line-height: 1.8;
         }
 
         &_link {
@@ -70,13 +83,24 @@
                 }
             }
         }
+
+        &_complete {
+            margin-bottom: 60px;
+            
+            .v-icon {
+                margin-bottom: 10px;
+                font-size: 4rem;
+                color: $color-sub;
+            }
+        }
+
+        &_footer {
+            margin-top: 40px;
+        }
     }
 
     .error_msg {
         margin: 10px 0;
         color: $color-error;
     }
-
-
-
 }

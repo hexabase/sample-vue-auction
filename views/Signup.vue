@@ -2,9 +2,14 @@
   <v-row align="center" justify="center" class="login">
     <div class="loginBox">
       <h1 class="contents_title">
-        <span class="contents_title-en">Login</span>
-        <span class="contents_title-jp">ログイン</span>
+        <span class="contents_title-en">Sign Up</span>
+        <span class="contents_title-jp">新規会員登録</span>
       </h1>
+      <p class="loginBox_lead">
+        {s.horiuchi@b-eee.com}のメールアドレスで<br />
+        BATONのアカウントを作成します。<br />
+        ユーザー名とパスワードを決めてください。
+      </p>
       <div v-if="errorMess != ''" class="error_msg">
         <v-alert text color="red">
           {{ errorMess }}
@@ -13,17 +18,18 @@
       <v-form>
         <ValidationObserver ref="signin" v-slot="{}">
           <validation-provider
-            ref="address"
+            ref=""
             v-slot="{ errors }"
-            name="メールアドレス"
-            rules="required|email"
+            name="ユーザー名"
+            rules="required"
           >
             <v-text-field
               v-model="email"
               type="text"
-              placeholder="メールアドレス"
+              placeholder="ユーザー名"
               :error-messages="errors"
               required
+              hint="※あとから変更できます"
             />
           </validation-provider>
           <validation-provider
@@ -34,29 +40,41 @@
           >
             <v-text-field
               v-model="password"
-              :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-              :type="show1 ? 'text' : 'password'"
               placeholder="パスワード"
               :error-messages="errors"
               required
+              :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+              :type="show1 ? 'text' : 'password'"
               @click:append="show1 = !show1"
+            />
+          </validation-provider>
+          <validation-provider
+            ref="password2"
+            v-slot="{ errors }"
+            name="パスワード(確認)"
+            rules="required"
+          >
+            <v-text-field
+              v-model="password"
+              placeholder="パスワード(確認)"
+              :error-messages="errors"
+              required
+              :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
+              :type="show2 ? 'text' : 'password'"
+              hint="※確認のためパスワードを再入力してください"
+              @click:append="show2 = !show2"
             />
           </validation-provider>
         </ValidationObserver>
       </v-form>
+      <div class="loginBox_complete">
+        <v-icon>mdi-checkbox-marked-circle-outline</v-icon>
+        <p class="loginBox_lead">登録完了しました！BATONに移動します...</p>
+      </div>
       <div class="loginBox_footer">
-        <v-checkbox v-model="checkbox" label="ログイン状態を保持"></v-checkbox>
         <button type="submit" class="button-action" @click="signin">
-          ログイン
+          登録する
         </button>
-        <ul class="loginBox_link">
-          <li><a href="">パスワードを忘れたかた</a></li>
-          <li>
-            <router-link to="/registration">
-              新規登録
-            </router-link>
-          </li>
-        </ul>
       </div>
     </div>
   </v-row>
@@ -73,7 +91,8 @@ export default {
       email: "",
       password: "",
       errorMess: "",
-      show1: false
+      show1: false,
+      show2: false
     };
   },
   /**

@@ -70,7 +70,9 @@
         </ul>
         <ul v-if="!token" class="siteHeader_userNav-tablet">
           <li>
-            <a href="">新規登録</a>
+            <router-link to="/registration">
+              新規登録
+            </router-link>
           </li>
           <li>
             <router-link to="/signin">
@@ -82,7 +84,9 @@
       <!-- ログアウト時 -->
       <ul v-if="!token" class="siteHeader_userMenu">
         <li>
-          <a href="">新規登録</a>
+          <router-link to="/registration">
+            新規登録
+          </router-link>
         </li>
         <li class="hide-tab">
           <router-link to="/signin">
