@@ -26,8 +26,12 @@
             <figure class="pickupAuction_img">
               <img :src="displayAuctionList[index].image1" />
               <figcaption>
-                <span class="pickupAuction_day">{{ displayAuctionList[index].カウントダウン日 }}</span>
-                <span v-html="displayAuctionList[index].カウントダウン時分秒"></span>
+                <span class="pickupAuction_day">
+                  {{ displayAuctionList[index].カウントダウン日 }}
+                </span>
+                <span
+                  v-html="displayAuctionList[index].カウントダウン時分秒"
+                ></span>
               </figcaption>
             </figure>
             <div class="pickupAuction_title">
@@ -216,7 +220,7 @@
 
 <script>
 import moment from "moment-timezone";
-import _ from 'lodash';
+import _ from "lodash";
 export default {
   data() {
     return {

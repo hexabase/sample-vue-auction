@@ -4,7 +4,7 @@
     :class="{
       'siteHeader-login': token,
       'menu-open': isMenuOpen,
-      'topOfPage': isPagetop
+      topOfPage: isPagetop
     }"
     role="banner"
   >
@@ -147,7 +147,7 @@
 </template>
 
 <script>
-import _ from 'lodash';
+import _ from "lodash";
 export default {
   data() {
     return {
@@ -172,10 +172,16 @@ export default {
     this.userName = this.$store.getters["auth/getUserNameKanji"];
   },
   mounted() {
-    window.addEventListener("scroll", _.throttle(this.calculateScrollY, 250), {passive: true});
+    window.addEventListener("scroll", _.throttle(this.calculateScrollY, 250), {
+      passive: true
+    });
   },
   beforeDestroy() {
-    window.removeEventListener("scroll", _.throttle(this.calculateScrollY, 250), {passive: true});
+    window.removeEventListener(
+      "scroll",
+      _.throttle(this.calculateScrollY, 250),
+      { passive: true }
+    );
   },
   methods: {
     async signout() {
@@ -190,7 +196,7 @@ export default {
     },
     calculateScrollY() {
       var scrollY = window.scrollY;
-      this.isPagetop = (scrollY == 0) ? true : false;
+      this.isPagetop = scrollY == 0 ? true : false;
     }
   }
 };
