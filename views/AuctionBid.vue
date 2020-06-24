@@ -405,6 +405,7 @@ import mapping from "@/assets/json/auctionDBMapping.json";
 import DatabaseSchema from "@/assets/json/DBSchema.json";
 import MyModal from "./MyModal.vue";
 import moment from "moment-timezone";
+import _ from 'lodash';
 export default {
   components: { MyModal },
   data() {
