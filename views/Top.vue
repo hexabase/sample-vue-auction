@@ -354,7 +354,14 @@ export default {
         this.$set(
           this.displayAuctionList[key],
           "カウントダウン時分秒",
-          diff > 0 ? hours + ":" + minutes + ":" + seconds : ""
+          diff > 0
+            ? ("00" + hours).slice(-2) +
+                "時" +
+                ("00" + minutes).slice(-2) +
+                "分" +
+                ("00" + seconds).slice(-2) +
+                "秒"
+            : ""
         );
       }
     },

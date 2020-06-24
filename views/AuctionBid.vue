@@ -767,11 +767,11 @@ export default {
       this.remainingTime =
         days +
         "<span class='unit'>日</span>" +
-        hours +
+        ("00" + hours).slice(-2) +
         "<span class='unit'>時間</span>" +
-        minutes +
+        ("00" + minutes).slice(-2) +
         "<span class='unit'>分</span>" +
-        seconds +
+        ("00" + seconds).slice(-2) +
         "<span class='unit'>秒</span>";
     },
     changeYen(num) {
