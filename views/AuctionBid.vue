@@ -124,6 +124,7 @@
                   class="form-box"
                   step="500"
                   max="999999999"
+                  onpaste="return false"
                   @keydown="multipleHandler"
                 />
                 <span class="bidBox_unit">円</span>
@@ -138,6 +139,7 @@
                   name="cnt_units"
                   class="form-box"
                   max="99999"
+                  onpaste="return false"
                   @keydown="multipleHandler"
                 />
               </div>
