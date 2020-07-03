@@ -116,92 +116,99 @@ export default {
   },
   created: async function() {},
   mounted: async function() {
-    // loading overlay表示
-    this.$store.commit("common/setLoading", true);
-    var searchConditions = await this.$hexalink.getItemSearchConditions(
-      this.token,
-      this.applicationId,
-      this.datastoreIds["著作権DB"]
-    );
-    var searchConditonApplicabilityOnHomepage = "";
-    for (const conditionKey in searchConditions) {
-      if (searchConditions[conditionKey].name.indexOf("HPに掲載可否") !== -1) {
-        for (const optionKey in searchConditions[conditionKey].options) {
-          if (
-            searchConditions[conditionKey].options[optionKey].value ==
-            "掲載する"
-          ) {
-            searchConditonApplicabilityOnHomepage =
-              searchConditions[conditionKey].options[optionKey].option_id;
+    try {
+      // loading overlay表示
+      this.$store.commit("common/setLoading", true);
+      var searchConditions = await this.$hexalink.getItemSearchConditions(
+        this.token,
+        this.applicationId,
+        this.datastoreIds["著作権DB"]
+      );
+      var searchConditonApplicabilityOnHomepage = "";
+      for (const conditionKey in searchConditions) {
+        if (
+          searchConditions[conditionKey].name.indexOf("HPに掲載可否") !== -1
+        ) {
+          for (const optionKey in searchConditions[conditionKey].options) {
+            if (
+              searchConditions[conditionKey].options[optionKey].value ==
+              "掲載する"
+            ) {
+              searchConditonApplicabilityOnHomepage =
+                searchConditions[conditionKey].options[optionKey].option_id;
+            }
           }
         }
       }
-    }
-    this.auctionList = await this.getAuctionList(
-      searchConditonApplicabilityOnHomepage
-    );
-    this.auctionList = this.auctionList.filter(function(value) {
-      const diff = moment(
-        moment(value.オークション終了時間)
-          .tz("Asia/Tokyo")
-          .format()
-          .slice(0, -14) + value.オークション終了時刻
-      ).diff(moment());
-      return diff > 0;
-    });
-    var auctionBidReport = {};
-    auctionBidReport = await this.$hexalink.getReports(
-      this.token,
-      this.applicationId,
-      "5ec76bffaa8a6c0007136f92",
-      {
-        conditions: []
-      }
-    );
-    for (const listKey in this.auctionList) {
-      const image1Binary = this.auctionList[listKey].image1;
-      if (image1Binary) {
-        const ab = await this.$hexalink.getFile(this.token, image1Binary);
-        const blob = new Blob([ab], { type: "image/jpeg" });
-        this.auctionList[listKey].image1 = window.URL.createObjectURL(blob);
-      } else {
-        this.auctionList[listKey].image1 = "";
-      }
-      for (const reportKey in auctionBidReport.report_results) {
-        if (
-          this.auctionList[listKey].著作権番号 ==
-          auctionBidReport.report_results[reportKey][
-            "ba62cfe6-dcd4-46b7-9028-2ccd73240e52"
-          ]
-        ) {
-          this.$set(
-            this.auctionList[listKey],
-            "最高入札額",
+      this.auctionList = await this.getAuctionList(
+        searchConditonApplicabilityOnHomepage
+      );
+      this.auctionList = this.auctionList.filter(function(value) {
+        const diff = moment(
+          moment(value.オークション終了時間)
+            .tz("Asia/Tokyo")
+            .format()
+            .slice(0, -14) + value.オークション終了時刻
+        ).diff(moment());
+        return diff > 0;
+      });
+      var auctionBidReport = {};
+      auctionBidReport = await this.$hexalink.getReports(
+        this.token,
+        this.applicationId,
+        "5ec76bffaa8a6c0007136f92",
+        {
+          conditions: []
+        }
+      );
+      for (const listKey in this.auctionList) {
+        const image1Binary = this.auctionList[listKey].image1;
+        if (image1Binary) {
+          const ab = await this.$hexalink.getFile(this.token, image1Binary);
+          const blob = new Blob([ab], { type: "image/jpeg" });
+          this.auctionList[listKey].image1 = window.URL.createObjectURL(blob);
+        } else {
+          this.auctionList[listKey].image1 = "";
+        }
+        for (const reportKey in auctionBidReport.report_results) {
+          if (
+            this.auctionList[listKey].著作権番号 ==
             auctionBidReport.report_results[reportKey][
-              "c68b0a4d-d409-45b2-9ff8-fca331787921"
+              "ba62cfe6-dcd4-46b7-9028-2ccd73240e52"
             ]
-          );
-          this.$set(
-            this.auctionList[listKey],
-            "入札数量",
-            auctionBidReport.report_results[reportKey][
-              "a1101930-fbc0-43eb-8b7c-ae3510f5c989"
-            ]
-          );
+          ) {
+            this.$set(
+              this.auctionList[listKey],
+              "最高入札額",
+              auctionBidReport.report_results[reportKey][
+                "c68b0a4d-d409-45b2-9ff8-fca331787921"
+              ]
+            );
+            this.$set(
+              this.auctionList[listKey],
+              "入札数量",
+              auctionBidReport.report_results[reportKey][
+                "a1101930-fbc0-43eb-8b7c-ae3510f5c989"
+              ]
+            );
+          }
         }
       }
+      this.auctionList = this.multiSort(this.auctionList, [
+        "オークション終了時間",
+        "オークション終了時刻"
+      ]);
+      this.length = Math.ceil(this.auctionList.length / this.pageSize);
+      this.displayAuctionList = this.auctionList.slice(
+        this.pageSize * (this.page - 1),
+        this.pageSize * this.page
+      );
+    } catch (e) {
+      console.log(e);
+    } finally {
+      // loading overlay非表示
+      this.$store.commit("common/setLoading", false);
     }
-    this.auctionList = this.multiSort(this.auctionList, [
-      "オークション終了時間",
-      "オークション終了時刻"
-    ]);
-    this.length = Math.ceil(this.auctionList.length / this.pageSize);
-    this.displayAuctionList = this.auctionList.slice(
-      this.pageSize * (this.page - 1),
-      this.pageSize * this.page
-    );
-    // loading overlay非表示
-    this.$store.commit("common/setLoading", false);
   },
   methods: {
     async getAuctionList(searchConditonApplicabilityOnHomepage) {

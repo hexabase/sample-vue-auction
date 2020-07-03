@@ -823,188 +823,196 @@ export default {
       this.checkKeyDown(event);
     },
     async initialDisplay() {
-      // loading overlay表示
-      this.$store.commit("common/setLoading", true);
-      this.musicId = this.$route.query.id;
-      this.myAuctionBidList = await this.getAuctionBidList();
-      if (
-        this.myAuctionBidList.length > 0 &&
-        this.myAuctionBidList[0].落札状況 != "キャンセル済"
-      ) {
-        this.displayBidResultFlag = true;
-      } else {
-        this.displayBidResultFlag = false;
-      }
-      var dataLists = [];
-      dataLists = await this.$hexalink.getItems(
-        this.token,
-        this.applicationId,
-        this.datastoreIds["著作権DB"],
-        {
-          conditions: [
-            {
-              id: "著作権番号", // Hexalink画⾯で⼊⼒したIDを指定
-              search_value: [this.musicId],
-              exact_match: true // 完全⼀致で検索
-            }
-          ],
-          page: 1,
-          per_page: 9000,
-          use_display_id: true
-        }
-      );
-
-      var titleEn = "タイトル（英語）";
-      var titleKr = "タイトル（韓国）";
-      var explanatoryTextEn = "説明文（英語）";
-      var explanatoryTextKr = "説明文（韓国）";
-      this.copyrightNumber = dataLists[0].著作権番号;
-      this.jasracCode = dataLists[0].JASRAC作品コード;
-      this.image2 = dataLists[0].image2;
-      this.image3 = dataLists[0].image3;
-      this.copyrightType = dataLists[0].著作権タイプ;
-      this.title = dataLists[0].タイトル;
-      this.titleEn = dataLists[0].titleEn;
-      this.titleKr = dataLists[0].titleKr;
-      this.singer1 = dataLists[0].歌手1;
-      this.singer2 = dataLists[0].歌手2;
-      this.singer3 = dataLists[0].歌手3;
-      this.singer4 = dataLists[0].歌手4;
-      this.composer1 = dataLists[0].作曲1;
-      this.composer2 = dataLists[0].作曲2;
-      this.composer3 = dataLists[0].作曲3;
-      this.composer4 = dataLists[0].作曲4;
-      this.lyricist1 = dataLists[0].作詞1;
-      this.lyricist2 = dataLists[0].作詞2;
-      this.lyricist3 = dataLists[0].作詞3;
-      this.lyricist4 = dataLists[0].作詞4;
-      this.arranger1 = dataLists[0].編曲1;
-      this.arranger2 = dataLists[0].編曲2;
-      this.arranger3 = dataLists[0].編曲3;
-      this.arranger4 = dataLists[0].編曲4;
-      this.explanatoryText = dataLists[0].説明文;
-      this.explanatoryTextEn = dataLists[0].explanatoryTextEn;
-      this.explanatoryTextKr = dataLists[0].explanatoryTextKr;
-      this.publicationDate = dataLists[0].公表日;
-      this.originalAuthorDeathDate = dataLists[0].原作者死亡日;
-      this.protectionPeriod = dataLists[0].保護期間;
-      this.aaHoldingInterest = dataLists[0].AA権保有持分;
-      this.bbHoldingInterest = dataLists[0].BB権保有持分;
-      this.ccHoldingInterest = dataLists[0].CC権保有持分;
-      this.ddHoldingInterest = dataLists[0].DD権保有持分;
-      this.eeHoldingInterest = dataLists[0].EE権保有持分;
-      this.possessionNotes = dataLists[0].持ち分注意事項;
-      this.videoUrl = dataLists[0].動画URL;
-      this.otherNotes = dataLists[0].その他注意事項;
-      this.Tag = dataLists[0].タグ;
-      this.applicability = dataLists[0].掲載可否;
-      this.applicabilityOnHomepage = dataLists[0].HPに掲載可否;
-      this.rightsStartDate = dataLists[0].権利開始日;
-      this.rightPeriod = dataLists[0].権利期間;
-      this.Seller = dataLists[0].売却者;
-      this.managementPublisher = dataLists[0].管理出版社;
-      this.totalAmount = dataLists[0].数量;
-      this.auctionStatus = dataLists[0].オークション状況;
-      this.auctionStartDate = dataLists[0].オークション開始時間;
-      this.auctionEndDate = dataLists[0].オークション終了時間;
-      this.auctionEndTime = dataLists[0].オークション終了時刻;
-      this.auctionAmount = dataLists[0].オークション数量;
-      this.auctionStartPrice = dataLists[0].オークション開始金額;
-      this.auctionEndPrice = dataLists[0].オークション落札金額;
-      this.officialUrl = dataLists[0].公式URL;
-      this.bidPrice =
-        this.myAuctionBidList.length > 0
-          ? this.myAuctionBidList[0].入札金額
-          : dataLists[0].オークション開始金額;
-      this.bidAmount =
-        this.myAuctionBidList.length > 0 ? this.myAuctionBidList[0].数量 : 1;
-      this.videoSourceUrl =
-        "https://www.youtube.com/embed/" + dataLists[0].動画URL.split("v=")[1];
-
-      const image1Binary = dataLists[0].image1;
-      if (image1Binary) {
-        const ab = await this.$hexalink.getFile(this.token, image1Binary);
-        const blob = new Blob([ab], { type: "image/jpeg" });
-        this.image1 = window.URL.createObjectURL(blob);
-      } else {
-        this.image1 = "";
-      }
-
-      var rpf_bidAmount = "4384d821-8e19-4e08-949b-44cab6efa408";
-      var rpf_copyrightNumber = "d3e553f2-7281-47b7-96ef-3ac55a72f1ee";
-      var rpf_bidPrice = "d2813a9b-33e5-405f-9116-ff9c97a0bf06";
-
-      // diffメソッドを使って、日時の差を、ミリ秒で取得
-      const diff = moment(this.auctionEndDate).diff(moment());
-      if (diff < 0 || this.applicabilityOnHomepage !== "掲載する") {
-        this.auctionFinishedFlag = true;
-      }
-
-      var auctionLists = [];
-      auctionLists = await this.$hexalink.getReports(
-        this.token,
-        this.applicationId,
-        "5ea69310206c0d0006e494ab",
-        {
-          conditions: [
-            {
-              rpf_id: "d3e553f2-7281-47b7-96ef-3ac55a72f1ee",
-              search_value: [this.musicId]
-            }
-          ]
-        }
-      );
-
-      var auctionListsGroupSort = auctionLists.report_results.sort(function(
-        a,
-        b
-      ) {
-        if (a[rpf_bidPrice] < b[rpf_bidPrice]) {
-          return 1;
+      try {
+        // loading overlay表示
+        this.$store.commit("common/setLoading", true);
+        this.musicId = this.$route.query.id;
+        this.myAuctionBidList = await this.getAuctionBidList();
+        if (
+          this.myAuctionBidList.length > 0 &&
+          this.myAuctionBidList[0].落札状況 != "キャンセル済"
+        ) {
+          this.displayBidResultFlag = true;
         } else {
-          return -1;
+          this.displayBidResultFlag = false;
         }
-      });
-
-      var auctionAmountCount = 0;
-      var orderOfArraivalFlag = true;
-
-      for (const key in auctionListsGroupSort) {
-        auctionAmountCount += Number(auctionListsGroupSort[key][rpf_bidAmount]);
-        if (auctionAmountCount <= dataLists[0].オークション数量) {
-          auctionListsGroupSort[key].落札状況 = this.auctionFinishedFlag
-            ? "落札"
-            : "落札圏内";
-          if (auctionAmountCount >= dataLists[0].オークション数量) {
-            orderOfArraivalFlag = false;
+        var dataLists = [];
+        dataLists = await this.$hexalink.getItems(
+          this.token,
+          this.applicationId,
+          this.datastoreIds["著作権DB"],
+          {
+            conditions: [
+              {
+                id: "著作権番号", // Hexalink画⾯で⼊⼒したIDを指定
+                search_value: [this.musicId],
+                exact_match: true // 完全⼀致で検索
+              }
+            ],
+            page: 1,
+            per_page: 9000,
+            use_display_id: true
           }
-        } else if (orderOfArraivalFlag) {
-          auctionListsGroupSort[key].落札状況 = this.auctionFinishedFlag
-            ? "先着順の部分落札"
-            : "先着順の部分落札圏内";
-          orderOfArraivalFlag = false;
+        );
+
+        var titleEn = "タイトル（英語）";
+        var titleKr = "タイトル（韓国）";
+        var explanatoryTextEn = "説明文（英語）";
+        var explanatoryTextKr = "説明文（韓国）";
+        this.copyrightNumber = dataLists[0].著作権番号;
+        this.jasracCode = dataLists[0].JASRAC作品コード;
+        this.image2 = dataLists[0].image2;
+        this.image3 = dataLists[0].image3;
+        this.copyrightType = dataLists[0].著作権タイプ;
+        this.title = dataLists[0].タイトル;
+        this.titleEn = dataLists[0].titleEn;
+        this.titleKr = dataLists[0].titleKr;
+        this.singer1 = dataLists[0].歌手1;
+        this.singer2 = dataLists[0].歌手2;
+        this.singer3 = dataLists[0].歌手3;
+        this.singer4 = dataLists[0].歌手4;
+        this.composer1 = dataLists[0].作曲1;
+        this.composer2 = dataLists[0].作曲2;
+        this.composer3 = dataLists[0].作曲3;
+        this.composer4 = dataLists[0].作曲4;
+        this.lyricist1 = dataLists[0].作詞1;
+        this.lyricist2 = dataLists[0].作詞2;
+        this.lyricist3 = dataLists[0].作詞3;
+        this.lyricist4 = dataLists[0].作詞4;
+        this.arranger1 = dataLists[0].編曲1;
+        this.arranger2 = dataLists[0].編曲2;
+        this.arranger3 = dataLists[0].編曲3;
+        this.arranger4 = dataLists[0].編曲4;
+        this.explanatoryText = dataLists[0].説明文;
+        this.explanatoryTextEn = dataLists[0].explanatoryTextEn;
+        this.explanatoryTextKr = dataLists[0].explanatoryTextKr;
+        this.publicationDate = dataLists[0].公表日;
+        this.originalAuthorDeathDate = dataLists[0].原作者死亡日;
+        this.protectionPeriod = dataLists[0].保護期間;
+        this.aaHoldingInterest = dataLists[0].AA権保有持分;
+        this.bbHoldingInterest = dataLists[0].BB権保有持分;
+        this.ccHoldingInterest = dataLists[0].CC権保有持分;
+        this.ddHoldingInterest = dataLists[0].DD権保有持分;
+        this.eeHoldingInterest = dataLists[0].EE権保有持分;
+        this.possessionNotes = dataLists[0].持ち分注意事項;
+        this.videoUrl = dataLists[0].動画URL;
+        this.otherNotes = dataLists[0].その他注意事項;
+        this.Tag = dataLists[0].タグ;
+        this.applicability = dataLists[0].掲載可否;
+        this.applicabilityOnHomepage = dataLists[0].HPに掲載可否;
+        this.rightsStartDate = dataLists[0].権利開始日;
+        this.rightPeriod = dataLists[0].権利期間;
+        this.Seller = dataLists[0].売却者;
+        this.managementPublisher = dataLists[0].管理出版社;
+        this.totalAmount = dataLists[0].数量;
+        this.auctionStatus = dataLists[0].オークション状況;
+        this.auctionStartDate = dataLists[0].オークション開始時間;
+        this.auctionEndDate = dataLists[0].オークション終了時間;
+        this.auctionEndTime = dataLists[0].オークション終了時刻;
+        this.auctionAmount = dataLists[0].オークション数量;
+        this.auctionStartPrice = dataLists[0].オークション開始金額;
+        this.auctionEndPrice = dataLists[0].オークション落札金額;
+        this.officialUrl = dataLists[0].公式URL;
+        this.bidPrice =
+          this.myAuctionBidList.length > 0
+            ? this.myAuctionBidList[0].入札金額
+            : dataLists[0].オークション開始金額;
+        this.bidAmount =
+          this.myAuctionBidList.length > 0 ? this.myAuctionBidList[0].数量 : 1;
+        this.videoSourceUrl =
+          "https://www.youtube.com/embed/" +
+          dataLists[0].動画URL.split("v=")[1];
+
+        const image1Binary = dataLists[0].image1;
+        if (image1Binary) {
+          const ab = await this.$hexalink.getFile(this.token, image1Binary);
+          const blob = new Blob([ab], { type: "image/jpeg" });
+          this.image1 = window.URL.createObjectURL(blob);
         } else {
-          auctionListsGroupSort[key].落札状況 = "-";
+          this.image1 = "";
         }
-      }
-      if (this.myAuctionBidList.length > 0) {
+
+        var rpf_bidAmount = "4384d821-8e19-4e08-949b-44cab6efa408";
+        var rpf_copyrightNumber = "d3e553f2-7281-47b7-96ef-3ac55a72f1ee";
+        var rpf_bidPrice = "d2813a9b-33e5-405f-9116-ff9c97a0bf06";
+
+        // diffメソッドを使って、日時の差を、ミリ秒で取得
+        const diff = moment(this.auctionEndDate).diff(moment());
+        if (diff < 0 || this.applicabilityOnHomepage !== "掲載する") {
+          this.auctionFinishedFlag = true;
+        }
+
+        var auctionLists = [];
+        auctionLists = await this.$hexalink.getReports(
+          this.token,
+          this.applicationId,
+          "5ea69310206c0d0006e494ab",
+          {
+            conditions: [
+              {
+                rpf_id: "d3e553f2-7281-47b7-96ef-3ac55a72f1ee",
+                search_value: [this.musicId]
+              }
+            ]
+          }
+        );
+
+        var auctionListsGroupSort = auctionLists.report_results.sort(function(
+          a,
+          b
+        ) {
+          if (a[rpf_bidPrice] < b[rpf_bidPrice]) {
+            return 1;
+          } else {
+            return -1;
+          }
+        });
+
+        var auctionAmountCount = 0;
+        var orderOfArraivalFlag = true;
+
         for (const key in auctionListsGroupSort) {
-          if (
-            this.myAuctionBidList[0].入札金額 ==
-            auctionListsGroupSort[key][rpf_bidPrice]
-          ) {
-            this.myAuctionResult = auctionListsGroupSort[key].落札状況;
-            break;
+          auctionAmountCount += Number(
+            auctionListsGroupSort[key][rpf_bidAmount]
+          );
+          if (auctionAmountCount <= dataLists[0].オークション数量) {
+            auctionListsGroupSort[key].落札状況 = this.auctionFinishedFlag
+              ? "落札"
+              : "落札圏内";
+            if (auctionAmountCount >= dataLists[0].オークション数量) {
+              orderOfArraivalFlag = false;
+            }
+          } else if (orderOfArraivalFlag) {
+            auctionListsGroupSort[key].落札状況 = this.auctionFinishedFlag
+              ? "先着順の部分落札"
+              : "先着順の部分落札圏内";
+            orderOfArraivalFlag = false;
+          } else {
+            auctionListsGroupSort[key].落札状況 = "-";
           }
         }
-      }
+        if (this.myAuctionBidList.length > 0) {
+          for (const key in auctionListsGroupSort) {
+            if (
+              this.myAuctionBidList[0].入札金額 ==
+              auctionListsGroupSort[key][rpf_bidPrice]
+            ) {
+              this.myAuctionResult = auctionListsGroupSort[key].落札状況;
+              break;
+            }
+          }
+        }
 
-      this.bidTotalAmount = auctionAmountCount;
-      this.auctionListsGroup = auctionListsGroupSort;
-      this.updateMessage();
-      this.agreeGuideline = false;
-      // loading overlay非表示
-      this.$store.commit("common/setLoading", false);
+        this.bidTotalAmount = auctionAmountCount;
+        this.auctionListsGroup = auctionListsGroupSort;
+        this.updateMessage();
+        this.agreeGuideline = false;
+      } catch (e) {
+        console.log(e);
+      } finally {
+        // loading overlay非表示
+        this.$store.commit("common/setLoading", false);
+      }
     }
   }
 };

@@ -131,7 +131,7 @@ export default {
   data() {
     return {
       page: 1,
-      pageSize: 2,
+      pageSize: 6,
       length: 0,
       token: this.$store.getters["auth/getToken"],
       applicationId: this.$store.getters["datas/getApplicationId"],
@@ -147,35 +147,40 @@ export default {
     console.log(this.$route.path);
   },
   mounted: async function() {
-    // loading overlay表示
-    this.$store.commit("common/setLoading", true);
-    this.myCopyrightsList = await this.getMyCopyrightsList();
-    for (const myCopyrightskey in this.myCopyrightsList) {
-      const myAuctionList = await this.getAuctionList(
-        this.myCopyrightsList[myCopyrightskey].著作権番号
-      );
+    try {
+      // loading overlay表示
+      this.$store.commit("common/setLoading", true);
+      this.myCopyrightsList = await this.getMyCopyrightsList();
+      for (const myCopyrightskey in this.myCopyrightsList) {
+        const myAuctionList = await this.getAuctionList(
+          this.myCopyrightsList[myCopyrightskey].著作権番号
+        );
 
-      const image1Binary = myAuctionList[0].image1;
-      if (image1Binary) {
-        const ab = await this.$hexalink.getFile(this.token, image1Binary);
-        const blob = new Blob([ab], { type: "image/jpeg" });
-        myAuctionList[0].image1 = window.URL.createObjectURL(blob);
-      } else {
-        myAuctionList[0].image1 = "";
+        const image1Binary = myAuctionList[0].image1;
+        if (image1Binary) {
+          const ab = await this.$hexalink.getFile(this.token, image1Binary);
+          const blob = new Blob([ab], { type: "image/jpeg" });
+          myAuctionList[0].image1 = window.URL.createObjectURL(blob);
+        } else {
+          myAuctionList[0].image1 = "";
+        }
+
+        this.myCopyrightsList[myCopyrightskey].image1 = myAuctionList[0].image1;
+        this.myCopyrightsList[myCopyrightskey].タイトル =
+          myAuctionList[0].タイトル;
+        this.myCopyrightsList[myCopyrightskey].歌手1 = myAuctionList[0].歌手1;
       }
-
-      this.myCopyrightsList[myCopyrightskey].image1 = myAuctionList[0].image1;
-      this.myCopyrightsList[myCopyrightskey].タイトル =
-        myAuctionList[0].タイトル;
-      this.myCopyrightsList[myCopyrightskey].歌手1 = myAuctionList[0].歌手1;
+      this.length = Math.ceil(this.myCopyrightsList.length / this.pageSize);
+      this.displayMyCopyrightsList = this.myCopyrightsList.slice(
+        this.pageSize * (this.page - 1),
+        this.pageSize * this.page
+      );
+    } catch (e) {
+      console.log(e);
+    } finally {
+      // loading overlay非表示
+      this.$store.commit("common/setLoading", false);
     }
-    this.length = Math.ceil(this.myCopyrightsList.length / this.pageSize);
-    this.displayMyCopyrightsList = this.myCopyrightsList.slice(
-      this.pageSize * (this.page - 1),
-      this.pageSize * this.page
-    );
-    // loading overlay非表示
-    this.$store.commit("common/setLoading", false);
   },
   methods: {
     async getMyCopyrightsList() {
