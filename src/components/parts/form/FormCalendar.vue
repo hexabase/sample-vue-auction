@@ -1,12 +1,10 @@
 <template>
-  <v-row align="center" justify="center">
-    <v-col cols="3">
-      <p>
-        {{ title }}
-        <span v-if="required" class="red--text">※</span>
-      </p>
-    </v-col>
-    <v-col cols="8">
+  <div class="formItem">
+    <div class="formItem_title">
+      {{ title }}
+      <span v-if="required" class="formItem_required">※</span>
+    </div>
+    <div class="formItem_body">
       <v-menu
         v-model="menu"
         :close-on-content-click="false"
@@ -46,8 +44,8 @@
           @input="inputValue"
         ></v-date-picker>
       </v-menu>
-    </v-col>
-  </v-row>
+    </div>
+  </div>
 </template>
 
 <script>

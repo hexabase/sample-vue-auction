@@ -1,9 +1,7 @@
 <template>
-  <div>
-    <button :disabled="disabled" @click="clickHandler">
-      <slot></slot>
-    </button>
-  </div>
+  <button :disabled="disabled" @click="clickHandler">
+    <slot></slot>
+  </button>
 </template>
 
 <script>

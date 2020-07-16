@@ -2,9 +2,14 @@
   <v-row align="center" justify="center" class="login">
     <div class="loginBox">
       <h1 class="contents_title">
-        <span class="contents_title-en">Login</span>
-        <span class="contents_title-jp">ログイン</span>
+        <span class="contents_title-en">Join BATON!</span>
+        <span class="contents_title-jp">新規会員登録</span>
       </h1>
+      <p class="loginBox_lead">
+        登録URLをメールで通知します。<br />
+        BATONで利用するメールアドレスを入力し<br />
+        送信してください。
+      </p>
       <div v-if="errorMess != ''" class="error_msg">
         <v-alert text color="red">
           {{ errorMess }}
@@ -26,34 +31,28 @@
               required
             />
           </validation-provider>
-          <validation-provider
-            ref="password"
-            v-slot="{ errors }"
-            name="パスワード"
-            rules="required"
-          >
-            <v-text-field
-              v-model="password"
-              :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-              :type="show1 ? 'text' : 'password'"
-              placeholder="パスワード"
-              :error-messages="errors"
-              required
-              @click:append="show1 = !show1"
-            />
-          </validation-provider>
         </ValidationObserver>
       </v-form>
+      <div class="loginBox_complete">
+        <v-icon>mdi-checkbox-marked-circle-outline</v-icon>
+        <p class="loginBox_lead">
+          {メールアドレス}宛に登録URLを送信しました。<br />
+          メールをご確認ください。
+        </p>
+      </div>
       <div class="loginBox_footer">
-        <v-checkbox v-model="checkbox" label="ログイン状態を保持"></v-checkbox>
-        <button type="submit" class="button-action" @click="signin">
-          ログイン
+        <button type="submit" class="button-action">
+          送信する
         </button>
         <ul class="loginBox_link">
-          <li><a href="">パスワードを忘れたかた</a></li>
           <li>
-            <router-link to="/registration">
-              新規登録
+            <router-link to="/">
+              Topページに戻る
+            </router-link>
+          </li>
+          <li>
+            <router-link to="/signin">
+              ログインする
             </router-link>
           </li>
         </ul>
@@ -72,8 +71,7 @@ export default {
     return {
       email: "",
       password: "",
-      errorMess: "",
-      show1: false
+      errorMess: ""
     };
   },
   /**

@@ -1,68 +1,62 @@
 <template>
-  <v-row align="center" justify="center">
-    <v-col cols="3">
-      <p>
-        {{ title }}
-        <span :required="required" class="red--text">※</span>
-      </p>
-    </v-col>
-    <v-col cols="1">
-      <p class="text-center">
-        <template v-if="kana">
-          <template v-if="corp">ホウジンメイ</template>
-          <template v-else>セイ</template>
-        </template>
-        <template v-else-if="corp">法人名</template>
-        <template v-else>姓</template>
-      </p>
-    </v-col>
-    <v-col cols="3">
-      <validation-provider
-        v-slot="{ errors }"
-        :name="kana == true ? 'セイ' : '姓'"
-        :rules="valrule"
-      >
-        <v-text-field
-          v-model="sei"
-          dense
-          outlined
-          single-line
-          :label="label"
-          :disabled="!editable"
-          :error-messages="errors"
-          @input="inputValue"
-        ></v-text-field>
-      </validation-provider>
-    </v-col>
-    <v-col cols="1">
-      <p class="text-center">
-        <template v-if="kana">
-          <template v-if="corp">ホウジンダイヒョウシャ</template>
-          <template v-else>メイ</template>
-        </template>
-        <template v-else-if="corp">法人代表者</template>
-        <template v-else>名</template>
-      </p>
-    </v-col>
-    <v-col cols="3">
-      <validation-provider
-        v-slot="{ errors }"
-        :name="kana == true ? 'メイ' : '名'"
-        :rules="valrule"
-      >
-        <v-text-field
-          v-model="mei"
-          dense
-          outlined
-          single-line
-          :label="label"
-          :disabled="!editable"
-          :error-messages="errors"
-          @input="inputValue"
-        ></v-text-field>
-      </validation-provider>
-    </v-col>
-  </v-row>
+  <div class="formItem">
+    <div class="formItem_title">
+      {{ title }}
+      <span v-if="required" class="formItem_required">※</span>
+    </div>
+    <div class="formItem_body">
+      <div class="formItem_itemWrap">
+        <span class="formItem_subLabel">
+          <template v-if="kana">
+            <template v-if="corp">ホウジンメイ</template>
+            <template v-else>セイ</template>
+          </template>
+          <template v-else-if="corp">法人名</template>
+          <template v-else>姓</template>
+        </span>
+        <validation-provider
+          v-slot="{ errors }"
+          :name="kana == true ? 'セイ' : '姓'"
+          :rules="valrule"
+        >
+          <v-text-field
+            v-model="sei"
+            dense
+            outlined
+            single-line
+            :label="label"
+            :disabled="!editable"
+            :error-messages="errors"
+            @input="inputValue"
+          ></v-text-field>
+        </validation-provider>
+        <span class="formItem_subLabel">
+          <template v-if="kana">
+            <template v-if="corp">ホウジンダイヒョウシャ</template>
+            <template v-else>メイ</template>
+          </template>
+          <template v-else-if="corp">法人代表者</template>
+          <template v-else>名</template>
+        </span>
+        <validation-provider
+          v-slot="{ errors }"
+          :name="kana == true ? 'メイ' : '名'"
+          :rules="valrule"
+        >
+          <v-text-field
+            v-model="mei"
+            dense
+            outlined
+            single-line
+            :label="label"
+            :disabled="!editable"
+            :error-messages="errors"
+            @input="inputValue"
+          ></v-text-field>
+        </validation-provider>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>

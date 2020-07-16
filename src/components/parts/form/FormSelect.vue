@@ -1,12 +1,10 @@
 <template>
-  <v-row align="center" justify="center">
-    <v-col cols="3">
-      <p>
-        {{ title }}
-        <span v-if="required" class="red--text">※</span>
-      </p>
-    </v-col>
-    <v-col cols="8">
+  <div class="formItem">
+    <div class="formItem_title">
+      {{ title }}
+      <span v-if="required" class="formItem_required">※</span>
+    </div>
+    <div class="formItem_body">
       <validation-provider v-slot="{ errors }" :name="title" :rules="valrule">
         <v-select
           :items="items"
@@ -14,7 +12,8 @@
           outlined
           clearable
           single-line
-          label="ドロップダウンより選択"
+          label="選択してください"
+          :hint="hint"
           :multiple="multiple"
           :value="value"
           :disabled="!editable"
@@ -36,8 +35,8 @@
           </template>
         </v-select>
       </validation-provider>
-    </v-col>
-  </v-row>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -71,6 +70,10 @@ export default {
     valrule: {
       type: String,
       default: ""
+    },
+    hint: {
+      type: String,
+      default: undefined
     }
   },
   computed: {

@@ -173,6 +173,17 @@
 
 /* my copyrights */
 #page_myCopyrights {
+    .pageHeader {
+        &_img {
+            background: url("~@/assets/img/bg-mypage-title.jpg") no-repeat center center;
+            background-size: cover;
+            backdrop-filter: none;
+        }
+        .content {
+            height: 180px;
+        }
+    }
+    
     .trend {
         display: flex;
         justify-content: center;
