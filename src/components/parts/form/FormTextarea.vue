@@ -1,10 +1,10 @@
 <template>
-  <v-row>
-    <v-col>
-      <p>
-        {{ title }}
-        <span v-if="required" class="red--text">※</span>
-      </p>
+  <div class="formItem">
+    <div class="formItem_title">
+      {{ title }}
+      <span v-if="required" class="formItem_required">※</span>
+    </div>
+    <div class="formItem_body">
       <validation-provider v-slot="{ errors }" :name="title" :rules="valrule">
         <v-textarea
           counter
@@ -17,8 +17,8 @@
           @input="inputValue"
         ></v-textarea>
       </validation-provider>
-    </v-col>
-  </v-row>
+    </div>
+  </div>
 </template>
 
 <script>

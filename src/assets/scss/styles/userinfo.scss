@@ -1,0 +1,165 @@
+@charset "UTF-8";
+@import "../utils/variables.scss";
+@import "../utils/functions.scss";
+
+/* user info */
+#page_userInfo {
+    .pageHeader {
+        &_img {
+            background: url("~@/assets/img/bg-mypage-title.jpg") no-repeat center center;
+            background-size: cover;
+            backdrop-filter: none;
+        }
+        .content {
+            height: 180px;
+        }
+    }
+}
+
+.userInfo_nav {
+    border-bottom: $border-default;
+}
+
+.userInfo {
+    @extend %padding-contents;
+
+    .v-stepper__content {
+        padding: 0;
+    }
+
+    &_message {
+        display: flex;
+        margin-bottom: 30px;
+        
+        .v-alert {
+            width: auto;
+            margin: 0 auto;
+            padding: 16px 40px;
+            font-size: 1.6rem;
+            text-align: left;
+
+            &::before {
+                opacity: 0.05;
+            }
+
+            .v-icon {
+                font-size: 2.8rem;
+            }
+        }
+    }
+
+    &_subTitle {
+        margin-bottom: 40px;
+        font-size: 2.4rem;
+        font-weight: normal;
+    }
+
+    &_titleLabel {
+        display: block;
+        margin-bottom: 10px;
+        color: $color-theme-center;
+        font-size: 2rem;
+        font-family: $font-en;
+    }
+
+    &_text {
+        margin-bottom: 40px;
+        font-size: 1.5rem;
+        color: $color-text-gray;
+    }
+}
+
+.entryForm {
+    margin: 30px auto;
+    width: 800px;
+    max-width: 100%;
+
+    &_footer {
+        margin-top: 30px;
+
+        .button-cancel {
+            min-width: 240px;
+            font-size: 1.4rem;
+
+            .v-icon {
+                margin: -2px 10px 0 0;
+                font-size: 1.8rem;
+            }
+        }
+
+        .button-cancel + .button-action {
+            margin-left: 20px;
+        }
+
+        .button-action {
+            width: 240px;
+            line-height: 48px;
+            font-size: 1.6rem;
+        }
+    }
+}
+
+
+.formItem {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    min-height: 85px;
+    font-size: 1.4rem;
+    border-bottom: $border-light;
+
+    &:first-child {
+        border-top: $border-light;
+    }
+
+    &_title {
+        flex: 0 0 25%;
+        color: $color-text-gray;
+    }
+
+    &_required {
+        float: right;
+        margin-right: 10px;
+        color: $color-error;
+        font-size: 1rem;
+    }
+
+    &_body {
+        flex: 1 0 75%;
+        margin: 12px 0 -14px;
+        color: $color-text-sub;
+    }
+
+    &_itemWrap {
+        display: flex;
+    }
+
+    &_subLabel {
+        display: inline-block;
+        min-width: 2em;
+        margin-right: 8px;
+        line-height: 30px;
+    }
+
+    span + &_subLabel {
+        margin-left: 20px;
+    }
+
+    .v-radio {
+        margin-top: -20px;    
+    }
+
+    .select-year {
+        flex: 0 0 40%;
+        margin-right: 10px;
+    }
+
+    .select-month {
+        flex: 0 0 25%;
+        margin-right: 10px;
+    }
+
+    .select-day {
+        flex: 0 0 25%;
+    }
+}

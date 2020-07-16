@@ -6,21 +6,14 @@
     </div>
     <div class="formItem_body">
       <validation-provider v-slot="{ errors }" :name="title" :rules="valrule">
-        <v-radio-group
-          :value="value"
-          row
-          :disabled="!editable"
-          :error-messages="errors"
-          @change="inputValue"
-        >
-          <template v-for="radio in radios">
-            <v-radio
-              :key="radio.label"
-              :label="radio.label"
-              :value="radio.value"
-            />
-          </template>
-        </v-radio-group>
+        <template v-for="checkbox in checkboxes">
+          <v-checkbox
+            :key="checkbox.label"
+            :label="checkbox.label"
+            :value="checkbox.value"
+            :error-messages="errors"
+          />
+        </template>
       </validation-provider>
     </div>
   </div>
@@ -42,7 +35,7 @@ export default {
       type: Boolean,
       default: true
     },
-    radios: {
+    checkboxes: {
       type: Array,
       default: () => []
     },

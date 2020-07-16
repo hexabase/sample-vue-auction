@@ -1,12 +1,10 @@
 <template>
-  <v-row align="center" justify="center" align-content="center">
-    <v-col cols="3">
-      <p>
-        {{ title }}
-        <span v-if="required" class="red--text">※</span>
-      </p>
-    </v-col>
-    <v-col cols="8">
+  <div class="formItem">
+    <div class="formItem_title">
+      {{ title }}
+      <span v-if="required" class="formItem_required">※</span>
+    </div>
+    <div class="formItem_body">
       <template v-if="editable">
         <validation-provider
           ref="provider"
@@ -42,8 +40,8 @@
           </v-chip>
         </span>
       </template>
-    </v-col>
-  </v-row>
+    </div>
+  </div>
 </template>
 
 <script>
