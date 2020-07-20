@@ -9,6 +9,7 @@ $color-theme-center: #2358d1;
 $color-theme-right: #5255d1;
 $color-theme: $color-theme-center;
 $color-sub: #0eb54d;
+$color-vuetify-primary: #1976d2;
 
 // bg
 $color-bg-theme: linear-gradient(to right, $color-theme-left, $color-theme-center 50%, $color-theme-right);
@@ -63,6 +64,7 @@ $zIndex-contents-bg: -1;
 $font-default: 'Noto Sans JP', 'Hiragino Kaku Gothic Pro', 'ヒラギノ角ゴ Pro W3', 'メイリオ', Meiryo, 'ＭＳ Ｐゴシック', sans-serif;
 $font-mix: 'Barlow', 'Noto Sans JP', 'Hiragino Kaku Gothic Pro', 'ヒラギノ角ゴ Pro W3', 'メイリオ', Meiryo, 'ＭＳ Ｐゴシック', sans-serif;
 $font-en: 'Barlow', sans-serif;
+$font-mdi: normal normal normal 24px/1 "Material Design Icons";
 
 // media query
 $breakpoint-pc: 1000px;

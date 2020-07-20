@@ -9,14 +9,55 @@
     </header>
     <v-stepper v-model="step">
       <v-stepper-header class="userInfo_nav">
-        <v-stepper-step step="1">個人情報の登録</v-stepper-step>
+        <v-stepper-step editable complete step="1">
+          個人情報
+        </v-stepper-step>
         <v-divider></v-divider>
-        <v-stepper-step step="2">口座情報の登録</v-stepper-step>
+        <v-stepper-step :editable="false" step="2">
+          口座情報
+        </v-stepper-step>
         <v-divider></v-divider>
-        <v-stepper-step step="3">投資について</v-stepper-step>
+        <v-stepper-step :editable="false" step="3">
+          投資について
+        </v-stepper-step>
         <v-divider></v-divider>
-        <v-stepper-step step="4">本人確認書類のアップロード</v-stepper-step>
+        <v-stepper-step :editable="false" step="4">
+          本人確認書類
+        </v-stepper-step>
+        <v-divider></v-divider>
+        <v-stepper-step :editable="false" step="5">
+          登録内容確認
+        </v-stepper-step>
       </v-stepper-header>
+      <!-- MEMO:ユーザー情報（ナビ遷移）の場合: non-linear 付与 -->
+      <!-- <v-stepper non-linear>
+      <v-stepper-header class="userInfo_nav">
+        <v-stepper-step editable step="1">
+          アカウント/通知設定
+        </v-stepper-step>
+        <v-divider></v-divider>
+        <v-stepper-step editable complete step="2">
+          個人情報
+        </v-stepper-step>
+        <v-divider></v-divider>
+        <v-stepper-step editable step="3">
+          口座情報
+          <span class="mark-alert"></span>
+        </v-stepper-step>
+        <v-divider></v-divider>
+        <v-stepper-step editable step="4">
+          投資について
+        </v-stepper-step>
+        <v-divider></v-divider>
+        <v-stepper-step editable step="5">
+          本人確認書類
+          <span class="mark-alert"></span>
+        </v-stepper-step>
+        <v-divider></v-divider>
+        <v-stepper-step step="6">
+          登録申請
+        </v-stepper-step>
+      </v-stepper-header>-->
       <v-stepper-items class="userInfo">
         <div class="content">
           <v-stepper-content step="1">
