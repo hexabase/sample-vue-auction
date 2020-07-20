@@ -267,6 +267,26 @@
     }
 }
 
+.button-secondary {
+    display: inline-block;
+    border: 1px solid $color-theme-center;
+    color: $color-theme-center;
+    transition: all .3s;
+    font-size: 1.3rem;
+    border-radius: 0;
+    background: #fff !important;
+    box-shadow: none;
+
+    &:hover {
+        background: $color-theme-center !important;
+        color: #fff;
+    }
+
+    &::before {
+        background-color: transparent;
+    }
+}
+
 &#app [disabled] {
         background: $color-bg-disabled;
         color: $color-text-disabled;
@@ -631,7 +651,7 @@ body {
             color: $color-text-sub;
         }
     }
-    
+
     .v-stepper__label {
         font-size: 1.4rem;
     }

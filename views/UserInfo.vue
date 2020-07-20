@@ -59,8 +59,8 @@
         </v-stepper-step>
       </v-stepper-header>-->
       <v-stepper-items class="userInfo">
-        <div class="content">
-          <v-stepper-content step="1">
+        <v-stepper-content step="1">
+          <div class="content">
             <div class="userInfo_message">
               <v-alert
                 color="#cf0e0e"
@@ -138,8 +138,10 @@
                 </div>
               </v-form>
             </section>
-          </v-stepper-content>
-          <v-stepper-content step="2">
+          </div>
+        </v-stepper-content>
+        <v-stepper-content step="2">
+          <div class="content">
             <section class="userInfo_section">
               <h3 class="userInfo_subTitle">
                 <span class="userInfo_titleLabel">Step.2</span>
@@ -198,8 +200,10 @@
                 </div>
               </v-form>
             </section>
-          </v-stepper-content>
-          <v-stepper-content step="3">
+          </div>
+        </v-stepper-content>
+        <v-stepper-content step="3">
+          <div class="content">
             <section class="userInfo_section">
               <h3 class="userInfo_subTitle">
                 <span class="userInfo_titleLabel">Step.3</span>
@@ -275,8 +279,10 @@
                 </div>
               </v-form>
             </section>
-          </v-stepper-content>
-          <v-stepper-content step="4">
+          </div>
+        </v-stepper-content>
+        <v-stepper-content step="4">
+          <div class="content">
             <section class="userInfo_section">
               <h3 class="userInfo_subTitle">
                 <span class="userInfo_titleLabel">Step.4</span>
@@ -308,100 +314,118 @@
                 </div>
               </v-form>
             </section>
-          </v-stepper-content>
-          <v-stepper-content step="5">
-            <section class="userInfo_section">
-              <h3 class="userInfo_subTitle">
-                <span class="userInfo_titleLabel">Step.5</span>
-                登録内容の確認・利用規約
-              </h3>
-              <p class="userInfo_text">
-                以下の内容で登録します。よろしければ利用規約に同意し、登録してください。
-              </p>
-              <v-form class="entryForm">
-                <section class="formConfirm">
-                  <h4 class="formConfirm_title">Step.1&nbsp;個人情報の登録</h4>
-                  <div class="formConfirm_item_wrapper">
-                    <div class="formConfirm_item">
-                      <div class="formConfirm_title">お名前</div>
-                      <div class="formConfirm_body">山田&nbsp;太郎</div>
+          </div>
+        </v-stepper-content>
+        <v-stepper-content step="5">
+          <section class="userInfo_section">
+            <h3 class="userInfo_subTitle">
+              <span class="userInfo_titleLabel">Step.5</span>
+              登録内容の確認・利用規約
+            </h3>
+            <p class="userInfo_text">
+              以下の内容で登録します。よろしければ利用規約に同意し、登録してください。
+            </p>
+            <div class="content entryForm">
+              <section class="formConfirm">
+                <h4 class="formConfirm_title">Step.1&nbsp;個人情報の登録</h4>
+                <div class="formConfirm_item_wrapper">
+                  <div class="formConfirm_item">
+                    <div class="formConfirm_item_title">
+                      お名前
                     </div>
-                    <div class="formConfirm_item">
-                      <div class="formConfirm_title">お名前（カタカナ）</div>
-                      <div class="formConfirm_body">ヤマダ&nbsp;タロウ</div>
-                    </div>
-                    <div class="formConfirm_item">
-                      <div class="formConfirm_title">性別</div>
-                      <div class="formConfirm_body">男性</div>
+                    <div class="formConfirm_item_body">
+                      山田&nbsp;太郎
                     </div>
                   </div>
-                  <div class="formConfirm_bottom">
-                    <v-btn class="button-secondary" @click="step = 1">
-                      Step1を修正する
-                    </v-btn>
-                  </div>
-                </section>
-                <section class="formConfirm">
-                  <h4 class="formConfirm_title">Step.4&nbsp;本人確認書類</h4>
-                  <div class="formConfirm_item_wrapper">
-                    <div class="formConfirm_item">
-                      <div class="formConfirm_title">確認書類</div>
-                      <div class="formConfirm_body"></div>
+                  <div class="formConfirm_item">
+                    <div class="formConfirm_item_title">
+                      お名前（カタカナ）
                     </div>
-                    <div class="formConfirm_item">
-                      <div class="formConfirm_title">マイナンバーカード</div>
-                      <div class="formConfirm_body"></div>
+                    <div class="formConfirm_item_body">
+                      ヤマダ&nbsp;タロウ
                     </div>
                   </div>
-                  <div class="formConfirm_bottom">
-                    <v-btn class="button-secondary" @click="step = 4">
-                      Step4を修正する
-                    </v-btn>
+                  <div class="formConfirm_item">
+                    <div class="formConfirm_item_title">
+                      性別
+                    </div>
+                    <div class="formConfirm_item_body">
+                      男性
+                    </div>
                   </div>
-                </section>
-                <section class="formEntryBox">
-                  <h4 class="formEntryBox_title">
-                    以上の内容で登録してよろしいですか？
-                  </h4>
-                  <p class="formEntryBox_text">
-                    よろしければ利用規約に同意いただき登録ボタンを押してください。
+                </div>
+                <div class="formConfirm_bottom">
+                  <v-btn class="button-secondary" @click="step = 1">
+                    Step1を修正する
+                  </v-btn>
+                </div>
+              </section>
+              <section class="formConfirm">
+                <h4 class="formConfirm_title">Step.4&nbsp;本人確認書類</h4>
+                <div class="formConfirm_item_wrapper">
+                  <div class="formConfirm_item">
+                    <div class="formConfirm_item_title">
+                      確認書類
+                    </div>
+                    <div class="formConfirm_item_body"></div>
+                  </div>
+                  <div class="formConfirm_item">
+                    <div class="formConfirm_item_title">
+                      マイナンバーカード
+                    </div>
+                    <div class="formConfirm_item_body"></div>
+                  </div>
+                </div>
+                <div class="formConfirm_bottom">
+                  <v-btn class="button-secondary" @click="step = 4">
+                    Step4を修正する
+                  </v-btn>
+                </div>
+              </section>
+            </div>
+            <v-form class="">
+              <section class="formEntryBox">
+                <h4 class="formEntryBox_title">
+                  以上の内容で登録してよろしいですか？
+                </h4>
+                <p class="formEntryBox_text">
+                  よろしければ利用規約に同意いただき登録ボタンを押してください。
+                </p>
+                <v-checkbox label="利用規約に同意" value="" required />
+                <v-checkbox
+                  label="個人情報の処理方針に同意"
+                  value=""
+                  required
+                />
+                <v-checkbox
+                  label="個人情報の収集および利用に同意"
+                  value=""
+                  required
+                />
+                <div class="formEntryBox_concent">
+                  <p>
+                    BATON（以下「会社」）は、会員にサービスを提供するために、会員登録の段階で下記のように個人情報を収集利用します。<br />
+                    収集・利用目的<br />
+                    -&nbsp;サービスを提供し、利用者の識別と本人かどうか確認<br />
+                    -&nbsp;未成年者に対する法定代理人同意を<br />
+                    収集アイテム<br />
+                    -&nbsp;ID、パスワード、氏名、生年月日、性別、メールアドレス、携帯電話番号、口座番号、住所<br />
+                    -&nbsp;法定代理人情報（氏名、生年月日、電子メールアドレス）<br />
+                    保有・利用期間<br />
+                    退会または収集・利用目的の達成時まで<br />
+                    ※お客様は、個人情報の収集・利用に同意しないことができるが、本個人情報は、同社がサービスを提供するために必要な最小限の個人情報であるため、同意を拒否した場合のサービス利用が不可能です
                   </p>
-                  <v-checkbox label="利用規約に同意" value="" required />
-                  <v-checkbox
-                    label="個人情報の処理方針に同意"
-                    value=""
-                    required
-                  />
-                  <v-checkbox
-                    label="個人情報の収集および利用に同意"
-                    value=""
-                    required
-                  />
-                  <div class="formEntryBox_concent">
-                    <p>
-                      BATON（以下「会社」）は、会員にサービスを提供するために、会員登録の段階で下記のように個人情報を収集利用します。<br />
-                      収集・利用目的<br />
-                      -&nbsp;サービスを提供し、利用者の識別と本人かどうか確認<br />
-                      -&nbsp;未成年者に対する法定代理人同意を<br />
-                      収集アイテム<br />
-                      -&nbsp;ID、パスワード、氏名、生年月日、性別、メールアドレス、携帯電話番号、口座番号、住所<br />
-                      -&nbsp;法定代理人情報（氏名、生年月日、電子メールアドレス）<br />
-                      保有・利用期間<br />
-                      退会または収集・利用目的の達成時まで<br />
-                      ※お客様は、個人情報の収集・利用に同意しないことができるが、本個人情報は、同社がサービスを提供するために必要な最小限の個人情報であるため、同意を拒否した場合のサービス利用が不可能です
-                    </p>
-                  </div>
-                  <v-checkbox label="全てに同意する" value="" required />
-                  <div class="entryForm_footer">
-                    <button class="button-action">
-                      この内容で登録する
-                    </button>
-                  </div>
-                </section>
-              </v-form>
-            </section>
-          </v-stepper-content>
-        </div>
+                </div>
+                <v-checkbox label="全てに同意する" value="" required />
+                <div class="entryForm_footer">
+                  <button class="button-action">
+                    この内容で登録する
+                  </button>
+                </div>
+              </section>
+            </v-form>
+          </section>
+        </v-stepper-content>
       </v-stepper-items>
     </v-stepper>
   </div>

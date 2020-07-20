@@ -262,3 +262,88 @@
         }
     }
 }
+
+.formConfirm {
+    width: 600px;
+    margin: auto;
+    text-align: left;
+
+    &_title {
+        margin-bottom: 5px;
+        padding: 15px;
+        background: $color-bg-blue;
+        color: $color-theme-center;
+        font-size: 1.5rem;
+        font-weight: normal;
+    }
+
+    &_item {
+        display: flex;
+        padding: 10px 20px;
+        border-bottom: $border-default;
+        font-size: 1.4rem;
+        line-height: 1.4;
+
+        &_title {
+            flex: 0 0 170px;
+            color: $color-text-darkgray;
+        }
+
+        &_body {
+            color: $color-text-sub;
+            font-weight: 500;
+        }
+    }
+
+    &_bottom {
+        text-align: center;
+        padding: 30px;
+
+        .button-secondary {
+            width: 200px;
+            height: 36px;
+            line-height: 36px;
+        }
+    }
+}
+
+.userInfo .formEntryBox {
+    margin-top: 40px;
+    padding: 60px 10px;
+    background: $color-bg-blue;
+
+    &_title {
+        margin-bottom: 15px;
+        font-size: 1.8rem;
+        font-weight: normal;
+        color: $color-theme-center;
+    }
+
+    &_text {
+        margin-bottom: 60px;
+        font-size: 1.5rem;
+        color: $color-theme-center;
+    }
+
+    .v-input {
+        width: 300px;
+        margin: 0 auto;
+
+        .v-messages {
+            min-height: 0;
+        }
+    }
+
+    &_concent {
+        width: 600px;
+        max-height: 200px;
+        overflow: auto;
+        margin: 20px auto;
+        border: $border-default;
+        padding: 20px;
+        background: #fff;
+        font-size: 1.2rem;
+        line-height: 1.8;
+        text-align: left;
+    }
+}
