@@ -28,7 +28,8 @@
             :disabled="!editable"
             :error-messages="errors"
             @input="inputValue"
-          ></v-text-field>
+          >
+          </v-text-field>
         </validation-provider>
         <span class="formItem_subLabel">
           <template v-if="kana">
@@ -94,6 +95,10 @@ export default {
     valrule: {
       type: String,
       default: ""
+    },
+    userinfo: {
+      type: Array,
+      default: () => []
     }
   },
   data() {
@@ -117,10 +122,19 @@ export default {
         if (this.value.split(this.delimiter).length == 2) {
           s = this.value.split(this.delimiter)[0];
         }
+        if (this.userinfo[0]) {
+          if (this.kana && this.userinfo[0]["苗字（カタカナ）"]) {
+            s = this.userinfo[0]["苗字（カタカナ）"];
+          }
+          if (!this.kana && this.userinfo[0].苗字) {
+            s = this.userinfo[0].苗字;
+          }
+        }
         return s;
       },
       set: function(value) {
         this.fullName = value.trim() + this.delimiter + this.mei;
+        console.log(value);
       }
     },
     mei: {
@@ -128,6 +142,14 @@ export default {
         let m = "";
         if (this.value.split(this.delimiter).length == 2) {
           m = this.value.split(this.delimiter)[1];
+        }
+        if (this.userinfo[0]) {
+          if (this.kana && this.userinfo[0]["名前（カタカナ）"]) {
+            m = this.userinfo[0]["名前（カタカナ）"];
+          }
+          if (!this.kana && this.userinfo[0].名前) {
+            m = this.userinfo[0].名前;
+          }
         }
         return m;
       },
@@ -138,6 +160,7 @@ export default {
   },
   created() {
     this.delimiter = this.kana ? " " : "　";
+    console.log(this.userinfo[0]);
   },
   methods: {
     inputValue: function() {

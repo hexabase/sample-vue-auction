@@ -327,6 +327,16 @@ export default {
         console.log("uploadFile", result);
         return result;
       },
+      async deleteFile(token, itemId, fieldId, fileId) {
+        let config = JSON.parse(JSON.stringify(defaultConfig));
+        config.headers["Authorization"] = `Bearer ${token}`;
+        const result = await axios.delete(
+          `/linker-api/items/${itemId}/fields/${fieldId}/attachments/${fileId}`,
+          config
+        );
+        console.log("deleteFile", result);
+        return result;
+      },
       /**
        * UserInfoの取得
        *
@@ -365,6 +375,40 @@ export default {
         config.headers["Authorization"] = `Bearer ${token}`;
         const result = await axios.get("/linker-api/grouptree", config);
         return result.data.result;
+      },
+      /**
+       * ユーザを招待（Hexalink）
+       *
+       * @param {*} token
+       * @param {*} params
+       * @returns GroupTree
+       */
+      async inviteUser(token, params) {
+        let config = JSON.parse(JSON.stringify(defaultConfig));
+        config.headers["Authorization"] = `Bearer ${token}`;
+        const result = await axios.post(
+          `/linker-api/userinvite`,
+          params,
+          config
+        );
+        return result;
+      },
+      /**
+       * ユーザを招待（Hexalink）
+       *
+       * @param {*} token
+       * @param {*} params
+       * @returns GroupTree
+       */
+      async confirmRegistration(token, params) {
+        let config = JSON.parse(JSON.stringify(defaultConfig));
+        config.headers["Authorization"] = `Bearer ${token}`;
+        const result = await axios.post(
+          `/linker-api/userinvite`,
+          params,
+          config
+        );
+        return result;
       },
       /**
        * ユーザを登録（Hexalink）

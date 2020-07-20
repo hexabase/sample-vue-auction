@@ -7,7 +7,7 @@
     <div class="formItem_body">
       <validation-provider v-slot="{ errors }" :name="title" :rules="valrule">
         <v-radio-group
-          :value="value"
+          :value="radiochecked"
           row
           :disabled="!editable"
           :error-messages="errors"
@@ -51,6 +51,10 @@ export default {
       default: "無"
     },
     valrule: {
+      type: String,
+      default: ""
+    },
+    radiochecked: {
       type: String,
       default: ""
     }

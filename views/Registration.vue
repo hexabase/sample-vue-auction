@@ -5,7 +5,7 @@
         <span class="contents_title-en">Join BATON!</span>
         <span class="contents_title-jp">新規会員登録</span>
       </h1>
-      <p class="loginBox_lead">
+      <p v-if="!sendResult" class="loginBox_lead">
         登録URLをメールで通知します。<br />
         BATONで利用するメールアドレスを入力し<br />
         送信してください。
@@ -15,7 +15,7 @@
           {{ errorMess }}
         </v-alert>
       </div>
-      <v-form>
+      <v-form v-if="!sendResult">
         <ValidationObserver ref="signin" v-slot="{}">
           <validation-provider
             ref="address"
@@ -33,15 +33,15 @@
           </validation-provider>
         </ValidationObserver>
       </v-form>
-      <div class="loginBox_complete">
+      <div v-if="sendResult" class="loginBox_complete">
         <v-icon>mdi-checkbox-marked-circle-outline</v-icon>
         <p class="loginBox_lead">
-          {メールアドレス}宛に登録URLを送信しました。<br />
+          {{ email }}宛に登録URLを送信しました。<br />
           メールをご確認ください。
         </p>
       </div>
-      <div class="loginBox_footer">
-        <button type="submit" class="button-action">
+      <div v-if="!sendResult" class="loginBox_footer">
+        <button type="submit" class="button-action" @click="inviteUser">
           送信する
         </button>
         <ul class="loginBox_link">
@@ -69,9 +69,15 @@ export default {
   mixins: [common],
   data() {
     return {
+      token: this.$store.getters["auth/getToken"],
+      applicationId: this.$store.getters["datas/getApplicationId"],
+      datasotreIdList: this.$store.getters["datas/getDatastores"],
+      datastoreIds: this.$store.getters["datas/getDatastoreIds"],
+      userId: this.$store.getters["user/getHexaID"],
       email: "",
       password: "",
-      errorMess: ""
+      errorMess: "",
+      sendResult: ""
     };
   },
   /**
@@ -83,6 +89,27 @@ export default {
   methods: {
     click() {
       alert("click!");
+    },
+    async inviteUser() {
+      if (
+        this.email.match(
+          /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+        )
+      ) {
+        let params = JSON.stringify({
+          users: [
+            {
+              email: this.email
+            }
+          ],
+          domain: "localhost:5004",
+          invitation_path: "confirmemail"
+        });
+        this.sendResult = await this.$hexalink.inviteUser(this.token, params);
+        console.log(this.sendResult);
+      } else {
+        alert("メールアドレスを入力してください");
+      }
     },
     async signin() {
       this.errorMess = "";
