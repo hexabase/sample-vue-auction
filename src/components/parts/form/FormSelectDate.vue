@@ -101,14 +101,15 @@ export default {
     valrule: {
       type: String,
       default: ""
+    },
+    birthday: {
+      type: String,
+      default: ""
     }
   },
   data: function() {
     return {
-      year: moment().year(),
-      months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-      month: moment().month() + 1,
-      date: moment().date()
+      months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
     };
   },
   computed: {
@@ -122,6 +123,21 @@ export default {
       if (this.likesAll) return "mdi-close-box";
       if (this.likesSome) return "mdi-minus-box";
       return "mdi-checkbox-blank-outline";
+    },
+    year: {
+      get: function() {
+        return this.birthday ? moment(this.birthday).year() : "";
+      }
+    },
+    month: {
+      get: function() {
+        return this.birthday ? moment(this.birthday).month() + 1 : "";
+      }
+    },
+    date: {
+      get: function() {
+        return this.birthday ? moment(this.birthday).date() : "";
+      }
     }
   },
   methods: {
@@ -135,8 +151,10 @@ export default {
       return [...Array(goBackYears + 1).keys()].map(x => x + startYear);
     },
     getDates: function(year, month) {
-      const maxDate = this.getFinalDate(year, month);
-      return [...Array(maxDate).keys()].map(x => x + 1);
+      if (year && month) {
+        const maxDate = this.getFinalDate(year, month);
+        return [...Array(maxDate).keys()].map(x => x + 1);
+      }
     },
     modify: function() {
       // 年や月が変更されたとき、日が存在しなくなる場合があるので調整する。

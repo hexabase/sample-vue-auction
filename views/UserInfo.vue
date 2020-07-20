@@ -94,12 +94,17 @@
               <p class="userInfo_text">
                 本サービスをご利用されるご本人の情報を入力してください。
               </p>
-              <v-form class="entryForm">
-                <FormTextfieldName title="お名前" :required="true" />
+              <v-form class="entryForm" @submit.prevent>
+                <FormTextfieldName
+                  title="お名前"
+                  :required="true"
+                  :userinfo="userInfo"
+                />
                 <FormTextfieldName
                   title="お名前（カタカナ）"
                   :required="true"
                   :kana="true"
+                  :userinfo="userInfo"
                 />
                 <FormRadio
                   title="性別"
@@ -108,11 +113,17 @@
                     { value: 'male', label: '男性' },
                     { value: 'female', label: '女性' }
                   ]"
+                  :radiochecked="
+                    userInfo[0] && userInfo[0].性別 ? userInfo[0].性別 : 'male'
+                  "
                 />
                 <FormSelect
                   title="国籍"
                   :required="true"
-                  :items="['日本', '中国', '大韓民国']"
+                  :items="countryListName"
+                  :value="
+                    userInfo[0] && userInfo[0].国籍 ? userInfo[0].国籍 : ''
+                  "
                   placeholder="placeholder"
                 />
                 <FormTextfield
@@ -120,10 +131,20 @@
                   :required="true"
                   placeholder="例）0312345678 ※ハイフン無し11桁"
                   hint="※ハイフン無し11桁"
+                  :value="
+                    userInfo[0] && userInfo[0].携帯番号
+                      ? userInfo[0].携帯番号
+                      : ''
+                  "
                 />
                 <FormSelectDate
                   title="生年月日"
                   :required="true"
+                  :birthday="
+                    userInfo[0] && userInfo[0].生年月日
+                      ? userInfo[0].生年月日
+                      : ''
+                  "
                   placeholder="選択してください"
                 />
                 <FormAddress title="ご住所" :required="true" />
@@ -182,12 +203,20 @@
                   :required="true"
                   placeholder="例）01234567"
                   hint="数字８桁"
+                  :value="
+                    userInfo[0] && userInfo[0].口座番号
+                      ? userInfo[0].口座番号
+                      : ''
+                  "
                 />
                 <FormTextfield
                   title="名義人（カタカナ）"
                   :required="true"
                   placeholder="例）ヤマダタロウ"
                   hint="お名前（カタカナ）と同じ名義にしてください。全角カナ"
+                  :value="
+                    userInfo[0] && userInfo[0].名義人 ? userInfo[0].名義人 : ''
+                  "
                 />
                 <div class="entryForm_footer">
                   <v-btn class="button-cancel" @click="step = 1">
@@ -212,7 +241,7 @@
               <p class="userInfo_text">
                 日本証券業協会の自主規制規則に基づく質問事項となります。すべてお答えください。
               </p>
-              <v-form class="entryForm">
+              <v-form class="entryForm" @submit.prevent>
                 <FormCheckbox
                   title="投資経験"
                   class="select-2column"
@@ -441,6 +470,8 @@ import FormAddress from "@/components/parts/form/FormAddress.vue";
 import FormTextarea from "@/components/parts/form/FormTextarea.vue";
 import FormTextfield from "@/components/parts/form/FormTextfield.vue";
 import FormTextfieldName from "@/components/parts/form/FormTextfieldName.vue";
+import CountryList from "@/assets/json/countryList.json";
+// import axios from "axios"; // 後で消す
 
 export default {
   components: {
@@ -456,13 +487,71 @@ export default {
   },
   data() {
     return {
+      token: this.$store.getters["auth/getToken"],
+      applicationId: this.$store.getters["datas/getApplicationId"],
+      datasotreIdList: this.$store.getters["datas/getDatastores"],
+      datastoreIds: this.$store.getters["datas/getDatastoreIds"],
+      userId: this.$store.getters["user/getMembershipNumber"],
       step: 1,
       email: "",
-      countries: []
+      countries: [],
+      userInfo: [],
+      countryList: CountryList,
+      countryListName: []
     };
   },
   created: async function() {},
-  mounted: async function() {},
-  methods: {}
+  mounted: async function() {
+    this.userInfo = await this.getUserInfo();
+    for (const id in this.countryList) {
+      this.countryListName.push(this.countryList[id].name);
+    }
+    // const defaultConfig = {
+    //   headers: {
+    //     "content-type": "application/json"
+    //   }
+    // };
+    // let config = JSON.parse(JSON.stringify(defaultConfig));
+    // const result = await axios.get(
+    //   "https://bank.teraren.com/banks/0010/branches.json",
+    //   config
+    // );
+    // console.log(result);
+  },
+  methods: {
+    nextStep() {
+      this.step = this.step + 1;
+      window.scrollTo({
+        top: 300,
+        behavior: "smooth"
+      });
+    },
+    previousStep() {
+      this.step = this.step - 1;
+      window.scrollTo({
+        top: 300,
+        behavior: "smooth"
+      });
+    },
+    async getUserInfo() {
+      return await this.$hexalink.getItems(
+        this.token,
+        this.applicationId,
+        this.datastoreIds["ユーザDB"],
+        {
+          conditions: [
+            {
+              id: "会員番号", // Hexalink画⾯で⼊⼒したIDを指定
+              search_value: [this.userId],
+              exact_match: true // 完全⼀致で検索
+            }
+          ],
+          page: 1,
+          per_page: 1,
+          use_display_id: true
+        }
+      );
+    }
+  }
 };
 </script>

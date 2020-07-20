@@ -12,7 +12,7 @@
         class="radio"
       >
         <v-radio-group
-          :value="value"
+          :value="radiochecked"
           row
           :disabled="!editable"
           :error-messages="errors"
@@ -56,6 +56,10 @@ export default {
       default: "無"
     },
     valrule: {
+      type: String,
+      default: ""
+    },
+    radiochecked: {
       type: String,
       default: ""
     }
