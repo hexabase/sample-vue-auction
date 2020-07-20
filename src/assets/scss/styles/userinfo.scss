@@ -29,7 +29,9 @@
 
     &_message {
         display: flex;
-        margin-bottom: 30px;
+        margin: 0 auto 30px;
+        width: 780px;
+        max-width: 100%;
         
         .v-alert {
             width: auto;
@@ -45,6 +47,40 @@
             .v-icon {
                 font-size: 2.8rem;
             }
+        }
+
+        + .userInfo_notice {
+            margin-top: -20px;
+        }
+    }
+
+    &_notice {
+        width: 780px;
+        max-width: 100%;
+        border: $border-default;
+        margin: 0 auto 40px;
+        padding: 20px;
+        line-height: 1.6;
+
+        &_text {
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+            font-weight: 500;
+        }
+
+        .userInfo_notice_subtext {
+            margin-bottom: 0;
+            font-size: 1.2rem;
+            color: $color-text-gray;
+            text-align: left;
+            line-height: 1.5;
+        }
+
+        &_img {
+            float: left;
+            margin: -8px 10px 0 0;
+            width: 195px;
+            height: auto;
         }
     }
 

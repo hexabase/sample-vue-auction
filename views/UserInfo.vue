@@ -71,6 +71,21 @@
                 入札を行うには個人情報のご登録が必要です。項目をすべて入力しご登録をお願いします。
               </v-alert>
             </div>
+            <div class="userInfo_notice">
+              <p class="userInfo_notice_text">
+                ※Step4で「本人確認書類」を登録します。先に準備いただくと登録がスムーズに進みます。<br />
+                デジカメや携帯電話での撮影、スキャナなどで「本人確認書類」の画像イメージをご用意ください。
+              </p>
+              <p class="userInfo_notice_subtext">
+                <img
+                  src="~@/assets/img/identification.png"
+                  alt="確認書類イメージ"
+                  class="userInfo_notice_img"
+                />
+                【確認書類】マイナンバーカード両面（または通知カード）、運転免許証（両面）・各種健康保険証・住民票の写し・パスポート・在留カード・印鑑登録証明書のいずれか<br />
+                【ファイル形式】JPG、JPEG、GIF、BMP、PNG、TIF、TIFF、PDF（サイズ：6MB以下）
+              </p>
+            </div>
             <section class="userInfo_section">
               <h3 class="userInfo_subTitle">
                 <span class="userInfo_titleLabel">Step.1</span>
