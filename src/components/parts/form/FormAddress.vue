@@ -6,7 +6,7 @@
     </div>
     <div class="formItem_body">
       <div class="formItem_itemWrap">
-        〒
+        <span class="formItem_subLabel">〒</span>
         <validation-provider
           v-slot="{ errors }"
           name="zip1"
@@ -17,7 +17,7 @@
             dense
             outlined
             single-line
-            type="text"
+            type="number"
             :disabled="!editable"
             placeholder=""
             :value="value"
@@ -27,7 +27,7 @@
             @blur="handleBlur"
           ></v-text-field>
         </validation-provider>
-        -
+        <span class="formItem_subLabel">ー</span>
         <validation-provider
           v-slot="{ errors }"
           name="zip2"
@@ -38,7 +38,7 @@
             dense
             outlined
             single-line
-            type="text"
+            type="number"
             :disabled="!editable"
             placeholder=""
             :value="value"
@@ -62,7 +62,7 @@
             single-line
             type="text"
             :disabled="!editable"
-            placeholder="住所１"
+            placeholder="例）東京都豊島区池袋1-2-3"
             :value="value"
             :error-messages="errors"
             hint="都道府県 市区町村 丁目 番地"
@@ -84,7 +84,7 @@
             single-line
             type="text"
             :disabled="!editable"
-            placeholder="住所２"
+            placeholder="例）としまレジデンス１０１"
             :value="value"
             :error-messages="errors"
             hint="ビル名 号室"

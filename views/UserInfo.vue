@@ -114,25 +114,27 @@
                   :required="true"
                   :items="['日本', '中国', '大韓民国']"
                   placeholder="placeholder"
-                  hint="hint"
                 />
                 <FormTextfield
                   title="携帯番号"
                   :required="true"
-                  placeholder="placeholder"
-                  hint="hint"
+                  placeholder="例）0312345678 ※ハイフン無し11桁"
+                  hint="※ハイフン無し11桁"
                 />
                 <FormSelectDate
                   title="生年月日"
                   :required="true"
                   placeholder="選択してください"
-                  hint="hint"
                 />
                 <FormAddress title="ご住所" :required="true" />
                 <div class="entryForm_footer">
-                  <button class="button-action" @click="step = 2">
-                    次へ
-                  </button>
+                  <v-btn
+                    color="primary"
+                    class="button-action"
+                    @click="step = 2"
+                  >
+                    保存して次へ
+                  </v-btn>
                 </div>
               </v-form>
             </section>
@@ -147,25 +149,23 @@
                 配当金受取の口座を登録してください。※必ずご本人名義の口座を登録してください。
               </p>
               <v-form class="entryForm">
-                <FormRadio
+                <FormSelect
                   title="金融機関名"
                   :required="true"
-                  :radios="[
-                    { value: 'UFJ', label: 'UFJ銀行' },
-                    { value: 'SMBC', label: '三井住友銀行' }
-                  ]"
+                  :items="['UFJ', 'SMBC', 'ゆうちょ']"
+                  placeholder="選択してください"
                 />
                 <FormTextfield
                   title="支店名"
                   :required="true"
-                  placeholder="placeholder"
-                  hint="hint"
+                  placeholder="例）渋谷支店"
+                  hint=""
                 />
                 <FormTextfield
                   title="支店番号"
                   :required="true"
-                  placeholder="placeholder"
-                  hint="hint"
+                  placeholder="例）123"
+                  hint="半角数字"
                 />
                 <FormRadio
                   title="口座種類"
@@ -178,23 +178,23 @@
                 <FormTextfield
                   title="口座番号"
                   :required="true"
-                  placeholder="placeholder"
-                  hint="hint"
+                  placeholder="例）01234567"
+                  hint="数字８桁"
                 />
                 <FormTextfield
-                  title="名義人"
+                  title="名義人（カタカナ）"
                   :required="true"
-                  placeholder="placeholder"
-                  hint="hint"
+                  placeholder="例）ヤマダタロウ"
+                  hint="お名前（カタカナ）と同じ名義にしてください。全角カナ"
                 />
                 <div class="entryForm_footer">
-                  <button class="button-cancel">
+                  <v-btn class="button-cancel" @click="step = 1">
                     <v-icon>mdi-chevron-left</v-icon>
                     戻る
-                  </button>
-                  <button class="button-action">
-                    次へ
-                  </button>
+                  </v-btn>
+                  <v-btn class="button-action" @click="step = 3">
+                    保存して次へ
+                  </v-btn>
                 </div>
               </v-form>
             </section>
@@ -211,50 +211,67 @@
               <v-form class="entryForm">
                 <FormCheckbox
                   title="投資経験"
+                  class="select-2column"
                   :required="true"
                   :checkboxes="[
+                    { value: 'AAA', label: '経験あり' },
+                    { value: 'AAA', label: '経験あり' },
                     { value: 'AAA', label: '経験あり' },
                     { value: 'BBB', label: '経験無し' }
                   ]"
                 />
                 <FormRadio
                   title="投資目的"
+                  class="select-singleLine"
                   :required="true"
-                  :radios="[{ value: 'AAA', label: 'AAA' }]"
+                  :radios="[
+                    { value: 'AAA', label: '利子・配当等安定収益重視' },
+                    { value: 'BBB', label: '経験あり' },
+                    { value: 'CCC', label: '経験無し' }
+                  ]"
                 />
                 <FormRadio
                   title="投資期間"
+                  class="select-singleLine"
                   :required="true"
-                  :radios="[{ value: 'AAA', label: 'AAA' }]"
+                  :radios="[
+                    { value: 'AAA', label: '利子・配当等安定収益重視' },
+                    { value: 'BBB', label: '経験あり' },
+                    { value: 'CCC', label: '経験無し' }
+                  ]"
                 />
                 <FormRadio
                   title="現在の収入形態"
+                  class="select-2column"
                   :required="true"
                   :radios="[{ value: 'AAA', label: 'AAA' }]"
                 />
                 <FormRadio
                   title="現在の年収"
+                  class="select-2column"
                   :required="true"
                   :radios="[{ value: 'AAA', label: 'AAA' }]"
                 />
                 <FormRadio
                   title="現在の金融資産"
+                  class="select-2column"
                   :required="true"
                   :radios="[{ value: 'AAA', label: 'AAA' }]"
                 />
                 <FormRadio
                   title="運用予定額"
+                  class="select-2column"
                   :required="true"
                   :radios="[{ value: 'AAA', label: 'AAA' }]"
                 />
                 <div class="entryForm_footer">
-                  <button class="button-cancel">
+                  <v-btn class="button-cancel" @click="step = 2">
                     <v-icon>mdi-chevron-left</v-icon>
                     戻る
-                  </button>
-                  <button class="button-action">
-                    次へ
-                  </button>
+                  </v-btn>
+                  <v-btn class="button-action" @click="step = 4">
+                    保存して次へ
+                  </v-btn>
                 </div>
               </v-form>
             </section>
@@ -267,24 +284,120 @@
               </h3>
               <p class="userInfo_text">
                 本人確認書類・マイナンバーカード（通知カードも可）のスキャンまたは撮影データをアップロードしてください。<br />
-                【利用可能な本人確認書類】運転免許証・各種健康保険証・住民票の写し…<br />
-                ※入力した住所と同一である必要があります<br />
-                ※運転免許証は裏面もご提出ください。
               </p>
+              <div class="userInfo_notice">
+                <p class="userInfo_notice_subtext">
+                  【利用可能な本人確認書類】マイナンバーカード両面（または通知カード）、運転免許証（両面）・各種健康保険証・住民票の写し・パスポート・在留カード・印鑑登録証明書のいずれか<br />
+                  【ファイル形式】JPG、JPEG、GIF、BMP、PNG、TIF、TIFF、PDF（サイズ：6MB以下）<br />
+                  ※入力した住所と同一である必要があります。※運転免許証は裏面もご提出ください。
+                </p>
+              </div>
               <v-form class="entryForm">
                 <FormFile title="本人確認書類１" />
                 <FormFile title="本人確認書類２" />
                 <FormFile title="マイナンバーカード写真１" />
                 <FormFile title="マイナンバーカード写真２" />
                 <div class="entryForm_footer">
-                  <button class="button-cancel">
+                  <v-btn class="button-cancel" @click="step = 3">
                     <v-icon>mdi-chevron-left</v-icon>
                     戻る
-                  </button>
-                  <button class="button-action">
-                    次へ
-                  </button>
+                  </v-btn>
+                  <v-btn class="button-action" @click="step = 5">
+                    保存して次へ
+                  </v-btn>
                 </div>
+              </v-form>
+            </section>
+          </v-stepper-content>
+          <v-stepper-content step="5">
+            <section class="userInfo_section">
+              <h3 class="userInfo_subTitle">
+                <span class="userInfo_titleLabel">Step.5</span>
+                登録内容の確認・利用規約
+              </h3>
+              <p class="userInfo_text">
+                以下の内容で登録します。よろしければ利用規約に同意し、登録してください。
+              </p>
+              <v-form class="entryForm">
+                <section class="formConfirm">
+                  <h4 class="formConfirm_title">Step.1&nbsp;個人情報の登録</h4>
+                  <div class="formConfirm_item_wrapper">
+                    <div class="formConfirm_item">
+                      <div class="formConfirm_title">お名前</div>
+                      <div class="formConfirm_body">山田&nbsp;太郎</div>
+                    </div>
+                    <div class="formConfirm_item">
+                      <div class="formConfirm_title">お名前（カタカナ）</div>
+                      <div class="formConfirm_body">ヤマダ&nbsp;タロウ</div>
+                    </div>
+                    <div class="formConfirm_item">
+                      <div class="formConfirm_title">性別</div>
+                      <div class="formConfirm_body">男性</div>
+                    </div>
+                  </div>
+                  <div class="formConfirm_bottom">
+                    <v-btn class="button-secondary" @click="step = 1">
+                      Step1を修正する
+                    </v-btn>
+                  </div>
+                </section>
+                <section class="formConfirm">
+                  <h4 class="formConfirm_title">Step.4&nbsp;本人確認書類</h4>
+                  <div class="formConfirm_item_wrapper">
+                    <div class="formConfirm_item">
+                      <div class="formConfirm_title">確認書類</div>
+                      <div class="formConfirm_body"></div>
+                    </div>
+                    <div class="formConfirm_item">
+                      <div class="formConfirm_title">マイナンバーカード</div>
+                      <div class="formConfirm_body"></div>
+                    </div>
+                  </div>
+                  <div class="formConfirm_bottom">
+                    <v-btn class="button-secondary" @click="step = 4">
+                      Step4を修正する
+                    </v-btn>
+                  </div>
+                </section>
+                <section class="formEntryBox">
+                  <h4 class="formEntryBox_title">
+                    以上の内容で登録してよろしいですか？
+                  </h4>
+                  <p class="formEntryBox_text">
+                    よろしければ利用規約に同意いただき登録ボタンを押してください。
+                  </p>
+                  <v-checkbox label="利用規約に同意" value="" required />
+                  <v-checkbox
+                    label="個人情報の処理方針に同意"
+                    value=""
+                    required
+                  />
+                  <v-checkbox
+                    label="個人情報の収集および利用に同意"
+                    value=""
+                    required
+                  />
+                  <div class="formEntryBox_concent">
+                    <p>
+                      BATON（以下「会社」）は、会員にサービスを提供するために、会員登録の段階で下記のように個人情報を収集利用します。<br />
+                      収集・利用目的<br />
+                      -&nbsp;サービスを提供し、利用者の識別と本人かどうか確認<br />
+                      -&nbsp;未成年者に対する法定代理人同意を<br />
+                      収集アイテム<br />
+                      -&nbsp;ID、パスワード、氏名、生年月日、性別、メールアドレス、携帯電話番号、口座番号、住所<br />
+                      -&nbsp;法定代理人情報（氏名、生年月日、電子メールアドレス）<br />
+                      保有・利用期間<br />
+                      退会または収集・利用目的の達成時まで<br />
+                      ※お客様は、個人情報の収集・利用に同意しないことができるが、本個人情報は、同社がサービスを提供するために必要な最小限の個人情報であるため、同意を拒否した場合のサービス利用が不可能です
+                    </p>
+                  </div>
+                  <v-checkbox label="全てに同意する" value="" required />
+                  <div class="entryForm_footer">
+                    <button class="button-action">
+                      この内容で登録する
+                    </button>
+                  </div>
+                </section>
               </v-form>
             </section>
           </v-stepper-content>

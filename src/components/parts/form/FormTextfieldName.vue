@@ -27,6 +27,7 @@
             :label="label"
             :disabled="!editable"
             :error-messages="errors"
+            :placeholder="setPlaceholder('sei')"
             @input="inputValue"
           ></v-text-field>
         </validation-provider>
@@ -51,6 +52,7 @@
             :label="label"
             :disabled="!editable"
             :error-messages="errors"
+            :placeholder="setPlaceholder('mei')"
             @input="inputValue"
           ></v-text-field>
         </validation-provider>
@@ -142,6 +144,18 @@ export default {
   methods: {
     inputValue: function() {
       this.$emit("input", this.fullName);
+    },
+    setPlaceholder: function(type) {
+      if (this.corp) {
+        return;
+      }
+      let text = "";
+      if (type === "sei") {
+        text = this.kana ? "ヤマダ" : "山田";
+      } else if (type === "mei") {
+        text = this.kana ? "タロウ" : "太郎";
+      }
+      return "例）" + text;
     }
   }
 };

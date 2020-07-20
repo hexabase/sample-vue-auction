@@ -71,7 +71,7 @@
         .userInfo_notice_subtext {
             margin-bottom: 0;
             font-size: 1.2rem;
-            color: $color-text-gray;
+            color: $color-text-darkgray;
             text-align: left;
             line-height: 1.5;
         }
@@ -105,17 +105,25 @@
     }
 }
 
-.entryForm {
+#app .entryForm {
     margin: 30px auto;
     width: 800px;
     max-width: 100%;
 
     &_footer {
-        margin-top: 30px;
+        margin-top: 50px;
 
         .button-cancel {
             min-width: 240px;
             font-size: 1.4rem;
+            box-shadow: none;
+            background: transparent;
+            color: $color-text-sub;
+            height: 48px;
+
+            &:hover {
+                background: transparent;
+            }
 
             .v-icon {
                 margin: -2px 10px 0 0;
@@ -130,6 +138,7 @@
         .button-action {
             width: 240px;
             line-height: 48px;
+            height: 48px;
             font-size: 1.6rem;
         }
     }
@@ -138,10 +147,10 @@
 
 .formItem {
     display: flex;
-    align-items: center;
+    align-items: start;
     padding: 10px 0;
     min-height: 85px;
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     border-bottom: $border-light;
 
     &:first-child {
@@ -150,7 +159,8 @@
 
     &_title {
         flex: 0 0 25%;
-        color: $color-text-gray;
+        padding-top: 25px;
+        color: $color-text-darkgray;
     }
 
     &_required {
@@ -168,21 +178,39 @@
 
     &_itemWrap {
         display: flex;
+
+        + .formItem_itemWrap {
+            margin-top: -5px;
+        }
     }
 
     &_subLabel {
         display: inline-block;
         min-width: 2em;
         margin-right: 8px;
-        line-height: 30px;
+        line-height: 40px;
+        height: 40px;
     }
 
     span + &_subLabel {
         margin-left: 20px;
     }
 
-    .v-radio {
-        margin-top: -20px;    
+    .v-input--radio-group--row .v-radio {
+        margin-top: -12px;
+        margin-right: 20px;
+    }
+
+    .v-input--checkbox {
+        margin-top: -8px;
+
+        .v-messages {
+            min-height: 0;
+        }
+
+        .v-input--selection-controls__input {
+            margin-right: 5px;
+        }
     }
 
     .select-year {
@@ -197,5 +225,40 @@
 
     .select-day {
         flex: 0 0 25%;
+    }
+
+    .zip1, .zip2 {
+        width: 120px;
+        margin: 0 -20px 0 -10px;
+    }
+
+    .address1, .address2 {
+        width: 100%;
+    }
+
+    &.select-2column {
+        .formItem_body > span {
+            display: flex;
+            flex-wrap: wrap;
+
+            .v-input {
+                width: 48%;
+                margin-right: 1%;
+            }
+        }
+    }
+
+    &.select-singleLine {
+        .formItem_body {
+
+            .v-input--radio-group__input {
+                margin-top: -12px;
+                flex-direction: column;
+
+                .v-radio {
+                    margin: 0 0 5px;
+                }
+            }
+        }
     }
 }

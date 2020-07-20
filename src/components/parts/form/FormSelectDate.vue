@@ -19,7 +19,6 @@
             outlined
             single-line
             label="選択してください"
-            :hint="hint"
             :value="value"
             :disabled="!editable"
             :error-messages="errors"
@@ -42,7 +41,6 @@
             outlined
             single-line
             label="選択してください"
-            :hint="hint"
             :value="value"
             :disabled="!editable"
             :error-messages="errors"
@@ -65,7 +63,6 @@
             outlined
             single-line
             label="選択してください"
-            :hint="hint"
             :value="value"
             :disabled="!editable"
             :error-messages="errors"
@@ -104,10 +101,6 @@ export default {
     valrule: {
       type: String,
       default: ""
-    },
-    hint: {
-      type: String,
-      default: undefined
     }
   },
   data: function() {
