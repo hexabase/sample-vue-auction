@@ -240,6 +240,7 @@
     color: #fff;
     transition: all .5s;
     text-align: center;
+    box-shadow: none;
     
     &:hover {
         background: $color-bg-theme-hover;
@@ -263,6 +264,26 @@
     
     &:hover {
         background: lighten($color-sub, 5%);
+    }
+}
+
+.button-secondary {
+    display: inline-block;
+    border: 1px solid $color-theme-center;
+    color: $color-theme-center;
+    transition: all .3s;
+    font-size: 1.3rem;
+    border-radius: 0;
+    background: #fff !important;
+    box-shadow: none;
+
+    &:hover {
+        background: $color-theme-center !important;
+        color: #fff;
+    }
+
+    &::before {
+        background-color: transparent;
     }
 }
 
@@ -576,7 +597,7 @@
 
 body {
     .v-menu__content {
-        overflow: hidden;
+        // overflow: hidden;
         border-radius: $radius-box;
         box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.1), 0px 8px 10px 1px rgba(0, 0, 0, 0.05), 0px 3px 14px 2px rgba(0, 0, 0, 0.05);
     }
@@ -596,4 +617,111 @@ body {
 }
 .v-text-field__suffix {
     color: $color-text-gray;
+}
+
+// Stepper
+#app .v-stepper {
+    &__header {
+        box-shadow: none;
+        justify-content: center;
+    }
+
+    &__step {
+        padding: 24px 20px;
+    }
+
+    .v-divider {
+        flex: 0 0 2%;
+        min-width: 10px;
+        max-width: 80px;
+    }
+
+    .mark-alert {
+        position: absolute;
+        right: 10px;
+        top: 34px;
+    }
+    
+    .v-stepper__step__step {
+        font-size: 1.4rem;
+    }
+
+    .v-stepper__step--editable {
+        .v-stepper__label {
+            color: $color-text-sub;
+        }
+    }
+
+    .v-stepper__label {
+        font-size: 1.4rem;
+    }
+
+    // 自由移動（ナビ遷移のユーザー情報ページ）
+    &.v-stepper--non-linear {
+
+        .v-stepper__step--editable {
+            .v-stepper__label {
+                color: $color-text-sub;
+            }
+
+            .v-stepper__step__step{
+                background: $color-vuetify-primary;
+                color: #fff;
+
+                &::before {
+                    content: "\F3EB";
+                }
+            }
+
+        }
+
+        .v-stepper__step--complete {
+            .v-stepper__step__step{
+                &::before {
+                    content: "\F12C";
+                    opacity: 1;
+                }
+            }
+        }
+
+        .v-stepper__step--active {
+            .v-stepper__label {
+                font-size: 1.5rem;
+                font-weight: 500;
+                color: $color-text-default;
+            }
+
+            .v-stepper__step__step{
+                &::before {
+                    opacity: 1;
+                }
+            }
+        }
+        
+        .v-stepper__step__step {
+            font-size: 0;
+            color: transparent;
+
+            &::before {
+                content: "\F3EB";
+                opacity: 0.8;
+                font: $font-mdi;
+                font-size: 1.7rem;
+                color: #fff;
+            }
+
+            .v-icon {
+                display: none;
+            }
+        }
+
+    }
+}
+
+//mark
+.mark-alert {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background-color: $color-error;
 }

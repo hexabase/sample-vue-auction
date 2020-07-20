@@ -5,7 +5,12 @@
       <span v-if="required" class="formItem_required">※</span>
     </div>
     <div class="formItem_body">
-      <validation-provider v-slot="{ errors }" :name="title" :rules="valrule">
+      <validation-provider
+        v-slot="{ errors }"
+        :name="title"
+        :rules="valrule"
+        class="radio"
+      >
         <v-radio-group
           :value="radiochecked"
           row

@@ -105,10 +105,7 @@ export default {
         { text: "曲名", value: "title" },
         { text: "歌手", value: "artist" },
         { text: "数量", value: "amount" },
-        { text: "金額", value: "price", align: "right" },
-        { text: "その他所得税", value: "incometax", align: "right" },
-        { text: "地方所得税", value: "localincometax", align: "right" },
-        { text: "残高", value: "balance", align: "right" }
+        { text: "金額", value: "price", align: "right" }
       ],
       desserts: [
         {
@@ -117,10 +114,7 @@ export default {
           title: "パラボラ",
           artist: "Officialヒゲ男dism",
           amount: "10",
-          price: "100,000",
-          incometax: "0",
-          localincometax: "0",
-          balance: "900,000"
+          price: "100,000"
         },
         {
           date: "2020/05/02",
@@ -128,10 +122,7 @@ export default {
           title: "",
           artist: "",
           amount: "",
-          price: "-410,000",
-          incometax: "0",
-          localincometax: "0",
-          balance: "1,000,000"
+          price: "-410,000"
         },
         {
           date: "2020/04/18",
@@ -140,9 +131,7 @@ export default {
           artist: "Uru",
           amount: "1",
           price: "-100,000",
-          incometax: "0",
-          localincometax: "0",
-          balance: "1,410,000"
+          incometax: "0"
         },
         {
           date: "2020/03/30",
@@ -150,10 +139,7 @@ export default {
           title: "パプリカ",
           artist: "米津玄師",
           amount: "100",
-          price: "10,000",
-          incometax: "1500",
-          localincometax: "500",
-          balance: "1,510,000"
+          price: "10,000"
         },
         {
           date: "2020/02/08",
@@ -161,10 +147,7 @@ export default {
           title: "パプリカ",
           artist: "米津玄師",
           amount: "50",
-          price: "200,000",
-          incometax: "3,000",
-          localincometax: "1,000",
-          balance: "1,500,000"
+          price: "200,000"
         }
       ]
     };
