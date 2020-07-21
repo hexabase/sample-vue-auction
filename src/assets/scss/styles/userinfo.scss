@@ -21,10 +21,23 @@
 }
 
 .userInfo {
-    @extend %padding-contents;
-
     .v-stepper__content {
         padding: 0;
+    }
+
+    .userInfoStep-personal,
+    .userInfoStep-bank,
+    .userInfoStep-question,
+    .userInfoStep-upload {
+        padding: 60px 0 100px;
+    }
+
+    .userInfoStep-account {
+        padding: 0 0 100px;
+    }
+
+    .userInfoStep-confirm {
+        padding: 60px 0 0;
     }
 
     &_message {
@@ -309,7 +322,7 @@
 
 .userInfo .formEntryBox {
     margin-top: 40px;
-    padding: 60px 10px;
+    padding: 60px 10px 140px;
     background: $color-bg-blue;
 
     &_title {
@@ -346,4 +359,156 @@
         line-height: 1.8;
         text-align: left;
     }
+}
+
+.mailSettings {
+    @extend %section-gray;
+    padding: 60px 0;
+
+    &_box {
+        width: 600px;
+        max-width: 90%;
+        margin: auto;
+        padding: 40px 50px 60px;
+        background: #fff;
+        border: $border-default;
+        border-radius: $radius-box;
+    }
+
+    &_title {
+        margin-bottom: 40px;
+        font-size: 2.2rem;
+        font-weight: normal;
+    }
+
+    &_item {
+        margin: 0 0 -1px;
+        padding: 10px 3%;
+        border-top: $border-light;
+        border-bottom: $border-light;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        &_title {
+            flex: 1 1 auto;
+            font-size: 1.5rem;
+            text-align: left;
+        }
+
+        &_body {
+            flex: 0 0 40px;
+        }
+    }
+
+    .v-input {
+        margin-top: 0;
+    }
+
+    .v-messages {
+        min-height: 0;
+    }
+}
+
+.userInfo .accountInfo {
+    padding: 80px 0 40px;
+
+    &_title {
+        margin-bottom: 40px;
+        font-size: 2.4rem;
+        font-weight: normal;
+    }
+
+    &_item {
+        width: 600px;
+        max-width: 100%;
+        margin: 0 auto -1px;
+        padding: 20px 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-top: $border-default;
+        border-bottom: $border-default;
+
+        &_title {
+            flex: 0 0 110px;
+            color: $color-text-darkgray;
+            font-weight: 500;
+            font-size: 1.4rem;
+        }
+
+        &_body {
+            flex: 1 1 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-left: 6%;
+            color: $color-text-default;
+            font-size: 1.6rem;
+            font-weight: bold;
+
+            .button-secondary {
+                width: 20%;
+                height: 32px;
+                font-size: 1.3rem;
+            }
+        }
+    }
+}
+
+.modalForm {
+    margin: 0 5%;
+
+    .currentData {
+        padding: 20px 0;
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        color: $color-theme-center;
+
+        &_title {
+            margin-right: 10px;
+            font-size: 1.3rem;
+        }
+
+        &_body {
+            font-size: 1.8rem;
+            // color: $color-text-default;
+        }
+    }
+
+    .formItem {
+        flex-direction: column;
+        border: none;
+
+        &_body {
+            width: 100%;
+        }
+
+        .formItem_body {
+            margin-top: 5px;
+        }
+
+        + .formItem {
+            .formItem_title {
+                padding-top: 0;
+            }
+
+        }
+    }
+
+    &_complete {
+        margin-bottom: 60px;
+        
+        .v-icon {
+            margin-bottom: 10px;
+            font-size: 4rem;
+            color: $color-sub;
+        }
+
+        &_text {
+            font-size: 1.5rem;
+        }
+    }
+
 }
