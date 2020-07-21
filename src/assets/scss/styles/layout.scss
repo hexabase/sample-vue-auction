@@ -252,6 +252,7 @@ body {
         }
 
         &_userName {
+            position: relative;
             margin: 20px 0;
             padding-right: 10px;
             font-size: 1.3rem;
@@ -270,6 +271,12 @@ body {
 
             .v-icon {
                 font-size: 1.8rem;
+            }
+
+            .mark-alert {
+                position: absolute;
+                top: calc(50% - 3px);
+                right: 0;
             }
         }
 

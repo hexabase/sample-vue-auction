@@ -720,8 +720,13 @@ body {
 
 //mark
 .mark-alert {
+    display: inline-block;
     width: 7px;
     height: 7px;
     border-radius: 50%;
     background-color: $color-error;
+}
+
+#app .v-tooltip__content {
+    font-size: 1.2rem;
 }

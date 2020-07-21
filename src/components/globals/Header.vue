@@ -101,6 +101,12 @@
             <button class="siteHeader_userName hide-tab" v-on="on">
               <v-icon>mdi-chevron-right</v-icon>
               {{ userName }}
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on, attrs }">
+                  <span class="mark-alert" v-bind="attrs" v-on="on"></span>
+                </template>
+                <span>【未登録】入札にはユーザー情報の登録が必要です</span>
+              </v-tooltip>
             </button>
           </template>
           <ul class="siteHeader_loginMenu">
