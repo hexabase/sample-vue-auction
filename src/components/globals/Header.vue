@@ -116,8 +116,8 @@
               </router-link>
             </li>
             <li>
-              <router-link to="mypage">
-                登録情報の変更
+              <router-link to="userinfo">
+                ユーザー情報
               </router-link>
             </li>
             <li class="break">

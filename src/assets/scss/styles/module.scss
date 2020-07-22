@@ -188,6 +188,11 @@
     text-align: left;
 }
 
+.v-select__slot .v-label,
+.v-input input::placeholder {
+    color: $color-text-placeholder;
+}
+
 .v-input--selection-controls .v-input--selection-controls__input:hover .v-input--selection-controls__ripple:before {
     transition: all .2s;
 }

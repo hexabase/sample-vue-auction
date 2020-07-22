@@ -242,11 +242,31 @@
 
     .zip1, .zip2 {
         width: 120px;
-        margin: 0 -20px 0 -10px;
+        margin: 0 20px 0 -10px;
+    }
+
+    .zip1 {
+        margin-right: -22px;
+    }
+
+    &_link {
+        line-height: 40px;
+        font-size: 1.3rem;
+        text-decoration: underline !important;
+    }
+
+    .prefectures {
+        width: 300px;
     }
 
     .address1, .address2 {
         width: 100%;
+    }
+
+    .prefectures, .address1 {
+        .v-text-field__details, .v-messages {
+            min-height: 0;
+        }
     }
 
     &.select-2column {
@@ -514,7 +534,7 @@
 
 .modal-bid .userInfoComplete {
     padding: 10px 0;
-    
+
     &_text {
         margin-bottom: 30px;
         font-size: 1.6rem;
