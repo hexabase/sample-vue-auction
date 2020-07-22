@@ -650,6 +650,7 @@ import FormTextfieldName from "@/components/parts/form/FormTextfieldName.vue";
 import CountryList from "@/assets/json/countryList.json";
 import BankList from "@/assets/json/bankList.json";
 import MyModal from "./MyModal.vue";
+import axios from "axios";
 
 export default {
   components: {
@@ -706,6 +707,9 @@ export default {
     this.addressInfo.address2 = this.userInfo[0].住所2
       ? this.userInfo[0].住所2
       : "";
+    this.addressInfo.prefectures = this.userInfo[0].都道府県
+      ? this.userInfo[0].都道府県
+      : "";
 
     this.myNumberCardPicture1 = await this.getFileInfo(
       "マイナンバーカード写真_1",
@@ -729,6 +733,17 @@ export default {
     for (const bankId in this.bankList) {
       this.bankListName.push(this.bankList[bankId].name);
     }
+    const defaultConfig = {
+      headers: {
+        "content-type": "application/json"
+      }
+    };
+    let config = JSON.parse(JSON.stringify(defaultConfig));
+    const result = await axios.get(
+      `http://zipcloud.ibsnet.co.jp/api/search?zipcode=${this.userInfo[0].郵便番号}`,
+      config
+    );
+    console.log(result);
   },
   methods: {
     moveStep(step) {
