@@ -735,14 +735,14 @@ export default {
     }
     const defaultConfig = {
       headers: {
-        "content-type": "application/json;charset=utf-8",
         "Access-Control-Allow-Credentials": true,
         "Access-Control-Allow-Headers": "*",
         "Access-Control-Allow-Methods":
           "GET, PUT, POST, DELETE, HEAD, OPTIONS, PATCH",
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Expose-Headers": "*",
-        "cache-control": "private"
+        "cache-control": "private",
+        "content-type": "text/plain;charset=utf-8"
       }
     };
     let config = JSON.parse(JSON.stringify(defaultConfig));
