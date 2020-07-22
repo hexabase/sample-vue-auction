@@ -735,8 +735,14 @@ export default {
     }
     const defaultConfig = {
       headers: {
-        "content-type": "application/json",
-        "Access-Control-Allow-Origin": "*"
+        "content-type": "application/json;charset=utf-8",
+        "Access-Control-Allow-Credentials": true,
+        "Access-Control-Allow-Headers": "*",
+        "Access-Control-Allow-Methods":
+          "GET, PUT, POST, DELETE, HEAD, OPTIONS, PATCH",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Expose-Headers": "*",
+        "cache-control": "private"
       }
     };
     let config = JSON.parse(JSON.stringify(defaultConfig));
@@ -748,6 +754,23 @@ export default {
   },
   methods: {
     moveStep(step) {
+      switch (this.step) {
+        case 1:
+          console.log(1);
+          break;
+        case 2:
+          console.log(2);
+          break;
+        case 3:
+          console.log(3);
+          break;
+        case 4:
+          console.log(4);
+          break;
+        case 5:
+          console.log(5);
+          break;
+      }
       this.step = step;
       window.scrollTo({
         top: 190,
