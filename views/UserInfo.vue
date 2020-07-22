@@ -9,6 +9,10 @@
     </header>
     <v-stepper v-model="step">
       <v-stepper-header class="userInfo_nav">
+        <v-stepper-step editable complete step="0" @click="step = 0">
+          アカウント/通知設定
+        </v-stepper-step>
+        <v-divider></v-divider>
         <v-stepper-step editable complete step="1" @click="step = 1">
           個人情報
         </v-stepper-step>
@@ -59,7 +63,69 @@
         </v-stepper-step>
       </v-stepper-header>-->
       <v-stepper-items class="userInfo">
-        <v-stepper-content step="1">
+        <v-stepper-content step="0" class="userInfoStep-account">
+          <section class="mailSettings">
+            <div class="mailSettings_box">
+              <h3 class="mailSettings_title">メール通知の設定</h3>
+              <div class="mailSettings_item">
+                <div class="mailSettings_item_title">
+                  入札数量をすべて確保する
+                </div>
+                <div class="mailSettings_item_body">
+                  <v-switch></v-switch>
+                </div>
+              </div>
+              <div class="mailSettings_item">
+                <div class="mailSettings_item_title">
+                  ユーザーマーケット
+                </div>
+                <div class="mailSettings_item_body">
+                  <v-switch></v-switch>
+                </div>
+              </div>
+              <div class="mailSettings_item">
+                <div class="mailSettings_item_title">
+                  イベントニュース
+                </div>
+                <div class="mailSettings_item_body">
+                  <v-switch></v-switch>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section class="accountInfo">
+            <h3 class="accountInfo_title">アカウント情報</h3>
+            <div class="accountInfo_item">
+              <div class="accountInfo_item_title">
+                メールアドレス
+              </div>
+              <div class="accountInfo_item_body">
+                sample@mail.address
+                <v-btn
+                  class="button-secondary"
+                  @click="() => (cahangeMailModal = true)"
+                >
+                  変更
+                </v-btn>
+              </div>
+            </div>
+            <div class="accountInfo_item">
+              <div class="accountInfo_item_title">
+                パスワード
+              </div>
+              <div class="accountInfo_item_body">
+                ********
+                <v-btn
+                  class="button-secondary"
+                  @click="() => (cahangePasswordModal = true)"
+                >
+                  変更
+                </v-btn>
+              </div>
+            </div>
+          </section>
+        </v-stepper-content>
+        <v-stepper-content step="1" class="userInfoStep-personal">
           <div class="content">
             <div class="userInfo_message">
               <v-alert
@@ -165,7 +231,7 @@
             </section>
           </div>
         </v-stepper-content>
-        <v-stepper-content step="2">
+        <v-stepper-content step="2" class="userInfoStep-bank">
           <div class="content">
             <section class="userInfo_section">
               <h3 class="userInfo_subTitle">
@@ -228,7 +294,7 @@
                   title="名義人（カタカナ）"
                   :required="true"
                   placeholder="例）ヤマダタロウ"
-                  hint="お名前（カタカナ）と同じ名義にしてください。全角カナ"
+                  hint="お名前（カタカナ）と同じ名義にしてください。※全角カナ"
                   :value="
                     userInfo[0] && userInfo[0].名義人 ? userInfo[0].名義人 : ''
                   "
@@ -246,7 +312,7 @@
             </section>
           </div>
         </v-stepper-content>
-        <v-stepper-content step="3">
+        <v-stepper-content step="3" class="userInfoStep-question">
           <div class="content">
             <section class="userInfo_section">
               <h3 class="userInfo_subTitle">
@@ -325,7 +391,7 @@
             </section>
           </div>
         </v-stepper-content>
-        <v-stepper-content step="4">
+        <v-stepper-content step="4" class="userInfoStep-upload">
           <div class="content">
             <section class="userInfo_section">
               <h3 class="userInfo_subTitle">
@@ -372,7 +438,7 @@
             </section>
           </div>
         </v-stepper-content>
-        <v-stepper-content step="5">
+        <v-stepper-content step="5" class="userInfoStep-confirm">
           <section class="userInfo_section">
             <h3 class="userInfo_subTitle">
               <span class="userInfo_titleLabel">Step.5</span>
@@ -484,6 +550,90 @@
         </v-stepper-content>
       </v-stepper-items>
     </v-stepper>
+
+    <!-- modal -->
+    <div class="modal_wrapper">
+      <MyModal
+        v-if="completeModal"
+        class="modal-bid"
+        @close="() => (completeModal = false)"
+      >
+        <template slot="title">メユーザー情報登録完了</template>
+        <div class="userInfoComplete">
+          <p class="userInfoComplete_text">
+            現在、登録いただいた内容を確認しております。<br />
+            承認されるまでもうしばらくお待ち下さい。
+          </p>
+          <p class="userInfoComplete_subText">
+            ※通常３営業日以内に結果をメールにて通知します。
+          </p>
+        </div>
+        <template slot="footer">
+          <Button class="button-cancel" @click="() => (completeModal = false)">
+            <v-icon>mdi-close</v-icon>
+            閉じる
+          </Button>
+        </template>
+      </MyModal>
+      <MyModal
+        v-if="cahangeMailModal"
+        class="modal-bid"
+        @close="() => (cahangeMailModal = false)"
+      >
+        <template slot="title">メールアドレスの変更</template>
+        <div v-if="false" class="error_msg">
+          <v-alert text color="red">
+            {{ errorMess }}すでにそのメールアドレスは登録されています
+          </v-alert>
+        </div>
+        <v-form class="modalForm">
+          <div class="currentData">
+            <div class="currentData_title">現在のメールアドレス：</div>
+            <div class="currentData_body">sample@mail.address</div>
+          </div>
+          <FormTextfield title="新しいメールアドレス" :required="true" />
+        </v-form>
+        <div v-if="false" class="modalForm_complete">
+          <v-icon>mdi-checkbox-marked-circle-outline</v-icon>
+          <p class="modalForm_complete_text">
+            メールアドレスを変更しました。
+          </p>
+        </div>
+        <template slot="footer">
+          <Button class="button-action" :disabled="true" @click="null">
+            変更する
+          </Button>
+        </template>
+      </MyModal>
+      <MyModal
+        v-if="cahangePasswordModal"
+        class="modal-bid"
+        @close="() => (cahangePasswordModal = false)"
+      >
+        <template slot="title">パスワードの変更</template>
+        <div v-if="false" class="error_msg">
+          <v-alert text color="red">
+            {{ errorMess }}
+          </v-alert>
+        </div>
+        <v-form class="modalForm">
+          <FormPassfield title="現在のパスワード" :required="true" />
+          <FormPassfield title="新しいパスワード" :required="true" />
+          <FormPassfield title="新しいパスワード（確認）" :required="true" />
+        </v-form>
+        <div v-if="false" class="modalForm_complete">
+          <v-icon>mdi-checkbox-marked-circle-outline</v-icon>
+          <p class="modalForm_complete_text">
+            パスワードを変更しました。
+          </p>
+        </div>
+        <template slot="footer">
+          <Button class="button-action" :disabled="true" @click="null">
+            変更する
+          </Button>
+        </template>
+      </MyModal>
+    </div>
   </div>
 </template>
 <script>
@@ -499,19 +649,20 @@ import FormTextfield from "@/components/parts/form/FormTextfield.vue";
 import FormTextfieldName from "@/components/parts/form/FormTextfieldName.vue";
 import CountryList from "@/assets/json/countryList.json";
 import BankList from "@/assets/json/bankList.json";
-// import axios from "axios"; // 後で消す
+import MyModal from "./MyModal.vue";
 
 export default {
   components: {
     FormFile,
-    // FormPassfield,
+    FormPassfield,
     FormRadio,
     FormCheckbox,
     FormSelect,
     FormSelectDate,
     FormAddress,
     FormTextfield,
-    FormTextfieldName
+    FormTextfieldName,
+    MyModal
   },
   data() {
     return {
@@ -532,7 +683,10 @@ export default {
       myNumberCardPicture2: [],
       identityVerificationDocuments1: [],
       identityVerificationDocuments2: [],
-      addressInfo: {}
+      addressInfo: {},
+      completeModal: false,
+      cahangeMailModal: false,
+      cahangePasswordModal: false
     };
   },
   created: async function() {},
@@ -569,45 +723,12 @@ export default {
       "本人確認書類写真_2",
       this.userInfo[0].i_id
     );
-    // const itemInfo = await this.$hexalink.getItem(
-    //   this.token,
-    //   this.datastoreIds["ユーザDB"],
-    //   this.userInfo[0].i_id
-    // );
-    // const image1Binary = this.userInfo[0].マイナンバーカード写真_1;
-    // if (image1Binary) {
-    //   const ab = await this.$hexalink.getFile(this.token, image1Binary);
-    //   var fileInfo = [];
-    //   for (var i = 0; itemInfo.length > i; i++) {
-    //     if (itemInfo[i].field_id == "マイナンバーカード写真_1") {
-    //       fileInfo = itemInfo[i].value[0];
-    //       break;
-    //     }
-    //   }
-    //   this.myNumberCardPicture1 = [
-    //     new File([ab], fileInfo.filename, {
-    //       type: "image/jpeg",
-    //       lastModified: 0
-    //     })
-    //   ];
-    // }
     for (const countryId in this.countryList) {
       this.countryListName.push(this.countryList[countryId].name);
     }
     for (const bankId in this.bankList) {
       this.bankListName.push(this.bankList[bankId].name);
     }
-    // const defaultConfig = {
-    //   headers: {
-    //     "content-type": "application/json"
-    //   }
-    // };
-    // let config = JSON.parse(JSON.stringify(defaultConfig));
-    // const result = await axios.get(
-    //   "https://bank.teraren.com/banks/0010/branches.json",
-    //   config
-    // );
-    // console.log(result);
   },
   methods: {
     moveStep(step) {
