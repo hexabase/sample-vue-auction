@@ -188,6 +188,11 @@
     text-align: left;
 }
 
+.v-select__slot .v-label,
+.v-input input::placeholder {
+    color: $color-text-placeholder;
+}
+
 .v-input--selection-controls .v-input--selection-controls__input:hover .v-input--selection-controls__ripple:before {
     transition: all .2s;
 }
@@ -720,8 +725,13 @@ body {
 
 //mark
 .mark-alert {
+    display: inline-block;
     width: 7px;
     height: 7px;
     border-radius: 50%;
     background-color: $color-error;
+}
+
+#app .v-tooltip__content {
+    font-size: 1.2rem;
 }

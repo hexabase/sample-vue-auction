@@ -40,7 +40,7 @@
             dense
             outlined
             single-line
-            label="選択してください"
+            label=""
             :value="value"
             :disabled="!editable"
             :error-messages="errors"
@@ -62,7 +62,7 @@
             dense
             outlined
             single-line
-            label="選択してください"
+            label=""
             :value="value"
             :disabled="!editable"
             :error-messages="errors"
