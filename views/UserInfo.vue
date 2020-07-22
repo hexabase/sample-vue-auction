@@ -527,6 +527,28 @@
     <!-- modal -->
     <div class="modal_wrapper">
       <MyModal
+        v-if="completeModal"
+        class="modal-bid"
+        @close="() => (completeModal = false)"
+      >
+        <template slot="title">メユーザー情報登録完了</template>
+        <div class="userInfoComplete">
+          <p class="userInfoComplete_text">
+            現在、登録いただいた内容を確認しております。<br />
+            承認されるまでもうしばらくお待ち下さい。
+          </p>
+          <p class="userInfoComplete_subText">
+            ※通常３営業日以内に結果をメールにて通知します。
+          </p>
+        </div>
+        <template slot="footer">
+          <Button class="button-cancel" @click="() => (completeModal = false)">
+            <v-icon>mdi-close</v-icon>
+            閉じる
+          </Button>
+        </template>
+      </MyModal>
+      <MyModal
         v-if="cahangeMailModal"
         class="modal-bid"
         @close="() => (cahangeMailModal = false)"
@@ -628,6 +650,7 @@ export default {
       userInfo: [],
       countryList: CountryList,
       countryListName: [],
+      completeModal: false,
       cahangeMailModal: false,
       cahangePasswordModal: false
     };

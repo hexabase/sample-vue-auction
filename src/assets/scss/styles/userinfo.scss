@@ -510,5 +510,19 @@
             font-size: 1.5rem;
         }
     }
+}
 
+.modal-bid .userInfoComplete {
+    padding: 10px 0;
+    
+    &_text {
+        margin-bottom: 30px;
+        font-size: 1.6rem;
+        line-height: 1.8;
+    }
+
+    &_subText {
+        color: $color-text-lightgray;
+        font-size: 1.3rem;
+    }
 }
