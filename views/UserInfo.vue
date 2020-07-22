@@ -735,7 +735,8 @@ export default {
     }
     const defaultConfig = {
       headers: {
-        "content-type": "application/json"
+        "content-type": "application/json",
+        "Access-Control-Allow-Origin": "*"
       }
     };
     let config = JSON.parse(JSON.stringify(defaultConfig));
@@ -795,6 +796,18 @@ export default {
           })
         ];
       }
+    },
+    // データアイテムを更新します
+    async updatedDataItem(datasotreId, itemId, payload) {
+      const applicationId = this.$store.getters["datas/getApplicationId"];
+      const token = this.$store.getters["auth/getToken"];
+      return await this.$hexalink.editItem(
+        token,
+        applicationId,
+        datasotreId,
+        itemId,
+        payload
+      );
     }
   }
 };
