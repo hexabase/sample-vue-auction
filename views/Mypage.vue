@@ -95,17 +95,28 @@ export default {
   // components: { FormCalendar },
   data() {
     return {
+      page: 1,
+      length: 0,
+      token: this.$store.getters["auth/getToken"],
+      applicationId: this.$store.getters["datas/getApplicationId"],
+      datasotreIdList: this.$store.getters["datas/getDatastores"],
+      datastoreIds: this.$store.getters["datas/getDatastoreIds"],
+      userId: this.$store.getters["user/getMembershipNumber"],
       period: 4,
       searchTarget: "",
       searchTargetItems: ["全体", "あああ"],
       searchOrder: "",
       transactionHeaders: [
-        { text: "リクエスト日", value: "date" },
-        { text: "内訳", value: "breakdown" },
-        { text: "曲名", value: "title" },
-        { text: "歌手", value: "artist" },
-        { text: "数量", value: "amount" },
-        { text: "金額", value: "price", align: "right" }
+        { text: "リクエスト日", value: "7c4e5d10-5fc4-4cff-81d4-de54d0fad1c8" },
+        { text: "内訳", value: "2bb5e16c-939b-44ec-bc31-01da0e5da77c" },
+        { text: "曲名", value: "f3495cb9-aa68-43c0-98c7-4c0a8448c946" },
+        { text: "歌手", value: "69b91c69-3231-4956-a34e-c6bd737fd206" },
+        { text: "数量", value: "91854461-18ce-4652-88c5-6ae63d23c689" },
+        {
+          text: "金額",
+          value: "1023791c-f698-4314-af98-2a8a732c0474",
+          align: "right"
+        }
       ],
       desserts: [
         {
@@ -153,7 +164,25 @@ export default {
     };
   },
   created: async function() {},
-  mounted: function() {},
+  mounted: async function() {
+    let auctionLists = [];
+    auctionLists = await this.$hexalink.getReports(
+      this.token,
+      this.applicationId,
+      "5f0c013ccd0bb1000697e685",
+      {
+        conditions: [
+          {
+            rpf_id: "0877fa61-b085-4df3-a184-9761d73db9ae",
+            search_value: [this.userId]
+          }
+        ],
+        sort_field_id: "7c4e5d10-5fc4-4cff-81d4-de54d0fad1c8",
+        sort_order: "asc"
+      }
+    );
+    this.desserts = auctionLists.report_results;
+  },
   methods: {}
 };
 </script>

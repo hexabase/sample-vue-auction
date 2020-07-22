@@ -57,6 +57,14 @@ const getters = {
    */
   getHexaID(state) {
     return state.hexaID;
+  },
+  /**
+   * MembershipNumber
+   *
+   * @param {*} state
+   */
+  getMembershipNumber(state) {
+    return state.membershipNumber;
   }
 };
 
@@ -114,6 +122,15 @@ const mutations = {
    */
   setHexaID(state, hexaID) {
     state.hexaID = hexaID;
+  },
+  /**
+   * setMembershipNumber
+   *
+   * @param {*} state
+   * @param {*} payload
+   */
+  setMembershipNumber(state, membershipNumber) {
+    state.membershipNumber = membershipNumber;
   }
 };
 

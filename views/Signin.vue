@@ -124,29 +124,28 @@ export default {
         var params = {
           conditions: [
             {
-              id: "userID",
+              id: "hexaID",
               search_value: [userInfo.data.u_id],
               exact_match: true
             }
           ],
           page: 1,
           per_page: 1,
-          use_display_id: true
+          use_display_id: true,
+          sort_field_id: "created_at",
+          sort_order: "desc"
         };
         var userMasters = await this.$hexalink.getItems(
           token,
           applicationId,
-          datastoreIds["ユーザーマスタDB"],
+          datastoreIds["ユーザDB"],
           params
         );
         var userMaster = "";
         if (userMasters.length > 0) {
           userMaster = userMasters[0];
         }
-        const userNameKanji =
-          userMaster.ユーザー名 == undefined
-            ? userInfo.data.username
-            : userMaster.ユーザー名;
+        const userNameKanji = userMaster.苗字 + userMaster.名前;
         const userID = userMaster.ユーザID;
         const userMail =
           userMaster.メールアドレス == undefined
@@ -156,6 +155,7 @@ export default {
           userMaster.userID == undefined
             ? userInfo.data.u_id
             : userMaster.userID;
+        const membershipNumber = userMaster.会員番号;
         // フィールド一覧の取得
         let datastoreList = [];
         let getFieldPromise = [];
@@ -191,6 +191,7 @@ export default {
         this.$store.commit("user/setName", userNameKanji);
         this.$store.commit("user/setEmail", userMail);
         this.$store.commit("user/setHexaID", hexaID);
+        this.$store.commit("user/setMembershipNumber", membershipNumber);
         this.$store.commit("datas/setDatastoreIds", datastoreIds);
         this.$store.commit("datas/setFields", fields);
         this.$router.push("/");

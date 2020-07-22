@@ -421,7 +421,7 @@ export default {
       applicationId: this.$store.getters["datas/getApplicationId"],
       datasotreIdList: this.$store.getters["datas/getDatastores"],
       datastoreIds: this.$store.getters["datas/getDatastoreIds"],
-      userId: this.$store.getters["user/getHexaID"],
+      userId: this.$store.getters["user/getMembershipNumber"],
       userName: this.$store.getters["auth/getUserNameKanji"],
       copyrightNumber: "",
       jasracCode: "",
@@ -826,7 +826,7 @@ export default {
       try {
         // loading overlay表示
         this.$store.commit("common/setLoading", true);
-        this.musicId = this.$route.query.id;
+        this.musicId = this.$route.params.id;
         this.myAuctionBidList = await this.getAuctionBidList();
         if (
           this.myAuctionBidList.length > 0 &&

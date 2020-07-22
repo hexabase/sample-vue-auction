@@ -71,7 +71,7 @@ export default {
       applicationId: this.$store.getters["datas/getApplicationId"],
       datasotreIdList: this.$store.getters["datas/getDatastores"],
       datastoreIds: this.$store.getters["datas/getDatastoreIds"],
-      userId: this.$store.getters["user/getHexaID"],
+      userId: this.$store.getters["user/getMembershipNumber"],
       auctionList: [],
       displayAuctionList: []
     };
@@ -174,7 +174,7 @@ export default {
       );
     },
     selectItem(musicId) {
-      this.$router.push("/auctionbid?id=" + musicId);
+      this.$router.push("/auctionbid/" + musicId);
     },
     pageChange(pageNumber) {
       this.displayAuctionList = this.auctionList.slice(

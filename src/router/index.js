@@ -54,7 +54,7 @@ const routes = [
     component: ClosedAuction
   },
   {
-    path: "/auctionbid",
+    path: "/auctionbid/:id",
     name: "AuctionBid",
     component: AuctionBid,
     meta: { requiresAuth: true }

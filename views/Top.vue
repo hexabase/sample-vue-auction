@@ -372,7 +372,7 @@ export default {
       }
     },
     selectItem(musicId) {
-      this.$router.push("/auctionbid?id=" + musicId);
+      this.$router.push("/auctionbid/" + musicId);
     },
     changeYen(num) {
       return String(num)

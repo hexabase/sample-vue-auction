@@ -20,7 +20,7 @@
             type="number"
             :disabled="!editable"
             placeholder=""
-            :value="value"
+            :value="value.zip1"
             :error-messages="errors"
             hint="数字３桁"
             @input="inputValue"
@@ -41,7 +41,7 @@
             type="number"
             :disabled="!editable"
             placeholder=""
-            :value="value"
+            :value="value.zip2"
             :error-messages="errors"
             hint="数字4桁"
             @input="inputValue"
@@ -63,7 +63,7 @@
             type="text"
             :disabled="!editable"
             placeholder="例）東京都豊島区池袋1-2-3"
-            :value="value"
+            :value="value.address1"
             :error-messages="errors"
             hint="都道府県 市区町村 丁目 番地"
             @input="inputValue"
@@ -85,7 +85,7 @@
             type="text"
             :disabled="!editable"
             placeholder="例）としまレジデンス１０１"
-            :value="value"
+            :value="value.address2"
             :error-messages="errors"
             hint="ビル名 号室"
             @input="inputValue"
@@ -114,8 +114,8 @@ export default {
       default: true
     },
     value: {
-      type: String,
-      default: ""
+      type: Object,
+      default: () => {}
     },
     zip1rule: {
       type: String,
@@ -133,6 +133,11 @@ export default {
       type: String,
       default: ""
     }
+  },
+  data() {
+    return {
+      zip1: ""
+    };
   },
   methods: {
     inputValue: function(e) {

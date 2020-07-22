@@ -9,23 +9,23 @@
     </header>
     <v-stepper v-model="step">
       <v-stepper-header class="userInfo_nav">
-        <v-stepper-step editable complete step="1">
+        <v-stepper-step editable complete step="1" @click="step = 1">
           個人情報
         </v-stepper-step>
         <v-divider></v-divider>
-        <v-stepper-step :editable="false" step="2">
+        <v-stepper-step :editable="false" step="2" @click="step = 2">
           口座情報
         </v-stepper-step>
         <v-divider></v-divider>
-        <v-stepper-step :editable="false" step="3">
+        <v-stepper-step :editable="false" step="3" @click="step = 3">
           投資について
         </v-stepper-step>
         <v-divider></v-divider>
-        <v-stepper-step :editable="false" step="4">
+        <v-stepper-step :editable="false" step="4" @click="step = 4">
           本人確認書類
         </v-stepper-step>
         <v-divider></v-divider>
-        <v-stepper-step :editable="false" step="5">
+        <v-stepper-step :editable="false" step="5" @click="step = 5">
           登録内容確認
         </v-stepper-step>
       </v-stepper-header>
@@ -147,12 +147,16 @@
                   "
                   placeholder="選択してください"
                 />
-                <FormAddress title="ご住所" :required="true" />
+                <FormAddress
+                  title="ご住所"
+                  :required="true"
+                  :value="addressInfo"
+                />
                 <div class="entryForm_footer">
                   <v-btn
                     color="primary"
                     class="button-action"
-                    @click="step = 2"
+                    @click="moveStep(2)"
                   >
                     保存して次へ
                   </v-btn>
@@ -175,18 +179,29 @@
                 <FormSelect
                   title="金融機関名"
                   :required="true"
-                  :items="['UFJ', 'SMBC', 'ゆうちょ']"
+                  :items="bankListName"
+                  :value="
+                    userInfo[0] && userInfo[0].銀行 ? userInfo[0].銀行 : ''
+                  "
                   placeholder="選択してください"
                 />
                 <FormTextfield
                   title="支店名"
                   :required="true"
+                  :value="
+                    userInfo[0] && userInfo[0].支店名 ? userInfo[0].支店名 : ''
+                  "
                   placeholder="例）渋谷支店"
                   hint=""
                 />
                 <FormTextfield
                   title="支店番号"
                   :required="true"
+                  :value="
+                    userInfo[0] && userInfo[0].支店番号
+                      ? userInfo[0].支店番号
+                      : ''
+                  "
                   placeholder="例）123"
                   hint="半角数字"
                 />
@@ -219,11 +234,11 @@
                   "
                 />
                 <div class="entryForm_footer">
-                  <v-btn class="button-cancel" @click="step = 1">
+                  <v-btn class="button-cancel" @click="moveStep(1)">
                     <v-icon>mdi-chevron-left</v-icon>
                     戻る
                   </v-btn>
-                  <v-btn class="button-action" @click="step = 3">
+                  <v-btn class="button-action" @click="moveStep(3)">
                     保存して次へ
                   </v-btn>
                 </div>
@@ -248,8 +263,8 @@
                   :required="true"
                   :checkboxes="[
                     { value: 'AAA', label: '経験あり' },
-                    { value: 'AAA', label: '経験あり' },
-                    { value: 'AAA', label: '経験あり' },
+                    { value: 'AAB', label: '経験アリ' },
+                    { value: 'AAC', label: '経験有り' },
                     { value: 'BBB', label: '経験無し' }
                   ]"
                 />
@@ -298,11 +313,11 @@
                   :radios="[{ value: 'AAA', label: 'AAA' }]"
                 />
                 <div class="entryForm_footer">
-                  <v-btn class="button-cancel" @click="step = 2">
+                  <v-btn class="button-cancel" @click="moveStep(2)">
                     <v-icon>mdi-chevron-left</v-icon>
                     戻る
                   </v-btn>
-                  <v-btn class="button-action" @click="step = 4">
+                  <v-btn class="button-action" @click="moveStep(4)">
                     保存して次へ
                   </v-btn>
                 </div>
@@ -328,16 +343,28 @@
                 </p>
               </div>
               <v-form class="entryForm">
-                <FormFile title="本人確認書類１" />
-                <FormFile title="本人確認書類２" />
-                <FormFile title="マイナンバーカード写真１" />
-                <FormFile title="マイナンバーカード写真２" />
+                <FormFile
+                  title="本人確認書類１"
+                  :value="identityVerificationDocuments1"
+                />
+                <FormFile
+                  title="本人確認書類２"
+                  :value="identityVerificationDocuments2"
+                />
+                <FormFile
+                  title="マイナンバーカード写真１"
+                  :value="myNumberCardPicture1"
+                />
+                <FormFile
+                  title="マイナンバーカード写真２"
+                  :value="myNumberCardPicture2"
+                />
                 <div class="entryForm_footer">
-                  <v-btn class="button-cancel" @click="step = 3">
+                  <v-btn class="button-cancel" @click="moveStep(3)">
                     <v-icon>mdi-chevron-left</v-icon>
                     戻る
                   </v-btn>
-                  <v-btn class="button-action" @click="step = 5">
+                  <v-btn class="button-action" @click="moveStep(5)">
                     保存して次へ
                   </v-btn>
                 </div>
@@ -471,6 +498,7 @@ import FormTextarea from "@/components/parts/form/FormTextarea.vue";
 import FormTextfield from "@/components/parts/form/FormTextfield.vue";
 import FormTextfieldName from "@/components/parts/form/FormTextfieldName.vue";
 import CountryList from "@/assets/json/countryList.json";
+import BankList from "@/assets/json/bankList.json";
 // import axios from "axios"; // 後で消す
 
 export default {
@@ -497,14 +525,77 @@ export default {
       countries: [],
       userInfo: [],
       countryList: CountryList,
-      countryListName: []
+      countryListName: [],
+      bankList: BankList,
+      bankListName: [],
+      myNumberCardPicture1: [],
+      myNumberCardPicture2: [],
+      identityVerificationDocuments1: [],
+      identityVerificationDocuments2: [],
+      addressInfo: {}
     };
   },
   created: async function() {},
   mounted: async function() {
     this.userInfo = await this.getUserInfo();
-    for (const id in this.countryList) {
-      this.countryListName.push(this.countryList[id].name);
+    this.$set(
+      this.addressInfo,
+      "zip1",
+      this.userInfo[0].郵便番号 ? this.userInfo[0].郵便番号.split("-")[0] : ""
+    );
+    this.addressInfo.zip2 = this.userInfo[0].郵便番号
+      ? this.userInfo[0].郵便番号.split("-")[1]
+      : "";
+    this.addressInfo.address1 = this.userInfo[0].住所1
+      ? this.userInfo[0].住所1
+      : "";
+    this.addressInfo.address2 = this.userInfo[0].住所2
+      ? this.userInfo[0].住所2
+      : "";
+
+    this.myNumberCardPicture1 = await this.getFileInfo(
+      "マイナンバーカード写真_1",
+      this.userInfo[0].i_id
+    );
+    this.myNumberCardPicture2 = await this.getFileInfo(
+      "マイナンバーカード写真_2",
+      this.userInfo[0].i_id
+    );
+    this.identityVerificationDocuments1 = await this.getFileInfo(
+      "本人確認書類写真_1",
+      this.userInfo[0].i_id
+    );
+    this.identityVerificationDocuments2 = await this.getFileInfo(
+      "本人確認書類写真_2",
+      this.userInfo[0].i_id
+    );
+    // const itemInfo = await this.$hexalink.getItem(
+    //   this.token,
+    //   this.datastoreIds["ユーザDB"],
+    //   this.userInfo[0].i_id
+    // );
+    // const image1Binary = this.userInfo[0].マイナンバーカード写真_1;
+    // if (image1Binary) {
+    //   const ab = await this.$hexalink.getFile(this.token, image1Binary);
+    //   var fileInfo = [];
+    //   for (var i = 0; itemInfo.length > i; i++) {
+    //     if (itemInfo[i].field_id == "マイナンバーカード写真_1") {
+    //       fileInfo = itemInfo[i].value[0];
+    //       break;
+    //     }
+    //   }
+    //   this.myNumberCardPicture1 = [
+    //     new File([ab], fileInfo.filename, {
+    //       type: "image/jpeg",
+    //       lastModified: 0
+    //     })
+    //   ];
+    // }
+    for (const countryId in this.countryList) {
+      this.countryListName.push(this.countryList[countryId].name);
+    }
+    for (const bankId in this.bankList) {
+      this.bankListName.push(this.bankList[bankId].name);
     }
     // const defaultConfig = {
     //   headers: {
@@ -519,17 +610,10 @@ export default {
     // console.log(result);
   },
   methods: {
-    nextStep() {
-      this.step = this.step + 1;
+    moveStep(step) {
+      this.step = step;
       window.scrollTo({
-        top: 300,
-        behavior: "smooth"
-      });
-    },
-    previousStep() {
-      this.step = this.step - 1;
-      window.scrollTo({
-        top: 300,
+        top: 190,
         behavior: "smooth"
       });
     },
@@ -551,6 +635,30 @@ export default {
           use_display_id: true
         }
       );
+    },
+    async getFileInfo(fileField, itemId) {
+      const itemInfo = await this.$hexalink.getItem(
+        this.token,
+        this.datastoreIds["ユーザDB"],
+        itemId
+      );
+      const fileBinary = this.userInfo[0][fileField];
+      if (fileBinary) {
+        const ab = await this.$hexalink.getFile(this.token, fileBinary);
+        var fileInfo = [];
+        for (var i = 0; itemInfo.length > i; i++) {
+          if (itemInfo[i].field_id == fileField) {
+            fileInfo = itemInfo[i].value[0];
+            break;
+          }
+        }
+        return [
+          new File([ab], fileInfo.filename, {
+            type: "image/jpeg",
+            lastModified: 0
+          })
+        ];
+      }
     }
   }
 };
