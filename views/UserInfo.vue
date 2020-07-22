@@ -740,7 +740,7 @@ export default {
     };
     let config = JSON.parse(JSON.stringify(defaultConfig));
     const result = await axios.get(
-      `http://zipcloud.ibsnet.co.jp/api/search?zipcode=${this.userInfo[0].郵便番号}`,
+      `//zipcloud.ibsnet.co.jp/api/search?zipcode=${this.userInfo[0].郵便番号}`,
       config
     );
     console.log(result);
