@@ -160,7 +160,7 @@
 
 .formItem {
     display: flex;
-    align-items: start;
+    align-items: flex-start;
     padding: 10px 0;
     min-height: 85px;
     font-size: 1.5rem;
@@ -482,7 +482,7 @@
     .currentData {
         padding: 20px 0;
         display: flex;
-        justify-content: start;
+        justify-content: flex-start;
         align-items: center;
         color: $color-theme-center;
 

@@ -1,5 +1,6 @@
 <template>
   <div id="page_auction" data-role="page">
+    <div class="musicInfo_img-mobile"><img :src="image1" /></div>
     <section class="musicInfo">
       <div class="content">
         <figure class="musicInfo_img">
@@ -187,12 +188,12 @@
             <h3 class="trend_subTitle">最近5年間の著作権料（1週間あたり）</h3>
             <img src="~@/assets/img/auction-detail-graph1.png" alt="" />
           </section>
-          <section class="trend_royalty">
+          <!-- <section class="trend_royalty">
             <h3 class="trend_subTitle">
               最近12ヶ月のロイヤリティ（1週間あたり）
             </h3>
             <img src="~@/assets/img/auction-detail-graph2.png" alt="" />
-          </section>
+          </section> -->
         </div>
       </div>
     </section>

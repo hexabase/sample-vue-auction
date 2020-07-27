@@ -12,7 +12,7 @@
     font-size: 1.4rem;
     
     @include min-screen($breakpoint-mobile) {
-        width: $breakpoint-pc;
+        // width: $breakpoint-pc;
     }
 }
 
@@ -165,7 +165,7 @@
         top: 0;
         left: 0;
         width: 100%;
-        height: 100%;
+        // height: 100%;
         object-fit: cover;
     }
 }
@@ -443,7 +443,11 @@
 
     &_wrap {
         display: flex;
-        justify-content: space-between;
+        justify-content: space-around;
+
+        @include max-screen($breakpoint-mobile) {
+            flex-direction: column;
+        }
     }
 
     &_title {
@@ -464,6 +468,10 @@
         background: #fff;
         border: $border-default;
         border-radius: $radius-box;
+
+        @include max-screen($breakpoint-mobile) {
+            margin: 0 20px 20px;
+        }
     }
 
     &_subTitle {
