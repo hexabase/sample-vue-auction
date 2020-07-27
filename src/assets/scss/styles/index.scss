@@ -8,7 +8,7 @@
     width: 220px;
 
     @include max-screen($breakpoint-mobile) {
-        width: 180px;
+        // width: 180px;
     }
 }
 
@@ -29,6 +29,7 @@
         @include max-screen($breakpoint-mobile) {
             height: calc(100vh - #{$header-height_mobile});
             margin-top: 0;
+            background-position: 20% center;
         }
     }
 
@@ -42,7 +43,8 @@
         @include max-screen($breakpoint-mobile) {
             width: 7.5em;
             line-height: 1.4;
-            margin-bottom: 40px;
+            margin-bottom: 6vh;
+            font-size: 3.5rem;
         }
     }
 
@@ -63,19 +65,17 @@
     }
 
     @include max-screen($breakpoint-mobile) {
-        &_title {
-            margin-bottom: 100px;
-            font-size: 3.5rem;
-        }
-
         &_enText {
+            margin-bottom: 15px;
             color: #FFF;
+            letter-spacing: 0.05em;
         }
 
         &_text {
-            width: 10em;
+            width: 16em;
             line-height: 1.6;
             font-size: 1.5rem;
+            font-weight: bold;
             color: #FFF;
         }
 
@@ -209,6 +209,11 @@
         display: flex;
         justify-content: center;
         margin-bottom: 80px;
+
+        @include max-screen($breakpoint-mobile) {
+            margin: 0 -1% 30px;
+            flex-direction: column;
+        }
     }
 
     &_item {
@@ -220,12 +225,26 @@
         text-align: left;
         transition: all .3s;
 
+        @include max-screen($breakpoint-mobile) {
+            margin: -1px 0 0;
+            padding: 0;
+            flex: 1 1 auto;
+            width: 100%;
+            max-width: 100%;
+        }
+
         &:hover {
             border-color: $color-theme-center;
         }
 
         a {
             display: block;
+
+            @include max-screen($breakpoint-mobile) {
+                padding: 15px 10px;
+                height: 90px;
+                box-sizing: border-box;
+            }
         }
     }
 
@@ -233,6 +252,13 @@
     &_img {
         display: block;
         margin: 0 -15px 20px;
+
+        @include max-screen($breakpoint-mobile) {
+            margin: -15px 15px -15px -10px;
+            width: 90px;
+            height: 90px;
+            float: left;
+        }
     }
 
     &_title {
@@ -246,6 +272,10 @@
         margin-bottom: 20px;
         font-size: 1.2rem;
         color: $color-text-lightgray;
+
+        @include max-screen($breakpoint-mobile) {
+            margin-bottom: 10px;
+        }
     }
 
     &_price {
@@ -265,23 +295,59 @@
 
 .news {
     padding: 60px 0;
-    background: $color-bg-gray;
+    background: $color-bg;
     text-align: left;
+
+    @include max-screen($breakpoint-mobile) {
+        margin-bottom: 40px;
+        padding: 0;
+    }
 
     .content {
         display: flex;
         align-items: center;
+
+        @include max-screen($breakpoint-mobile) {
+            flex-direction: column;
+            padding: 0;
+        }
+
     }
 
     .contents_title {
         flex: 0 0 190px;
         margin: 0;
         border-right: $border-default;
+
+        @include max-screen($breakpoint-mobile) {
+            flex: 0 0 auto;
+            width: 100%;
+            padding: 15px 15px 5px;
+            display: flex;
+            justify-content: start;
+            align-items: center;
+            border: none;
+            
+            .contents_title-jp {
+                margin-left: 1em;
+                flex: 1 1 auto;
+
+                a {
+                    float: right;
+                }
+            }
+        }
     }
 
     .news_list {
         flex: 1 1 auto;
         padding-left: 60px;
+
+        @include max-screen($breakpoint-mobile) {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
     }
 
     &_item {
@@ -289,6 +355,20 @@
         margin-bottom: 10px;
         padding-left: 8em;
         font-size: 1.5rem;
+
+        @include max-screen($breakpoint-mobile) {
+            margin: 0;
+            padding: 0;
+
+            a {
+                padding: 15px 20px;
+                display: block;
+            }
+
+            &:nth-child(odd) {
+                background: $color-bg-gray;
+            }
+        }
     }
 
     &_date {
@@ -298,6 +378,12 @@
         color: $color-text-lightblue;
         font-family: $font-en;
         font-size: 1.8rem;
+
+        @include max-screen($breakpoint-mobile) {
+            position: relative;
+            display: block;
+            margin-bottom: 5px; 
+        }
     }
 }
 
@@ -310,19 +396,42 @@
         margin-top: -20px;
         background: url("~@/assets/img/top-about.jpg") no-repeat 0 40px;
         background-size: 50% auto;
+
+        @include max-screen($breakpoint-mobile) {
+            background-position: center -150px;
+            background-size: contain;
+            padding-top: 130px;
+        }
     }
 
     .contents_title {
         margin: 0 0 30px -50%;
         text-align: right;
 
+        @include max-screen($breakpoint-mobile) {
+            margin: 0 -1%;
+            padding: 25px 10px 10px;
+            background: #FFF;
+            text-align: center;
+        }
+
         &-en {
             font-size: 6rem;
+
+            @include max-screen($breakpoint-mobile) {
+                font-size: 3.6rem;
+            }
         }
     }
 
     &_wrap {
         margin-left: calc(50% + 40px);
+
+        @include max-screen($breakpoint-mobile) {
+            margin: 0 -1%;
+            background: #fff;
+            text-align: center;
+        }
     }
 
     &_title {
@@ -330,6 +439,11 @@
         font-size: 2.6rem;
         font-weight: bold;
         line-height: 1.6;
+
+        @include max-screen($breakpoint-mobile) {
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
     }
 
     &_text {
@@ -350,6 +464,14 @@
     &_text {
         margin-bottom: 60px;
         font-size: 2.8rem;
+
+        @include max-screen($breakpoint-mobile) {
+            margin: 10px auto 20px;
+            padding: 0;
+            width: 290px;
+            font-size: 2.5rem;
+            line-height: 1.4;
+        }
     }
 
     .button-action {
