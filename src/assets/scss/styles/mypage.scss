@@ -19,6 +19,10 @@
         background:  $color-bg-theme-light;
         padding: 80px 0;
 
+        @include max-screen($breakpoint-mobile) {
+            padding: 40px 10px;
+        }
+
         &_title {
             margin-bottom: 20px;
             @extend %section-title;
@@ -37,6 +41,11 @@
             font-family: $font-en;
             color: $color-theme-center;
 
+            @include max-screen($breakpoint-mobile) {
+                margin: 0 0 20px;
+                font-size: 4rem;
+            }
+
             &::after {
                 content: '円';
                 margin-left: 5px;
@@ -49,12 +58,23 @@
             display: flex;
             justify-content: center;
 
+            @include max-screen($breakpoint-mobile) {
+                li {
+                    flex: 0 0 50%;
+                }
+            }
+
             .button-action {
                 margin: 0 5px;
                 width: 220px;
                 height: 46px;
                 line-height: 46px;
                 font-size: 1.6rem;
+
+                @include max-screen($breakpoint-mobile) {
+                    width: 98%;
+                    margin: 0 1%;
+                }
             }
         }
     }
@@ -65,6 +85,10 @@
         &_title {
             margin-bottom: 60px;
             @extend %section-title;
+
+            @include max-screen($breakpoint-mobile) {
+                margin-bottom: 30px;
+            }
         }
 
         &_search {
@@ -84,6 +108,12 @@
             flex-wrap: wrap;
             line-height: 4rem;
 
+            @include max-screen($breakpoint-mobile) {
+                display: block;
+                padding: 0 15px;
+                text-align: left;
+            }
+
             dt {
                 flex: 0 0 6em;
                 color: $color-text-gray;
@@ -97,6 +127,15 @@
             dd {
                 flex: 0 0 calc(100% - 6em);
                 display: flex;
+
+                @include max-screen($breakpoint-mobile) {
+                    flex-wrap: wrap;
+                    margin-bottom: 20px;
+
+                    .v-text-field__details, .v-messages {
+                        min-height: 0;
+                    }
+                }
             }
 
             .v-input.v-text-field {
@@ -122,6 +161,10 @@
 
             .v-btn-toggle {
                 margin-left: 20px;
+
+                @include max-screen($breakpoint-mobile) {
+                    margin-left: 0;
+                }
 
                 .v-btn--active {
                     color: $color-theme-center;
