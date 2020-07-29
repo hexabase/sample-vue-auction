@@ -165,23 +165,26 @@
                   title="お名前"
                   :required="true"
                   :userinfo="userInfo"
+                  @input="emittedNameKanji"
                 />
                 <FormTextfieldName
                   title="お名前（カタカナ）"
                   :required="true"
                   :kana="true"
                   :userinfo="userInfo"
+                  @input="emittedNameKana"
                 />
                 <FormRadio
                   title="性別"
                   :required="true"
                   :radios="[
-                    { value: 'male', label: '男性' },
-                    { value: 'female', label: '女性' }
+                    { value: '男性', label: '男性' },
+                    { value: '女性', label: '女性' }
                   ]"
                   :radiochecked="
-                    userInfo[0] && userInfo[0].性別 ? userInfo[0].性別 : 'male'
+                    userInfo[0] && userInfo[0].性別 ? userInfo[0].性別 : '男性'
                   "
+                  @change="emittedGender"
                 />
                 <FormSelect
                   title="国籍"
@@ -191,6 +194,7 @@
                     userInfo[0] && userInfo[0].国籍 ? userInfo[0].国籍 : ''
                   "
                   placeholder="placeholder"
+                  @input="emittedCountry"
                 />
                 <FormTextfield
                   title="携帯番号"
@@ -202,6 +206,7 @@
                       ? userInfo[0].携帯番号
                       : ''
                   "
+                  @input="emittedMobilePhoneNumber"
                 />
                 <FormSelectDate
                   title="生年月日"
@@ -212,11 +217,13 @@
                       : ''
                   "
                   placeholder="選択してください"
+                  @input="emittedBirthday"
                 />
                 <FormAddress
                   title="ご住所"
                   :required="true"
                   :value="addressInfo"
+                  @input="emittedAddress"
                 />
                 <div class="entryForm_footer">
                   <v-btn
@@ -250,6 +257,7 @@
                     userInfo[0] && userInfo[0].銀行 ? userInfo[0].銀行 : ''
                   "
                   placeholder="選択してください"
+                  @input="emittedBankName"
                 />
                 <FormTextfield
                   title="支店名"
@@ -259,6 +267,7 @@
                   "
                   placeholder="例）渋谷支店"
                   hint=""
+                  @input="emittedBranchBankName"
                 />
                 <FormTextfield
                   title="支店番号"
@@ -270,14 +279,21 @@
                   "
                   placeholder="例）123"
                   hint="半角数字"
+                  @input="emittedBranchBankNumber"
                 />
                 <FormRadio
                   title="口座種類"
                   :required="true"
                   :radios="[
-                    { value: '0', label: '当座' },
-                    { value: '1', label: '普通' }
+                    { value: '当座', label: '当座' },
+                    { value: '普通', label: '普通' }
                   ]"
+                  :radiochecked="
+                    userInfo[0] && userInfo[0].口座種類
+                      ? userInfo[0].口座種類
+                      : '当座'
+                  "
+                  @change="emittedBankAccountType"
                 />
                 <FormTextfield
                   title="口座番号"
@@ -289,6 +305,7 @@
                       ? userInfo[0].口座番号
                       : ''
                   "
+                  @input="emittedBankAccountNumber"
                 />
                 <FormTextfield
                   title="名義人（カタカナ）"
@@ -298,9 +315,10 @@
                   :value="
                     userInfo[0] && userInfo[0].名義人 ? userInfo[0].名義人 : ''
                   "
+                  @input="emittedBankAccountHolderKana"
                 />
                 <div class="entryForm_footer">
-                  <v-btn class="button-cancel" @click="moveStep(1)">
+                  <v-btn class="button-cancel" @click="step = 1">
                     <v-icon>mdi-chevron-left</v-icon>
                     戻る
                   </v-btn>
@@ -379,7 +397,7 @@
                   :radios="[{ value: 'AAA', label: 'AAA' }]"
                 />
                 <div class="entryForm_footer">
-                  <v-btn class="button-cancel" @click="moveStep(2)">
+                  <v-btn class="button-cancel" @click="step = 2">
                     <v-icon>mdi-chevron-left</v-icon>
                     戻る
                   </v-btn>
@@ -410,23 +428,31 @@
               </div>
               <v-form class="entryForm">
                 <FormFile
-                  title="本人確認書類１"
+                  id="本人確認書類写真_1"
+                  title="本人確認書類写真_1"
                   :value="identityVerificationDocuments1"
+                  @change="emittedFile"
                 />
                 <FormFile
-                  title="本人確認書類２"
+                  id="本人確認書類写真_2"
+                  title="本人確認書類写真_2"
                   :value="identityVerificationDocuments2"
+                  @change="emittedFile"
                 />
                 <FormFile
-                  title="マイナンバーカード写真１"
+                  id="マイナンバーカード写真_1"
+                  title="マイナンバーカード写真_1"
                   :value="myNumberCardPicture1"
+                  @change="emittedFile"
                 />
                 <FormFile
-                  title="マイナンバーカード写真２"
+                  id="マイナンバーカード写真_2"
+                  title="マイナンバーカード写真_2"
                   :value="myNumberCardPicture2"
+                  @change="emittedFile"
                 />
                 <div class="entryForm_footer">
-                  <v-btn class="button-cancel" @click="moveStep(3)">
+                  <v-btn class="button-cancel" @click="step = 3">
                     <v-icon>mdi-chevron-left</v-icon>
                     戻る
                   </v-btn>
@@ -456,7 +482,7 @@
                       お名前
                     </div>
                     <div class="formConfirm_item_body">
-                      山田&nbsp;太郎
+                      {{ userSeiKanji }}&nbsp;{{ userMeiKanji }}
                     </div>
                   </div>
                   <div class="formConfirm_item">
@@ -464,7 +490,7 @@
                       お名前（カタカナ）
                     </div>
                     <div class="formConfirm_item_body">
-                      ヤマダ&nbsp;タロウ
+                      {{ userSeiKana }}&nbsp;{{ userMeiKana }}
                     </div>
                   </div>
                   <div class="formConfirm_item">
@@ -472,13 +498,121 @@
                       性別
                     </div>
                     <div class="formConfirm_item_body">
-                      男性
+                      {{ userGender }}
+                    </div>
+                  </div>
+                  <div class="formConfirm_item">
+                    <div class="formConfirm_item_title">
+                      国籍
+                    </div>
+                    <div class="formConfirm_item_body">
+                      {{ userCountry }}
+                    </div>
+                  </div>
+                  <div class="formConfirm_item">
+                    <div class="formConfirm_item_title">
+                      携帯番号
+                    </div>
+                    <div class="formConfirm_item_body">
+                      {{ userMobilePhoneNumber }}
+                    </div>
+                  </div>
+                  <div class="formConfirm_item">
+                    <div class="formConfirm_item_title">
+                      生年月日
+                    </div>
+                    <div class="formConfirm_item_body">
+                      {{ userBirthdayYMD }}
+                    </div>
+                  </div>
+                  <div class="formConfirm_item">
+                    <div class="formConfirm_item_title">
+                      ご住所
+                    </div>
+                    <div class="formConfirm_item_body">
+                      {{ userPostalCode }}
+                    </div>
+                  </div>
+                  <div class="formConfirm_item">
+                    <div class="formConfirm_item_title"></div>
+                    <div class="formConfirm_item_body">
+                      {{ userPrefectures }}
+                    </div>
+                  </div>
+                  <div class="formConfirm_item">
+                    <div class="formConfirm_item_title"></div>
+                    <div class="formConfirm_item_body">
+                      {{ userAddress1 }}
+                    </div>
+                  </div>
+                  <div class="formConfirm_item">
+                    <div class="formConfirm_item_title"></div>
+                    <div class="formConfirm_item_body">
+                      {{ userAddress2 }}
                     </div>
                   </div>
                 </div>
                 <div class="formConfirm_bottom">
                   <v-btn class="button-secondary" @click="step = 1">
                     Step1を修正する
+                  </v-btn>
+                </div>
+              </section>
+              <section class="formConfirm">
+                <h4 class="formConfirm_title">Step.2&nbsp;入金口座情報</h4>
+                <div class="formConfirm_item_wrapper">
+                  <div class="formConfirm_item">
+                    <div class="formConfirm_item_title">
+                      金融機関名
+                    </div>
+                    <div class="formConfirm_item_body">
+                      {{ userBankName }}
+                    </div>
+                  </div>
+                  <div class="formConfirm_item">
+                    <div class="formConfirm_item_title">
+                      支店名
+                    </div>
+                    <div class="formConfirm_item_body">
+                      {{ userBranchBankName }}
+                    </div>
+                  </div>
+                  <div class="formConfirm_item">
+                    <div class="formConfirm_item_title">
+                      支店番号
+                    </div>
+                    <div class="formConfirm_item_body">
+                      {{ userBranchBankNumber }}
+                    </div>
+                  </div>
+                  <div class="formConfirm_item">
+                    <div class="formConfirm_item_title">
+                      口座種類
+                    </div>
+                    <div class="formConfirm_item_body">
+                      {{ userBankAccountType }}
+                    </div>
+                  </div>
+                  <div class="formConfirm_item">
+                    <div class="formConfirm_item_title">
+                      口座番号
+                    </div>
+                    <div class="formConfirm_item_body">
+                      {{ userBankAccountNumber }}
+                    </div>
+                  </div>
+                  <div class="formConfirm_item">
+                    <div class="formConfirm_item_title">
+                      名義人（カタカナ）
+                    </div>
+                    <div class="formConfirm_item_body">
+                      {{ userBankAccountHolderKana }}
+                    </div>
+                  </div>
+                </div>
+                <div class="formConfirm_bottom">
+                  <v-btn class="button-secondary" @click="step = 2">
+                    Step2を修正する
                   </v-btn>
                 </div>
               </section>
@@ -651,6 +785,7 @@ import CountryList from "@/assets/json/countryList.json";
 import BankList from "@/assets/json/bankList.json";
 import MyModal from "./MyModal.vue";
 import axios from "axios";
+import moment from "moment";
 
 export default {
   components: {
@@ -671,11 +806,13 @@ export default {
       applicationId: this.$store.getters["datas/getApplicationId"],
       datasotreIdList: this.$store.getters["datas/getDatastores"],
       datastoreIds: this.$store.getters["datas/getDatastoreIds"],
+      fields: this.$store.getters["datas/getFields"],
       userId: this.$store.getters["user/getMembershipNumber"],
       step: 1,
       email: "",
       countries: [],
       userInfo: [],
+      fileInfo: [],
       countryList: CountryList,
       countryListName: [],
       bankList: BankList,
@@ -684,94 +821,388 @@ export default {
       myNumberCardPicture2: [],
       identityVerificationDocuments1: [],
       identityVerificationDocuments2: [],
+      myNumberCardPicture1FormData: new FormData(),
+      myNumberCardPicture2FormData: new FormData(),
+      identityVerificationDocuments1FormData: new FormData(),
+      identityVerificationDocuments2FormData: new FormData(),
       addressInfo: {},
       completeModal: false,
       cahangeMailModal: false,
-      cahangePasswordModal: false
+      cahangePasswordModal: false,
+      userSeiKanji: "",
+      userMeiKanji: "",
+      userSeiKana: "",
+      userMeiKana: "",
+      userGender: "",
+      userCountry: "",
+      userMobilePhoneNumber: "",
+      userBirthday: "",
+      userBirthdayYMD: "",
+      userPostalCode: "",
+      userPrefectures: "",
+      userAddress1: "",
+      userAddress2: "",
+      userBankName: "",
+      userBranchBankName: "",
+      userBranchBankNumber: "",
+      userBankAccountType: "",
+      userBankAccountNumber: "",
+      userBankAccountHolderKana: ""
     };
   },
   created: async function() {},
   mounted: async function() {
-    this.userInfo = await this.getUserInfo();
-    this.$set(
-      this.addressInfo,
-      "zip1",
-      this.userInfo[0].郵便番号 ? this.userInfo[0].郵便番号.split("-")[0] : ""
-    );
-    this.addressInfo.zip2 = this.userInfo[0].郵便番号
-      ? this.userInfo[0].郵便番号.split("-")[1]
-      : "";
-    this.addressInfo.address1 = this.userInfo[0].住所1
-      ? this.userInfo[0].住所1
-      : "";
-    this.addressInfo.address2 = this.userInfo[0].住所2
-      ? this.userInfo[0].住所2
-      : "";
-    this.addressInfo.prefectures = this.userInfo[0].都道府県
-      ? this.userInfo[0].都道府県
-      : "";
+    try {
+      // loading overlay表示
+      this.$store.commit("common/setLoading", true);
+      this.userInfo = await this.getUserInfo();
+      console.log(this.userInfo);
+      if (this.userInfo && this.userInfo.length > 0) {
+        this.userSeiKanji = this.userInfo[0].苗字 ? this.userInfo[0].苗字 : "";
+        this.userMeiKanji = this.userInfo[0].名前 ? this.userInfo[0].名前 : "";
+        this.userSeiKana = this.userInfo[0]["苗字（カタカナ）"]
+          ? this.userInfo[0]["苗字（カタカナ）"]
+          : "";
+        this.userMeiKana = this.userInfo[0]["名前（カタカナ）"]
+          ? this.userInfo[0]["名前（カタカナ）"]
+          : "";
+        this.userGender = this.userInfo[0].性別 ? this.userInfo[0].性別 : "";
+        this.userCountry = this.userInfo[0].国籍 ? this.userInfo[0].国籍 : "";
+        this.userMobilePhoneNumber = this.userInfo[0].携帯番号
+          ? this.userInfo[0].携帯番号
+          : "";
+        this.userBirthday = this.userInfo[0].生年月日
+          ? moment(this.userInfo[0].生年月日)
+          : "";
+        this.userBirthdayYMD = this.userInfo[0].生年月日
+          ? moment(this.userInfo[0].生年月日).format("YYYY-MM-DD")
+          : "";
+        this.userPostalCode = this.userInfo[0].郵便番号
+          ? this.userInfo[0].郵便番号
+          : "";
+        this.userPrefectures = this.userInfo[0].都道府県
+          ? this.userInfo[0].都道府県
+          : "";
+        this.userAddress1 = this.userInfo[0].住所1
+          ? this.userInfo[0].住所1
+          : "";
+        this.userAddress2 = this.userInfo[0].住所2
+          ? this.userInfo[0].住所2
+          : "";
+        this.$set(
+          this.addressInfo,
+          "zip1",
+          this.userInfo[0].郵便番号
+            ? this.userInfo[0].郵便番号.split("-")[0]
+            : ""
+        );
+        this.addressInfo.zip2 = this.userInfo[0].郵便番号
+          ? this.userInfo[0].郵便番号.split("-")[1]
+          : "";
+        this.addressInfo.address1 = this.userInfo[0].住所1
+          ? this.userInfo[0].住所1
+          : "";
+        this.addressInfo.address2 = this.userInfo[0].住所2
+          ? this.userInfo[0].住所2
+          : "";
+        this.addressInfo.prefectures = this.userInfo[0].都道府県
+          ? this.userInfo[0].都道府県
+          : "";
+        this.userBankName = this.userInfo[0].銀行 ? this.userInfo[0].銀行 : "";
+        this.userBranchBankName = this.userInfo[0].支店名
+          ? this.userInfo[0].支店名
+          : "";
+        this.userBranchBankNumber = this.userInfo[0].支店番号
+          ? this.userInfo[0].支店番号
+          : "";
+        this.userBankAccountType = this.userInfo[0].口座種類
+          ? this.userInfo[0].口座種類
+          : "普通";
+        console.log(this.userInfo[0].口座種類);
+        this.userBankAccountNumber = this.userInfo[0].口座番号
+          ? this.userInfo[0].口座番号
+          : "";
+        this.userBankAccountHolderKana = this.userInfo[0].名義人
+          ? this.userInfo[0].名義人
+          : "";
 
-    this.myNumberCardPicture1 = await this.getFileInfo(
-      "マイナンバーカード写真_1",
-      this.userInfo[0].i_id
-    );
-    this.myNumberCardPicture2 = await this.getFileInfo(
-      "マイナンバーカード写真_2",
-      this.userInfo[0].i_id
-    );
-    this.identityVerificationDocuments1 = await this.getFileInfo(
-      "本人確認書類写真_1",
-      this.userInfo[0].i_id
-    );
-    this.identityVerificationDocuments2 = await this.getFileInfo(
-      "本人確認書類写真_2",
-      this.userInfo[0].i_id
-    );
-    for (const countryId in this.countryList) {
-      this.countryListName.push(this.countryList[countryId].name);
-    }
-    for (const bankId in this.bankList) {
-      this.bankListName.push(this.bankList[bankId].name);
-    }
-    const defaultConfig = {
-      headers: {
-        "Access-Control-Allow-Credentials": true,
-        "Access-Control-Allow-Headers": "*",
-        "Access-Control-Allow-Methods":
-          "GET, PUT, POST, DELETE, HEAD, OPTIONS, PATCH",
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Expose-Headers": "*",
-        "cache-control": "private",
-        "content-type": "text/plain;charset=utf-8"
+        this.myNumberCardPicture1 = await this.getFileInfo(
+          "マイナンバーカード写真_1",
+          this.userInfo[0].i_id
+        );
+        this.myNumberCardPicture2 = await this.getFileInfo(
+          "マイナンバーカード写真_2",
+          this.userInfo[0].i_id
+        );
+        this.identityVerificationDocuments1 = await this.getFileInfo(
+          "本人確認書類写真_1",
+          this.userInfo[0].i_id
+        );
+        this.identityVerificationDocuments2 = await this.getFileInfo(
+          "本人確認書類写真_2",
+          this.userInfo[0].i_id
+        );
       }
-    };
-    let config = JSON.parse(JSON.stringify(defaultConfig));
-    const result = await axios.get(
-      `//zipcloud.ibsnet.co.jp/api/search?zipcode=${this.userInfo[0].郵便番号}`,
-      config
-    );
-    console.log(result);
+      for (const countryId in this.countryList) {
+        this.countryListName.push(this.countryList[countryId].name);
+      }
+      for (const bankId in this.bankList) {
+        this.bankListName.push(this.bankList[bankId].name);
+      }
+      // const defaultConfig = {
+      //   headers: {
+      //     "Access-Control-Allow-Credentials": true,
+      //     "Access-Control-Allow-Headers": "*",
+      //     "Access-Control-Allow-Methods":
+      //       "GET, PUT, POST, DELETE, HEAD, OPTIONS, PATCH",
+      //     "Access-Control-Allow-Origin": "*",
+      //     "Access-Control-Expose-Headers": "*",
+      //     "cache-control": "private",
+      //     "content-type": "text/plain;charset=utf-8"
+      //   }
+      // };
+      // let config = JSON.parse(JSON.stringify(defaultConfig));
+      // const result = await axios.get(
+      //   `//zipcloud.ibsnet.co.jp/api/search?zipcode=${this.userInfo[0].郵便番号}`,
+      //   config
+      // );
+      // console.log(result);
+    } catch (e) {
+      console.log(e);
+    } finally {
+      // loading overlay非表示
+      this.$store.commit("common/setLoading", false);
+    }
   },
   methods: {
-    moveStep(step) {
-      switch (this.step) {
-        case 1:
-          console.log(1);
+    async moveStep(step) {
+      console.log(step);
+      console.log(this.step);
+      switch (String(this.step)) {
+        case "1":
+          try {
+            // loading overlay表示
+            this.$store.commit("common/setLoading", true);
+            const result = await this.updatedDataItem(
+              this.datastoreIds["ユーザDB"],
+              this.userInfo[0].i_id,
+              {
+                history: {
+                  comment: "Step1更新"
+                },
+                changes: [
+                  {
+                    id: "苗字",
+                    value: this.userSeiKanji
+                  },
+                  {
+                    id: "名前",
+                    value: this.userMeiKanji
+                  },
+                  {
+                    id: "苗字（カタカナ）",
+                    value: this.userSeiKana
+                  },
+                  {
+                    id: "名前（カタカナ）",
+                    value: this.userMeiKana
+                  },
+                  {
+                    id: "性別",
+                    value: this.userGender
+                  },
+                  {
+                    id: "国籍",
+                    value: this.userCountry
+                  },
+                  {
+                    id: "携帯番号",
+                    value: this.userMobilePhoneNumber
+                  },
+                  {
+                    id: "生年月日",
+                    value: this.userBirthday
+                  },
+                  {
+                    id: "郵便番号",
+                    value: this.userPostalCode
+                  },
+                  {
+                    id: "都道府県",
+                    value: this.userPrefectures
+                  },
+                  {
+                    id: "住所1",
+                    value: this.userAddress1
+                  },
+                  {
+                    id: "住所2",
+                    value: this.userAddress2
+                  }
+                ],
+                use_display_id: true,
+                is_force_update: true
+              }
+            );
+          } catch (e) {
+            console.log(e);
+          } finally {
+            this.step = step;
+            console.log(this.step);
+            // loading overlay非表示
+            this.$store.commit("common/setLoading", false);
+          }
           break;
-        case 2:
-          console.log(2);
+        case "2":
+          console.log(this.step);
+          console.log(this.userBankName);
+          console.log(this.userBranchBankName);
+          console.log(this.userBranchBankNumber);
+          console.log(this.userBankAccountType);
+          console.log(this.userBankAccountNumber);
+          console.log(this.userBankAccountHolderKana);
+          try {
+            // loading overlay表示
+            this.$store.commit("common/setLoading", true);
+            const result = await this.updatedDataItem(
+              this.datastoreIds["ユーザDB"],
+              this.userInfo[0].i_id,
+              {
+                history: {
+                  comment: "Step2更新"
+                },
+                changes: [
+                  {
+                    id: "銀行",
+                    value: this.userBankName
+                  },
+                  {
+                    id: "支店名",
+                    value: this.userBranchBankName
+                  },
+                  {
+                    id: "支店番号",
+                    value: this.userBranchBankNumber
+                  },
+                  {
+                    id: "口座種類",
+                    value: this.userBankAccountType
+                  },
+                  {
+                    id: "口座番号",
+                    value: this.userBankAccountNumber
+                  },
+                  {
+                    id: "名義人",
+                    value: this.userBankAccountHolderKana
+                  }
+                ],
+                use_display_id: true,
+                is_force_update: true
+              }
+            );
+          } catch (e) {
+            console.log(e);
+          } finally {
+            this.step = step;
+            // loading overlay非表示
+            this.$store.commit("common/setLoading", false);
+          }
           break;
-        case 3:
-          console.log(3);
+        case "3":
+          console.log(this.step);
+          this.step = step;
           break;
-        case 4:
-          console.log(4);
+        case "4":
+          console.log(this.step);
+          this.fileInfo.push(
+            this.myNumberCardPicture1FormData,
+            this.myNumberCardPicture2FormData,
+            this.identityVerificationDocuments1FormData,
+            this.identityVerificationDocuments2FormData
+          );
+          try {
+            // loading overlay表示
+            this.$store.commit("common/setLoading", true);
+            let attachmentList = [];
+            for (const fileInfoKey in this.fileInfo) {
+              console.log(this.fileInfo[fileInfoKey].get("file"));
+              if (!this.fileInfo[fileInfoKey].get("file")) {
+                attachmentList.push("none");
+                continue;
+              }
+              let fieldId = this.fileInfo[fileInfoKey].get("id");
+              // 対象レコードにファイルをアップロード
+              let formData = new FormData();
+              formData.append("file", this.fileInfo[fileInfoKey].get("file"));
+              formData.append(
+                "filename",
+                this.fileInfo[fileInfoKey].get("filename")
+              );
+              formData.append("application_id", this.applicationId);
+              formData.append("datastore_id", this.datastoreIds["ユーザDB"]);
+
+              const uploadResult = await this.$hexalink.uploadFile(
+                this.token,
+                this.userInfo[0].i_id,
+                fieldId,
+                formData
+              );
+
+              attachmentList.push(uploadResult.data.file_id);
+
+              let changes = [];
+              console.log(attachmentList[fileInfoKey]);
+              changes.push({
+                id: this.fields["ユーザDB"][fieldId],
+                value: [attachmentList[fileInfoKey]]
+              });
+
+              // カラムに登録
+              if (changes.length > 0) {
+                // 添付ファイルの登録処理
+                const actionList = await this.$hexalink.getActionList(
+                  this.token,
+                  this.datastoreIds["ユーザDB"],
+                  this.userInfo[0].i_id
+                );
+
+                let actionId = actionList.filter(action => {
+                  return action["action_name"] == "内容を更新する";
+                })[0].action_id;
+
+                let params = JSON.stringify({
+                  is_force_update: true,
+                  history: {
+                    datastore_id: this.datastoreIds["ユーザDB"],
+                    comment: "添付ファイルの登録"
+                  },
+                  changes: changes
+                });
+                const actionResult = await this.$hexalink.execAction(
+                  this.token,
+                  this.userInfo[0].i_id,
+                  actionId,
+                  params
+                );
+              }
+            }
+          } catch (e) {
+            console.log(e);
+          } finally {
+            this.step = step;
+            // loading overlay非表示
+            this.$store.commit("common/setLoading", false);
+          }
           break;
         case 5:
-          console.log(5);
+          console.log(this.step);
+          this.step = step;
+          break;
+        default:
+          console.log(this.step);
           break;
       }
-      this.step = step;
       window.scrollTo({
         top: 190,
         behavior: "smooth"
@@ -831,6 +1262,91 @@ export default {
         itemId,
         payload
       );
+    },
+    emittedNameKanji(value) {
+      console.log("漢字：", value);
+      this.userSeiKanji = value.split("　")[0];
+      this.userMeiKanji = value.split("　")[1];
+      console.log(this.userSeiKanji, this.userMeiKanji);
+    },
+    emittedNameKana(value) {
+      console.log("カナ：", value);
+      this.userSeiKana = value.split(" ")[0];
+      this.userMeiKana = value.split(" ")[1];
+    },
+    emittedGender(value) {
+      console.log("性別：", value);
+      this.userGender = value;
+    },
+    emittedCountry(value) {
+      console.log("国籍：", value);
+      this.userCountry = value;
+    },
+    emittedMobilePhoneNumber(value) {
+      console.log("電話番号：", value);
+      this.userMobilePhoneNumber = value;
+    },
+    emittedBirthday(value) {
+      console.log("生年月日：", moment(value));
+      this.userBirthday = moment(value).format("YYYY-MM-DD");
+    },
+    emittedAddress(value) {
+      console.log("ご住所：", value);
+      switch (value.name) {
+        case "postalCode":
+          this.userPostalCode = value.value;
+          break;
+        case "prefectures":
+          this.userPrefectures = value.value;
+          break;
+        case "address1":
+          this.userAddress1 = value.value;
+          break;
+        case "address2":
+          this.userAddress2 = value.value;
+          break;
+      }
+    },
+    emittedBankName(value) {
+      console.log("金融機関名：", value);
+      this.userBankName = value;
+    },
+    emittedBranchBankName(value) {
+      console.log("支店名：", value);
+      this.userBranchBankName = value;
+    },
+    emittedBranchBankNumber(value) {
+      console.log("支店番号：", value);
+      this.userBranchBankNumber = value;
+    },
+    emittedBankAccountType(value) {
+      console.log("口座種類：", value);
+      this.userBankAccountType = value;
+    },
+    emittedBankAccountNumber(value) {
+      console.log("口座番号：", value);
+      this.userBankAccountNumber = value;
+    },
+    emittedBankAccountHolderKana(value) {
+      console.log("名義人（カタカナ）：", value);
+      this.userBankAccountHolderKana = value;
+    },
+    emittedFile(value) {
+      console.log("ファイル種類", value.name);
+      switch (value.name) {
+        case "本人確認書類写真_1":
+          this.identityVerificationDocuments1FormData = value.value;
+          break;
+        case "本人確認書類写真_2":
+          this.identityVerificationDocuments2FormData = value.value;
+          break;
+        case "マイナンバーカード写真_1":
+          this.myNumberCardPicture1FormData = value.value;
+          break;
+        case "マイナンバーカード写真_2":
+          this.myNumberCardPicture2FormData = value.value;
+          break;
+      }
     }
   }
 };

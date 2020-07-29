@@ -109,6 +109,7 @@ export default {
   },
   data: function() {
     return {
+      birthdayData: this.birthday,
       months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
     };
   },
@@ -127,22 +128,55 @@ export default {
     year: {
       get: function() {
         return this.birthday ? moment(this.birthday).year() : "";
+      },
+      set: function(value) {
+        if (!this.birthdayData) {
+          this.birthdayData = this.birthday;
+        }
+        this.birthdayData =
+          value +
+          "/" +
+          (moment(this.birthdayData).month() + 1) +
+          "/" +
+          moment(this.birthdayData).date();
       }
     },
     month: {
       get: function() {
         return this.birthday ? moment(this.birthday).month() + 1 : "";
+      },
+      set: function(value) {
+        if (!this.birthdayData) {
+          this.birthdayData = this.birthday;
+        }
+        this.birthdayData =
+          moment(this.birthdayData).year() +
+          "/" +
+          value +
+          "/" +
+          moment(this.birthdayData).date();
       }
     },
     date: {
       get: function() {
         return this.birthday ? moment(this.birthday).date() : "";
+      },
+      set: function(value) {
+        if (!this.birthdayData) {
+          this.birthdayData = this.birthday;
+        }
+        this.birthdayData =
+          moment(this.birthdayData).year() +
+          "/" +
+          (moment(this.birthdayData).month() + 1) +
+          "/" +
+          value;
       }
     }
   },
   methods: {
-    inputValue: function(e) {
-      this.$emit("input", e);
+    inputValue: function() {
+      this.$emit("input", this.birthdayData);
     },
     getYears: function() {
       const goBackYears = 10;

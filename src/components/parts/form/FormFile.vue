@@ -14,6 +14,7 @@
         >
           <!-- 編集モード -->
           <v-file-input
+            ref="file"
             single-line
             label="選択されていません"
             multiple
@@ -24,12 +25,15 @@
             :value="value"
             :error-messages="errors"
             :disabled="!editable"
-            @change="changeValue"
+            @change="changeValue($event, title)"
           >
             <template v-slot:selection="{ text }">
               <v-chip small label>{{ text }}</v-chip>
             </template>
           </v-file-input>
+          <p>
+            <img :src="fileImage" />
+          </p>
         </validation-provider>
       </template>
       <template v-else>
@@ -81,9 +85,29 @@ export default {
       default: ""
     }
   },
+  data() {
+    return {
+      data: {},
+      fileImage: []
+    };
+  },
   methods: {
-    changeValue: function(e) {
-      this.$emit("change", e);
+    changeValue(value, name) {
+      const files = value;
+      this.createImage(files[0]);
+      let formData = new FormData();
+      formData.append("id", name);
+      formData.append("file", files[0]);
+      formData.append("filename", files[0].name);
+      this.$emit("change", { value: formData, name: name });
+    },
+    // アップロードした画像を表示
+    createImage(file) {
+      const reader = new FileReader();
+      reader.onload = e => {
+        this.fileImage = e.target.result;
+      };
+      reader.readAsDataURL(file);
     },
     preview(file) {
       const url = URL.createObjectURL(file);

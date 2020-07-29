@@ -23,7 +23,7 @@
             :value="value.zip1"
             :error-messages="errors"
             hint="数字３桁"
-            @input="inputValue"
+            @input="inputValue($event, 'zip1')"
             @blur="handleBlur"
           ></v-text-field>
         </validation-provider>
@@ -44,7 +44,7 @@
             :value="value.zip2"
             :error-messages="errors"
             hint="数字4桁"
-            @input="inputValue"
+            @input="inputValue($event, 'zip2')"
             @blur="handleBlur"
           ></v-text-field>
         </validation-provider>
@@ -66,7 +66,7 @@
             :value="value.prefectures"
             :disabled="!editable"
             :error-messages="errors"
-            @input="inputValue"
+            @input="inputValue($event, 'prefectures')"
           >
           </v-select>
         </validation-provider>
@@ -88,7 +88,7 @@
             :value="value.address1"
             :error-messages="errors"
             hint="市区町村 丁目 番地"
-            @input="inputValue"
+            @input="inputValue($event, 'address1')"
             @blur="handleBlur"
           ></v-text-field>
         </validation-provider>
@@ -110,7 +110,7 @@
             :value="value.address2"
             :error-messages="errors"
             hint="ビル名 号室"
-            @input="inputValue"
+            @input="inputValue($event, 'address2')"
             @blur="handleBlur"
           ></v-text-field>
         </validation-provider>
@@ -163,6 +163,10 @@ export default {
   data() {
     return {
       zip1: "",
+      zip2: "",
+      prefectures: "",
+      address1: "",
+      address2: "",
       prefecturesItems: [
         "北海道",
         "青森県",
@@ -215,8 +219,24 @@ export default {
     };
   },
   methods: {
-    inputValue: function(e) {
-      this.$emit("input", e);
+    inputValue: function(value, name) {
+      if (name == "zip1") {
+        this.zip1 = value;
+        if (!this.zip2) {
+          this.zip2 = this.value.zip2;
+        }
+        value = this.zip1 + "-" + this.zip2;
+        name = "postalCode";
+      }
+      if (name == "zip2") {
+        this.zip2 = value;
+        if (!this.zip1) {
+          this.zip1 = this.value.zip1;
+        }
+        value = this.zip1 + "-" + this.zip2;
+        name = "postalCode";
+      }
+      this.$emit("input", { value: value, name: name });
     },
     handleBlur: function(e) {
       this.$emit("blur", e);

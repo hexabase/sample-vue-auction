@@ -106,6 +106,8 @@ export default {
   data() {
     return {
       name: this.value,
+      seiData: "",
+      meiData: "",
       delimiter: ""
     };
   },
@@ -121,9 +123,9 @@ export default {
     sei: {
       get: function() {
         let s = "";
-        if (this.value.split(this.delimiter).length == 2) {
-          s = this.value.split(this.delimiter)[0];
-        }
+        // if (this.value.split(this.delimiter).length == 2) {
+        //   s = this.value.split(this.delimiter)[0];
+        // }
         if (this.userinfo[0]) {
           if (this.kana && this.userinfo[0]["苗字（カタカナ）"]) {
             s = this.userinfo[0]["苗字（カタカナ）"];
@@ -135,16 +137,24 @@ export default {
         return s;
       },
       set: function(value) {
-        this.fullName = value.trim() + this.delimiter + this.mei;
-        console.log(value);
+        this.seiData = value.trim();
+        if (!this.meiData && this.userinfo[0]) {
+          if (this.kana && this.userinfo[0]["名前（カタカナ）"]) {
+            this.meiData = this.userinfo[0]["名前（カタカナ）"];
+          }
+          if (!this.kana && this.userinfo[0].名前) {
+            this.meiData = this.userinfo[0].名前;
+          }
+        }
+        this.fullName = value.trim() + this.delimiter + this.meiData;
       }
     },
     mei: {
       get: function() {
         let m = "";
-        if (this.value.split(this.delimiter).length == 2) {
-          m = this.value.split(this.delimiter)[1];
-        }
+        // if (this.value.split(this.delimiter).length == 2) {
+        //   m = this.value.split(this.delimiter)[1];
+        // }
         if (this.userinfo[0]) {
           if (this.kana && this.userinfo[0]["名前（カタカナ）"]) {
             m = this.userinfo[0]["名前（カタカナ）"];
@@ -156,7 +166,16 @@ export default {
         return m;
       },
       set: function(value) {
-        this.fullName = this.sei + this.delimiter + value.trim();
+        this.meiData = value.trim();
+        if (!this.seiData && this.userinfo[0]) {
+          if (this.kana && this.userinfo[0]["苗字（カタカナ）"]) {
+            this.seiData = this.userinfo[0]["苗字（カタカナ）"];
+          }
+          if (!this.kana && this.userinfo[0].苗字) {
+            this.seiData = this.userinfo[0].苗字;
+          }
+        }
+        this.fullName = this.seiData + this.delimiter + value.trim();
       }
     }
   },
