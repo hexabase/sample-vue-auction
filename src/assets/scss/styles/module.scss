@@ -12,7 +12,7 @@
     font-size: 1.4rem;
     
     @include min-screen($breakpoint-mobile) {
-        // width: $breakpoint-pc;
+        width: $breakpoint-pc;
     }
 }
 

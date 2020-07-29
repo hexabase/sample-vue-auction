@@ -149,7 +149,7 @@
                   class="userInfo_notice_img"
                 />
                 【確認書類】マイナンバーカード両面（または通知カード）、運転免許証（両面）・各種健康保険証・住民票の写し・パスポート・在留カード・印鑑登録証明書のいずれか<br />
-                【ファイル形式】JPG、JPEG、GIF、BMP、PNG、TIF、TIFF、PDF（サイズ：6MB以下）
+                【ファイル形式】JPG、JPEG、GIF、BMP、PNG、TIF、TIFF、PDF（サイズ：3MB以下）
               </p>
             </div>
             <section class="userInfo_section">
@@ -404,7 +404,7 @@
               <div class="userInfo_notice">
                 <p class="userInfo_notice_subtext">
                   【利用可能な本人確認書類】マイナンバーカード両面（または通知カード）、運転免許証（両面）・各種健康保険証・住民票の写し・パスポート・在留カード・印鑑登録証明書のいずれか<br />
-                  【ファイル形式】JPG、JPEG、GIF、BMP、PNG、TIF、TIFF、PDF（サイズ：6MB以下）<br />
+                  【ファイル形式】JPG、JPEG、GIF、BMP、PNG、TIF、TIFF、PDF（サイズ：3MB以下）<br />
                   ※入力した住所と同一である必要があります。※運転免許証は裏面もご提出ください。
                 </p>
               </div>
