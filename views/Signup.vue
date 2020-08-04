@@ -72,7 +72,7 @@
         <p class="loginBox_lead">登録完了しました！BATONに移動します...</p>
       </div>
       <div class="loginBox_footer">
-        <button type="submit" class="button-action" @click="signin">
+        <button type="submit" class="button-action" @click="getConfirmUser">
           登録する
         </button>
       </div>
@@ -88,6 +88,7 @@ export default {
   mixins: [common],
   data() {
     return {
+      token: this.$store.getters["auth/getToken"], //ここは共通Tokenに書き換える
       email: "",
       password: "",
       errorMess: "",
@@ -104,6 +105,26 @@ export default {
   methods: {
     click() {
       alert("click!");
+    },
+    async getConfirmUser() {
+      const confirmationId = this.$route.params.id;
+      const getConfirmUserData = await this.$hexalink.getConfirmUserData(
+        confirmationId
+      );
+      var param = {
+        confirmation_id: confirmationId,
+        email: getConfirmUserData.data.user.email,
+        username: this.email,
+        password: this.password
+      };
+      const createUser = await this.$hexalink.createUser(param);
+      console.log(createUser);
+      if (createUser.status == 200) {
+        // ログイン処理
+        await this.signin(createUser.data.token);
+      } else {
+        this.errorMess = "登録エラーが発生しました。";
+      }
     },
     async signin() {
       this.errorMess = "";
