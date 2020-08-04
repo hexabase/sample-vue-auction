@@ -492,6 +492,20 @@ export default {
         return result;
       },
       /*
+       * ログイン後、パスワード更新
+       * @param {*} param
+       */
+      async setPassword(token, param) {
+        let config = JSON.parse(JSON.stringify(defaultConfig));
+        config.headers["Authorization"] = `Bearer ${token}`;
+        const result = await axios.put(
+          `/linker-api/users/password`,
+          param,
+          config
+        );
+        return result;
+      },
+      /*
        * ユーザinformation取得
        * @param {*} token
        * @param {*} groupId

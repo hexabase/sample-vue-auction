@@ -97,13 +97,23 @@ export default {
         )
       ) {
         let params = JSON.stringify({
+          email: this.email,
+          g_id: "5e9678e8d4b3e00006eb8746",
+          // w_id: "ワークスペースのID",
+          username: this.email
+        });
+        const userAddResult = await this.$hexalink.createUser(
+          this.token,
+          params
+        );
+        params = JSON.stringify({
           users: [
             {
               email: this.email
             }
           ],
-          domain: "localhost:5004",
-          invitation_path: "confirmemail"
+          domain: "localhost:5004", //az-baton.hexabase.com
+          invitation_path: "signup"
         });
         this.sendResult = await this.$hexalink.inviteUser(this.token, params);
         console.log(this.sendResult);

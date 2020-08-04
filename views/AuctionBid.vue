@@ -1,5 +1,9 @@
 <template>
-  <div id="page_auction" data-role="page">
+  <div
+    v-if="applicabilityOnHomepage == '掲載する'"
+    id="page_auction"
+    data-role="page"
+  >
     <section class="musicInfo">
       <div class="content">
         <figure class="musicInfo_img">

@@ -14,17 +14,16 @@
         >
           <!-- 編集モード -->
           <v-file-input
-            ref="file"
             single-line
             label="選択されていません"
             multiple
-            clearable
             outlined
             dense
             :accept="accept"
             :value="value"
             :error-messages="errors"
             :disabled="!editable"
+            :clearable="clearable"
             @change="changeValue($event, title)"
           >
             <template v-slot:selection="{ text }">
@@ -87,19 +86,58 @@ export default {
   },
   data() {
     return {
-      data: {},
-      fileImage: []
+      fileImage: [],
+      errors: "",
+      clearable: false
     };
   },
   methods: {
     changeValue(value, name) {
-      const files = value;
-      this.createImage(files[0]);
-      let formData = new FormData();
-      formData.append("id", name);
-      formData.append("file", files[0]);
-      formData.append("filename", files[0].name);
-      this.$emit("change", { value: formData, name: name });
+      console.log(value);
+      if (value && value.length > 0) {
+        this.errors = "";
+        const files = value;
+        const file = event.target.files[0];
+        const fileName = file.name;
+        const fileSize = file.size;
+        const fileType = file.type;
+
+        //上限サイズは3MB
+        if (fileSize > 3000000) {
+          this.errors += "ファイルの上限サイズ3MBを超えています\n";
+        }
+
+        //拡張子は .jpg .gif .png . pdf のみ許可
+        if (
+          fileType != "image/jpeg" &&
+          fileType != "image/gif" &&
+          fileType != "image/png" &&
+          fileType != "application/pdf"
+        ) {
+          this.errors +=
+            ".jpg、.gif、.png、.pdfのいずれかのファイルのみ許可されています\n";
+        }
+
+        if (this.errors) {
+          //errorsが存在する場合は内容をalert
+          alert(this.errors);
+          //valueを空にしてリセットする
+          event.currentTarget.value = null;
+          this.fileImage = null;
+          let formData = new FormData();
+          formData.append("id", name);
+          formData.append("file", "");
+          formData.append("filename", "");
+          this.$emit("change", { value: formData, name: name });
+          return;
+        }
+        this.createImage(files[0]);
+        let formData = new FormData();
+        formData.append("id", name);
+        formData.append("file", files[0]);
+        formData.append("filename", files[0].name);
+        this.$emit("change", { value: formData, name: name });
+      }
     },
     // アップロードした画像を表示
     createImage(file) {
