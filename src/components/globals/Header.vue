@@ -62,7 +62,9 @@
             <a href="">お財布</a>
           </li>
           <li>
-            <a href="">ユーザー情報</a>
+            <router-link to="/userinfo">
+              ユーザー情報
+            </router-link>
           </li>
           <li>
             <button @click="signout">ログアウト</button>

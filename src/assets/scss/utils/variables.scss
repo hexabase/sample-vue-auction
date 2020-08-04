@@ -19,6 +19,7 @@ $color-bg: #f5f5f5;
 $color-bg-thin: #fafafa;
 $color-bg-blue: rgba($color-theme-center, 0.05);
 $color-bg-gray: #eee;
+$color-bg-darkgray: #e4e4e4;
 $color-bg-dark: #0b0b0b;
 $color-bg-disabled: #e8e8e8;
 $color-error: #cf0e0e;
@@ -36,11 +37,12 @@ $color-text-disabled: #bbb;
 $color-text-placeholder: #ccc;
 
 // border
-$border-default: 1px solid #ddd;
-$border-default-dot: 1px dotted #ddd;
+$color-border: #ddd;
+$border-default: 1px solid $color-border;
+$border-default-dot: 1px dotted $color-border;
 $border-light: 1px solid #eee;
 $border-blue: 3px solid rgba($color-theme-center, 0.3);
-$border-input: 1px solid #ddd;
+$border-input: 1px solid $color-border;
 $border-input-hover: 1px solid #888;
 $border-input-focus: 1px solid $color-theme-center;
 

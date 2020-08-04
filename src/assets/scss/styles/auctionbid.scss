@@ -8,8 +8,17 @@
 .musicInfo {
     padding: 80px 0;
 
+    @include max-screen($breakpoint-mobile) {
+        padding: 40px 0 20px;
+    }
+
     .content {
         display: flex;
+
+        @include max-screen($breakpoint-mobile) {
+            display: block;
+            padding: 0 15px;
+        }
     }
 
     &_img {
@@ -17,18 +26,52 @@
         max-width: 20%;
         @extend .figure-fix;
         padding-bottom: inherit;
+
+        @include max-screen($breakpoint-mobile) {
+            float: left;
+            width: 12vw;
+            height: 12vw;
+            margin-right: 15px;
+            margin-bottom: 15px;
+        }
+
+        &-mobile {
+            display: none;
+
+            @include max-screen($breakpoint-mobile) {
+                display: block;
+                width: 100%;
+                height: 130px;
+                overflow: hidden;
+
+                img {
+                    object-fit: cover;
+                    width: 100%;
+                    height: 100%
+                }
+            }
+        }
     }
 
     &_wrap {
         flex: 1 1;
         padding-left: 5%;
         text-align: left;
+
+        @include max-screen($breakpoint-mobile) {
+            padding-left: 0;
+        }
     }
 
     &_title {
         margin-bottom: 15px;
         font-size: 3rem;
         font-weight: bold;
+
+        @include max-screen($breakpoint-mobile) {
+            padding-top: 2px;
+            font-size: 2.4rem;
+        }
 
         &::before {
             content: "♪";
@@ -41,6 +84,10 @@
         margin: 0 0 40px 35px;
         font-size: 1.6rem;
         color: $color-text-lightgray;
+
+        @include max-screen($breakpoint-mobile) {
+            margin-bottom: 20px;
+        }
     }
     
     &_data {
@@ -48,6 +95,13 @@
         border-top: 15px solid $color-bg;
         border-bottom: 15px solid $color-bg;
         background: $color-bg;
+
+        @include max-screen($breakpoint-mobile) {
+            clear: both;
+            position: relative;
+            border-top-width: 90px;
+            border-bottom: none;
+        }
 
         th {
             padding: 0 15px;
@@ -60,6 +114,16 @@
                 display: block;
                 font-size: 1.1rem;
                 color: $color-text-lightgray;
+            }
+
+            @include max-screen($breakpoint-mobile) {
+                padding-top: 10px;
+                    
+                &:first-child {
+                    position: absolute;
+                    top: -90px;
+                    border: none;
+                }
             }
         }
 
@@ -75,6 +139,19 @@
 
             div {
                 min-width: 240px;
+            }
+
+            @include max-screen($breakpoint-mobile) {
+                padding-bottom: 15px;
+                &:first-child {
+                    position: absolute;
+                    top: -80px;
+                    width: 100%;
+                    padding: 15px;
+                    line-height: 50px;
+                    border-right: none;
+                    border-bottom: $border-default;
+                }
             }
         }
 
@@ -397,6 +474,10 @@
         margin: auto;
         padding: 60px 0 80px;
 
+        @include max-screen($breakpoint-mobile) {
+            padding: 30px 0;
+        }
+
         &::before, &::after {
             @extend %breakline;
         }
@@ -406,6 +487,7 @@
         }
 
         iframe {
+            width: 100%;
             margin-top: -60px;
             margin-bottom: 30px;
         }
@@ -470,6 +552,10 @@
             padding: 5px 10px;
             font-size: 1.4rem;
             text-align: left;
+
+            @include max-screen($breakpoint-mobile) {
+                width: 100%;
+            }
         }
     }
 

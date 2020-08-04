@@ -7,61 +7,85 @@
         </div>
       </div>
     </header>
-    <v-stepper v-model="step">
-      <v-stepper-header class="userInfo_nav">
-        <v-stepper-step editable complete step="0" @click="step = 0">
-          アカウント/通知設定
-        </v-stepper-step>
-        <v-divider></v-divider>
-        <v-stepper-step editable complete step="1" @click="step = 1">
-          個人情報
-        </v-stepper-step>
-        <v-divider></v-divider>
-        <v-stepper-step :editable="false" step="2" @click="step = 2">
-          口座情報
-        </v-stepper-step>
-        <v-divider></v-divider>
-        <v-stepper-step :editable="false" step="3" @click="step = 3">
-          投資について
-        </v-stepper-step>
-        <v-divider></v-divider>
-        <v-stepper-step :editable="false" step="4" @click="step = 4">
-          本人確認書類
-        </v-stepper-step>
-        <v-divider></v-divider>
-        <v-stepper-step :editable="false" step="5" @click="step = 5">
-          登録内容確認
-        </v-stepper-step>
-      </v-stepper-header>
-      <!-- MEMO:ユーザー情報（ナビ遷移）の場合: non-linear 付与 -->
-      <!-- <v-stepper non-linear>
-      <v-stepper-header class="userInfo_nav">
-        <v-stepper-step editable step="1">
-          アカウント/通知設定
-        </v-stepper-step>
-        <v-divider></v-divider>
-        <v-stepper-step editable complete step="2">
-          個人情報
-        </v-stepper-step>
-        <v-divider></v-divider>
-        <v-stepper-step editable step="3">
-          口座情報
-          <span class="mark-alert"></span>
-        </v-stepper-step>
-        <v-divider></v-divider>
-        <v-stepper-step editable step="4">
-          投資について
-        </v-stepper-step>
-        <v-divider></v-divider>
-        <v-stepper-step editable step="5">
-          本人確認書類
-          <span class="mark-alert"></span>
-        </v-stepper-step>
-        <v-divider></v-divider>
-        <v-stepper-step step="6">
-          登録申請
-        </v-stepper-step>
-      </v-stepper-header>-->
+    <v-stepper
+      v-model="step"
+      :non-linear="!stepControl.fromBid"
+      :alt-labels="$vuetify.breakpoint.xs || $vuetify.breakpoint.sm"
+    >
+      <div class="v-stepper__header_wrap">
+        <v-stepper-header class="userInfo_nav">
+          <v-stepper-step
+            :editable="stepControl.step.step0.editable"
+            :complete="stepControl.step.step0.complete"
+            step="0"
+            @click="step = 0"
+          >
+            アカウント/通知設定
+          </v-stepper-step>
+          <v-divider></v-divider>
+          <v-stepper-step
+            :editable="stepControl.step.step1.editable"
+            :complete="stepControl.step.step1.complete"
+            step="1"
+            @click="step = 1"
+          >
+            個人情報
+            <span
+              v-if="!stepControl.fromBid && !stepControl.step.step2.complete"
+              class="mark-alert"
+            ></span>
+          </v-stepper-step>
+          <v-divider></v-divider>
+          <v-stepper-step
+            :editable="stepControl.step.step2.editable"
+            :complete="stepControl.step.step2.complete"
+            step="2"
+            @click="step = 2"
+          >
+            口座情報
+          </v-stepper-step>
+          <v-divider></v-divider>
+          <v-stepper-step
+            :editable="stepControl.step.step3.editable"
+            :complete="stepControl.step.step3.complete"
+            step="3"
+            @click="step = 3"
+          >
+            投資について
+          </v-stepper-step>
+          <v-divider></v-divider>
+          <v-stepper-step
+            :editable="stepControl.step.step4.editable"
+            :complete="stepControl.step.step4.complete"
+            step="4"
+            @click="step = 4"
+          >
+            本人確認書類
+            <span
+              v-if="!stepControl.fromBid && !stepControl.step.step4.complete"
+              class="mark-alert"
+            ></span>
+          </v-stepper-step>
+          <v-divider></v-divider>
+          <v-stepper-step
+            :editable="stepControl.step.step5.editable"
+            :complete="stepControl.step.step5.complete"
+            step="5"
+            @click="step = 5"
+          >
+            {{ stepControl.fromBid ? "登録内容確認" : "登録申請" }}
+            <span
+              v-if="
+                !stepControl.fromBid &&
+                  stepControl.step.step2.complete &&
+                  stepControl.step.step4.complete
+              "
+              class="mark-alert"
+            >
+            </span>
+          </v-stepper-step>
+        </v-stepper-header>
+      </div>
       <v-stepper-items class="userInfo">
         <v-stepper-content step="0" class="userInfoStep-account">
           <section class="mailSettings">
@@ -149,7 +173,7 @@
                   class="userInfo_notice_img"
                 />
                 【確認書類】マイナンバーカード両面（または通知カード）、運転免許証（両面）・各種健康保険証・住民票の写し・パスポート・在留カード・印鑑登録証明書のいずれか<br />
-                【ファイル形式】JPG、JPEG、GIF、BMP、PNG、TIF、TIFF、PDF（サイズ：6MB以下）
+                【ファイル形式】JPG、JPEG、GIF、BMP、PNG、TIF、TIFF、PDF（サイズ：3MB以下）
               </p>
             </div>
             <section class="userInfo_section">
@@ -436,32 +460,36 @@
               <div class="userInfo_notice">
                 <p class="userInfo_notice_subtext">
                   【利用可能な本人確認書類】マイナンバーカード両面（または通知カード）、運転免許証（両面）・各種健康保険証・住民票の写し・パスポート・在留カード・印鑑登録証明書のいずれか<br />
-                  【ファイル形式】JPG、JPEG、GIF、BMP、PNG、TIF、TIFF、PDF（サイズ：6MB以下）<br />
+                  【ファイル形式】JPG、JPEG、GIF、BMP、PNG、TIF、TIFF、PDF（サイズ：3MB以下）<br />
                   ※入力した住所と同一である必要があります。※運転免許証は裏面もご提出ください。
                 </p>
               </div>
               <v-form class="entryForm">
                 <FormFile
-                  id="本人確認書類写真_1"
-                  title="本人確認書類写真_1"
+                  id="本人確認書類写真1"
+                  title="本人確認書類写真1"
                   :value="identityVerificationDocuments1"
+                  text="運転免許証（両面）・各種健康保険証・住民票の写し・パスポート・在留カード・印鑑登録証明書のいずれか。※入力した住所と同一である必要があります"
+                  :required="true"
                   @change="emittedFile"
                 />
                 <FormFile
-                  id="本人確認書類写真_2"
-                  title="本人確認書類写真_2"
+                  id="本人確認書類写真2"
+                  title="本人確認書類写真2"
+                  text="※運転免許証の場合、裏面もアップロードしてください"
                   :value="identityVerificationDocuments2"
                   @change="emittedFile"
                 />
                 <FormFile
-                  id="マイナンバーカード写真_1"
-                  title="マイナンバーカード写真_1"
+                  id="マイナンバーカード写真1"
+                  title="マイナンバーカード写真1"
                   :value="myNumberCardPicture1"
+                  :required="true"
                   @change="emittedFile"
                 />
                 <FormFile
-                  id="マイナンバーカード写真_2"
-                  title="マイナンバーカード写真_2"
+                  id="マイナンバーカード写真2"
+                  title="マイナンバーカード写真2"
                   :value="myNumberCardPicture2"
                   @change="emittedFile"
                 />
@@ -497,6 +525,9 @@
                     </div>
                     <div class="formConfirm_item_body">
                       {{ userSeiKanji }}&nbsp;{{ userMeiKanji }}
+                      <span class="formConfirm_alert">
+                        ※登録後は変更できません
+                      </span>
                     </div>
                   </div>
                   <div class="formConfirm_item">
@@ -505,6 +536,9 @@
                     </div>
                     <div class="formConfirm_item_body">
                       {{ userSeiKana }}&nbsp;{{ userMeiKana }}
+                      <span class="formConfirm_alert">
+                        ※登録後は変更できません
+                      </span>
                     </div>
                   </div>
                   <div class="formConfirm_item">
@@ -513,6 +547,9 @@
                     </div>
                     <div class="formConfirm_item_body">
                       {{ userGender }}
+                      <span class="formConfirm_alert">
+                        ※登録後は変更できません
+                      </span>
                     </div>
                   </div>
                   <div class="formConfirm_item">
@@ -521,6 +558,9 @@
                     </div>
                     <div class="formConfirm_item_body">
                       {{ userCountry }}
+                      <span class="formConfirm_alert">
+                        ※登録後は変更できません
+                      </span>
                     </div>
                   </div>
                   <div class="formConfirm_item">
@@ -537,6 +577,9 @@
                     </div>
                     <div class="formConfirm_item_body">
                       {{ userBirthdayYMD }}
+                      <span class="formConfirm_alert">
+                        ※登録後は変更できません
+                      </span>
                     </div>
                   </div>
                   <div class="formConfirm_item">
@@ -621,6 +664,9 @@
                     </div>
                     <div class="formConfirm_item_body">
                       {{ userBankAccountHolderKana }}
+                      <span class="formConfirm_alert">
+                        ※登録後は変更できません
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -919,6 +965,35 @@ export default {
         女性: "4da9cad5-cb58-4f8d-8585-6bf216b206e4",
         普通: "3e409316-0591-4a43-a5a8-4ce9f0203e7f",
         当座: "b01a89fc-4017-42c6-8c7f-f3ebd1bc6084"
+      },
+      stepControl: {
+        fromBid: false,
+        step: {
+          step0: {
+            editable: true,
+            complete: false
+          },
+          step1: {
+            editable: true,
+            complete: false
+          },
+          step2: {
+            editable: true,
+            complete: false
+          },
+          step3: {
+            editable: true,
+            complete: false
+          },
+          step4: {
+            editable: true,
+            complete: false
+          },
+          step5: {
+            editable: false,
+            complete: false
+          }
+        }
       }
     };
   },
