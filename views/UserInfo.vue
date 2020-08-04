@@ -7,32 +7,37 @@
         </div>
       </div>
     </header>
-    <v-stepper v-model="step">
-      <v-stepper-header class="userInfo_nav">
-        <v-stepper-step editable complete step="0" @click="step = 0">
-          アカウント/通知設定
-        </v-stepper-step>
-        <v-divider></v-divider>
-        <v-stepper-step editable complete step="1" @click="step = 1">
-          個人情報
-        </v-stepper-step>
-        <v-divider></v-divider>
-        <v-stepper-step :editable="false" step="2" @click="step = 2">
-          口座情報
-        </v-stepper-step>
-        <v-divider></v-divider>
-        <v-stepper-step :editable="false" step="3" @click="step = 3">
-          投資について
-        </v-stepper-step>
-        <v-divider></v-divider>
-        <v-stepper-step :editable="false" step="4" @click="step = 4">
-          本人確認書類
-        </v-stepper-step>
-        <v-divider></v-divider>
-        <v-stepper-step :editable="false" step="5" @click="step = 5">
-          登録内容確認
-        </v-stepper-step>
-      </v-stepper-header>
+    <v-stepper
+      v-model="step"
+      :alt-labels="$vuetify.breakpoint.xs || $vuetify.breakpoint.sm"
+    >
+      <div class="v-stepper__header_wrap">
+        <v-stepper-header class="userInfo_nav">
+          <v-stepper-step editable complete step="0" @click="step = 0">
+            アカウント/通知設定
+          </v-stepper-step>
+          <v-divider></v-divider>
+          <v-stepper-step editable complete step="1" @click="step = 1">
+            個人情報
+          </v-stepper-step>
+          <v-divider></v-divider>
+          <v-stepper-step :editable="false" step="2" @click="step = 2">
+            口座情報
+          </v-stepper-step>
+          <v-divider></v-divider>
+          <v-stepper-step :editable="false" step="3" @click="step = 3">
+            投資について
+          </v-stepper-step>
+          <v-divider></v-divider>
+          <v-stepper-step :editable="false" step="4" @click="step = 4">
+            本人確認書類
+          </v-stepper-step>
+          <v-divider></v-divider>
+          <v-stepper-step :editable="false" step="5" @click="step = 5">
+            登録内容確認
+          </v-stepper-step>
+        </v-stepper-header>
+      </div>
       <!-- MEMO:ユーザー情報（ナビ遷移）の場合: non-linear 付与 -->
       <!-- <v-stepper non-linear>
       <v-stepper-header class="userInfo_nav">

@@ -658,16 +658,25 @@ body {
 // Stepper
 #app .v-stepper {
     &__header {
+        min-width: $breakpoint-mobile;
         box-shadow: none;
         justify-content: center;
+        flex-wrap: nowrap;
+        white-space: nowrap;
+
+        &_wrap {
+            width: 100vw;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
     }
 
     &__step {
-        padding: 24px 20px;
+        padding: 24px 10px;
     }
 
     .v-divider {
-        flex: 0 0 2%;
+        flex: 0 0 1.5%;
         min-width: 10px;
         max-width: 80px;
     }
@@ -679,7 +688,12 @@ body {
     }
     
     .v-stepper__step__step {
+        margin-right: 6px;
         font-size: 1.4rem;
+
+        .v-icon {
+            font-size: 1.7rem;
+        }
     }
 
     .v-stepper__step--editable {
@@ -751,6 +765,29 @@ body {
             }
         }
 
+    }
+
+    &--alt-labels {
+       .v-stepper__step {
+            flex-basis: 6.5em;
+            white-space: normal;
+       }
+
+       .v-stepper__label {
+           margin: -5px 0;
+           text-align: center;
+       }
+
+       .v-stepper__header .v-divider {
+           margin-right: -10px;
+           margin-left: -10px;
+       }
+    }
+}
+
+@media only screen and (max-width: 959px) {
+    .v-stepper:not(.v-stepper--vertical) .v-stepper__label {
+        display: block;
     }
 }
 
