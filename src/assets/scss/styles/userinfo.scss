@@ -294,6 +294,37 @@
             }
         }
     }
+
+    .fileUpload {
+        text-align: left;
+        .v-text-field__details, .v-messages {
+            min-height: 0;
+        }
+
+        &_img {
+            margin: 0 5px 30px 34px;
+            max-height: 200px;
+
+            img {
+                width: auto;
+                height: auto;
+                max-width: 100%;
+                max-height: 200px;
+            }
+
+            + .fileUpload_text {
+                margin-top: -10px;
+            }
+        }
+
+        &_text {
+            margin: 0 0 25px 34px;
+            padding: 8px;
+            background: $color-bg;
+            font-size: 1.2rem;
+            line-height: 1.6;
+        }
+    }
 }
 
 .formConfirm {
@@ -316,6 +347,7 @@
         border-bottom: $border-default;
         font-size: 1.4rem;
         line-height: 1.4;
+        position: relative;
 
         &_title {
             flex: 0 0 170px;
@@ -326,6 +358,13 @@
             color: $color-text-sub;
             font-weight: 500;
         }
+    }
+
+    &_alert {
+        position: absolute;
+        right: 0;
+        font-size: 1.1rem;
+        color: $color-error;
     }
 
     &_bottom {

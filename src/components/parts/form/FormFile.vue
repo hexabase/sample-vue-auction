@@ -4,7 +4,7 @@
       {{ title }}
       <span v-if="required" class="formItem_required">※</span>
     </div>
-    <div class="formItem_body">
+    <div class="formItem_body fileUpload">
       <template v-if="editable">
         <validation-provider
           ref="provider"
@@ -30,9 +30,10 @@
               <v-chip small label>{{ text }}</v-chip>
             </template>
           </v-file-input>
-          <p>
+          <p v-if="fileImage.length > 0" class="fileUpload_img">
             <img :src="fileImage" />
           </p>
+          <p v-if="text" class="fileUpload_text">{{ text }}</p>
         </validation-provider>
       </template>
       <template v-else>
@@ -80,6 +81,10 @@ export default {
       default: () => []
     },
     valrule: {
+      type: String,
+      default: ""
+    },
+    text: {
       type: String,
       default: ""
     }
