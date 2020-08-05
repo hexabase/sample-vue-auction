@@ -11,6 +11,7 @@ import AuctionBid from "../../views/AuctionBid.vue";
 import Mypage from "../../views/Mypage.vue";
 import MyCopyrights from "../../views/MyCopyrights.vue";
 import UserInfo from "../../views/UserInfo.vue";
+import NotFound from "../../views/NotFound.vue";
 import Index from "../../views/Index.vue";
 
 Vue.use(VueRouter);
@@ -73,6 +74,11 @@ const routes = [
     path: "/userinfo",
     name: "UserInfo",
     component: UserInfo
+  },
+  {
+    path: "/notfound",
+    name: "NotFound",
+    component: NotFound
   }
 ];
 
