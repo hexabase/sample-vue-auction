@@ -1,0 +1,35 @@
+@charset "UTF-8";
+@import "../utils/variables.scss";
+@import "../utils/functions.scss";
+
+/* user info */
+#page_notFound {
+    .pageHeader {
+        &_img {
+            background: url("~@/assets/img/bg-404.jpg") no-repeat center center;
+            background-size: cover;
+            backdrop-filter: none;
+        }
+        .content {
+            height: 180px;
+        }
+    }
+}
+
+.notFound {
+    @extend %padding-contents;
+    
+    &_title {
+        font-size: 2.4rem;
+        margin-bottom: 60px;
+        font-weight: 400;
+    }
+
+    &_link {
+        .button-main {
+            padding: 0 10px;
+            min-width: 200px;
+            font-weight: normal;
+        }
+    }
+}
