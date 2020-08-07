@@ -5,8 +5,8 @@
         <span class="contents_title-en">Sign Up</span>
         <span class="contents_title-jp">新規会員登録</span>
       </h1>
-      <p class="loginBox_lead">
-        {s.horiuchi@b-eee.com}のメールアドレスで<br />
+      <p v-if="!confirmUserFlag" class="loginBox_lead">
+        {{ email }}のメールアドレスで<br />
         BATONのアカウントを作成します。<br />
         ユーザー名とパスワードを決めてください。
       </p>
@@ -15,7 +15,7 @@
           {{ errorMess }}
         </v-alert>
       </div>
-      <v-form>
+      <v-form v-if="!confirmUserFlag">
         <ValidationObserver ref="signin" v-slot="{}">
           <validation-provider
             ref=""
@@ -24,7 +24,7 @@
             rules="required"
           >
             <v-text-field
-              v-model="email"
+              v-model="userName"
               type="text"
               placeholder="ユーザー名"
               :error-messages="errors"
@@ -55,7 +55,7 @@
             rules="required"
           >
             <v-text-field
-              v-model="password"
+              v-model="rePassword"
               placeholder="パスワード(確認)"
               :error-messages="errors"
               required
@@ -67,12 +67,17 @@
           </validation-provider>
         </ValidationObserver>
       </v-form>
-      <div class="loginBox_complete">
+      <div v-if="confirmUserFlag" class="loginBox_complete">
         <v-icon>mdi-checkbox-marked-circle-outline</v-icon>
         <p class="loginBox_lead">登録完了しました！BATONに移動します...</p>
       </div>
-      <div class="loginBox_footer">
-        <button type="submit" class="button-action" @click="getConfirmUser">
+      <div v-if="!confirmUserFlag" class="loginBox_footer">
+        <button
+          type="submit"
+          class="button-action"
+          @click="getConfirmUser"
+          :disabled="disabled"
+        >
           登録する
         </button>
       </div>
@@ -90,10 +95,16 @@ export default {
     return {
       token: this.$store.getters["auth/getToken"], //ここは共通Tokenに書き換える
       email: "",
+      userName: "",
       password: "",
+      rePassword: "",
       errorMess: "",
       show1: false,
-      show2: false
+      show2: false,
+      getConfirmUserData: {},
+      confirmationId: "",
+      confirmUserFlag: false,
+      disabled: false
     };
   },
   /**
@@ -101,43 +112,49 @@ export default {
    */
   created: async function() {
     this.$store.commit("common/setLoading", false);
+    this.confirmationId = this.$route.params.id;
+    try {
+      this.getConfirmUserData = await this.$hexalink.getConfirmUserData(
+        this.confirmationId
+      );
+      this.email = this.getConfirmUserData.data.user.email;
+    } catch (e) {
+      this.errorMess = "ユーザ確認中にエラーが発生しました。";
+      this.disabled = true;
+    }
   },
   methods: {
     click() {
       alert("click!");
     },
     async getConfirmUser() {
-      const confirmationId = this.$route.params.id;
-      const getConfirmUserData = await this.$hexalink.getConfirmUserData(
-        confirmationId
-      );
-      var param = {
-        confirmation_id: confirmationId,
-        email: getConfirmUserData.data.user.email,
-        username: this.email,
+      if (this.password !== this.rePassword) {
+        this.errorMess = "確認用パスワードが一致していません";
+        return;
+      }
+      const params = {
+        confirmation_id: this.confirmationId,
+        email: this.getConfirmUserData.data.user.email,
+        username: this.userName,
         password: this.password
       };
-      const createUser = await this.$hexalink.createUser(param);
-      console.log(createUser);
-      if (createUser.status == 200) {
+      const confirmUser = await this.$hexalink.confirmUser(params);
+      if (confirmUser.status == 200) {
+        this.confirmUserFlag = true;
+        console.log(confirmUser.data.token);
         // ログイン処理
-        await this.signin(createUser.data.token);
+        await this.signin(confirmUser.data.token);
       } else {
         this.errorMess = "登録エラーが発生しました。";
       }
     },
-    async signin() {
+    async signin(token) {
       this.errorMess = "";
-      // loading overlay表示
-      this.$store.commit("common/setLoading", true);
-
       try {
         // バリデーションの実装
         if (!this.$refs.signin.validate()) {
           throw "バリデーションエラー";
         }
-        // Authトークンの取得
-        const token = await this.$hexalink.login(this.email, this.password);
 
         // Hexalink UserInfoの取得
         const userInfo = await this.$hexalink.getUserInfo(token);
@@ -159,34 +176,45 @@ export default {
           datastoreIds[datastore.name] = datastore.datastore_id;
         });
 
+        // ユーザDB登録処理
+        let setData = {};
+        setData["hexaID"] = userInfo.data.u_id;
+
+        let userDBparam = {};
+        userDBparam["item"] = setData;
+        const insertResult = await this.insertNewItem(
+          datastoreIds["ユーザDB"],
+          userDBparam,
+          token
+        );
+
         // ユーザ名の取得
         const userName = await this.$hexalink.getCurrentUserName(token);
         var params = {
           conditions: [
             {
-              id: "userID",
+              id: "hexaID",
               search_value: [userInfo.data.u_id],
               exact_match: true
             }
           ],
           page: 1,
           per_page: 1,
-          use_display_id: true
+          use_display_id: true,
+          sort_field_id: "created_at",
+          sort_order: "desc"
         };
         var userMasters = await this.$hexalink.getItems(
           token,
           applicationId,
-          datastoreIds["ユーザーマスタDB"],
+          datastoreIds["ユーザDB"],
           params
         );
         var userMaster = "";
         if (userMasters.length > 0) {
           userMaster = userMasters[0];
         }
-        const userNameKanji =
-          userMaster.ユーザー名 == undefined
-            ? userInfo.data.username
-            : userMaster.ユーザー名;
+        const userNameKanji = userMaster.苗字 + userMaster.名前;
         const userID = userMaster.ユーザID;
         const userMail =
           userMaster.メールアドレス == undefined
@@ -196,6 +224,7 @@ export default {
           userMaster.userID == undefined
             ? userInfo.data.u_id
             : userMaster.userID;
+        const membershipNumber = userMaster.会員番号;
         // フィールド一覧の取得
         let datastoreList = [];
         let getFieldPromise = [];
@@ -231,18 +260,29 @@ export default {
         this.$store.commit("user/setName", userNameKanji);
         this.$store.commit("user/setEmail", userMail);
         this.$store.commit("user/setHexaID", hexaID);
+        this.$store.commit("user/setMembershipNumber", membershipNumber);
         this.$store.commit("datas/setDatastoreIds", datastoreIds);
         this.$store.commit("datas/setFields", fields);
         this.$router.push("/");
       } catch (e) {
-        const { status, statusText } = e.response;
-        console.log(`Error! HTTP Status: ${status} ${statusText}`);
-        if (this.$refs.signin.validate()) {
-          this.errorMess = "メールアドレスもしくはパスワードが違います。";
-        }
-      } finally {
-        this.$store.commit("common/setLoading", false);
+        this.errorMess = "ログイン処理中にエラーが発生しました。";
       }
+    },
+    // 新規Itemを作成します
+    async insertNewItem(datasotreId, param, token) {
+      const applicationId = this.$store.getters["datas/getApplicationId"];
+      var result = {};
+      try {
+        result = await this.$hexalink.createNewItem(
+          token,
+          applicationId,
+          datasotreId,
+          param
+        );
+      } catch {
+        result = {};
+      }
+      return result;
     }
   }
 };

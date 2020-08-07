@@ -212,8 +212,8 @@
                     }
                   ]"
                   :radiochecked="
-                    userInfo[0] && this.userGender
-                      ? this.userGender
+                    userInfo[0] && userGender
+                      ? userGender
                       : 'a9b8e4d5-7597-42c5-9253-449d18f8debc'
                   "
                   @change="emittedGender"
@@ -327,8 +327,8 @@
                     }
                   ]"
                   :radiochecked="
-                    userInfo[0] && this.userBankAccountType
-                      ? this.userBankAccountType
+                    userInfo[0] && userBankAccountType
+                      ? userBankAccountType
                       : 'b01a89fc-4017-42c6-8c7f-f3ebd1bc6084'
                   "
                   @change="emittedBankAccountType"
@@ -853,7 +853,7 @@
             :required="true"
           />
         </v-form>
-        <div v-if="!this.passwordSendResult" class="modalForm_complete">
+        <div v-if="!passwordSendResult" class="modalForm_complete">
           <v-icon>mdi-checkbox-marked-circle-outline</v-icon>
           <p class="modalForm_complete_text">
             パスワードを変更しました。
@@ -1021,7 +1021,7 @@ export default {
           : "";
         this.userGender = this.userInfo[0].性別
           ? this.userDBMapping[this.userInfo[0].性別]
-          : "";
+          : "a9b8e4d5-7597-42c5-9253-449d18f8debc";
         this.userCountry = this.userInfo[0].国籍 ? this.userInfo[0].国籍 : "";
         this.userMobilePhoneNumber = this.userInfo[0].携帯番号
           ? this.userInfo[0].携帯番号
@@ -1072,7 +1072,7 @@ export default {
           : "";
         this.userBankAccountType = this.userInfo[0].口座種類
           ? this.userDBMapping[this.userInfo[0].口座種類]
-          : "";
+          : "b01a89fc-4017-42c6-8c7f-f3ebd1bc6084";
         console.log(this.userBankAccountType);
         this.userBankAccountNumber = this.userInfo[0].口座番号
           ? this.userInfo[0].口座番号

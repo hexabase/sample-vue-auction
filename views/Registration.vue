@@ -112,7 +112,7 @@ export default {
               email: this.email
             }
           ],
-          domain: "localhost:5004", //az-baton.hexabase.com
+          domain: "az-baton.hexabase.com", //az-baton.hexabase.com
           invitation_path: "signup"
         });
         this.sendResult = await this.$hexalink.inviteUser(this.token, params);

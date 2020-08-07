@@ -127,7 +127,7 @@ export default {
     },
     year: {
       get: function() {
-        return this.birthday ? moment(this.birthday).year() : "";
+        return this.birthday ? moment(this.birthday).year() : "1920";
       },
       set: function(value) {
         if (!this.birthdayData) {
@@ -143,7 +143,7 @@ export default {
     },
     month: {
       get: function() {
-        return this.birthday ? moment(this.birthday).month() + 1 : "";
+        return this.birthday ? moment(this.birthday).month() + 1 : "1";
       },
       set: function(value) {
         if (!this.birthdayData) {

@@ -76,7 +76,7 @@ const routes = [
     component: UserInfo
   },
   {
-    path: "/notfound",
+    path: "*",
     name: "NotFound",
     component: NotFound
   }

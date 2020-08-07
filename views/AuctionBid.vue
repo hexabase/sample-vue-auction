@@ -783,6 +783,7 @@ export default {
         "<span class='unit'>秒</span>";
     },
     changeYen(num) {
+      if (!num) return 0;
       return String(num)
         .split("")
         .reverse()
@@ -859,6 +860,9 @@ export default {
             use_display_id: true
           }
         );
+        if (dataLists.length == 0 || dataLists[0].HPに掲載可否 != "掲載する") {
+          this.$router.push("/notFound");
+        }
 
         var titleEn = "タイトル（英語）";
         var titleKr = "タイトル（韓国）";
