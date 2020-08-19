@@ -537,6 +537,7 @@ export default {
           return false;
         }
         this.myAuctionBidList = await this.getAuctionBidList();
+        this.myTransactionList = await this.getTransactionList();
         if (this.displayBidResultFlag) {
           if (
             Number(this.bidPrice) < Number(this.myAuctionBidList[0].入札金額)
@@ -598,6 +599,30 @@ export default {
         }
       );
     },
+    async getTransactionList() {
+      return await this.$hexalink.getItems(
+        this.token,
+        this.applicationId,
+        this.datastoreIds["取引DB"],
+        {
+          conditions: [
+            {
+              id: "著作権番号", // Hexalink画⾯で⼊⼒したIDを指定
+              search_value: [this.musicId],
+              exact_match: true // 完全⼀致で検索
+            },
+            {
+              id: "会員番号", // Hexalink画⾯で⼊⼒したIDを指定
+              search_value: [this.userId],
+              exact_match: true // 完全⼀致で検索
+            }
+          ],
+          page: 1,
+          per_page: 9000,
+          use_display_id: true
+        }
+      );
+    },
     async doSend() {
       if (this.auctionFinishedFlag) {
         alert("既にオークションが終了しているため入札できません");
@@ -640,6 +665,47 @@ export default {
             is_force_update: true
           }
         );
+        result = await this.updatedDataItem(
+          this.datastoreIds["取引DB"],
+          this.myTransactionList[0].i_id,
+          {
+            history: {
+              comment: "再入札"
+            },
+            changes: [
+              {
+                id: "取引日",
+                value: moment()
+              },
+              {
+                id: "タイプ",
+                value: "入札更新"
+              },
+              {
+                id: "会員番号",
+                value: this.userId
+              },
+              {
+                id: "著作権番号",
+                value: this.musicId
+              },
+              {
+                id: "取引数量",
+                value: Number(this.bidAmount)
+              },
+              {
+                id: "取引単価",
+                value: Number(this.bidPrice)
+              },
+              {
+                id: "取引総額",
+                value: Number(this.bidAmount) * Number(this.bidPrice)
+              }
+            ],
+            use_display_id: true,
+            is_force_update: true
+          }
+        );
       }
       // 初回入札は登録処理
       else {
@@ -657,6 +723,22 @@ export default {
         param["item"] = setData;
         var insertResult = await this.insertNewItem(
           this.datastoreIds["オークション入札状況DB"],
+          param
+        );
+
+        setData = {};
+        setData["取引日"] = moment();
+        setData["タイプ"] = "入札";
+        setData["会員番号"] = this.userId;
+        setData["著作権番号"] = this.musicId;
+        setData["取引数量"] = Number(this.bidAmount);
+        setData["取引単価"] = Number(this.bidPrice);
+        setData["取引総額"] = Number(this.bidAmount) * Number(this.bidPrice);
+
+        param = {};
+        param["item"] = setData;
+        insertResult = await this.insertNewItem(
+          this.datastoreIds["取引DB"],
           param
         );
       }

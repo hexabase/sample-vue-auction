@@ -145,7 +145,7 @@ export default {
         if (userMasters.length > 0) {
           userMaster = userMasters[0];
         }
-        const userNameKanji = userMaster.苗字 + userMaster.名前;
+        const userNameKanji = userMaster.ユーザ名;
         const userID = userMaster.ユーザID;
         const userMail =
           userMaster.メールアドレス == undefined

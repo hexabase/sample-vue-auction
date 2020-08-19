@@ -75,8 +75,8 @@
         <button
           type="submit"
           class="button-action"
-          @click="getConfirmUser"
           :disabled="disabled"
+          @click="getConfirmUser"
         >
           登録する
         </button>
@@ -179,6 +179,7 @@ export default {
         // ユーザDB登録処理
         let setData = {};
         setData["hexaID"] = userInfo.data.u_id;
+        setData["ユーザ名"] = this.userName;
 
         let userDBparam = {};
         userDBparam["item"] = setData;
@@ -214,7 +215,7 @@ export default {
         if (userMasters.length > 0) {
           userMaster = userMasters[0];
         }
-        const userNameKanji = userMaster.苗字 + userMaster.名前;
+        const userNameKanji = userMaster.ユーザ名;
         const userID = userMaster.ユーザID;
         const userMail =
           userMaster.メールアドレス == undefined

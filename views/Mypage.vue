@@ -113,8 +113,8 @@ export default {
         { text: "歌手", value: "69b91c69-3231-4956-a34e-c6bd737fd206" },
         { text: "数量", value: "91854461-18ce-4652-88c5-6ae63d23c689" },
         {
-          text: "金額",
-          value: "1023791c-f698-4314-af98-2a8a732c0474",
+          text: "合計金額",
+          value: "230edd8a-f368-449f-be30-53738150d166",
           align: "right"
         }
       ],
