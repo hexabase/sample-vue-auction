@@ -25,7 +25,7 @@
             outlined
             single-line
             :label="label"
-            :disabled="!editable"
+            :readonly="!editable"
             :error-messages="errors"
             :placeholder="setPlaceholder('sei')"
             @input="inputValue"
@@ -51,7 +51,7 @@
             outlined
             single-line
             :label="label"
-            :disabled="!editable"
+            :readonly="!editable"
             :error-messages="errors"
             :placeholder="setPlaceholder('mei')"
             @input="inputValue"

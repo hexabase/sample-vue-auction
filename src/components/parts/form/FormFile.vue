@@ -24,7 +24,7 @@
             :error-messages="errors"
             :disabled="!editable"
             :clearable="clearable"
-            @change="changeValue($event, title)"
+            @change="changeValue($event, id)"
           >
             <template v-slot:selection="{ text }">
               <v-chip small label>{{ text }}</v-chip>
@@ -52,6 +52,11 @@
 export default {
   props: {
     title: {
+      type: String,
+      required: true,
+      default: ""
+    },
+    id: {
       type: String,
       required: true,
       default: ""

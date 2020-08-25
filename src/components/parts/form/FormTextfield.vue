@@ -11,7 +11,7 @@
           outlined
           single-line
           :type="number ? 'number' : 'text'"
-          :disabled="!editable"
+          :readonly="!editable"
           :placeholder="placeholder"
           :value="value"
           :error-messages="errors"

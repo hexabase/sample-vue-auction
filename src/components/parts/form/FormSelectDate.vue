@@ -20,7 +20,7 @@
             single-line
             label="選択してください"
             :value="value"
-            :disabled="!editable"
+            :readonly="!editable"
             :error-messages="errors"
             :change="modify"
             suffix="年"
@@ -42,7 +42,7 @@
             single-line
             label=""
             :value="value"
-            :disabled="!editable"
+            :readonly="!editable"
             :error-messages="errors"
             :change="modify"
             suffix="月"
@@ -64,7 +64,7 @@
             single-line
             label=""
             :value="value"
-            :disabled="!editable"
+            :readonly="!editable"
             :error-messages="errors"
             suffix="日"
             @input="inputValue"
@@ -179,10 +179,16 @@ export default {
       this.$emit("input", this.birthdayData);
     },
     getYears: function() {
-      const goBackYears = 100;
+      const goBackYears = 15;
       const currentYear = moment().year();
       const startYear = currentYear - goBackYears;
-      return [...Array(goBackYears + 1).keys()].map(x => x + startYear);
+      return [...Array(goBackYears + 1).keys()]
+        .map(x => x + startYear)
+        .sort(function(a, b) {
+          if (a > b) return -1;
+          if (a < b) return 1;
+          return 0;
+        });
     },
     getDates: function(year, month) {
       if (year && month) {

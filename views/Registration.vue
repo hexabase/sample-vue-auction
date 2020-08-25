@@ -90,33 +90,57 @@ export default {
     click() {
       alert("click!");
     },
+    async getUserDB(email) {
+      return await this.$hexalink.getItems(
+        this.token,
+        this.applicationId,
+        this.datastoreIds["ユーザDB"],
+        {
+          conditions: [
+            {
+              id: "Email", // Hexalink画⾯で⼊⼒したIDを指定
+              search_value: [email],
+              exact_match: true // 完全⼀致で検索
+            }
+          ],
+          page: 1,
+          per_page: 9000,
+          use_display_id: true
+        }
+      );
+    },
     async inviteUser() {
       if (
         this.email.match(
           /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
         )
       ) {
-        let params = JSON.stringify({
-          email: this.email,
-          g_id: "5e9678e8d4b3e00006eb8746",
-          // w_id: "ワークスペースのID",
-          username: this.email
-        });
-        const userAddResult = await this.$hexalink.createUser(
-          this.token,
-          params
-        );
-        params = JSON.stringify({
-          users: [
-            {
-              email: this.email
-            }
-          ],
-          domain: "az-baton.hexabase.com", //az-baton.hexabase.com
-          invitation_path: "signup"
-        });
-        this.sendResult = await this.$hexalink.inviteUser(this.token, params);
-        console.log(this.sendResult);
+        const userExists = await this.getUserDB(this.email);
+        if (userExists.length > 0) {
+          alert("既に登録されているメールアドレスでは登録できません");
+        } else {
+          let params = JSON.stringify({
+            email: this.email,
+            g_id: "5e9678e8d4b3e00006eb8746",
+            // w_id: "ワークスペースのID",
+            username: this.email
+          });
+          const userAddResult = await this.$hexalink.createUser(
+            this.token,
+            params
+          );
+          params = JSON.stringify({
+            users: [
+              {
+                email: this.email
+              }
+            ],
+            domain: "az-baton.hexabase.com", //az-baton.hexabase.com
+            invitation_path: "signup"
+          });
+          this.sendResult = await this.$hexalink.inviteUser(this.token, params);
+          console.log(this.sendResult);
+        }
       } else {
         alert("メールアドレスを入力してください");
       }

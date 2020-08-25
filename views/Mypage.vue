@@ -111,7 +111,9 @@ export default {
         { text: "内訳", value: "2bb5e16c-939b-44ec-bc31-01da0e5da77c" },
         { text: "曲名", value: "f3495cb9-aa68-43c0-98c7-4c0a8448c946" },
         { text: "歌手", value: "69b91c69-3231-4956-a34e-c6bd737fd206" },
+        { text: "単価", value: "1023791c-f698-4314-af98-2a8a732c0474" },
         { text: "数量", value: "91854461-18ce-4652-88c5-6ae63d23c689" },
+        { text: "税金", value: "d03ba2ed-0555-4cf7-b2ee-39e025989c59" },
         {
           text: "合計金額",
           value: "230edd8a-f368-449f-be30-53738150d166",

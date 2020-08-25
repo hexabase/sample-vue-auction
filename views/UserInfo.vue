@@ -189,6 +189,7 @@
                   title="お名前"
                   :required="true"
                   :userinfo="userInfo"
+                  :editable="!approvedFlag"
                   @input="emittedNameKanji"
                 />
                 <FormTextfieldName
@@ -196,6 +197,7 @@
                   :required="true"
                   :kana="true"
                   :userinfo="userInfo"
+                  :editable="!approvedFlag"
                   @input="emittedNameKana"
                 />
                 <FormRadio
@@ -216,6 +218,7 @@
                       ? userGender
                       : 'a9b8e4d5-7597-42c5-9253-449d18f8debc'
                   "
+                  :editable="!approvedFlag"
                   @change="emittedGender"
                 />
                 <FormSelect
@@ -225,6 +228,7 @@
                   :value="
                     userInfo[0] && userInfo[0].国籍 ? userInfo[0].国籍 : ''
                   "
+                  :editable="!approvedFlag"
                   placeholder="placeholder"
                   @input="emittedCountry"
                 />
@@ -248,6 +252,7 @@
                       ? userInfo[0].生年月日
                       : ''
                   "
+                  :editable="!approvedFlag"
                   placeholder="選択してください"
                   @input="emittedBirthday"
                 />
@@ -318,12 +323,12 @@
                   :required="true"
                   :radios="[
                     {
-                      value: 'b01a89fc-4017-42c6-8c7f-f3ebd1bc6084',
-                      label: '当座'
-                    },
-                    {
                       value: '3e409316-0591-4a43-a5a8-4ce9f0203e7f',
                       label: '普通'
+                    },
+                    {
+                      value: 'b01a89fc-4017-42c6-8c7f-f3ebd1bc6084',
+                      label: '当座'
                     }
                   ]"
                   :radiochecked="
@@ -353,6 +358,7 @@
                   :value="
                     userInfo[0] && userInfo[0].名義人 ? userInfo[0].名義人 : ''
                   "
+                  :editable="!approvedFlag"
                   @input="emittedBankAccountHolderKana"
                 />
                 <div class="entryForm_footer">
@@ -384,10 +390,13 @@
                   class="select-2column"
                   :required="true"
                   :checkboxes="[
-                    { value: 'AAA', label: '経験あり' },
-                    { value: 'AAB', label: '経験アリ' },
-                    { value: 'AAC', label: '経験有り' },
-                    { value: 'BBB', label: '経験無し' }
+                    { value: '国内株式', label: '国内株式' },
+                    { value: '国内債券', label: '国内債券' },
+                    { value: '外貨預金', label: '外貨預金' },
+                    { value: '外国株式', label: '外国株式' },
+                    { value: '外国債権', label: '外国債権' },
+                    { value: '投資信託', label: '投資信託' },
+                    { value: '先物・オプション', label: '先物・オプション' }
                   ]"
                 />
                 <FormRadio
@@ -395,9 +404,15 @@
                   class="select-singleLine"
                   :required="true"
                   :radios="[
-                    { value: 'AAA', label: '利子・配当等安定収益重視' },
-                    { value: 'BBB', label: '経験あり' },
-                    { value: 'CCC', label: '経験無し' }
+                    {
+                      value: '利子・配当等安定収益重視',
+                      label: '利子・配当等安定収益重視'
+                    },
+                    { value: '値上がり益重視', label: '値上がり益重視' },
+                    {
+                      value: '安定収益・値上がり益のバランス投資',
+                      label: '安定収益・値上がり益のバランス投資'
+                    }
                   ]"
                 />
                 <FormRadio
@@ -405,34 +420,108 @@
                   class="select-singleLine"
                   :required="true"
                   :radios="[
-                    { value: 'AAA', label: '利子・配当等安定収益重視' },
-                    { value: 'BBB', label: '経験あり' },
-                    { value: 'CCC', label: '経験無し' }
+                    { value: '長期運用', label: '長期運用' },
+                    { value: '中期運用', label: '中期運用' },
+                    { value: '短期運用', label: '短期運用' }
                   ]"
                 />
                 <FormRadio
                   title="現在の収入形態"
                   class="select-2column"
                   :required="true"
-                  :radios="[{ value: 'AAA', label: 'AAA' }]"
+                  :radios="[
+                    { value: '給与収入', label: '給与収入' },
+                    { value: '事業収入', label: '事業収入' },
+                    { value: '不動産収入', label: '不動産収入' },
+                    { value: '利子・配当収入', label: '利子・配当収入' },
+                    { value: '年金', label: '年金' },
+                    { value: 'なし', label: 'なし' },
+                    { value: 'その他', label: 'その他' }
+                  ]"
                 />
                 <FormRadio
                   title="現在の年収"
                   class="select-2column"
                   :required="true"
-                  :radios="[{ value: 'AAA', label: 'AAA' }]"
+                  :radios="[
+                    { value: '５百万円未満', label: '５百万円未満' },
+                    {
+                      value: '５百万円未満～１千万円未満',
+                      label: '５百万円未満～１千万円未満'
+                    },
+                    {
+                      value: '１千万円未満～３千万円未満',
+                      label: '１千万円未満～３千万円未満'
+                    },
+                    {
+                      value: '３千万円未満～５千万円未満',
+                      label: '３千万円未満～５千万円未満'
+                    },
+                    {
+                      value: '５千万円未満～１億円未満',
+                      label: '５千万円未満～１億円未満'
+                    },
+                    {
+                      value: '１億円以上',
+                      label: '１億円以上'
+                    }
+                  ]"
                 />
                 <FormRadio
                   title="現在の金融資産"
                   class="select-2column"
                   :required="true"
-                  :radios="[{ value: 'AAA', label: 'AAA' }]"
+                  :radios="[
+                    { value: '５百万円未満', label: '５百万円未満' },
+                    {
+                      value: '５百万円未満～１千万円未満',
+                      label: '５百万円未満～１千万円未満'
+                    },
+                    {
+                      value: '１千万円未満～３千万円未満',
+                      label: '１千万円未満～３千万円未満'
+                    },
+                    {
+                      value: '３千万円未満～５千万円未満',
+                      label: '３千万円未満～５千万円未満'
+                    },
+                    {
+                      value: '５千万円未満～１億円未満',
+                      label: '５千万円未満～１億円未満'
+                    },
+                    {
+                      value: '１億円以上',
+                      label: '１億円以上'
+                    }
+                  ]"
                 />
                 <FormRadio
                   title="運用予定額"
                   class="select-2column"
                   :required="true"
-                  :radios="[{ value: 'AAA', label: 'AAA' }]"
+                  :radios="[
+                    { value: '５百万円未満', label: '５百万円未満' },
+                    {
+                      value: '５百万円未満～１千万円未満',
+                      label: '５百万円未満～１千万円未満'
+                    },
+                    {
+                      value: '１千万円未満～３千万円未満',
+                      label: '１千万円未満～３千万円未満'
+                    },
+                    {
+                      value: '３千万円未満～５千万円未満',
+                      label: '３千万円未満～５千万円未満'
+                    },
+                    {
+                      value: '５千万円未満～１億円未満',
+                      label: '５千万円未満～１億円未満'
+                    },
+                    {
+                      value: '１億円以上',
+                      label: '１億円以上'
+                    }
+                  ]"
                 />
                 <div class="entryForm_footer">
                   <v-btn class="button-cancel" @click="step = 2">
@@ -466,7 +555,7 @@
               </div>
               <v-form class="entryForm">
                 <FormFile
-                  id="本人確認書類写真1"
+                  id="本人確認書類写真_1"
                   title="本人確認書類写真1"
                   :value="identityVerificationDocuments1"
                   text="運転免許証（両面）・各種健康保険証・住民票の写し・パスポート・在留カード・印鑑登録証明書のいずれか。※入力した住所と同一である必要があります"
@@ -474,21 +563,21 @@
                   @change="emittedFile"
                 />
                 <FormFile
-                  id="本人確認書類写真2"
+                  id="本人確認書類写真_2"
                   title="本人確認書類写真2"
                   text="※運転免許証の場合、裏面もアップロードしてください"
                   :value="identityVerificationDocuments2"
                   @change="emittedFile"
                 />
                 <FormFile
-                  id="マイナンバーカード写真1"
+                  id="マイナンバーカード写真_1"
                   title="マイナンバーカード写真1"
                   :value="myNumberCardPicture1"
                   :required="true"
                   @change="emittedFile"
                 />
                 <FormFile
-                  id="マイナンバーカード写真2"
+                  id="マイナンバーカード写真_2"
                   title="マイナンバーカード写真2"
                   :value="myNumberCardPicture2"
                   @change="emittedFile"
@@ -546,7 +635,7 @@
                       性別
                     </div>
                     <div class="formConfirm_item_body">
-                      {{ userGender }}
+                      {{ userGenderConfirm }}
                       <span class="formConfirm_alert">
                         ※登録後は変更できません
                       </span>
@@ -647,7 +736,7 @@
                       口座種類
                     </div>
                     <div class="formConfirm_item_body">
-                      {{ userBankAccountType }}
+                      {{ userBankAccountTypeConfirm }}
                     </div>
                   </div>
                   <div class="formConfirm_item">
@@ -727,15 +816,22 @@
                 <p class="formEntryBox_text">
                   よろしければ利用規約に同意いただき登録ボタンを押してください。
                 </p>
-                <v-checkbox label="利用規約に同意" value="" required />
                 <v-checkbox
-                  label="個人情報の処理方針に同意"
-                  value=""
+                  v-model="checkedAgreements"
+                  label="利用規約に同意"
+                  value="1"
                   required
                 />
                 <v-checkbox
+                  v-model="checkedAgreements"
+                  label="個人情報の処理方針に同意"
+                  value="2"
+                  required
+                />
+                <v-checkbox
+                  v-model="checkedAgreements"
                   label="個人情報の収集および利用に同意"
-                  value=""
+                  value="3"
                   required
                 />
                 <div class="formEntryBox_concent">
@@ -752,9 +848,18 @@
                     ※お客様は、個人情報の収集・利用に同意しないことができるが、本個人情報は、同社がサービスを提供するために必要な最小限の個人情報であるため、同意を拒否した場合のサービス利用が不可能です
                   </p>
                 </div>
-                <v-checkbox label="全てに同意する" value="" required />
+                <v-checkbox
+                  v-model="checkedAgreements"
+                  label="全てに同意する"
+                  value="4"
+                  required
+                />
                 <div class="entryForm_footer">
-                  <button class="button-action" @click="applyMember">
+                  <button
+                    class="button-action"
+                    :disabled="checkedAgreements.length !== 4"
+                    @click="applyMember"
+                  >
                     この内容で登録する
                   </button>
                 </div>
@@ -946,6 +1051,7 @@ export default {
       userSeiKana: "",
       userMeiKana: "",
       userGender: "",
+      userGenderConfirm: "",
       userCountry: "",
       userMobilePhoneNumber: "",
       userBirthday: "",
@@ -958,8 +1064,11 @@ export default {
       userBranchBankName: "",
       userBranchBankNumber: "",
       userBankAccountType: "",
+      userBankAccountTypeConfirm: "",
       userBankAccountNumber: "",
       userBankAccountHolderKana: "",
+      approvedFlag: false,
+      checkedAgreements: [],
       userDBMapping: {
         男性: "a9b8e4d5-7597-42c5-9253-449d18f8debc",
         女性: "4da9cad5-cb58-4f8d-8585-6bf216b206e4",
@@ -1022,6 +1131,9 @@ export default {
         this.userGender = this.userInfo[0].性別
           ? this.userDBMapping[this.userInfo[0].性別]
           : "a9b8e4d5-7597-42c5-9253-449d18f8debc";
+        this.userGenderConfirm = this.userInfo[0].性別
+          ? this.userInfo[0].性別
+          : "男性";
         this.userCountry = this.userInfo[0].国籍 ? this.userInfo[0].国籍 : "";
         this.userMobilePhoneNumber = this.userInfo[0].携帯番号
           ? this.userInfo[0].携帯番号
@@ -1072,7 +1184,10 @@ export default {
           : "";
         this.userBankAccountType = this.userInfo[0].口座種類
           ? this.userDBMapping[this.userInfo[0].口座種類]
-          : "b01a89fc-4017-42c6-8c7f-f3ebd1bc6084";
+          : "3e409316-0591-4a43-a5a8-4ce9f0203e7f";
+        this.userBankAccountTypeConfirm = this.userInfo[0].口座種類
+          ? this.userInfo[0].口座種類
+          : "普通";
         console.log(this.userBankAccountType);
         this.userBankAccountNumber = this.userInfo[0].口座番号
           ? this.userInfo[0].口座番号
@@ -1127,8 +1242,13 @@ export default {
     } finally {
       // loading overlay非表示
       this.$store.commit("common/setLoading", false);
-      if (this.userInfo[0].ステータス === "申請中") {
-        this.completeModal = true;
+      switch (this.userInfo[0].ステータス) {
+        case "申請中":
+          this.completeModal = true;
+          break;
+        case "承認済み":
+          this.approvedFlag = true;
+          break;
       }
     }
   },
@@ -1541,6 +1661,9 @@ export default {
     emittedGender(value) {
       console.log("性別：", value);
       this.userGender = value;
+      this.userGenderConfirm = Object.keys(this.userDBMapping).filter(key => {
+        return this.userDBMapping[key] === value;
+      })[0];
     },
     emittedCountry(value) {
       console.log("国籍：", value);
@@ -1562,9 +1685,15 @@ export default {
           this.userPostalCode = value.value;
           break;
         case "prefectures":
+          this.addressInfo = Object.assign({}, this.addressInfo, {
+            prefectures: value.value
+          });
           this.userPrefectures = value.value;
           break;
         case "address1":
+          this.addressInfo = Object.assign({}, this.addressInfo, {
+            address1: value.value
+          });
           this.userAddress1 = value.value;
           break;
         case "address2":
@@ -1587,6 +1716,11 @@ export default {
     emittedBankAccountType(value) {
       console.log("口座種類：", value);
       this.userBankAccountType = value;
+      this.userBankAccountTypeConfirm = Object.keys(this.userDBMapping).filter(
+        key => {
+          return this.userDBMapping[key] === value;
+        }
+      )[0];
     },
     emittedBankAccountNumber(value) {
       console.log("口座番号：", value);

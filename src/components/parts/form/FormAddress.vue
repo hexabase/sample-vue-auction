@@ -118,8 +118,9 @@
     </div>
   </div>
 </template>
-
 <script>
+import KenAll from "ken-all";
+
 export default {
   props: {
     title: {
@@ -227,6 +228,20 @@ export default {
         }
         value = this.zip1 + "-" + this.zip2;
         name = "postalCode";
+        KenAll(this.zip1 + this.zip2).then(res => {
+          if (res.length === 0) {
+            // 該当住所なし
+          } else {
+            this.$emit("input", {
+              value: res[0][0],
+              name: "prefecture"
+            });
+            this.$emit("input", {
+              value: res[0][1] + res[0][2],
+              name: "address1"
+            });
+          }
+        });
       }
       if (name == "zip2") {
         this.zip2 = value;
@@ -235,6 +250,21 @@ export default {
         }
         value = this.zip1 + "-" + this.zip2;
         name = "postalCode";
+        KenAll(this.zip1 + this.zip2).then(res => {
+          if (res.length === 0) {
+            // 該当住所なし
+          } else {
+            console.log(res[0][0]);
+            this.$emit("input", {
+              value: res[0][0],
+              name: "prefectures"
+            });
+            this.$emit("input", {
+              value: res[0][1] + res[0][2],
+              name: "address1"
+            });
+          }
+        });
       }
       this.$emit("input", { value: value, name: name });
     },
