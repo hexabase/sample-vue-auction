@@ -334,7 +334,7 @@
                   :radiochecked="
                     userInfo[0] && userBankAccountType
                       ? userBankAccountType
-                      : 'b01a89fc-4017-42c6-8c7f-f3ebd1bc6084'
+                      : '3e409316-0591-4a43-a5a8-4ce9f0203e7f'
                   "
                   @change="emittedBankAccountType"
                 />
