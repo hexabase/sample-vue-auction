@@ -59,7 +59,9 @@
             </router-link>
           </li>
           <li>
-            <a href="">お財布</a>
+            <router-link to="/wallet">
+              お財布
+            </router-link>
           </li>
           <li>
             <router-link to="/userinfo">
@@ -145,7 +147,9 @@
           </router-link>
         </li>
         <li>
-          <a href="">お財布</a>
+          <router-link to="/wallet">
+            お財布
+          </router-link>
         </li>
         <li>
           <router-link to="/userinfo">

@@ -8,8 +8,10 @@ import Signin from "../../views/Signin.vue";
 import AuctionList from "../../views/AuctionList.vue";
 import ClosedAuction from "../../views/ClosedAuction.vue";
 import AuctionBid from "../../views/AuctionBid.vue";
+import Trade from "../../views/Trade.vue";
 import Mypage from "../../views/Mypage.vue";
 import MyCopyrights from "../../views/MyCopyrights.vue";
+import Wallet from "../../views/Wallet.vue";
 import UserInfo from "../../views/UserInfo.vue";
 import NotFound from "../../views/NotFound.vue";
 import Index from "../../views/Index.vue";
@@ -61,6 +63,11 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
+    path: "/trade",
+    name: "Trade",
+    component: Trade
+  },
+  {
     path: "/mypage",
     name: "Mypage",
     component: Mypage
@@ -69,6 +76,11 @@ const routes = [
     path: "/mycopyrights",
     name: "MyCopyrights",
     component: MyCopyrights
+  },
+  {
+    path: "/wallet",
+    name: "Wallet",
+    component: Wallet
   },
   {
     path: "/userinfo",
