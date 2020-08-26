@@ -87,6 +87,7 @@
 
 <script>
 import common from "@/components/mixin/common";
+import moment from "moment";
 
 export default {
   name: "Signin",
@@ -180,6 +181,8 @@ export default {
         let setData = {};
         setData["hexaID"] = userInfo.data.u_id;
         setData["ユーザ名"] = this.userName;
+        setData["Email"] = this.getConfirmUserData.data.user.email;
+        setData["加入日"] = moment();
 
         let userDBparam = {};
         userDBparam["item"] = setData;

@@ -14,7 +14,7 @@
         <v-radio-group
           :value="radiochecked"
           row
-          :disabled="!editable"
+          :readonly="!editable"
           :error-messages="errors"
           @change="inputValue"
         >

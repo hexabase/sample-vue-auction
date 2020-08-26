@@ -10,13 +10,12 @@
           :items="items"
           dense
           outlined
-          clearable
           single-line
           label="選択してください"
           :hint="hint"
           :multiple="multiple"
           :value="value"
-          :disabled="!editable"
+          :readonly="!editable"
           :error-messages="errors"
           @input="inputValue"
         >
