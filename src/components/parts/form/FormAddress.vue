@@ -234,7 +234,7 @@ export default {
           } else {
             this.$emit("input", {
               value: res[0][0],
-              name: "prefecture"
+              name: "prefectures"
             });
             this.$emit("input", {
               value: res[0][1] + res[0][2],
