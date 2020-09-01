@@ -747,7 +747,7 @@
                       {{ userBankAccountNumber }}
                     </div>
                   </div>
-                  <div class="formConfirm_item">
+                  <div v-if="!userNameJudgment" class="formConfirm_item">
                     <div class="formConfirm_item_title">
                       名義人（カタカナ）
                     </div>
@@ -755,6 +755,17 @@
                       {{ userBankAccountHolderKana }}
                       <span class="formConfirm_alert">
                         ※登録後は変更できません
+                      </span>
+                    </div>
+                  </div>
+                  <div v-if="userNameJudgment" class="formConfirm_item">
+                    <div class="formConfirm_item_title">
+                      名義人（カタカナ）
+                    </div>
+                    <div class="formConfirm_item_body">
+                      {{ userBankAccountHolderKana }}
+                      <span class="formConfirm_alert">
+                        ※お名前（カタカナ）と同じ名義にしてください
                       </span>
                     </div>
                   </div>
@@ -857,7 +868,9 @@
                 <div class="entryForm_footer">
                   <button
                     class="button-action"
-                    :disabled="checkedAgreements.length !== 4"
+                    :disabled="
+                      checkedAgreements.length !== 4 || userNameJudgment
+                    "
                     @click="applyMember"
                   >
                     この内容で登録する
@@ -1109,6 +1122,12 @@ export default {
   computed: {
     passwordChangeDisable() {
       return this.confirmPassword && this.newPassword && this.oldPassword
+        ? false
+        : true;
+    },
+    userNameJudgment() {
+      return this.userBankAccountHolderKana.replace(/\s+/g, "") ==
+        (this.userSeiKana + this.userMeiKana).replace(/\s+/g, "")
         ? false
         : true;
     }
