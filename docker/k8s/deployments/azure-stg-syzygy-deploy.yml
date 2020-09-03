@@ -1,12 +1,22 @@
 kind: Deployment
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 metadata:
   name: syzygy
   labels:
     component: microservice
     role: syzygy
 spec:
+  selector:
+    matchLabels:
+      app: syzygy
+      env: stg
   replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 100%
+      maxUnavailable: 0
+  progressDeadlineSeconds: 300
   template:
     metadata:
       name: syzygy
@@ -14,9 +24,23 @@ spec:
         app: syzygy
         env: stg
     spec:
+      terminationGracePeriodSeconds: 600
       containers:
       - name: beee-syzygy
         image: gcr.io/linker-testing/beee-syzygy
+        readinessProbe:
+          failureThreshold: 3
+          successThreshold: 1
+          httpGet:
+            path: /health_check
+            port: syzygy
+          initialDelaySeconds: 1
+          periodSeconds: 10
+          timeoutSeconds: 3
+        lifecycle:
+          preStop:
+            exec:
+              command: [ "/bin/sleep", "20" ]
         resources:
           requests:
             memory: "64Mi"
