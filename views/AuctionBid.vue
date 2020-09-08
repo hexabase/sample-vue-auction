@@ -190,7 +190,17 @@
         <div class="trend_wrap">
           <section class="trend_barChart">
             <h3 class="trend_subTitle">最近5年間の著作権料（1週間あたり）</h3>
-            <img src="~@/assets/img/auction-detail-graph1.png" alt="" />
+            <!-- <img src="~@/assets/img/auction-detail-graph1.png" alt="" /> -->
+            <Chart
+              v-if="loaded"
+              :data="chart1.data"
+              :options="chart1.options"
+            ></Chart>
+            <Chart
+              v-if="loaded"
+              :data="chart2.data"
+              :options="chart2.options"
+            ></Chart>
           </section>
           <!-- <section class="trend_royalty">
             <h3 class="trend_subTitle">
@@ -412,11 +422,13 @@ import mapping from "@/assets/json/auctionDBMapping.json";
 import DatabaseSchema from "@/assets/json/DBSchema.json";
 import MyModal from "./MyModal.vue";
 import moment from "moment-timezone";
+import Chart from "@/components/parts/Chart.vue";
 import _ from "lodash";
 export default {
-  components: { MyModal },
+  components: { MyModal, Chart },
   data() {
     return {
+      loaded: false,
       modal: false,
       cancelModal: false,
       page: 1,
@@ -494,13 +506,118 @@ export default {
       myAuctionResult: "",
       alertMessage: "",
       displayBidResultFlag: false,
-      auctionFinishedFlag: false
+      auctionFinishedFlag: false,
+      distributionListGroupYear: {
+        data: [],
+        labels: []
+      },
+      distributionListGroupQuarter: {
+        data: [],
+        labels: []
+      },
+      chart1: {
+        data: {
+          labels: [],
+          datasets: [
+            {
+              label: "分配金",
+              data: [],
+              backgroundColor: [
+                "rgba(255, 99, 132, 0.2)",
+                "rgba(54, 162, 235, 0.2)",
+                "rgba(255, 206, 86, 0.2)",
+                "rgba(75, 192, 192, 0.2)",
+                "rgba(153, 102, 255, 0.2)"
+              ],
+              borderColor: [
+                "rgba(255, 99, 132, 1)",
+                "rgba(54, 162, 235, 1)",
+                "rgba(255, 206, 86, 1)",
+                "rgba(75, 192, 192, 1)",
+                "rgba(153, 102, 255, 1)"
+              ],
+              borderWidth: 1
+            }
+          ]
+        },
+        options: {
+          legend: {
+            display: false
+          },
+          scales: {
+            xAxes: [
+              {
+                scaleLabel: {
+                  display: false,
+                  labelString: "年"
+                }
+              }
+            ],
+            yAxes: [
+              {
+                ticks: {
+                  beginAtZero: true,
+                  stepSize: 5000
+                }
+              }
+            ]
+          }
+        }
+      },
+      chart2: {
+        data: {
+          labels: [],
+          datasets: [
+            {
+              label: "分配金",
+              data: [],
+              backgroundColor: [
+                "rgba(255, 99, 132, 0.2)",
+                "rgba(54, 162, 235, 0.2)",
+                "rgba(255, 206, 86, 0.2)",
+                "rgba(75, 192, 192, 0.2)",
+                "rgba(153, 102, 255, 0.2)"
+              ],
+              borderColor: [
+                "rgba(255, 99, 132, 1)",
+                "rgba(54, 162, 235, 1)",
+                "rgba(255, 206, 86, 1)",
+                "rgba(75, 192, 192, 1)",
+                "rgba(153, 102, 255, 1)"
+              ],
+              borderWidth: 1
+            }
+          ]
+        },
+        options: {
+          legend: {
+            display: false
+          },
+          scales: {
+            xAxes: [
+              {
+                scaleLabel: {
+                  display: false,
+                  labelString: "年"
+                }
+              }
+            ],
+            yAxes: [
+              {
+                ticks: {
+                  beginAtZero: true,
+                  stepSize: 5000
+                }
+              }
+            ]
+          }
+        }
+      }
     };
   },
-  created: function() {
-    this.initialDisplay();
-  },
+  created: function() {},
   mounted: function() {
+    this.initialDisplay();
     setInterval(this.updateMessage, 1000);
   },
   methods: {
@@ -615,6 +732,37 @@ export default {
               id: "会員番号", // Hexalink画⾯で⼊⼒したIDを指定
               search_value: [this.userId],
               exact_match: true // 完全⼀致で検索
+            }
+          ],
+          page: 1,
+          per_page: 9000,
+          use_display_id: true
+        }
+      );
+    },
+    async getDistributionList() {
+      return await this.$hexalink.getItems(
+        this.token,
+        this.applicationId,
+        this.datastoreIds["著作権分配金マスタ"],
+        {
+          conditions: [
+            {
+              id: "著作権番号", // Hexalink画⾯で⼊⼒したIDを指定
+              search_value: [this.musicId],
+              exact_match: true // 完全⼀致で検索
+            },
+            {
+              id: "日付", // Hexalink画⾯で⼊⼒したIDを指定
+              search_value: [
+                moment()
+                  .add("year", -4)
+                  .startOf("year")
+                  .format("YYYY-MM-DDTHH:mm:ss.SSS") + "Z",
+                moment()
+                  .endOf("year")
+                  .format("YYYY-MM-DDTHH:mm:ss.SSS") + "Z"
+              ]
             }
           ],
           page: 1,
@@ -910,6 +1058,58 @@ export default {
       this.checkDigits(event);
       this.checkKeyDown(event);
     },
+    groupByYear(array) {
+      const groups = {};
+      array.forEach(function(item) {
+        const key = item["日付"].slice(0, 4);
+        if (!(key in groups)) groups[key] = [];
+        groups[key].push(item);
+      });
+      return groups;
+    },
+    groupByQuarter(array) {
+      const groups = {};
+      groups["第1四半期"] = [];
+      groups["第2四半期"] = [];
+      groups["第3四半期"] = [];
+      groups["第4四半期"] = [];
+      const formatQuater = moment().format("YYYY");
+      const currentQuaterArray = array.filter(function(item, index) {
+        const jst = moment(item["日付"])
+          .tz("Asia/Tokyo")
+          .format("YYYY-MM");
+        if (jst.indexOf(formatQuater) !== -1) return true;
+      });
+      for (const key in currentQuaterArray) {
+        const jstMonth = moment(currentQuaterArray[key]["日付"])
+          .tz("Asia/Tokyo")
+          .format("YYYY-MM")
+          .slice(5, 7);
+        switch (jstMonth) {
+          case "01":
+          case "02":
+          case "03":
+            groups["第1四半期"].push(currentQuaterArray[key]);
+            break;
+          case "04":
+          case "05":
+          case "06":
+            groups["第2四半期"].push(currentQuaterArray[key]);
+            break;
+          case "07":
+          case "08":
+          case "09":
+            groups["第3四半期"].push(currentQuaterArray[key]);
+            break;
+          case "10":
+          case "11":
+          case "12":
+            groups["第4四半期"].push(currentQuaterArray[key]);
+            break;
+        }
+      }
+      return groups;
+    },
     async initialDisplay() {
       try {
         // loading overlay表示
@@ -1093,9 +1293,49 @@ export default {
             }
           }
         }
-
         this.bidTotalAmount = auctionAmountCount;
         this.auctionListsGroup = auctionListsGroupSort;
+
+        const distributionList = await this.getDistributionList();
+        const distributionListGroupYear = this.groupByYear(distributionList);
+        for (let i = 4; i > -1; i--) {
+          this.distributionListGroupYear.labels.push(
+            moment()
+              .add("year", -i)
+              .format("YYYY")
+          );
+        }
+        for (const keyYear of this.distributionListGroupYear.labels) {
+          let yearDistribution = 0;
+          for (const keyMonth in distributionListGroupYear[keyYear]) {
+            yearDistribution += Number(
+              distributionListGroupYear[keyYear][keyMonth].分配金額
+            );
+          }
+          this.distributionListGroupYear.data.push(yearDistribution);
+        }
+        this.chart1.data.labels = this.distributionListGroupYear.labels;
+        this.chart1.data.datasets[0].data = this.distributionListGroupYear.data;
+
+        const distributionListGroupQuarter = this.groupByQuarter(
+          distributionList
+        );
+        this.distributionListGroupQuarter.labels = Object.keys(
+          distributionListGroupQuarter
+        );
+        for (const keyYear in distributionListGroupQuarter) {
+          let quaterDistribution = 0;
+          for (const keyMonth in distributionListGroupQuarter[keyYear]) {
+            quaterDistribution += Number(
+              distributionListGroupQuarter[keyYear][keyMonth].分配金額
+            );
+          }
+          this.distributionListGroupQuarter.data.push(quaterDistribution);
+        }
+        this.chart2.data.labels = this.distributionListGroupQuarter.labels;
+        this.chart2.data.datasets[0].data = this.distributionListGroupQuarter.data;
+        this.loaded = true;
+
         this.updateMessage();
         this.agreeGuideline = false;
       } catch (e) {

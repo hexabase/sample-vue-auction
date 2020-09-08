@@ -179,14 +179,14 @@ export default {
       this.$emit("input", this.birthdayData);
     },
     getYears: function() {
-      const goBackYears = 15;
-      const currentYear = moment().year();
+      const goBackYears = 57;
+      const currentYear = moment().year() - 18;
       const startYear = currentYear - goBackYears;
       return [...Array(goBackYears + 1).keys()]
         .map(x => x + startYear)
         .sort(function(a, b) {
-          if (a > b) return -1;
-          if (a < b) return 1;
+          if (a > b) return 1;
+          if (a < b) return -1;
           return 0;
         });
     },
