@@ -185,8 +185,8 @@ export default {
       return [...Array(goBackYears + 1).keys()]
         .map(x => x + startYear)
         .sort(function(a, b) {
-          if (a > b) return 1;
-          if (a < b) return -1;
+          if (a > b) return -1;
+          if (a < b) return 1;
           return 0;
         });
     },

@@ -189,25 +189,25 @@
         <h2 class="trend_title">最近の動向</h2>
         <div class="trend_wrap">
           <section class="trend_barChart">
-            <h3 class="trend_subTitle">最近5年間の著作権料（1週間あたり）</h3>
+            <h3 class="trend_subTitle">最近5年間の著作権料</h3>
             <!-- <img src="~@/assets/img/auction-detail-graph1.png" alt="" /> -->
             <Chart
               v-if="loaded"
               :data="chart1.data"
               :options="chart1.options"
             ></Chart>
+          </section>
+          <section class="trend_royalty">
+            <h3 class="trend_subTitle">
+              最近12ヶ月の著作権料
+            </h3>
+            <!-- <img src="~@/assets/img/auction-detail-graph2.png" alt="" /> -->
             <Chart
               v-if="loaded"
               :data="chart2.data"
               :options="chart2.options"
             ></Chart>
           </section>
-          <!-- <section class="trend_royalty">
-            <h3 class="trend_subTitle">
-              最近12ヶ月のロイヤリティ（1週間あたり）
-            </h3>
-            <img src="~@/assets/img/auction-detail-graph2.png" alt="" />
-          </section> -->
         </div>
       </div>
     </section>
@@ -536,31 +536,73 @@ export default {
                 "rgba(75, 192, 192, 1)",
                 "rgba(153, 102, 255, 1)"
               ],
-              borderWidth: 1
+              borderWidth: 1,
+              datalabels: {
+                anchor: "end",
+                align: "end",
+                padding: {
+                  bottom: 1
+                },
+                formatter: function(value, context) {
+                  if (!value) return 0;
+                  return String(value)
+                    .split("")
+                    .reverse()
+                    .join("")
+                    .match(/\d{1,3}/g)
+                    .join(",")
+                    .split("")
+                    .reverse()
+                    .join("");
+                }
+              }
             }
           ]
         },
         options: {
+          layout: {
+            padding: {
+              top: 20
+            }
+          },
           legend: {
             display: false
           },
           scales: {
             xAxes: [
               {
+                ticks: {
+                  fontSize: 15
+                },
                 scaleLabel: {
                   display: false,
                   labelString: "年"
+                },
+                gridLines: {
+                  display: false,
+                  drawBorder: false
                 }
               }
             ],
             yAxes: [
               {
                 ticks: {
-                  beginAtZero: true,
-                  stepSize: 5000
+                  display: false,
+                  beginAtZero: true
+                },
+                gridLines: {
+                  display: false,
+                  drawBorder: false
                 }
               }
             ]
+          },
+          plugins: {
+            datalabels: {
+              font: {
+                size: 13
+              }
+            }
           }
         }
       },
@@ -585,28 +627,63 @@ export default {
                 "rgba(75, 192, 192, 1)",
                 "rgba(153, 102, 255, 1)"
               ],
-              borderWidth: 1
+              borderWidth: 1,
+              datalabels: {
+                anchor: "end",
+                align: "end",
+                padding: {
+                  bottom: 1
+                },
+                formatter: function(value, context) {
+                  if (!value) return 0;
+                  return String(value)
+                    .split("")
+                    .reverse()
+                    .join("")
+                    .match(/\d{1,3}/g)
+                    .join(",")
+                    .split("")
+                    .reverse()
+                    .join("");
+                }
+              }
             }
           ]
         },
         options: {
+          layout: {
+            padding: {
+              top: 20
+            }
+          },
           legend: {
             display: false
           },
           scales: {
             xAxes: [
               {
+                ticks: {
+                  fontSize: 15
+                },
                 scaleLabel: {
                   display: false,
                   labelString: "年"
+                },
+                gridLines: {
+                  display: false,
+                  drawBorder: false
                 }
               }
             ],
             yAxes: [
               {
                 ticks: {
-                  beginAtZero: true,
-                  stepSize: 5000
+                  display: false,
+                  beginAtZero: true
+                },
+                gridLines: {
+                  display: false,
+                  drawBorder: false
                 }
               }
             ]
@@ -806,7 +883,7 @@ export default {
               },
               {
                 id: "落札状況",
-                value: "入札中"
+                value: "入札"
               }
             ],
             use_display_id: true,
@@ -865,7 +942,7 @@ export default {
         setData["入札時間"] = moment();
         setData["連続入札回数"] = 0;
         setData["キャンセル回数"] = 0;
-        setData["落札状況"] = "入札中";
+        setData["落札状況"] = "入札";
 
         var param = {};
         param["item"] = setData;
