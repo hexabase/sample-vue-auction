@@ -68,6 +68,7 @@
           </v-stepper-step>
           <v-divider></v-divider>
           <v-stepper-step
+            v-if="!approvedFlag"
             :editable="stepControl.step.step5.editable"
             :complete="stepControl.step.step5.complete"
             step="5"
@@ -601,7 +602,11 @@
                     <v-icon>mdi-chevron-left</v-icon>
                     戻る
                   </v-btn>
-                  <v-btn class="button-action" @click="moveStep(5)">
+                  <v-btn
+                    v-if="!approvedFlag"
+                    class="button-action"
+                    @click="moveStep(5)"
+                  >
                     保存して次へ
                   </v-btn>
                 </div>
