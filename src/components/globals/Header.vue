@@ -34,9 +34,9 @@
               ユーザー間売買
             </router-link>
           </li>
-          <li>
+          <!-- <li>
             <a href="" class="siteHeader_gnav_link">楽曲一覧</a>
-          </li>
+          </li> -->
           <li>
             <a href="" class="siteHeader_gnav_link">BATONについて</a>
           </li>
@@ -50,17 +50,19 @@
               マイページ
             </router-link>
           </li>
-          <li>
+          <!-- <li>
             <a href="">お知らせ</a>
-          </li>
+          </li> -->
           <li>
             <router-link to="/mycopyrights">
               保有する楽曲権利
             </router-link>
           </li>
-          <li>
-            <a href="">お財布</a>
-          </li>
+          <!-- <li>
+            <router-link to="/wallet">
+              お財布
+            </router-link>
+          </li> -->
           <li>
             <router-link to="/userinfo">
               ユーザー情報
@@ -136,17 +138,19 @@
             マイページ
           </router-link>
         </li>
-        <li>
+        <!-- <li>
           <a href="">お知らせ</a>
-        </li>
+        </li> -->
         <li>
           <router-link to="/mycopyrights">
             保有する楽曲権利
           </router-link>
         </li>
-        <li>
-          <a href="">お財布</a>
-        </li>
+        <!-- <li>
+          <router-link to="/wallet">
+            お財布
+          </router-link>
+        </li> -->
         <li>
           <router-link to="/userinfo">
             ユーザー情報

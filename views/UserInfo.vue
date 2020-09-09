@@ -122,6 +122,20 @@
             <h3 class="accountInfo_title">アカウント情報</h3>
             <div class="accountInfo_item">
               <div class="accountInfo_item_title">
+                ニックネーム
+              </div>
+              <div class="accountInfo_item_body">
+                ニックネーム
+                <v-btn
+                  class="button-secondary"
+                  @click="() => (cahangeNicknameModal = true)"
+                >
+                  変更
+                </v-btn>
+              </div>
+            </div>
+            <div class="accountInfo_item">
+              <div class="accountInfo_item_title">
                 メールアドレス
               </div>
               <div class="accountInfo_item_body">
@@ -913,6 +927,42 @@
         </template>
       </MyModal>
       <MyModal
+        v-if="cahangeNicknameModal"
+        class="modal-bid"
+        @close="() => (cahangeNicknameModal = false)"
+      >
+        <template slot="title">ニックネームの変更</template>
+        <div v-if="false" class="error_msg">
+          <v-alert text color="red">
+            {{ errorMess }}
+          </v-alert>
+        </div>
+        <v-form class="modalForm">
+          <div class="currentData">
+            <div class="currentData_title">現在のニックネーム：</div>
+            <div class="currentData_body">
+              ニックネーム
+            </div>
+          </div>
+          <FormTextfield
+            v-model="newNickname"
+            title="新しいニックネーム"
+            :required="true"
+          />
+        </v-form>
+        <div v-if="false" class="modalForm_complete">
+          <v-icon>mdi-checkbox-marked-circle-outline</v-icon>
+          <p class="modalForm_complete_text">
+            ニックネームを変更しました。
+          </p>
+        </div>
+        <template slot="footer">
+          <Button class="button-action" :disabled="true" @click="null">
+            変更する
+          </Button>
+        </template>
+      </MyModal>
+      <MyModal
         v-if="cahangeMailModal"
         class="modal-bid"
         @close="() => (cahangeMailModal = false)"
@@ -930,6 +980,12 @@
               {{ email }}
             </div>
           </div>
+          <FormPassfield
+            v-model="oldPassword"
+            title="現在のパスワード"
+            placeholder="個人情報保護のためパスワード確認"
+            :required="true"
+          />
           <FormTextfield
             v-model="newEmail"
             title="新しいメールアドレス"
@@ -1062,6 +1118,7 @@ export default {
       identityVerificationDocuments2Image: [],
       addressInfo: {},
       completeModal: false,
+      cahangeNicknameModal: false,
       cahangeMailModal: false,
       cahangePasswordModal: false,
       userSeiKanji: "",

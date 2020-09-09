@@ -501,6 +501,45 @@
     }
 }
 
+.commingsoon {
+    @extend %padding-contents;
+    margin-bottom: 40px;
+
+    &_wrap {
+        width: 700px;
+        max-width: 90%;
+        border: $border-default;
+        padding: 50px 20px;
+        margin: auto;
+    }
+    
+    &_title {
+        display: inline-block;
+        padding-bottom: 30px;
+        font-size: 5rem;
+        font-family: $font-en;
+        font-weight: 300;
+        @extend %text-themeColor;
+        letter-spacing: -0.07em;
+    }
+
+    &_text {
+        margin-bottom: 30px;
+        line-height: 1.8;
+        font-size: 1.5rem;
+    }
+
+    &_link {
+        .button-main {
+            padding: 0 10px;
+            min-width: 200px;
+            font-weight: normal;
+            height: 36px;
+            line-height: 35px;
+            font-size: 1.3rem;
+        }
+    }
+}
 
 
 .theme--light.v-data-table tbody tr:hover:not(.v-data-table__expanded__content):not(.v-data-table__empty-wrapper) {
