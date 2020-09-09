@@ -890,47 +890,47 @@ export default {
             is_force_update: true
           }
         );
-        result = await this.updatedDataItem(
-          this.datastoreIds["取引DB"],
-          this.myTransactionList[0].i_id,
-          {
-            history: {
-              comment: "再入札"
-            },
-            changes: [
-              {
-                id: "取引日",
-                value: moment()
-              },
-              {
-                id: "タイプ",
-                value: "入札更新"
-              },
-              {
-                id: "会員番号",
-                value: this.userId
-              },
-              {
-                id: "著作権番号",
-                value: this.musicId
-              },
-              {
-                id: "取引数量",
-                value: Number(this.bidAmount)
-              },
-              {
-                id: "取引単価",
-                value: Number(this.bidPrice)
-              },
-              {
-                id: "取引総額",
-                value: Number(this.bidAmount) * Number(this.bidPrice)
-              }
-            ],
-            use_display_id: true,
-            is_force_update: true
-          }
-        );
+        // result = await this.updatedDataItem(
+        //   this.datastoreIds["取引DB"],
+        //   this.myTransactionList[0].i_id,
+        //   {
+        //     history: {
+        //       comment: "再入札"
+        //     },
+        //     changes: [
+        //       {
+        //         id: "取引日",
+        //         value: moment()
+        //       },
+        //       {
+        //         id: "タイプ",
+        //         value: "入札更新"
+        //       },
+        //       {
+        //         id: "会員番号",
+        //         value: this.userId
+        //       },
+        //       {
+        //         id: "著作権番号",
+        //         value: this.musicId
+        //       },
+        //       {
+        //         id: "取引数量",
+        //         value: Number(this.bidAmount)
+        //       },
+        //       {
+        //         id: "取引単価",
+        //         value: Number(this.bidPrice)
+        //       },
+        //       {
+        //         id: "取引総額",
+        //         value: Number(this.bidAmount) * Number(this.bidPrice)
+        //       }
+        //     ],
+        //     use_display_id: true,
+        //     is_force_update: true
+        //   }
+        // );
       }
       // 初回入札は登録処理
       else {
@@ -951,21 +951,21 @@ export default {
           param
         );
 
-        setData = {};
-        setData["取引日"] = moment();
-        setData["タイプ"] = "入札";
-        setData["会員番号"] = this.userId;
-        setData["著作権番号"] = this.musicId;
-        setData["取引数量"] = Number(this.bidAmount);
-        setData["取引単価"] = Number(this.bidPrice);
-        setData["取引総額"] = Number(this.bidAmount) * Number(this.bidPrice);
+        // setData = {};
+        // setData["取引日"] = moment();
+        // setData["タイプ"] = "入札";
+        // setData["会員番号"] = this.userId;
+        // setData["著作権番号"] = this.musicId;
+        // setData["取引数量"] = Number(this.bidAmount);
+        // setData["取引単価"] = Number(this.bidPrice);
+        // setData["取引総額"] = Number(this.bidAmount) * Number(this.bidPrice);
 
-        param = {};
-        param["item"] = setData;
-        insertResult = await this.insertNewItem(
-          this.datastoreIds["取引DB"],
-          param
-        );
+        // param = {};
+        // param["item"] = setData;
+        // insertResult = await this.insertNewItem(
+        //   this.datastoreIds["取引DB"],
+        //   param
+        // );
       }
       this.initialDisplay();
       this.modal = false;
