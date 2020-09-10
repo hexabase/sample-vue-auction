@@ -1502,13 +1502,13 @@ export default {
         case "4":
           console.log(this.step);
           if (
-            (this.myNumberCardPicture1.length > 0 ||
+            (this.myNumberCardPicture1 ||
               this.myNumberCardPicture1FormData.get("file")) &&
-            // (this.myNumberCardPicture2.length > 0 ||
+            // (this.myNumberCardPicture2 ||
             //   this.myNumberCardPicture2FormData.get("file")) &&
-            (this.identityVerificationDocuments1.length > 0 ||
+            (this.identityVerificationDocuments1 ||
               this.identityVerificationDocuments1FormData.get("file")) //&&
-            // (this.identityVerificationDocuments2.length > 0 ||
+            // (this.identityVerificationDocuments2 ||
             //   this.identityVerificationDocuments2FormData.get("file"))
           ) {
             this.fileInfo.push(
