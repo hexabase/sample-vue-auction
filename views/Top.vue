@@ -6,9 +6,9 @@
         The marketplace for buying music royalties
       </p>
       <p class="heroHeader_text">ロイヤリティ共有プラットフォーム ”BATON”</p>
-      <router-link to="/about">
-        <a class="button-main">どんなサービス</a>
-      </router-link>
+      <a class="button-main" @click="scrollToHash('#about')">
+        どんなサービス
+      </a>
     </section>
     <section class="pickupAuction">
       <h3 class="contents_title">
@@ -191,7 +191,7 @@
         </ul>
       </div>
     </section>
-    <section class="about">
+    <section id="about" class="about">
       <div class="content">
         <h3 class="contents_title">
           <span class="contents_title-en">What is “Music royalty”</span>
@@ -205,15 +205,102 @@
             好きな音楽の著作権をオークション形式で落札してあなたのものに。<br />
             保有する権利で得られた利益が配当されます。権利は株式で分配されるので、少額から投資を始めることができます。
           </p>
-          <a class="button-main" href="">もっと詳しく</a>
         </div>
       </div>
+      <section class="aboutService about_sub">
+        <h4 class="about_subTitle">
+          <span class="about_subTitle-en">About Service</span>
+          <span class="about_subTitle-jp">どんなサービス？</span>
+        </h4>
+      </section>
+      <section class="aboutStep about_sub">
+        <h4 class="about_subTitle">
+          <span class="about_subTitle-en">Step</span>
+          <span class="about_subTitle-jp">始めるまでのステップ</span>
+        </h4>
+        <ol class="content aboutStep_list">
+          <li>
+            <div class="aboutStep_step">Step.<span>1</span></div>
+            <div class="aboutStep_title">新規登録を行う</div>
+            <figure class="aboutStep_img">
+              <img src="~@/assets/img/step1.png" alt="Step. 新規登録を行う" />
+            </figure>
+            <p class="aboutStep_text">
+              お客様のメールアドレスのみで簡単に登録できます。
+            </p>
+          </li>
+          <li>
+            <div class="aboutStep_step">Step.<span>2</span></div>
+            <div class="aboutStep_title">オンライン上で<br />必要書類提出</div>
+            <figure class="aboutStep_img">
+              <img
+                src="~@/assets/img/step2.png"
+                alt="Step.2 オンライン上で必要書類提出"
+              />
+            </figure>
+            <p class="aboutStep_text">
+              住所氏名、ご利用の金融機関など、必要な項目を入力し、本人確認資料とマイナンバーをご提示いただきます。
+            </p>
+          </li>
+          <li>
+            <div class="aboutStep_step">Step.<span>3</span></div>
+            <div class="aboutStep_title">オークション参加</div>
+            <figure class="aboutStep_img">
+              <img
+                src="~@/assets/img/step3.png"
+                alt="Step.3 オークション参加"
+              />
+            </figure>
+            <p class="aboutStep_text">
+              最短●営業日で審査が完了します。お客様のメールアドレスに「審査完了通知」を発送し、オークションの入札参加が可能になります。
+            </p>
+          </li>
+          <li>
+            <div class="aboutStep_step">Step.<span>4</span></div>
+            <div class="aboutStep_title">落札後に入金</div>
+            <figure class="aboutStep_img">
+              <img src="~@/assets/img/step4.png" alt="Step.4 落札後に入金" />
+            </figure>
+            <p class="aboutStep_text">
+              オークションで落札出来た後に「落札成功通知」のメールに記載している口座に振り込みを行っていただきます。
+            </p>
+          </li>
+          <li>
+            <div class="aboutStep_step">Step.<span>5</span></div>
+            <div class="aboutStep_title">著作権資産を保有</div>
+            <figure class="aboutStep_img">
+              <img
+                src="~@/assets/img/step5.png"
+                alt="Step.5 著作権資産を保有"
+              />
+            </figure>
+            <p class="aboutStep_text">
+              入金確認後に、「入金確認通知」を送信し、マイページから保有する著作権が確認できます。
+            </p>
+          </li>
+          <li>
+            <div class="aboutStep_step">Step.<span>6</span></div>
+            <div class="aboutStep_title">分配金を受取る</div>
+            <figure class="aboutStep_img">
+              <img src="~@/assets/img/step6.png" alt="Step.6 分配金を受取る" />
+            </figure>
+            <p class="aboutStep_text">
+              四半期ごとに、保有する著作権資産の分配金を受け取ることができます。
+            </p>
+          </li>
+        </ol>
+      </section>
     </section>
     <div class="indexFooter">
       <p class="indexFooter_text">
         あなたも、好きな音楽に投資を始めてみませんか
       </p>
-      <a class="button-action" href="">もっと詳しく</a>
+      <router-link v-if="!userId" to="/signin" class="button-action">
+        まずは新規登録
+      </router-link>
+      <router-link v-if="userId" to="/auctionlist" class="button-action">
+        取引中オークション
+      </router-link>
     </div>
   </div>
 </template>
@@ -304,6 +391,10 @@ export default {
       );
       this.updateMessage();
       setInterval(this.updateMessage, 1000);
+      const hash = this.$route.hash;
+      if (hash && hash.match(/^#.+$/)) {
+        this.scrollToHash(hash);
+      }
     } catch (e) {
       console.log(e);
     } finally {
@@ -404,6 +495,24 @@ export default {
         return order;
       });
       return _data;
+    },
+    scrollToHash(hash) {
+      let hashName = hash.replace("#", "");
+      let elmPosi = document.getElementById(hashName).getBoundingClientRect();
+      let headerHeight = window.innerWidth < 800 ? 40 : 80;
+      let hashY = elmPosi.top + window.pageYOffset - headerHeight;
+      if (this.auctionList.length > 0) {
+        let auctionListHeight = document
+          .getElementsByClassName("pickupAuction_list")[0]
+          .getBoundingClientRect();
+        if (auctionListHeight.height < 1) {
+          hashY = hashY + 330;
+        }
+      }
+      window.scrollTo({
+        top: hashY,
+        behavior: "smooth"
+      });
     }
   }
 };
