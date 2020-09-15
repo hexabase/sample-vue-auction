@@ -45,7 +45,7 @@
         </ValidationObserver>
       </v-form>
       <div class="loginBox_footer">
-        <v-checkbox v-model="checkbox" label="ログイン状態を保持"></v-checkbox>
+        <!-- <v-checkbox v-model="checkbox" label="ログイン状態を保持"></v-checkbox> -->
         <button type="submit" class="button-action" @click="signin">
           ログイン
         </button>
