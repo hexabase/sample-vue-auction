@@ -25,6 +25,10 @@
     align-items: center;
     justify-content: center;
 
+    @include max-screen($breakpoint-mobile) {
+        background-position: 20% 20px;
+    }
+
     .v-content & {
         @include max-screen($breakpoint-mobile) {
             height: calc(100vh - #{$header-height_mobile});
@@ -388,11 +392,11 @@
 }
 
 .about {
-    @extend %padding-contents;
+    padding-top: 80px;
     position: relative;
     text-align: left;
 
-    .content {
+    > .content {
         margin-top: -20px;
         background: url("~@/assets/img/top-about.jpg") no-repeat 0 40px;
         background-size: 50% auto;
@@ -455,10 +459,143 @@
         width: 200px;
     }
 
+    &_sub {
+        @extend %padding-contents;
+    }
+
+    &_subTitle {
+        margin-bottom: 80px;
+        text-align: center;
+
+        @include max-screen($breakpoint-tab) {
+            margin-bottom: 40px;
+        }
+
+        &-en {
+            font-size: 2rem;
+            font-family: $font-en;
+            font-weight: 300;
+            @extend %text-themeColor;
+        }
+
+        &-jp {
+            margin-top: 10px;
+            display: block;
+            font-size: 2.6rem;
+        }
+    }
+}
+
+.aboutService {
+    margin-top: 80px;
+    @extend %breakline-contents;
+
+}
+
+.aboutStep {
+    background: $color-bg;
+    
+    &_list {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+
+        @include max-screen($breakpoint-tab) {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        li {
+            position: relative;
+            flex: 1 1 30%;
+            max-width: 30%;
+            margin: 0 0 60px;
+            padding: 30px 25px 10px;
+            background: #fff;
+            box-shadow: 0 2px 5px rgba(#000, .2);
+            border-radius: $radius-box;
+            text-align: center;
+
+            @include max-screen($breakpoint-tab) {
+                width: 90%;
+                max-width: 600px;
+                margin-bottom: 40px;
+                padding: 20px 15px 10px;
+            }
+
+            &:not(:last-child)::after {
+                content: "";
+                position: absolute;
+                top: 50%;
+                right: -10%;
+                transform: rotate(45deg);
+                width: 20px;
+                height: 20px;
+                border-top: 2px solid #ccc;
+                border-right: 2px solid #ccc;
+
+                @include max-screen($breakpoint-tab) {
+                    top: calc(100% + 5px);
+                    right: calc(50% - 10px);;
+                    transform: rotate(135deg);
+                }
+            }
+        }
+    }
+
+    &_step {
+        margin-bottom: 20px;
+        color: $color-theme-left;
+        font-size: 2rem;
+        font-family: $font-en;
+
+        @include max-screen($breakpoint-tab) {
+            margin-bottom: 10px;
+        }
+
+        span {
+            font-size: 3rem;
+        }
+    }
+
+    &_title {
+        height: 3em;
+        line-height: 1.5;
+        font-size: 2rem;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        @include max-screen($breakpoint-tab) {
+            height: auto;
+
+            br {
+                display: none;
+            }
+        }
+    }
+
+    &_img {
+        width: 200px;
+        max-width: 100%;
+        margin: -5px auto 0;
+
+        @include max-screen($breakpoint-tab) {
+            margin-top: 0;
+        }
+    }
+
+    &_text {
+        margin-top: 0;
+        font-size: 1.4rem;
+        color: $color-text-sub;
+        text-align: left;
+        line-height: 1.6;
+    }
 }
 
 .indexFooter {
-    @extend %breakline-contents;
     @extend %padding-contents;
 
     &_text {

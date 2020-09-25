@@ -38,7 +38,16 @@
             <a href="" class="siteHeader_gnav_link">楽曲一覧</a>
           </li> -->
           <li>
-            <a href="" class="siteHeader_gnav_link">BATONについて</a>
+            <!-- <router-link
+              :to="{
+                path: '/',
+                hash: '#about'
+              }"
+            > -->
+            <a @click="gotoAbout">
+              BATONについて
+            </a>
+            <!-- </router-link> -->
           </li>
           <li>
             <a href="" class="siteHeader_gnav_link">Q&amp;A</a>
@@ -216,6 +225,18 @@ export default {
     calculateScrollY() {
       var scrollY = window.scrollY;
       this.isPagetop = scrollY == 0 ? true : false;
+    },
+    gotoAbout() {
+      if (this.$route.name === "top") {
+        let elmPosi = document.getElementById("about").getBoundingClientRect();
+        let headerHeight = window.innerWidth < 800 ? 60 : 80;
+        let hashY = elmPosi.top + window.pageYOffset - headerHeight;
+        window.scrollTo({
+          top: hashY,
+          behavior: "smooth"
+        });
+      }
+      this.$router.push("/#about");
     }
   }
 };
