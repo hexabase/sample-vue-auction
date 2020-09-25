@@ -313,8 +313,7 @@ export default {
   },
   methods: {
     async getAuctionList() {
-      return await this.$hexalink.getItems(
-        this.token,
+      return await this.$hexalink.getPublicItems(
         this.applicationId,
         this.datastoreIds["著作権DB"],
         {
