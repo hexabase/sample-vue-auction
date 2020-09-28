@@ -3,13 +3,13 @@ apiVersion: apps/v1
 metadata:
   name: syzygy
   labels:
+    app: syzygy
     component: microservice
-    role: syzygy
 spec:
   selector:
     matchLabels:
       app: syzygy
-      env: stg
+      component: microservice
   replicas: 2
   strategy:
     type: RollingUpdate
@@ -22,12 +22,12 @@ spec:
       name: syzygy
       labels:
         app: syzygy
-        env: stg
+        component: microservice
     spec:
       terminationGracePeriodSeconds: 600
       containers:
       - name: beee-syzygy
-        image: gcr.io/linker-testing/beee-syzygy
+        image: hexabase.azurecr.io/beee-syzygy
         readinessProbe:
           failureThreshold: 3
           successThreshold: 1
@@ -51,4 +51,4 @@ spec:
         - name: syzygy
           containerPort: 80
       nodeSelector:
-        cloud.google.com/gke-nodepool: default-pool
+        type: node00
