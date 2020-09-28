@@ -770,8 +770,7 @@ export default {
       }
     },
     async getAuctionBidList() {
-      return await this.$hexalink.getItems(
-        this.token,
+      return await this.$hexalink.getPublicItems(
         this.applicationId,
         this.datastoreIds["オークション入札状況DB"],
         {
@@ -794,8 +793,7 @@ export default {
       );
     },
     async getTransactionList() {
-      return await this.$hexalink.getItems(
-        this.token,
+      return await this.$hexalink.getPublicItems(
         this.applicationId,
         this.datastoreIds["取引DB"],
         {
@@ -818,8 +816,7 @@ export default {
       );
     },
     async getDistributionList() {
-      return await this.$hexalink.getItems(
-        this.token,
+      return await this.$hexalink.getPublicItems(
         this.applicationId,
         this.datastoreIds["著作権分配金マスタ"],
         {

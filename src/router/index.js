@@ -28,8 +28,7 @@ const routes = [
   {
     path: "/",
     name: "top",
-    component: Top,
-    meta: { requiresAuth: true }
+    component: Top
   },
   {
     path: "/registration",
@@ -59,8 +58,7 @@ const routes = [
   {
     path: "/auctionbid/:id",
     name: "AuctionBid",
-    component: AuctionBid,
-    meta: { requiresAuth: true }
+    component: AuctionBid
   },
   {
     path: "/trade",
@@ -70,22 +68,26 @@ const routes = [
   {
     path: "/mypage",
     name: "Mypage",
-    component: Mypage
+    component: Mypage,
+    meta: { requiresAuth: true }
   },
   {
     path: "/mycopyrights",
     name: "MyCopyrights",
-    component: MyCopyrights
+    component: MyCopyrights,
+    meta: { requiresAuth: true }
   },
   {
     path: "/wallet",
     name: "Wallet",
-    component: Wallet
+    component: Wallet,
+    meta: { requiresAuth: true }
   },
   {
     path: "/userinfo",
     name: "UserInfo",
-    component: UserInfo
+    component: UserInfo,
+    meta: { requiresAuth: true }
   },
   {
     path: "*",

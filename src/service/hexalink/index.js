@@ -149,6 +149,23 @@ export default {
         return result.data.items;
       },
       /**
+       * データストアに紐づくアイテムの一覧を取得
+       *
+       * @param {*} applicationId
+       * @param {*} datastoreId
+       * @param {*} params
+       * @returns
+       */
+      async getPublicItems(applicationId, datastoreId, params) {
+        let config = JSON.parse(JSON.stringify(defaultConfig));
+        const result = await axios.post(
+          `/linker-api/applications/${applicationId}/datastores/${datastoreId}/items/search`,
+          params,
+          config
+        );
+        return result.data.items;
+      },
+      /**
        * 検索結果の件数を取得
        *
        * @param {*} token

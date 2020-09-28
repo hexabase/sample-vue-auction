@@ -1032,12 +1032,6 @@
             :required="true"
           />
         </v-form>
-        <div v-if="!passwordSendResult" class="modalForm_complete">
-          <v-icon>mdi-checkbox-marked-circle-outline</v-icon>
-          <p class="modalForm_complete_text">
-            パスワードを変更しました。
-          </p>
-        </div>
         <template slot="footer">
           <Button
             class="button-action"
@@ -1047,6 +1041,20 @@
             変更する
           </Button>
         </template>
+      </MyModal>
+      <MyModal v-if="!passwordSendResult" class="modal-bid" @close="closeModal">
+        <template slot="title">パスワードの変更</template>
+        <div v-if="errorMess" class="error_msg">
+          <v-alert text color="red">
+            {{ errorMess }}
+          </v-alert>
+        </div>
+        <div class="modalForm_complete">
+          <v-icon>mdi-checkbox-marked-circle-outline</v-icon>
+          <p class="modalForm_complete_text">
+            パスワードを変更しました。
+          </p>
+        </div>
       </MyModal>
     </div>
   </div>

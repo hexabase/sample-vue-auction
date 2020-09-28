@@ -211,8 +211,7 @@ export default {
   },
   methods: {
     async getAuctionList(searchConditonApplicabilityOnHomepage) {
-      return await this.$hexalink.getItems(
-        this.token,
+      return await this.$hexalink.getPublicItems(
         this.applicationId,
         this.datastoreIds["著作権DB"],
         {
@@ -231,8 +230,7 @@ export default {
       );
     },
     async getClosedAuctionList() {
-      return await this.$hexalink.getItems(
-        this.token,
+      return await this.$hexalink.getPublicItems(
         this.applicationId,
         this.datastoreIds["著作権DB"],
         {
