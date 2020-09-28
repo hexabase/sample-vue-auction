@@ -29,7 +29,7 @@
 
     @include max-screen($breakpoint-mobile) {
         padding-top: 30px;
-        padding-bottom: 40px;
+        padding-bottom: 60px;
     }
 }
 
@@ -395,6 +395,10 @@
         padding: 0 10px;
         letter-spacing: 0;
 
+        @include max-screen($breakpoint-mobile) {
+            font-size: 1.4rem;
+        }
+
         &:not(.v-tab--active) {
             color: $color-theme-center !important;
         }
@@ -447,6 +451,7 @@
 
         @include max-screen($breakpoint-mobile) {
             flex-direction: column;
+            align-items: center;
         }
     }
 
@@ -464,6 +469,7 @@
     &_barChart,
     &_royalty {
         flex: 0 0 48%;
+        max-width: 48%;
         padding: 40px 10px;
         background: #fff;
         border: $border-default;
@@ -471,11 +477,18 @@
 
         @include max-screen($breakpoint-mobile) {
             margin: 0 20px 20px;
+            width: 90%;
+            max-width: 480px;
         }
     }
 
     &_subTitle {
         margin-bottom: 20px;
+    }
+
+    &_graph {
+        width: 80%;
+        margin: 0 auto;
     }
 
     &_totalList {

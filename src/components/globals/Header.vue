@@ -236,6 +236,7 @@ export default {
         });
       }
       this.$router.push("/#about");
+      this.toggleMenu();
     }
   }
 };
