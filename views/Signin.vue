@@ -50,7 +50,11 @@
           ログイン
         </button>
         <ul class="loginBox_link">
-          <li><a href="">パスワードを忘れたかた</a></li>
+          <li>
+            <router-link to="/forgotpassword">
+              パスワードを忘れたかた
+            </router-link>
+          </li>
           <li>
             <router-link to="/registration">
               新規登録
