@@ -49,7 +49,8 @@
       <div class="content">
         <h2 class="myCopyright_title">保有中の著作権</h2>
         <p class="myCopyright_lead">
-          販売したい曲がありましたら、その曲をクリックしてください
+          販売したい曲がありましたら、<br class="show-mobile" />
+          その曲をクリックしてください
         </p>
         <div class="myCopyright_wrap">
           <article

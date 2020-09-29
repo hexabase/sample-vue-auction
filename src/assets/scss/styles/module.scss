@@ -370,6 +370,11 @@
     border-radius: $radius-tab $radius-tab 0 0;
     line-height: 50px;
 
+    @include max-screen($breakpoint-mobile) {
+        max-width: calc(100vw - 20px);
+        width: auto;
+    }
+
     .v-tabs-bar {
         height: 60px;
     }
@@ -381,6 +386,10 @@
 
         a:last-child {
             border-top-right-radius: $radius-tab;
+        }
+
+        @include max-screen($breakpoint-mobile) {
+            width: 100%;
         }
     }
 
@@ -397,6 +406,7 @@
 
         @include max-screen($breakpoint-mobile) {
             font-size: 1.4rem;
+            width: auto;
         }
 
         &:not(.v-tab--active) {
@@ -588,6 +598,13 @@
     }
 }
 
+.hide-mobile {
+    display: block;
+    
+    @include max-screen($breakpoint-mobile) {
+        display: none;
+    }
+}
 
 // parallax
 .parallax-window {
@@ -731,6 +748,7 @@ body {
         flex: 0 0 1.5%;
         min-width: 10px;
         max-width: 80px;
+        border-color: #ccc;
     }
 
     .mark-alert {
@@ -790,7 +808,7 @@ body {
             .v-stepper__label {
                 font-size: 1.5rem;
                 font-weight: 500;
-                color: $color-text-default;
+                color: $color-vuetify-primary;
             }
 
             .v-stepper__step__step{
@@ -820,20 +838,25 @@ body {
     }
 
     &--alt-labels {
-       .v-stepper__step {
+        .v-stepper__step {
             flex-basis: 6.5em;
             white-space: normal;
-       }
+        }
 
-       .v-stepper__label {
-           margin: -5px 0;
-           text-align: center;
-       }
+        .v-stepper__label {
+            margin: -5px 0;
+            text-align: center;
+        }
 
-       .v-stepper__header .v-divider {
-           margin-right: -10px;
-           margin-left: -10px;
-       }
+        .v-stepper__header .v-divider {
+            margin-right: -10px;
+            margin-left: -10px;
+        }
+
+        .mark-alert {
+            right: calc(50% - 14px);
+            top: 24px;
+        }
     }
 }
 

@@ -7,7 +7,7 @@
       </h1>
       <p v-if="!sendResult" class="loginBox_lead">
         登録URLをメールで通知します。<br />
-        BATONで利用するメールアドレスを入力し<br />
+        BATONで利用するメールアドレスを入力し<br class="hide-mobile" />
         送信してください。
       </p>
       <div v-if="errorMess != ''" class="error_msg">
