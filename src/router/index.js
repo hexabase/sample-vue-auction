@@ -4,6 +4,8 @@ import Store from "../store/index";
 import Top from "../../views/Top.vue";
 import Registration from "../../views/Registration.vue";
 import Signup from "../../views/Signup.vue";
+import ForgotPassword from "../../views/ForgotPassword.vue";
+import ResetPassword from "../../views/ResetPassword.vue";
 import Signin from "../../views/Signin.vue";
 import AuctionList from "../../views/AuctionList.vue";
 import ClosedAuction from "../../views/ClosedAuction.vue";
@@ -39,6 +41,16 @@ const routes = [
     path: "/signup/:id",
     name: "signup",
     component: Signup
+  },
+  {
+    path: "/forgotpassword",
+    name: "ForgotPassword",
+    component: ForgotPassword
+  },
+  {
+    path: "/resetpassword",
+    name: "ResetPassword",
+    component: ResetPassword
   },
   {
     path: "/signin",

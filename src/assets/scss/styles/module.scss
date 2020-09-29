@@ -98,6 +98,13 @@
         font-size: 1.4rem;
     }
 
+    &-single {
+        display: block;
+        font-size: 2.4rem;
+        font-weight: normal;
+        @extend %text-themeColor;
+    }
+
     @include max-screen($breakpoint-mobile) {
         margin-bottom: 30px;
     }

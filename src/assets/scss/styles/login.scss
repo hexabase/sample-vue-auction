@@ -50,7 +50,7 @@
         }
 
         .v-form {
-            min-height: 100px;
+            min-height: 60px;
 
             @include max-screen($breakpoint-mobile) {
                 min-height: 60px;
