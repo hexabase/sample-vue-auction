@@ -2,30 +2,25 @@
   <v-row align="center" justify="center" class="login">
     <div class="loginBox">
       <h1 class="contents_title">
-        <span class="contents_title-en">Login</span>
-        <span class="contents_title-jp">ログイン</span>
+        <span class="contents_title-single">パスワード再設定</span>
       </h1>
+      <p v-if="!confirmUserFlag" class="loginBox_lead">
+        新しいパスワードを入力してください。
+      </p>
       <div v-if="errorMess != ''" class="error_msg">
         <v-alert text color="red">
           {{ errorMess }}
+          <!-- MEMO: 200レスポンスエラー種類：
+          ・!res.data の場合
+           「リクエストを検証できませんでした」
+          ・res.data.accessed === true の場合
+           「既に使用済みのリンクです。再度「パスワードを忘れた方」のリンクをクリックしてください。」
+          ・res.data.isElapsed === true の場合
+           「リンクの有効期限が切れています。再度「パスワードを忘れた方」のリンクをクリックしてください。」 -->
         </v-alert>
       </div>
-      <v-form>
+      <v-form v-if="!confirmUserFlag">
         <ValidationObserver ref="signin" v-slot="{}">
-          <validation-provider
-            ref="address"
-            v-slot="{ errors }"
-            name="メールアドレス"
-            rules="required|email"
-          >
-            <v-text-field
-              v-model="email"
-              type="text"
-              placeholder="メールアドレス"
-              :error-messages="errors"
-              required
-            />
-          </validation-provider>
           <validation-provider
             ref="password"
             v-slot="{ errors }"
@@ -34,33 +29,48 @@
           >
             <v-text-field
               v-model="password"
-              :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-              :type="show1 ? 'text' : 'password'"
               placeholder="パスワード"
               :error-messages="errors"
               required
+              :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+              :type="show1 ? 'text' : 'password'"
               @click:append="show1 = !show1"
+            />
+          </validation-provider>
+          <validation-provider
+            ref="password2"
+            v-slot="{ errors }"
+            name="パスワード(確認)"
+            rules="required"
+          >
+            <v-text-field
+              v-model="rePassword"
+              placeholder="パスワード(確認)"
+              :error-messages="errors"
+              required
+              :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
+              :type="show2 ? 'text' : 'password'"
+              hint="※確認のためパスワードを再入力してください"
+              @click:append="show2 = !show2"
             />
           </validation-provider>
         </ValidationObserver>
       </v-form>
-      <div class="loginBox_footer">
-        <!-- <v-checkbox v-model="checkbox" label="ログイン状態を保持"></v-checkbox> -->
-        <button type="submit" class="button-action" @click="signin">
-          ログイン
+      <div v-if="confirmUserFlag" class="loginBox_complete">
+        <v-icon>mdi-checkbox-marked-circle-outline</v-icon>
+        <p class="loginBox_lead">
+          新しいパスワードを設定しました！<br />ログイン画面に移動します...
+        </p>
+      </div>
+      <div v-if="!confirmUserFlag" class="loginBox_footer">
+        <button
+          type="submit"
+          class="button-action"
+          :disabled="disabled"
+          @click="getConfirmUser"
+        >
+          パスワードを設定
         </button>
-        <ul class="loginBox_link">
-          <li>
-            <router-link to="/forgotpassword">
-              パスワードを忘れたかた
-            </router-link>
-          </li>
-          <li>
-            <router-link to="/registration">
-              新規登録
-            </router-link>
-          </li>
-        </ul>
       </div>
     </div>
   </v-row>
@@ -68,16 +78,25 @@
 
 <script>
 import common from "@/components/mixin/common";
+import moment from "moment";
 
 export default {
   name: "Signin",
   mixins: [common],
   data() {
     return {
+      token: this.$store.getters["auth/getToken"], //ここは共通Tokenに書き換える
       email: "",
+      userName: "",
       password: "",
+      rePassword: "",
       errorMess: "",
-      show1: false
+      show1: false,
+      show2: false,
+      getConfirmUserData: {},
+      confirmationId: "",
+      confirmUserFlag: false,
+      disabled: false
     };
   },
   /**
@@ -85,23 +104,49 @@ export default {
    */
   created: async function() {
     this.$store.commit("common/setLoading", false);
+    this.confirmationId = this.$route.params.id;
+    try {
+      this.getConfirmUserData = await this.$hexalink.getConfirmUserData(
+        this.confirmationId
+      );
+      this.email = this.getConfirmUserData.data.user.email;
+    } catch (e) {
+      this.errorMess = "ユーザ確認中にエラーが発生しました。";
+      this.disabled = true;
+    }
   },
   methods: {
     click() {
       alert("click!");
     },
-    async signin() {
+    async getConfirmUser() {
+      if (this.password !== this.rePassword) {
+        this.errorMess = "確認用パスワードが一致していません";
+        return;
+      }
+      const params = {
+        confirmation_id: this.confirmationId,
+        email: this.getConfirmUserData.data.user.email,
+        username: this.userName,
+        password: this.password
+      };
+      const confirmUser = await this.$hexalink.confirmUser(params);
+      if (confirmUser.status == 200) {
+        this.confirmUserFlag = true;
+        console.log(confirmUser.data.token);
+        // ログイン処理
+        await this.signin(confirmUser.data.token);
+      } else {
+        this.errorMess = "登録エラーが発生しました。";
+      }
+    },
+    async signin(token) {
       this.errorMess = "";
-      // loading overlay表示
-      this.$store.commit("common/setLoading", true);
-
       try {
         // バリデーションの実装
         if (!this.$refs.signin.validate()) {
           throw "バリデーションエラー";
         }
-        // Authトークンの取得
-        const token = await this.$hexalink.login(this.email, this.password);
 
         // Hexalink UserInfoの取得
         const userInfo = await this.$hexalink.getUserInfo(token);
@@ -122,6 +167,21 @@ export default {
         datastores.forEach(datastore => {
           datastoreIds[datastore.name] = datastore.datastore_id;
         });
+
+        // ユーザDB登録処理
+        let setData = {};
+        setData["hexaID"] = userInfo.data.u_id;
+        setData["ユーザ名"] = this.userName;
+        setData["Email"] = this.getConfirmUserData.data.user.email;
+        setData["加入日"] = moment();
+
+        let userDBparam = {};
+        userDBparam["item"] = setData;
+        const insertResult = await this.insertNewItem(
+          datastoreIds["ユーザDB"],
+          userDBparam,
+          token
+        );
 
         // ユーザ名の取得
         const userName = await this.$hexalink.getCurrentUserName(token);
@@ -200,14 +260,24 @@ export default {
         this.$store.commit("datas/setFields", fields);
         this.$router.push("/");
       } catch (e) {
-        const { status, statusText } = e.response;
-        console.log(`Error! HTTP Status: ${status} ${statusText}`);
-        if (this.$refs.signin.validate()) {
-          this.errorMess = "メールアドレスもしくはパスワードが違います。";
-        }
-      } finally {
-        this.$store.commit("common/setLoading", false);
+        this.errorMess = "ログイン処理中にエラーが発生しました。";
       }
+    },
+    // 新規Itemを作成します
+    async insertNewItem(datasotreId, param, token) {
+      const applicationId = this.$store.getters["datas/getApplicationId"];
+      var result = {};
+      try {
+        result = await this.$hexalink.createNewItem(
+          token,
+          applicationId,
+          datasotreId,
+          param
+        );
+      } catch {
+        result = {};
+      }
+      return result;
     }
   }
 };

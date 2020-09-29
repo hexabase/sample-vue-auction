@@ -361,6 +361,7 @@ body {
         .siteHeader_userNav-tablet {
             display: none;
             margin-top: 60px;
+            margin-bottom: 60px;
 
             @include max-screen($breakpoint-tab) {
                 display: block;
@@ -483,6 +484,12 @@ body {
             font-size: 2.2rem;
             line-height: 1.8;
             letter-spacing: .1em;
+
+            @include max-screen($breakpoint-mobile) {
+                font-size: 1.8rem;
+                letter-spacing: 0;
+                text-shadow: 0 0 3px #fff;
+            }
         }
     }
 

@@ -191,22 +191,26 @@
           <section class="trend_barChart">
             <h3 class="trend_subTitle">最近5年間の著作権料</h3>
             <!-- <img src="~@/assets/img/auction-detail-graph1.png" alt="" /> -->
-            <Chart
-              v-if="loaded"
-              :data="chart1.data"
-              :options="chart1.options"
-            ></Chart>
+            <div class="trend_graph">
+              <Chart
+                v-if="loaded"
+                :data="chart1.data"
+                :options="chart1.options"
+              ></Chart>
+            </div>
           </section>
           <section class="trend_royalty">
             <h3 class="trend_subTitle">
               最近12ヶ月の著作権料
             </h3>
             <!-- <img src="~@/assets/img/auction-detail-graph2.png" alt="" /> -->
-            <Chart
-              v-if="loaded"
-              :data="chart2.data"
-              :options="chart2.options"
-            ></Chart>
+            <div class="trend_graph">
+              <Chart
+                v-if="loaded"
+                :data="chart2.data"
+                :options="chart2.options"
+              ></Chart>
+            </div>
           </section>
         </div>
       </div>
@@ -581,7 +585,8 @@ export default {
                 gridLines: {
                   display: false,
                   drawBorder: false
-                }
+                },
+                barPercentage: 0.5
               }
             ],
             yAxes: [
