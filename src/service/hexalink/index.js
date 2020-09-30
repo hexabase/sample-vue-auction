@@ -520,6 +520,17 @@ export default {
         return result;
       },
       /*
+       * パスワード再登録
+       * @param {*} param
+       */
+      async setNewPassword(param) {
+        const result = await axios.put(
+          `/linker-api/users/password/forgot`,
+          param
+        );
+        return result;
+      },
+      /*
        * ログイン後、パスワード更新
        * @param {*} param
        */
