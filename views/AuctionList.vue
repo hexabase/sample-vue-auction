@@ -99,6 +99,7 @@
 </template>
 <script>
 import moment from "moment-timezone";
+import mapping from "@/assets/json/auctionDBMapping.json";
 export default {
   data() {
     return {
@@ -106,6 +107,7 @@ export default {
       pageSize: 4,
       length: 0,
       token: this.$store.getters["auth/getToken"],
+      mapping: JSON.parse(JSON.stringify(mapping)),
       applicationId: this.$store.getters["datas/getApplicationId"],
       datasotreIdList: this.$store.getters["datas/getDatastores"],
       datastoreIds: this.$store.getters["datas/getDatastoreIds"],
@@ -119,9 +121,9 @@ export default {
       // loading overlay表示
       this.$store.commit("common/setLoading", true);
       var searchConditions = await this.$hexalink.getItemSearchConditions(
-        this.token,
-        this.applicationId,
-        this.datastoreIds["著作権DB"]
+        this.mapping.persistenceToken,
+        this.mapping.applicationId,
+        this.mapping.table.著作権DB
       );
       var searchConditonApplicabilityOnHomepage = "";
       for (const conditionKey in searchConditions) {
@@ -152,9 +154,8 @@ export default {
         return diff > 0;
       });
       var auctionBidReport = {};
-      auctionBidReport = await this.$hexalink.getReports(
-        this.token,
-        this.applicationId,
+      auctionBidReport = await this.$hexalink.getPublicReports(
+        this.mapping.applicationId,
         "5ec76bffaa8a6c0007136f92",
         {
           conditions: []
@@ -163,7 +164,10 @@ export default {
       for (const listKey in this.auctionList) {
         const image1Binary = this.auctionList[listKey].image1;
         if (image1Binary) {
-          const ab = await this.$hexalink.getFile(this.token, image1Binary);
+          const ab = await this.$hexalink.getFile(
+            this.mapping.persistenceToken,
+            image1Binary
+          );
           const blob = new Blob([ab], { type: "image/jpeg" });
           this.auctionList[listKey].image1 = window.URL.createObjectURL(blob);
         } else {
@@ -212,8 +216,8 @@ export default {
   methods: {
     async getAuctionList(searchConditonApplicabilityOnHomepage) {
       return await this.$hexalink.getPublicItems(
-        this.applicationId,
-        this.datastoreIds["著作権DB"],
+        this.mapping.applicationId,
+        this.mapping.table.著作権DB,
         {
           conditions: [
             {
@@ -231,8 +235,8 @@ export default {
     },
     async getClosedAuctionList() {
       return await this.$hexalink.getPublicItems(
-        this.applicationId,
-        this.datastoreIds["著作権DB"],
+        this.mapping.applicationId,
+        this.mapping.table.著作権DB,
         {
           conditions: [
             {

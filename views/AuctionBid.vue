@@ -423,7 +423,6 @@
 </template>
 <script>
 import mapping from "@/assets/json/auctionDBMapping.json";
-import DatabaseSchema from "@/assets/json/DBSchema.json";
 import MyModal from "./MyModal.vue";
 import moment from "moment-timezone";
 import Chart from "@/components/parts/Chart.vue";
@@ -437,7 +436,6 @@ export default {
       cancelModal: false,
       page: 1,
       mapping: JSON.parse(JSON.stringify(mapping)),
-      DBSchema: JSON.parse(JSON.stringify(DatabaseSchema)),
       token: this.$store.getters["auth/getToken"],
       applicationId: this.$store.getters["datas/getApplicationId"],
       datasotreIdList: this.$store.getters["datas/getDatastores"],
@@ -735,34 +733,40 @@ export default {
             "まで入札可）";
           return false;
         }
-        this.myAuctionBidList = await this.getAuctionBidList();
-        this.myTransactionList = await this.getTransactionList();
-        if (this.displayBidResultFlag) {
-          if (
-            Number(this.bidPrice) < Number(this.myAuctionBidList[0].入札金額)
-          ) {
-            this.alertMessage =
-              "前回の入札価格より少ない入札価格では入札できません。※キャンセル（回数制限有）から入札は可能です";
-            return false;
-          } else if (
-            Number(this.bidPrice) ==
-              Number(this.myAuctionBidList[0].入札金額) &&
-            Number(this.bidAmount) < Number(this.myAuctionBidList[0].数量)
-          ) {
-            this.alertMessage =
-              "前回の数量より少ない数量では入札できません。※キャンセル（回数制限有）から入札は可能です";
-            return false;
-          } else if (
-            Number(this.bidPrice) ==
-              Number(this.myAuctionBidList[0].入札金額) &&
-            Number(this.bidAmount) == Number(this.myAuctionBidList[0].数量)
-          ) {
-            this.alertMessage = "前回と同じ入札価格・数量では入札できません。";
-            return false;
+        if (this.userId) {
+          this.myAuctionBidList = await this.getAuctionBidList();
+          this.myTransactionList = await this.getTransactionList();
+          if (this.displayBidResultFlag) {
+            if (
+              Number(this.bidPrice) < Number(this.myAuctionBidList[0].入札金額)
+            ) {
+              this.alertMessage =
+                "前回の入札価格より少ない入札価格では入札できません。※キャンセル（回数制限有）から入札は可能です";
+              return false;
+            } else if (
+              Number(this.bidPrice) ==
+                Number(this.myAuctionBidList[0].入札金額) &&
+              Number(this.bidAmount) < Number(this.myAuctionBidList[0].数量)
+            ) {
+              this.alertMessage =
+                "前回の数量より少ない数量では入札できません。※キャンセル（回数制限有）から入札は可能です";
+              return false;
+            } else if (
+              Number(this.bidPrice) ==
+                Number(this.myAuctionBidList[0].入札金額) &&
+              Number(this.bidAmount) == Number(this.myAuctionBidList[0].数量)
+            ) {
+              this.alertMessage =
+                "前回と同じ入札価格・数量では入札できません。";
+              return false;
+            }
           }
+          this.alertMessage = "";
+          this.modal = true;
+        } else {
+          // ログインしていないユーザ
+          alert("入札は会員登録後、ログインしてから行えます。");
         }
-        this.alertMessage = "";
-        this.modal = true;
       } else {
         this.cancelModal = true;
       }
@@ -776,8 +780,8 @@ export default {
     },
     async getAuctionBidList() {
       return await this.$hexalink.getPublicItems(
-        this.applicationId,
-        this.datastoreIds["オークション入札状況DB"],
+        this.mapping.applicationId,
+        this.mapping.table.オークション入札状況DB,
         {
           conditions: [
             {
@@ -799,8 +803,8 @@ export default {
     },
     async getTransactionList() {
       return await this.$hexalink.getPublicItems(
-        this.applicationId,
-        this.datastoreIds["取引DB"],
+        this.mapping.applicationId,
+        this.mapping.table.取引DB,
         {
           conditions: [
             {
@@ -822,8 +826,8 @@ export default {
     },
     async getDistributionList() {
       return await this.$hexalink.getPublicItems(
-        this.applicationId,
-        this.datastoreIds["著作権分配金マスタ"],
+        this.mapping.applicationId,
+        this.mapping.table.著作権分配金マスタ,
         {
           conditions: [
             {
@@ -1204,10 +1208,9 @@ export default {
           this.displayBidResultFlag = false;
         }
         var dataLists = [];
-        dataLists = await this.$hexalink.getItems(
-          this.token,
-          this.applicationId,
-          this.datastoreIds["著作権DB"],
+        dataLists = await this.$hexalink.getPublicItems(
+          this.mapping.applicationId,
+          this.mapping.table.著作権DB,
           {
             conditions: [
               {
@@ -1295,7 +1298,10 @@ export default {
 
         const image1Binary = dataLists[0].image1;
         if (image1Binary) {
-          const ab = await this.$hexalink.getFile(this.token, image1Binary);
+          const ab = await this.$hexalink.getFile(
+            this.mapping.persistenceToken,
+            image1Binary
+          );
           const blob = new Blob([ab], { type: "image/jpeg" });
           this.image1 = window.URL.createObjectURL(blob);
         } else {
@@ -1313,9 +1319,8 @@ export default {
         }
 
         var auctionLists = [];
-        auctionLists = await this.$hexalink.getReports(
-          this.token,
-          this.applicationId,
+        auctionLists = await this.$hexalink.getPublicReports(
+          this.mapping.applicationId,
           "5ea69310206c0d0006e494ab",
           {
             conditions: [

@@ -968,9 +968,9 @@
         @close="() => (cahangeMailModal = false)"
       >
         <template slot="title">メールアドレスの変更</template>
-        <div v-if="false" class="error_msg">
+        <div v-if="errorMess" class="error_msg">
           <v-alert text color="red">
-            {{ errorMess }}すでにそのメールアドレスは登録されています
+            {{ errorMess }}
           </v-alert>
         </div>
         <v-form class="modalForm">
@@ -980,15 +980,20 @@
               {{ email }}
             </div>
           </div>
-          <FormPassfield
+          <!-- <FormPassfield
             v-model="oldPassword"
             title="現在のパスワード"
             placeholder="個人情報保護のためパスワード確認"
             :required="true"
-          />
+          /> -->
           <FormTextfield
             v-model="newEmail"
             title="新しいメールアドレス"
+            :required="true"
+          />
+          <FormTextfield
+            v-model="reNewEmail"
+            title="確認用メールアドレス"
             :required="true"
           />
         </v-form>
@@ -1105,6 +1110,7 @@ export default {
       errorMess: "",
       email: this.$store.getters["user/getEmail"],
       newEmail: "",
+      reNewEmail: "",
       confirmPassword: "",
       newPassword: "",
       oldPassword: "",
@@ -1200,7 +1206,7 @@ export default {
         : true;
     },
     mailAddressChangeDisable() {
-      return this.newEmail ? false : true;
+      return this.newEmail && this.reNewEmail ? false : true;
     },
     userNameJudgment() {
       return this.userBankAccountHolderKana.replace(/\s+/g, "") ==
@@ -1735,14 +1741,26 @@ export default {
       }
     },
     async setMailAddress() {
-      let params = JSON.stringify({
-        email: this.newEmail
-        // registration_path:
-      });
-      const result = await this.$hexalink.setMailAddress(this.token, params);
+      if (
+        this.newEmail.match(
+          /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+        )
+      ) {
+        if (this.newEmail !== this.reNewEmail) {
+          this.errorMess = "確認用メールアドレスが一致していません";
+          return;
+        }
+        let params = JSON.stringify({
+          email: this.newEmail
+          // registration_path:
+        });
+        const result = await this.$hexalink.setMailAddress(this.token, params);
+        this.errorMess = "";
+      } else {
+        this.errorMess = "メールアドレスを入力してください";
+      }
     },
     closeModal() {
-      console.log("test");
       this.confirmPassword = "";
       this.newPassword = "";
       this.oldPassword = "";

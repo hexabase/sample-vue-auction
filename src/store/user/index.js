@@ -15,6 +15,7 @@ const defaultState = {
   name: "",
   email: "",
   hexaID: "",
+  membershipNumber: "",
   isAdmin: false
 };
 /**

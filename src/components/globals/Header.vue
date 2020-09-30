@@ -216,7 +216,7 @@ export default {
       await this.$hexalink.logout(this.token);
       this.$store.commit("auth/stateInit");
       this.$store.commit("datas/stateInit");
-      this.token = "";
+      this.$store.commit("user/stateInit");
       this.$router.push("/signin");
     },
     toggleMenu() {

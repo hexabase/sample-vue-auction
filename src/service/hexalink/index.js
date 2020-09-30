@@ -279,6 +279,19 @@ export default {
         return result.data;
       },
       /**
+       * Public APIでファイルを取得
+       *
+       * @param {*} fileId
+       * @returns
+       */
+      async getPublicFile(fileId) {
+        let config = JSON.parse(JSON.stringify(defaultConfig));
+        config.headers["content-type"] = "text/plain";
+        config["responseType"] = "arraybuffer";
+        const result = await axios.get(`/linker-api/files/${fileId}`, config);
+        return result.data;
+      },
+      /**
        * 新規アイテムを作成
        *
        * @param {*} token
@@ -585,6 +598,23 @@ export default {
       async getReports(token, applicationId, reportId, params) {
         let config = JSON.parse(JSON.stringify(defaultConfig));
         config.headers["Authorization"] = `Bearer ${token}`;
+        const result = await axios.post(
+          `/linker-api/applications/${applicationId}/reports/${reportId}/filter`,
+          params,
+          config
+        );
+        return result.data;
+      },
+      /**
+       * データレポートに紐づく一覧をPublic APIで取得
+       *
+       * @param {*} applicationId
+       * @param {*} reportId
+       * @param {*} params
+       * @returns
+       */
+      async getPublicReports(applicationId, reportId, params) {
+        let config = JSON.parse(JSON.stringify(defaultConfig));
         const result = await axios.post(
           `/linker-api/applications/${applicationId}/reports/${reportId}/filter`,
           params,

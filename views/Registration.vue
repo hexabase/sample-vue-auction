@@ -142,10 +142,10 @@ export default {
             invitation_path: "signup"
           });
           this.sendResult = await this.$hexalink.inviteUser(this.token, params);
-          console.log(this.sendResult);
+          this.errorMess = "";
         }
       } else {
-        alert("メールアドレスを入力してください");
+        this.errorMess = "メールアドレスを入力してください";
       }
     },
     async signin() {
