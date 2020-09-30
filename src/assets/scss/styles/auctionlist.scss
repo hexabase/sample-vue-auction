@@ -91,6 +91,11 @@
                 display: flex;
                 flex-wrap: wrap;
                 padding: 0;
+
+                @include max-screen($breakpoint-mobile) {
+                    margin: 0 -1% 30px;
+                    flex-direction: column;
+                }
             }
     
             &_item {
@@ -100,22 +105,59 @@
                 padding: 15px;
                 border: $border-default;
 
+                @include max-screen($breakpoint-mobile) {
+                    width: 100%;
+                    max-width: 100%;
+                    margin: -1px 0 0;
+                    padding: 15px 10px;
+                    height: 90px;
+                    box-sizing: border-box;
+                    flex: 1 1 auto;
+                }
+        
                 &:hover {
                     border-color: $color-theme-center;
                 }
 
                 &_img {
                     margin: -15px -15px 20px;
+
+                    @include max-screen($breakpoint-mobile) {
+                        margin: -15px 15px -15px -10px;
+                        width: 90px;
+                        height: 90px;
+                        float: left;
+
+                        img {
+                            height: 100%;
+                            width: auto;
+                            object-fit: cover;
+                        }
+                    }
                 }
 
                 &_title {
                     margin-bottom: 10px;
                     font-size: 1.5rem;
+
+                    @include max-screen($breakpoint-mobile) {
+                        margin-bottom: 5px;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                    }
+                }
+
+                &_artist {
+                    @include max-screen($breakpoint-mobile) {
+                        margin-bottom: 10px;
+                        font-size: 1.2rem;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                    }
                 }
             }
-
-
         }
     }
-
 }

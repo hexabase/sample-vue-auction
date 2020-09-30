@@ -37,16 +37,24 @@
 
         @include max-screen($breakpoint-mobile) {
             margin: 20px 0;
-            padding: 20px 10%;
+            padding: 20px 10% 40px;
 
         }
 
         .contents_title {
             margin-bottom: 40px;
+
+            @include max-screen($breakpoint-mobile) {
+                margin-bottom: 20px;
+            }
         }
 
         .v-form {
-            min-height: 100px;
+            min-height: 60px;
+
+            @include max-screen($breakpoint-mobile) {
+                min-height: 60px;
+            }
         }
 
         .button-action {
@@ -64,6 +72,10 @@
         &_link {
             margin-top: 40px;
             font-size: 1.2rem;
+
+            @include max-screen($breakpoint-mobile) {
+                margin-top: 20px;
+            }
 
             li {
                 display: inline-block;
@@ -96,6 +108,10 @@
 
         &_footer {
             margin-top: 40px;
+
+            @include max-screen($breakpoint-mobile) {
+                margin-top: 10px;
+            }
         }
     }
 

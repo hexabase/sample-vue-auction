@@ -99,6 +99,10 @@
         display: flex;
         // flex-wrap: nowrap;
         justify-content: center;
+
+        @include max-screen($breakpoint-mobile) {
+            margin-bottom: 40px;
+        }
     }
 
     &_item {
@@ -111,6 +115,10 @@
         + .pickupAuction_item {
             margin-left: 3%;
         }
+
+        @include max-screen($breakpoint-mobile) {
+            margin: 0 3%;
+        }
     }
 
     &_img {
@@ -119,6 +127,10 @@
 
         &:hover {
             opacity: .8;
+        }
+
+        @include max-screen($breakpoint-mobile) {
+            margin-bottom: 8px;
         }
 
         figcaption {
@@ -164,12 +176,21 @@
         font-size: 1.6rem;
         font-weight: bold;
         // @extend .text_ellipsis;
+
+        @include max-screen($breakpoint-mobile) {
+            padding-bottom: 5px;
+        }
+
     }
 
     &_artist {
         margin-bottom: 15px;
         font-size: 1.2rem;
         color: $color-text-lightgray;
+
+        @include max-screen($breakpoint-mobile) {
+            margin-bottom: 5px;
+        }
     }
 
     &_price, &_stock {
@@ -396,6 +417,10 @@
     position: relative;
     text-align: left;
 
+    @include max-screen($breakpoint-mobile) {
+        padding-top: 40px;
+    }
+
     > .content {
         margin-top: -20px;
         background: url("~@/assets/img/top-about.jpg") no-repeat 0 40px;
@@ -414,7 +439,7 @@
 
         @include max-screen($breakpoint-mobile) {
             margin: 0 -1%;
-            padding: 25px 10px 10px;
+            padding: 0 10px 10px;
             background: #FFF;
             text-align: center;
         }
@@ -453,6 +478,12 @@
     &_text {
         margin-bottom: 30px;
         line-height: 2;
+
+        @include max-screen($breakpoint-mobile) {
+            margin: 0 10px;
+            line-height: 1.8;
+            text-align: left;
+        }
     }
 
     .button-main {
@@ -490,6 +521,9 @@
     margin-top: 80px;
     @extend %breakline-contents;
 
+    @include max-screen($breakpoint-mobile) {
+        margin-top: 40px;
+    }
 }
 
 .aboutStep {

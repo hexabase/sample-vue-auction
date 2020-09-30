@@ -29,7 +29,7 @@
 
     @include max-screen($breakpoint-mobile) {
         padding-top: 30px;
-        padding-bottom: 40px;
+        padding-bottom: 60px;
     }
 }
 
@@ -96,6 +96,13 @@
     &-jp {
         display: block;
         font-size: 1.4rem;
+    }
+
+    &-single {
+        display: block;
+        font-size: 2.4rem;
+        font-weight: normal;
+        @extend %text-themeColor;
     }
 
     @include max-screen($breakpoint-mobile) {
@@ -370,6 +377,11 @@
     border-radius: $radius-tab $radius-tab 0 0;
     line-height: 50px;
 
+    @include max-screen($breakpoint-mobile) {
+        max-width: calc(100vw - 20px);
+        width: auto;
+    }
+
     .v-tabs-bar {
         height: 60px;
     }
@@ -381,6 +393,10 @@
 
         a:last-child {
             border-top-right-radius: $radius-tab;
+        }
+
+        @include max-screen($breakpoint-mobile) {
+            width: 100%;
         }
     }
 
@@ -394,6 +410,11 @@
         font-size: 1.5rem;
         padding: 0 10px;
         letter-spacing: 0;
+
+        @include max-screen($breakpoint-mobile) {
+            font-size: 1.4rem;
+            width: auto;
+        }
 
         &:not(.v-tab--active) {
             color: $color-theme-center !important;
@@ -447,6 +468,7 @@
 
         @include max-screen($breakpoint-mobile) {
             flex-direction: column;
+            align-items: center;
         }
     }
 
@@ -464,6 +486,7 @@
     &_barChart,
     &_royalty {
         flex: 0 0 48%;
+        max-width: 48%;
         padding: 40px 10px;
         background: #fff;
         border: $border-default;
@@ -471,11 +494,18 @@
 
         @include max-screen($breakpoint-mobile) {
             margin: 0 20px 20px;
+            width: 90%;
+            max-width: 480px;
         }
     }
 
     &_subTitle {
         margin-bottom: 20px;
+    }
+
+    &_graph {
+        width: 80%;
+        margin: 0 auto;
     }
 
     &_totalList {
@@ -575,6 +605,13 @@
     }
 }
 
+.hide-mobile {
+    display: block;
+    
+    @include max-screen($breakpoint-mobile) {
+        display: none;
+    }
+}
 
 // parallax
 .parallax-window {
@@ -718,6 +755,7 @@ body {
         flex: 0 0 1.5%;
         min-width: 10px;
         max-width: 80px;
+        border-color: #ccc;
     }
 
     .mark-alert {
@@ -777,7 +815,7 @@ body {
             .v-stepper__label {
                 font-size: 1.5rem;
                 font-weight: 500;
-                color: $color-text-default;
+                color: $color-vuetify-primary;
             }
 
             .v-stepper__step__step{
@@ -807,20 +845,25 @@ body {
     }
 
     &--alt-labels {
-       .v-stepper__step {
+        .v-stepper__step {
             flex-basis: 6.5em;
             white-space: normal;
-       }
+        }
 
-       .v-stepper__label {
-           margin: -5px 0;
-           text-align: center;
-       }
+        .v-stepper__label {
+            margin: -5px 0;
+            text-align: center;
+        }
 
-       .v-stepper__header .v-divider {
-           margin-right: -10px;
-           margin-left: -10px;
-       }
+        .v-stepper__header .v-divider {
+            margin-right: -10px;
+            margin-left: -10px;
+        }
+
+        .mark-alert {
+            right: calc(50% - 14px);
+            top: 24px;
+        }
     }
 }
 

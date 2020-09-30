@@ -94,6 +94,13 @@
         &_search {
             margin-bottom: 40px;
 
+            @include max-screen($breakpoint-mobile) {
+                margin: 0 15px 40px;
+                padding: 10px 0 40px;
+                border: $border-default;;
+                border-radius: $radius-box
+            }
+
             .button-main {
                 width: 180px;
                 height: 40px;
@@ -142,6 +149,18 @@
                 width: 180px;
                 max-width: 180px;
                 margin: 0 5px;
+
+                @include max-screen($breakpoint-mobile) {
+                    width: 100px;
+
+                    .v-text-field__slot {
+                        width: calc(100% + 10px);
+                    }
+
+                    input {
+                        font-size: 16px;
+                    }
+                }    
             }
 
             .v-text-field--outlined .v-input__slot {
@@ -176,11 +195,35 @@
                 font-size: 13px;
                 padding: 0 10px;
 
+                @include max-screen($breakpoint-mobile) {
+                    height: 44px;
+                    padding: 0 6px;
+                    letter-spacing: -0.05em;
+                }
+
                 &.v-btn:first-child {
                     padding-left: 20px;
                 }
                 &.v-btn:last-child {
                     padding-right: 20px;
+                }
+            }
+
+            .v-input.v-input--radio-group {
+                @include max-screen($breakpoint-mobile) {
+                    margin-top: 0;
+                    padding-top: 0;
+                }
+
+                .v-radio {
+                    @include max-screen($breakpoint-mobile) {
+                        flex: 0 0 100%;
+                        margin: 0;
+
+                        & + .v-radio {
+                            margin-top: 10px;
+                        }
+                    }
                 }
             }
 
@@ -255,6 +298,11 @@
         &_lead {
             margin-bottom: 60px;
             @extend .section_lead;
+            line-height: 1.6;
+
+            @include max-screen($breakpoint-mobile) {
+                margin: 0 20px 20px;
+            }
         }
 
         &_wrap {

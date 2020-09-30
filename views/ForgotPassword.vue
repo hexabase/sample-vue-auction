@@ -2,13 +2,11 @@
   <v-row align="center" justify="center" class="login">
     <div class="loginBox">
       <h1 class="contents_title">
-        <span class="contents_title-en">Join BATON!</span>
-        <span class="contents_title-jp">新規会員登録</span>
+        <span class="contents_title-single">パスワードを忘れた方</span>
       </h1>
       <p v-if="!sendResult" class="loginBox_lead">
-        登録URLをメールで通知します。<br />
-        BATONで利用するメールアドレスを入力し<br class="hide-mobile" />
-        送信してください。
+        ご登録いただいているメールアドレスを入力し送信してください。<br />
+        メールにてパスワード再設定をご案内します。
       </p>
       <div v-if="errorMess != ''" class="error_msg">
         <v-alert text color="red">
@@ -36,12 +34,17 @@
       <div v-if="sendResult" class="loginBox_complete">
         <v-icon>mdi-checkbox-marked-circle-outline</v-icon>
         <p class="loginBox_lead">
-          {{ email }}宛に登録URLを送信しました。<br />
-          メールをご確認ください。
+          パスワード変更用のメールを送信しました。<br />
+          メールに記載されたURLからパスワードの再設定を行ってください。
         </p>
       </div>
-      <div v-if="!sendResult" class="loginBox_footer">
-        <button type="submit" class="button-action" @click="inviteUser">
+      <div class="loginBox_footer">
+        <button
+          v-if="!sendResult"
+          type="submit"
+          class="button-action"
+          @click="inviteUser"
+        >
           送信する
         </button>
         <ul class="loginBox_link">
@@ -69,9 +72,7 @@ export default {
   mixins: [common],
   data() {
     return {
-      // token: this.$store.getters["auth/getToken"],
-      token:
-        "eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjI1NDU4Nzk3NjcsImlhdCI6MTU5OTc5OTc2Nywic3ViIjoiNWU5Njc5ODhmNDE3MTEwMDA2ZTczMGJmIiwidW4iOiIifQ.gZDQqrVXa2mOlMDjk2cJ6FEsEYDpVb4JDYBEQiVvXGD7TXC9AuiRlpLfCtqiKw5cxMxOeKBr91LCS1QfiT03ZwSBlmZldPBuMFZFNj3vtsye3GvgHad7oVXRP5xWE0lP32Q8h7Gkqhg2Hzhwpe1qQKyQDV8kV0CIvPolgNLWE7ypeO0jBuaykAn9jxr0xIr1k4kjtrhPf4fZSPzz_r45GK7Yury13bSzxXtrVk7KbBtCkLl7QyM-uskJoSQ_Sk_vYJeCB0hm_worw7PdK4kXivyMcblOyzQa7frEOgjadRH1Njd4O7DtQDeZL0nrNAR-EGreE9RnDEoDoNuOYWrEvA",
+      token: this.$store.getters["auth/getToken"],
       applicationId: this.$store.getters["datas/getApplicationId"],
       datasotreIdList: this.$store.getters["datas/getDatastores"],
       datastoreIds: this.$store.getters["datas/getDatastoreIds"],
@@ -93,11 +94,10 @@ export default {
       alert("click!");
     },
     async getUserDB(email) {
-      console.log(this.token);
       return await this.$hexalink.getItems(
         this.token,
         this.applicationId,
-        "5ef2f6d9f2d7d2000680b3b1",
+        this.datastoreIds["ユーザDB"],
         {
           conditions: [
             {
