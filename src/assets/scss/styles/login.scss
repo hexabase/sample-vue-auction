@@ -115,6 +115,25 @@
         }
     }
 
+    .updateEmail {
+        &_mail {
+            margin: 10px 0 20px;
+            padding: 15px 5px;
+            border: $border-default;
+            border-radius: $radius-box;
+            background: $color-bg-thin;
+        }
+
+        &_text {
+            margin: 40px 0 0;
+            font-size: 1.3rem;
+        }
+
+        .loginBox_complete {
+            margin-bottom: 20px;
+        }
+    }
+
     .error_msg {
         margin: 10px 0;
         color: $color-error;

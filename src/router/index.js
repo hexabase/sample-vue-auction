@@ -6,6 +6,7 @@ import Registration from "../../views/Registration.vue";
 import Signup from "../../views/Signup.vue";
 import ForgotPassword from "../../views/ForgotPassword.vue";
 import ResetPassword from "../../views/ResetPassword.vue";
+import UpdateEmail from "../../views/updateEmail.vue";
 import Signin from "../../views/Signin.vue";
 import AuctionList from "../../views/AuctionList.vue";
 import ClosedAuction from "../../views/ClosedAuction.vue";
@@ -51,6 +52,11 @@ const routes = [
     path: "/reset_password/:id",
     name: "ResetPassword",
     component: ResetPassword
+  },
+  {
+    path: "/updateemail",
+    name: "UpdateEmail",
+    component: UpdateEmail
   },
   {
     path: "/signin",

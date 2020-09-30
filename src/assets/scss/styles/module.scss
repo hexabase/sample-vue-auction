@@ -505,7 +505,12 @@
 
     &_graph {
         width: 80%;
+        max-height: 300px;
         margin: 0 auto;
+    }
+
+    .chartjs-render-monitor {
+        max-height: 280px;
     }
 
     &_totalList {
