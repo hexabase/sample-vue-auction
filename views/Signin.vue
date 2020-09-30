@@ -208,13 +208,6 @@ export default {
       } finally {
         this.$store.commit("common/setLoading", false);
       }
-    },
-    async resetPassword() {
-      let param = {
-        email: this.email, //パスワードをリセットしたいユーザーのemail 必須
-        host: "https://az.hexabase.com" //例：https://stg.xxxxxx.com 必須
-      };
-      const result = await this.$hexalink.resetPassword(param);
     }
   }
 };
