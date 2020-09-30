@@ -13,7 +13,7 @@
         このメールアドレスに変更してよろしいですか。
       </p>
       <p class="updateEmail_mail">{sample@mail.address}</p>
-      <v-form v-if="!confirmUserFlag">
+      <!-- <v-form v-if="!confirmUserFlag">
         <ValidationObserver ref="signin" v-slot="{}">
           <validation-provider
             ref="password"
@@ -35,7 +35,7 @@
             />
           </validation-provider>
         </ValidationObserver>
-      </v-form>
+      </v-form> -->
       <div v-if="confirmUserFlag" class="loginBox_complete">
         <v-icon>mdi-checkbox-marked-circle-outline</v-icon>
         <p class="loginBox_lead">
