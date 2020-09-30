@@ -14,7 +14,13 @@
           <p class="balance_price">100,000</p>
           <ul class="balance_link">
             <li>
-              <button class="button-action">＋&nbsp;入金する</button>
+              <button
+                class="button-action"
+                @mouseover="paymentMouseover"
+                @mouseleave="paymentMouseleave"
+              >
+                {{ paymentMessage }}
+              </button>
             </li>
             <li>
               <button class="button-action">−&nbsp;出金する</button>
@@ -162,7 +168,8 @@ export default {
           amount: "50",
           price: "200,000"
         }
-      ]
+      ],
+      paymentMessage: "＋ 入金する"
     };
   },
   created: async function() {},
@@ -185,7 +192,14 @@ export default {
     );
     this.desserts = auctionLists.report_results;
   },
-  methods: {}
+  methods: {
+    paymentMouseover: function() {
+      this.paymentMessage = "Comming soon";
+    },
+    paymentMouseleave: function() {
+      this.paymentMessage = "＋ 入金する";
+    }
+  }
 };
 </script>
 

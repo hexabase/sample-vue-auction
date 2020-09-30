@@ -999,7 +999,11 @@
           </p>
         </div>
         <template slot="footer">
-          <Button class="button-action" :disabled="true" @click="null">
+          <Button
+            class="button-action"
+            :disabled="mailAddressChangeDisable"
+            @click="setMailAddress"
+          >
             変更する
           </Button>
         </template>
@@ -1194,6 +1198,9 @@ export default {
       return this.confirmPassword && this.newPassword && this.oldPassword
         ? false
         : true;
+    },
+    mailAddressChangeDisable() {
+      return this.newEmail ? false : true;
     },
     userNameJudgment() {
       return this.userBankAccountHolderKana.replace(/\s+/g, "") ==
@@ -1726,6 +1733,13 @@ export default {
       } else {
         this.errorMess = "";
       }
+    },
+    async setMailAddress() {
+      let params = JSON.stringify({
+        email: this.newEmail
+        // registration_path:
+      });
+      const result = await this.$hexalink.setMailAddress(this.token, params);
     },
     closeModal() {
       console.log("test");
