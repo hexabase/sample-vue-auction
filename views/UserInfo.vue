@@ -1751,8 +1751,8 @@ export default {
           return;
         }
         let params = JSON.stringify({
-          email: this.newEmail
-          // registration_path:
+          email: this.newEmail,
+          registration_path: "https://az-baton.hexabase.com/updateemail"
         });
         const result = await this.$hexalink.setMailAddress(this.token, params);
         this.errorMess = "";

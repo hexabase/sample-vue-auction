@@ -54,7 +54,7 @@ const routes = [
     component: ResetPassword
   },
   {
-    path: "/updateemail",
+    path: "/updateemail/:id",
     name: "UpdateEmail",
     component: UpdateEmail
   },
