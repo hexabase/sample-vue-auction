@@ -50,7 +50,7 @@
           ログイン
         </button>
         <ul class="loginBox_link">
-          <li><a href="">パスワードを忘れたかた</a></li>
+          <li><a href="#" @click="resetPassword">パスワードを忘れたかた</a></li>
           <li>
             <router-link to="/registration">
               新規登録
@@ -204,6 +204,13 @@ export default {
       } finally {
         this.$store.commit("common/setLoading", false);
       }
+    },
+    async resetPassword() {
+      let param = {
+        email: this.email, //パスワードをリセットしたいユーザーのemail 必須
+        host: "https://az.hexabase.com" //例：https://stg.xxxxxx.com 必須
+      };
+      const result = await this.$hexalink.resetPassword(param);
     }
   }
 };

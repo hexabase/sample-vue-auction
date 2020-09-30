@@ -509,6 +509,17 @@ export default {
         return result;
       },
       /*
+       * パスワード初期化リクエスト
+       * @param {*} param
+       */
+      async resetPassword(param) {
+        const result = await axios.post(
+          `/linker-api/users/password/forgot`,
+          param
+        );
+        return result;
+      },
+      /*
        * ログイン後、パスワード更新
        * @param {*} param
        */
@@ -517,6 +528,20 @@ export default {
         config.headers["Authorization"] = `Bearer ${token}`;
         const result = await axios.put(
           `/linker-api/users/password`,
+          param,
+          config
+        );
+        return result;
+      },
+      /*
+       * ログイン後、メールアドレス更新
+       * @param {*} param
+       */
+      async setMailAddress(token, param) {
+        let config = JSON.parse(JSON.stringify(defaultConfig));
+        config.headers["Authorization"] = `Bearer ${token}`;
+        const result = await axios.post(
+          `/linker-api/users/email`,
           param,
           config
         );
