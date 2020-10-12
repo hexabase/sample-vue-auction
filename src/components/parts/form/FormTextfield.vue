@@ -7,6 +7,7 @@
     <div class="formItem_body">
       <ValidationProvider v-slot="{ errors }" :name="title" :rules="valrule">
         <v-text-field
+          v-model="text"
           dense
           outlined
           single-line
@@ -19,6 +20,7 @@
           :hint="hint"
           @input="inputValue"
           @blur="handleBlur"
+          :counter="counter"
         ></v-text-field>
       </ValidationProvider>
     </div>
@@ -27,6 +29,11 @@
 
 <script>
 export default {
+  data() {
+    return {
+      text: this.value
+    };
+  },
   props: {
     title: {
       type: String,
@@ -56,6 +63,10 @@ export default {
     valrule: {
       type: String,
       default: ""
+    },
+    counter: {
+      type: Number,
+      default: null
     },
     hint: {
       type: String,

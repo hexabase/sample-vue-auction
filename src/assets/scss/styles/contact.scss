@@ -1,0 +1,39 @@
+@charset "UTF-8";
+@import "../utils/variables.scss";
+@import "../utils/functions.scss";
+
+/* mypage */
+#page_contact {
+    .pageHeader {
+        &_img {
+            background: url("~@/assets/img/bg-contact.jpg") no-repeat center center;
+            background-size: cover;
+            backdrop-filter: none;
+        }
+        .content {
+            height: 180px;
+        }
+    }
+
+    .contactForm {
+        @extend %padding-contents;
+
+        &_title {
+            margin-bottom: 40px;
+            font-size: 2.4rem;
+            font-weight: normal;
+        }
+
+        &_text {
+            font-size: 1.5rem;
+            line-height: 1.6;
+            color: $color-text-darkgray;
+
+            a {
+                text-decoration: underline;
+                color: $color-text-darkgray;
+            }
+        }
+    }
+}
+
