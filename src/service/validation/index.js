@@ -90,7 +90,7 @@ const address = {
 };
 // 文字数カウント
 const doubleCount = {
-  message: "{_field_}は{str}以下の文字数で入力してください。",
+  message: "{_field_}は{str}文字以下で入力してください。",
   params: ["str"],
   changed: false,
   dirty: false,

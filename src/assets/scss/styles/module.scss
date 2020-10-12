@@ -193,24 +193,48 @@
         border-color: $border-input-focus;
     }
 }
-.v-text-field--outlined fieldset {
-    border: $border-input;
-    border-radius: $radius-form;
-    padding: 5px 10px;
-    transition: all 0.3s;
-    color: $color-text-sub;
 
-    &:hover {
-        border: $border-input-hover;
+.v-input {
+    .v-input__slot {
+        margin-bottom: 5px;
     }
+    
+    .v-messages {
+        min-height: 0;
+            
+        .v-messages__message {
+            margin-bottom: 10px;
+        }
+    }
+}
 
-    &:focus {
+.v-text-field--outlined {
+    fieldset {
+        border: $border-input;
+        border-radius: $radius-form;
+        padding: 5px 10px;
+        transition: all 0.3s;
+        color: $color-text-sub;
+
+        &:hover {
+            border: $border-input-hover;
+        }
+
+        &:focus {
+            border: $border-input-focus;
+        }
+
+        // $border-input-hover: 1px solid #888;
+        // $border-input-focus: 1px solid $color-theme-center;
+    }
+    
+    &.v-input--is-focused fieldset {
         border: $border-input-focus;
     }
-
-    // $border-input-hover: 1px solid #888;
-    // $border-input-focus: 1px solid $color-theme-center;
-
+    
+    &.error--text fieldset {
+        border: $border-input-error;
+    }
 }
 
 .v-list-item__title {

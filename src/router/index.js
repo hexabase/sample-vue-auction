@@ -16,6 +16,7 @@ import Mypage from "../../views/Mypage.vue";
 import MyCopyrights from "../../views/MyCopyrights.vue";
 import Wallet from "../../views/Wallet.vue";
 import UserInfo from "../../views/UserInfo.vue";
+import Contact from "../../views/Contact.vue";
 import NotFound from "../../views/NotFound.vue";
 import Index from "../../views/Index.vue";
 
@@ -107,6 +108,11 @@ const routes = [
     name: "UserInfo",
     component: UserInfo,
     meta: { requiresAuth: true }
+  },
+  {
+    path: "/contact",
+    name: "Contact",
+    component: Contact
   },
   {
     path: "*",

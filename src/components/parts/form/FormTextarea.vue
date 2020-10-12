@@ -5,16 +5,24 @@
       <span v-if="required" class="formItem_required">※</span>
     </div>
     <div class="formItem_body">
-      <validation-provider v-slot="{ errors }" :name="title" :rules="valrule">
+      <validation-provider
+        v-slot="{ errors, valid }"
+        :name="title"
+        :rules="valrule"
+      >
         <v-textarea
-          counter
-          no-resize
+          v-model="textarea"
           outlined
+          auto-grow
           :rows="rows"
+          :counter="counter"
           :value="value"
-          :disabled="!editable"
+          :hint="hint"
+          :readonly="!editable"
           :error-messages="errors"
+          :success="valid"
           @input="inputValue"
+          @blur="handleBlur"
         ></v-textarea>
       </validation-provider>
     </div>
@@ -23,6 +31,11 @@
 
 <script>
 export default {
+  data() {
+    return {
+      textarea: this.value
+    };
+  },
   props: {
     title: {
       type: String,
@@ -45,6 +58,14 @@ export default {
       type: String,
       default: "1"
     },
+    counter: {
+      type: Number,
+      default: null
+    },
+    hint: {
+      type: String,
+      default: undefined
+    },
     value: {
       type: String,
       default: ""
@@ -57,6 +78,9 @@ export default {
   methods: {
     inputValue: function(e) {
       this.$emit("input", e);
+    },
+    handleBlur: function(e) {
+      this.$emit("blur", e);
     }
   }
 };
