@@ -113,7 +113,10 @@
                   イベントニュース
                 </div>
                 <div class="mailSettings_item_body">
-                  <v-switch></v-switch>
+                  <v-switch
+                    :input-value="mailMagazine"
+                    @change="switchMailMagazine"
+                  ></v-switch>
                 </div>
               </div>
             </div>
@@ -962,11 +965,7 @@
           </Button>
         </template>
       </MyModal>
-      <MyModal
-        v-if="cahangeMailModal"
-        class="modal-bid"
-        @close="() => (cahangeMailModal = false)"
-      >
+      <MyModal v-if="cahangeMailModal" class="modal-bid" @close="closeModal">
         <template slot="title">メールアドレスの変更</template>
         <div v-if="errorMess" class="error_msg">
           <v-alert text color="red">
@@ -997,10 +996,10 @@
             :required="true"
           />
         </v-form>
-        <div v-if="false" class="modalForm_complete">
+        <div v-if="!mailSendResult" class="modalForm_complete">
           <v-icon>mdi-checkbox-marked-circle-outline</v-icon>
           <p class="modalForm_complete_text">
-            メールアドレスを変更しました。
+            メールアドレス変更申請を行いました。
           </p>
         </div>
         <template slot="footer">
@@ -1115,6 +1114,7 @@ export default {
       newPassword: "",
       oldPassword: "",
       passwordSendResult: "default",
+      mailSendResult: "default",
       countries: [],
       userInfo: [],
       fileInfo: [],
@@ -1161,6 +1161,7 @@ export default {
       userBankAccountNumber: "",
       userBankAccountHolderKana: "",
       approvedFlag: false,
+      mailMagazine: false,
       checkedAgreements: [],
       userDBMapping: {
         男性: "a9b8e4d5-7597-42c5-9253-449d18f8debc",
@@ -1290,6 +1291,7 @@ export default {
         this.userBankAccountTypeConfirm = this.userInfo[0].口座種類
           ? this.userInfo[0].口座種類
           : "普通";
+        this.mailMagazine = this.userInfo[0].メールマガジン === "希望する";
         console.log(this.userBankAccountType);
         this.userBankAccountNumber = this.userInfo[0].口座番号
           ? this.userInfo[0].口座番号
@@ -1727,7 +1729,7 @@ export default {
       );
     },
     async setPassword() {
-      let params = JSON.stringify({
+      const params = JSON.stringify({
         confirm_password: this.confirmPassword,
         new_password: this.newPassword,
         old_password: this.oldPassword
@@ -1750,15 +1752,40 @@ export default {
           this.errorMess = "確認用メールアドレスが一致していません";
           return;
         }
-        let params = JSON.stringify({
-          email: this.newEmail,
-          registration_path: "https://az-baton.hexabase.com/updateemail"
-        });
-        const result = await this.$hexalink.setMailAddress(this.token, params);
-        this.errorMess = "";
+        try {
+          const params = JSON.stringify({
+            email: this.newEmail,
+            registration_path: "https://az-baton.hexabase.com/updateemail"
+          });
+          const result = await this.$hexalink.setMailAddress(
+            this.token,
+            params
+          );
+          this.mailSendResult = JSON.parse(result.request.response).error;
+          this.errorMess = "";
+        } catch (e) {
+          this.errorMess = "メールアドレス変更申請時にエラーが発生しました";
+        }
       } else {
         this.errorMess = "メールアドレスを入力してください";
       }
+    },
+    async switchMailMagazine(e) {
+      console.log(e);
+      const result = await this.updatedDataItem(
+        this.datastoreIds["ユーザDB"],
+        this.userInfo[0].i_id,
+        {
+          changes: [
+            {
+              id: "メールマガジン",
+              value: e ? "希望する" : "希望しない"
+            }
+          ],
+          use_display_id: true,
+          is_force_update: true
+        }
+      );
     },
     closeModal() {
       this.confirmPassword = "";
@@ -1767,6 +1794,8 @@ export default {
       this.errorMess = "";
       this.passwordSendResult = "default";
       this.cahangePasswordModal = false;
+      this.mailSendResult = "default";
+      this.cahangeMailModal = false;
     },
     emittedNameKanji(value) {
       console.log("漢字：", value);

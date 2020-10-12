@@ -16,6 +16,7 @@
     "ken-all": "^0.2.1",
     "moment": "^2.27.0",
     "moment-timezone": "^0.5.31",
+    "pdfmake": "^0.1.68",
     "sanitize-html": "^1.27.0",
     "vee-validate": "^3.3.5",
     "vue": "^2.6.10",

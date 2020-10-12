@@ -11,7 +11,7 @@
       <div class="content">
         <h3 class="balance_title">残高</h3>
         <div class="balance_box">
-          <p class="balance_price">100,000</p>
+          <p class="balance_price">{{ deposits }}</p>
           <ul class="balance_link">
             <li>
               <button
@@ -23,7 +23,12 @@
               </button>
             </li>
             <li>
-              <button class="button-action">−&nbsp;出金する</button>
+              <button
+                class="button-action"
+                @click="() => (withdrawalModal = true)"
+              >
+                −&nbsp;出金する
+              </button>
             </li>
           </ul>
         </div>
@@ -78,10 +83,7 @@
           </dl>
           <button class="button-main">照会する</button>
         </div>
-        <div
-          class="transaction_result"
-          @click="$router.push('/auctionbid?id=著作権番号2')"
-        >
+        <div class="transaction_result">
           <template>
             <v-data-table
               :headers="transactionHeaders"
@@ -91,14 +93,64 @@
             ></v-data-table>
           </template>
         </div>
+        <!-- <PdfDownload></PdfDownload> -->
       </div>
     </section>
+
+    <!-- modal -->
+    <div class="modal_wrapper">
+      <MyModal v-if="withdrawalModal" class="modal-bid" @close="closeModal">
+        <template slot="title">出金確認</template>
+        <div v-if="errorMess" class="error_msg">
+          <v-alert text color="red">
+            {{ errorMess }}
+          </v-alert>
+        </div>
+        <v-form class="modalForm">
+          <FormPassfield
+            v-model="password"
+            title="確認パスワード"
+            placeholder="個人情報保護のためパスワード確認"
+            :required="true"
+          />
+          <FormTextfield
+            v-model="withdrawalValue"
+            title="出金額"
+            :required="true"
+          />
+        </v-form>
+        <div v-if="withdrawalSendResult" class="modalForm_complete">
+          <v-icon>mdi-checkbox-marked-circle-outline</v-icon>
+          <p class="modalForm_complete_text">
+            出金申請を行いました。
+          </p>
+        </div>
+        <template slot="footer">
+          <Button
+            class="button-action"
+            :disabled="withdrawalChangeDisable"
+            @click="doWithdrawal"
+          >
+            出金する
+          </Button>
+        </template>
+      </MyModal>
+    </div>
   </div>
 </template>
 <script>
-// import FormCalendar from "../src/components/parts/form/FormCalendar.vue";
+import FormPassfield from "@/components/parts/form/FormPassfield.vue";
+import FormTextfield from "@/components/parts/form/FormTextfield.vue";
+import MyModal from "./MyModal.vue";
+import moment from "moment-timezone";
+// import PdfDownload from "@/components/pdf/PdfDownload.vue";
 export default {
-  // components: { FormCalendar },
+  components: {
+    FormPassfield,
+    FormTextfield,
+    MyModal
+    // PdfDownload
+  },
   data() {
     return {
       page: 1,
@@ -108,13 +160,14 @@ export default {
       datasotreIdList: this.$store.getters["datas/getDatastores"],
       datastoreIds: this.$store.getters["datas/getDatastoreIds"],
       userId: this.$store.getters["user/getMembershipNumber"],
+      email: this.$store.getters["user/getEmail"],
       period: 4,
       searchTarget: "",
       searchTargetItems: ["全体", "あああ"],
       searchOrder: "",
       transactionHeaders: [
         { text: "リクエスト日", value: "7c4e5d10-5fc4-4cff-81d4-de54d0fad1c8" },
-        { text: "内訳", value: "2bb5e16c-939b-44ec-bc31-01da0e5da77c" },
+        { text: "内訳", value: "4215764f-8b26-4ec1-b67f-ec90faf741a6" },
         { text: "曲名", value: "f3495cb9-aa68-43c0-98c7-4c0a8448c946" },
         { text: "歌手", value: "69b91c69-3231-4956-a34e-c6bd737fd206" },
         { text: "単価", value: "1023791c-f698-4314-af98-2a8a732c0474" },
@@ -169,28 +222,77 @@ export default {
           price: "200,000"
         }
       ],
-      paymentMessage: "＋ 入金する"
+      paymentMessage: "＋ 入金する",
+      errorMess: "",
+      password: "",
+      withdrawalModal: false,
+      withdrawalValue: "",
+      withdrawalSendResult: "",
+      userItemId: "",
+      deposits: 0,
+      tax: 1.1,
+      fee: 500
     };
+  },
+  computed: {
+    withdrawalChangeDisable() {
+      return this.password && this.withdrawalValue ? false : true;
+    }
   },
   created: async function() {},
   mounted: async function() {
-    let auctionLists = [];
-    auctionLists = await this.$hexalink.getReports(
-      this.token,
-      this.applicationId,
-      "5f0c013ccd0bb1000697e685",
-      {
+    try {
+      // loading overlay表示
+      this.$store.commit("common/setLoading", true);
+      // ユーザ残高を取得
+      const params = {
         conditions: [
           {
-            rpf_id: "0877fa61-b085-4df3-a184-9761d73db9ae",
-            search_value: [this.userId]
+            id: "会員番号",
+            search_value: [this.userId],
+            exact_match: true
           }
         ],
-        sort_field_id: "7c4e5d10-5fc4-4cff-81d4-de54d0fad1c8",
-        sort_order: "asc"
-      }
-    );
-    this.desserts = auctionLists.report_results;
+        page: 1,
+        per_page: 1,
+        use_display_id: true,
+        sort_field_id: "created_at",
+        sort_order: "desc"
+      };
+      const userInfo = await this.$hexalink.getItems(
+        this.token,
+        this.applicationId,
+        this.datastoreIds["ユーザDB"],
+        params
+      );
+      this.deposits = userInfo[0].残高 ? this.changeYen(userInfo[0].残高) : 0;
+      this.depositsNumber = userInfo[0].残高 ? Number(userInfo[0].残高) : 0;
+      this.userItemId = userInfo[0].i_id;
+
+      // 取引履歴を取得
+      const auctionLists = await this.$hexalink.getReports(
+        this.token,
+        this.applicationId,
+        "5f0c013ccd0bb1000697e685",
+        {
+          conditions: [
+            {
+              rpf_id: "0877fa61-b085-4df3-a184-9761d73db9ae",
+              search_value: [this.userId],
+              exact_match: true
+            }
+          ],
+          sort_field_id: "7c4e5d10-5fc4-4cff-81d4-de54d0fad1c8",
+          sort_order: "asc"
+        }
+      );
+      this.desserts = auctionLists.report_results;
+    } catch (e) {
+      console.log(e);
+    } finally {
+      // loading overlay非表示
+      this.$store.commit("common/setLoading", false);
+    }
   },
   methods: {
     paymentMouseover: function() {
@@ -198,6 +300,141 @@ export default {
     },
     paymentMouseleave: function() {
       this.paymentMessage = "＋ 入金する";
+    },
+    closeModal() {
+      this.password = "";
+      this.withdrawalValue = "";
+      this.errorMess = "";
+      this.withdrawalSendResult = "";
+      this.withdrawalModal = false;
+    },
+    async doWithdrawal() {
+      let token = "";
+      try {
+        token = await this.$hexalink.login(this.email, this.password);
+      } catch {
+        this.errorMess = "パスワードが一致しません。";
+      }
+      if (token) {
+        if (
+          !Number.isInteger(Number(this.withdrawalValue)) ||
+          Number(this.withdrawalValue) === 0
+        ) {
+          console.log(this.withdrawalValue);
+          this.errorMess = "出金額は0より大きい整数を入力してください";
+          return;
+        }
+        const withdrawalValueDeposits =
+          Number(this.depositsNumber) - Number(this.withdrawalValue);
+        if (withdrawalValueDeposits - this.fee * this.tax < 0) {
+          this.errorMess =
+            "残高を超えての出金申請は行えません（手数料" +
+            this.fee * this.tax +
+            "円がかかります）";
+          return;
+        }
+        try {
+          // loading overlay表示
+          this.$store.commit("common/setLoading", true);
+          // 取引DBにレコード登録
+          let setData = {};
+          setData["タイプ"] = "1b9ccc50-7013-4045-8a56-45e0420bf1ba";
+          setData["取引日"] = moment();
+          setData["会員番号"] = this.userId;
+          setData["著作権番号"] = "‐";
+          setData["取引単価"] = Number(this.withdrawalValue);
+          setData["取引総額"] = Number(this.withdrawalValue);
+
+          let param = {};
+          param["item"] = setData;
+          const withdrawalInsertResult = await this.insertNewItem(
+            this.datastoreIds["取引DB"],
+            param
+          );
+          // ユーザDBの残高更新
+          const depositsUpdateResult = await this.updatedDataItem(
+            this.datastoreIds["ユーザDB"],
+            this.userItemId,
+            {
+              history: {
+                comment: "出金申請"
+              },
+              changes: [
+                {
+                  id: "残高",
+                  value: withdrawalValueDeposits
+                }
+              ],
+              use_display_id: true,
+              is_force_update: true
+            }
+          );
+          this.deposits = this.changeYen(withdrawalValueDeposits);
+          this.errorMess = "";
+          this.withdrawalSendResult =
+            withdrawalInsertResult && depositsUpdateResult;
+          this.withdrawalValue = "";
+          this.password = "";
+        } catch (e) {
+          this.errorMess = "出金申請時にエラーが発生しました。";
+        } finally {
+          // loading overlay非表示
+          this.$store.commit("common/setLoading", false);
+        }
+      }
+    },
+    // 新規Itemを作成します
+    async insertNewItem(datasotreId, param) {
+      const token = this.$store.getters["auth/getToken"];
+      const applicationId = this.$store.getters["datas/getApplicationId"];
+      var result = {};
+      try {
+        result = await this.$hexalink.createNewItem(
+          token,
+          applicationId,
+          datasotreId,
+          param
+        );
+      } catch {
+        result = {};
+      }
+      return result;
+    },
+    // データアイテムを更新します
+    async updatedDataItem(datasotreId, itemId, payload) {
+      const applicationId = this.$store.getters["datas/getApplicationId"];
+      const token = this.$store.getters["auth/getToken"];
+      return await this.$hexalink.editItem(
+        token,
+        applicationId,
+        datasotreId,
+        itemId,
+        payload
+      );
+    },
+    changeYen(num) {
+      if (!num) return 0;
+      return String(num)
+        .split("")
+        .reverse()
+        .join("")
+        .match(/\d{1,3}/g)
+        .join(",")
+        .split("")
+        .reverse()
+        .join("");
+    },
+    checkDigits(event) {
+      if (
+        event.target.value.length > event.target.max.length - 1 &&
+        event.keyCode !== 8 &&
+        event.keyCode !== 46 &&
+        event.keyCode !== 37 &&
+        event.keyCode !== 39 &&
+        event.keyCode !== 9
+      ) {
+        event.preventDefault();
+      }
     }
   }
 };

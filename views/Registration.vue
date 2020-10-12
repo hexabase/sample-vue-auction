@@ -124,7 +124,7 @@ export default {
         } else {
           let params = JSON.stringify({
             email: this.email,
-            g_id: "5e9678e8d4b3e00006eb8746",
+            g_id: "5f76ad7daa3d8a0001269956",
             // w_id: "ワークスペースのID",
             username: this.email
           });

@@ -56,7 +56,8 @@ const routes = [
   {
     path: "/updateemail/:id",
     name: "UpdateEmail",
-    component: UpdateEmail
+    component: UpdateEmail,
+    meta: { requiresAuth: true }
   },
   {
     path: "/signin",

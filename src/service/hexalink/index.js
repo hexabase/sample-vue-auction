@@ -558,7 +558,7 @@ export default {
         return result;
       },
       /*
-       * ログイン後、メールアドレス更新
+       * メールアドレス更新申請
        * @param {*} param
        */
       async setMailAddress(token, param) {
@@ -566,6 +566,34 @@ export default {
         config.headers["Authorization"] = `Bearer ${token}`;
         const result = await axios.post(
           `/linker-api/users/email`,
+          param,
+          config
+        );
+        return result;
+      },
+      /*
+       * メールアドレス変更情報確認
+       * @param {*} token
+       * @param {*} confirmationId
+       */
+      async confirmUserEmail(token, confirmationId) {
+        let config = JSON.parse(JSON.stringify(defaultConfig));
+        config.headers["Authorization"] = `Bearer ${token}`;
+        const result = await axios.get(
+          `/linker-api/users/confirmations/${confirmationId}`,
+          config
+        );
+        return result;
+      },
+      /*
+       * メールアドレス更新
+       * @param {*} param
+       */
+      async updateUserEmail(token, param) {
+        let config = JSON.parse(JSON.stringify(defaultConfig));
+        config.headers["Authorization"] = `Bearer ${token}`;
+        const result = await axios.post(
+          `/linker-api/users/confirmations`,
           param,
           config
         );
