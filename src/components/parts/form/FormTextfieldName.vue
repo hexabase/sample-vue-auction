@@ -6,7 +6,7 @@
     </div>
     <div class="formItem_body">
       <div class="formItem_itemWrap">
-        <span class="formItem_subLabel">
+        <span v-if="editable" class="formItem_subLabel">
           <template v-if="kana">
             <template v-if="corp">ホウジンメイ</template>
             <template v-else>セイ</template>
@@ -29,10 +29,11 @@
             :error-messages="errors"
             :placeholder="setPlaceholder('sei')"
             @input="inputValue"
+            @blur="handleBlur"
           >
           </v-text-field>
         </validation-provider>
-        <span class="formItem_subLabel">
+        <span v-if="editable" class="formItem_subLabel">
           <template v-if="kana">
             <template v-if="corp">ホウジンダイヒョウシャ</template>
             <template v-else>メイ</template>
@@ -55,6 +56,7 @@
             :error-messages="errors"
             :placeholder="setPlaceholder('mei')"
             @input="inputValue"
+            @blur="handleBlur"
           ></v-text-field>
         </validation-provider>
       </div>
@@ -181,7 +183,6 @@ export default {
   },
   created() {
     this.delimiter = this.kana ? " " : "　";
-    console.log(this.userinfo[0]);
   },
   methods: {
     inputValue: function() {
@@ -198,6 +199,9 @@ export default {
         text = this.kana ? "タロウ" : "太郎";
       }
       return "例）" + text;
+    },
+    handleBlur: function(e) {
+      this.$emit("blur", e);
     }
   }
 };

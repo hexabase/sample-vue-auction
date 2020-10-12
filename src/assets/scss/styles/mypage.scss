@@ -138,10 +138,6 @@
                 @include max-screen($breakpoint-mobile) {
                     flex-wrap: wrap;
                     margin-bottom: 20px;
-
-                    .v-text-field__details, .v-messages {
-                        min-height: 0;
-                    }
                 }
             }
 

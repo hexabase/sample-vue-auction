@@ -14,7 +14,9 @@
         <li class="siteFooter_nav-link"><a href="">○○方針</a></li>
         <li class="siteFooter_nav-link"><a href="">○○約款</a></li>
         <li class="siteFooter_nav-link"><a href="">○○指針</a></li>
-        <li class="siteFooter_nav-link"><a href="">お問い合わせ</a></li>
+        <li class="siteFooter_nav-link">
+          <router-link to="/contact">お問い合わせ</router-link>
+        </li>
       </ul>
       <small class="siteFooter_copy">
         Copyright 2020 BATON All Rights Reserved.

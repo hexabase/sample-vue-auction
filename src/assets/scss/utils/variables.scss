@@ -44,7 +44,8 @@ $border-light: 1px solid #eee;
 $border-blue: 3px solid rgba($color-theme-center, 0.3);
 $border-input: 1px solid $color-border;
 $border-input-hover: 1px solid #888;
-$border-input-focus: 1px solid $color-theme-center;
+$border-input-focus: 1px solid $color-theme-left;
+$border-input-error: 1px solid rgba($color-error, 0.8);
 
 // border-radius
 $radius-btn: 2px;
