@@ -355,6 +355,11 @@
         font-size: 1.8rem;
         font-weight: bold;
 
+        @include max-screen($breakpoint-mobile) {
+            padding: 0 10px;
+            min-width: 120px;
+        }
+
         .subText {
             font-size: 1.2rem;
             font-weight: normal;

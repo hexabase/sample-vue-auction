@@ -53,6 +53,14 @@
             font-size: 1.6rem;
             text-align: left;
 
+            @include max-screen($breakpoint-mobile) {
+                padding: 15px;
+                
+                .v-alert__icon {
+                    margin-right: 5px;
+                }
+            }
+
             &::before {
                 opacity: 0.05;
             }
@@ -75,6 +83,10 @@
         padding: 20px;
         line-height: 1.6;
 
+        @include max-screen($breakpoint-mobile) {
+            text-align: left;
+        }
+
         &_text {
             margin-bottom: 20px;
             font-size: 1.4rem;
@@ -94,6 +106,12 @@
             margin: -8px 10px 0 0;
             width: 195px;
             height: auto;
+
+            @include max-screen($breakpoint-mobile) {
+                margin: 0 auto 10px;
+                float: none;
+                display: block;
+            }
         }
     }
 
@@ -115,6 +133,11 @@
         margin-bottom: 40px;
         font-size: 1.5rem;
         color: $color-text-gray;
+        line-height: 1.5;
+
+        @include max-screen($breakpoint-mobile) {
+            padding: 0 10px;
+        }
     }
 }
 
@@ -134,6 +157,10 @@
             color: $color-text-sub;
             height: 48px;
 
+            @include max-screen($breakpoint-mobile) {
+                min-width: 100px;
+            }
+            
             &:hover {
                 background: transparent;
             }
@@ -153,6 +180,10 @@
             line-height: 48px;
             height: 48px;
             font-size: 1.6rem;
+
+            @include max-screen($breakpoint-mobile) {
+                width: 160px;
+            }
         }
     }
 
@@ -172,6 +203,13 @@
     font-size: 1.5rem;
     border-bottom: $border-light;
 
+    @include max-screen($breakpoint-mobile) {
+        margin-right: -1vw;
+        margin-left: -1vw;
+        padding: 20px 20px 15px;
+        display: block;
+    }
+
     &:first-child {
         border-top: $border-light;
     }
@@ -180,6 +218,12 @@
         flex: 0 0 25%;
         padding-top: 25px;
         color: $color-text-darkgray;
+
+        @include max-screen($breakpoint-mobile) {
+            padding-top: 0;
+            text-align: left;
+            font-size: 1.2rem;
+        }
     }
 
     &_required {
@@ -187,12 +231,20 @@
         margin-right: 10px;
         color: $color-error;
         font-size: 1rem;
+
+        @include max-screen($breakpoint-mobile) {
+            float: none;
+        }
     }
 
     &_body {
         flex: 1 0 75%;
         margin: 12px 0 -14px;
         color: $color-text-sub;
+
+        @include max-screen($breakpoint-mobile) {
+            margin-top: 15px;
+        }
     }
 
     &_itemWrap {
@@ -219,6 +271,10 @@
     .v-input--radio-group--row .v-radio {
         margin-top: -12px;
         margin-right: 20px;
+
+        @include max-screen($breakpoint-mobile) {
+            margin: 0 30px 20px 0;
+        }
     }
 
     .v-input--checkbox {
@@ -247,13 +303,28 @@
         flex: 0 0 25%;
     }
 
+    .v-text-field.v-text-field--enclosed:not(.v-text-field--rounded) > .v-input__control > .v-input__slot {
+        @include max-screen($breakpoint-mobile) {
+            padding: 0 1px 0 8px;
+        }
+    }
+
     .zip1, .zip2 {
         width: 120px;
         margin: 0 20px 0 -10px;
+
+        @include max-screen($breakpoint-mobile) {
+            margin-right: 10px;
+            width: 80px;
+        }
     }
 
     .zip1 {
         margin-right: -22px;
+
+        @include max-screen($breakpoint-mobile) {
+            float: none;
+        }
     }
 
     &_link {
@@ -362,6 +433,7 @@
 
 .formConfirm {
     width: 600px;
+    max-width: 100%;
     margin: auto;
     text-align: left;
 
@@ -382,14 +454,28 @@
         line-height: 1.4;
         position: relative;
 
+        @include max-screen($breakpoint-mobile) {
+            display: block;
+            padding: 15px 20px;
+        }
+
         &_title {
             flex: 0 0 170px;
             color: $color-text-darkgray;
+
+            @include max-screen($breakpoint-mobile) {
+                font-size: 1.2rem;
+            }
         }
 
         &_body {
             color: $color-text-sub;
             font-weight: 500;
+
+            @include max-screen($breakpoint-mobile) {
+                margin-top: 10px;
+                font-size: 1.6rem;
+            }
         }
     }
 
@@ -398,6 +484,11 @@
         right: 0;
         font-size: 1.1rem;
         color: $color-error;
+
+        @include max-screen($breakpoint-mobile) {
+            top: 12px;
+            right: 5px;
+        }
     }
 
     &_bottom {
@@ -428,6 +519,11 @@
         margin-bottom: 60px;
         font-size: 1.5rem;
         color: $color-theme-center;
+        line-height: 1.5;
+
+        @include max-screen($breakpoint-mobile) {
+            margin-bottom: 20px;
+        }
     }
 
     .v-input {
@@ -465,6 +561,10 @@
         background: #fff;
         border: $border-default;
         border-radius: $radius-box;
+
+        @include max-screen($breakpoint-mobile) {
+            padding: 30px;
+        }
     }
 
     &_title {
@@ -522,11 +622,21 @@
         border-top: $border-default;
         border-bottom: $border-default;
 
+        @include max-screen($breakpoint-mobile) {
+            display: block;
+            padding: 20px;
+        }
+
         &_title {
             flex: 0 0 110px;
             color: $color-text-darkgray;
             font-weight: 500;
             font-size: 1.4rem;
+
+            @include max-screen($breakpoint-mobile) {
+                text-align: left;
+                margin-bottom: 10px;
+            }
         }
 
         &_body {
@@ -539,6 +649,11 @@
             font-size: 1.6rem;
             font-weight: bold;
 
+            @include max-screen($breakpoint-mobile) {
+                text-align: left;
+                margin: 0;
+            }
+    
             .button-secondary {
                 width: 20%;
                 height: 32px;
@@ -551,6 +666,10 @@
 .modalForm {
     margin: 0 5%;
 
+    @include max-screen($breakpoint-mobile) {
+        margin: 0;
+    }
+
     .currentData {
         padding: 20px 0;
         display: flex;
@@ -558,9 +677,18 @@
         align-items: center;
         color: $color-theme-center;
 
+        @include max-screen($breakpoint-mobile) {
+            display: block;
+            text-align: left;
+        }
+
         &_title {
             margin-right: 10px;
             font-size: 1.3rem;
+
+            @include max-screen($breakpoint-mobile) {
+                margin-bottom: 5px;
+            }
         }
 
         &_body {
@@ -572,6 +700,10 @@
     .formItem {
         flex-direction: column;
         border: none;
+
+        @include max-screen($breakpoint-mobile) {
+            padding: 5px 0;
+        }
 
         &_body {
             width: 100%;
