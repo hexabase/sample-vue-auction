@@ -153,9 +153,25 @@
                 <span class="price">{{ changeYen(bidPrice * bidAmount) }}</span>
                 円
               </p>
-              <button class="button-action" @click="openModal('modal')">
+              <div v-if="userStatus === 1">
+                <button class="button-action" @click="applyUserInfo">
+                  <span>ユーザー情報を登録して</span>
+                  入札する
+                </button>
+              </div>
+              <div v-if="userStatus === 2" class="bidBox_userInfo">
+                現在ユーザー情報登録を申請中です。<br />承認されると入札可能になります。承認までもうしばらくお待ち下さい。
+              </div>
+              <button
+                v-if="userStatus === 3"
+                class="button-action"
+                @click="openModal('modal')"
+              >
                 入札する
               </button>
+              <div v-if="userStatus === 4" class="bidBox_userInfo">
+                お客様のアカウントは現在サービスをご利用できません。管理者までお問い合わせください。
+              </div>
               <v-alert v-if="alertMessage != ''" text color="red">
                 {{ alertMessage }}
               </v-alert>
@@ -674,7 +690,9 @@ export default {
             ]
           }
         }
-      }
+      },
+      userInfo: [],
+      userStatus: 1
     };
   },
   created: function() {},
@@ -1350,12 +1368,52 @@ export default {
 
         this.updateMessage();
         this.agreeGuideline = false;
+
+        this.userInfo = await this.getUserInfo();
+        if (this.userInfo && this.userInfo.length > 0) {
+          switch (this.userInfo[0]["ステータス"]) {
+            case "申請中":
+              this.userStatus = 2;
+              break;
+            case "承認済み":
+              this.userStatus = 3;
+              break;
+            case "非承認":
+            case "凍結中":
+              this.userStatus = 4;
+              break;
+          }
+        }
       } catch (e) {
         console.log(e);
       } finally {
         // loading overlay非表示
         this.$store.commit("common/setLoading", false);
       }
+    },
+    async getUserInfo() {
+      return await this.$hexalink.getItems(
+        this.token,
+        this.applicationId,
+        this.datastoreIds["ユーザDB"],
+        {
+          conditions: [
+            {
+              id: "会員番号", // Hexalink画⾯で⼊⼒したIDを指定
+              search_value: [this.userId],
+              exact_match: true // 完全⼀致で検索
+            }
+          ],
+          page: 1,
+          per_page: 1,
+          use_display_id: true
+        }
+      );
+    },
+    applyUserInfo() {
+      this.$router
+        .push({ name: "UserInfo", params: { fromBid: true } })
+        .catch(() => {});
     }
   }
 };

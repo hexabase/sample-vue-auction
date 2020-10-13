@@ -15,6 +15,7 @@
       <div class="v-stepper__header_wrap">
         <v-stepper-header class="userInfo_nav">
           <v-stepper-step
+            v-if="!stepControl.fromBid"
             :editable="stepControl.step.step0.editable"
             :complete="stepControl.step.step0.complete"
             step="0"
@@ -22,7 +23,7 @@
           >
             アカウント/通知設定
           </v-stepper-step>
-          <v-divider></v-divider>
+          <v-divider v-if="!stepControl.fromBid"></v-divider>
           <v-stepper-step
             :editable="stepControl.step.step1.editable"
             :complete="stepControl.step.step1.complete"
@@ -1109,6 +1110,7 @@ export default {
     FormTextfieldName,
     MyModal
   },
+  props: ["fromBid"],
   data() {
     return {
       token: this.$store.getters["auth/getToken"],
@@ -1394,6 +1396,9 @@ export default {
           this.stepControl.step.step5.complete = true;
           break;
       }
+    }
+    if (this.fromBid) {
+      this.stepControl.fromBid = this.fromBid;
     }
   },
   methods: {

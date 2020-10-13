@@ -266,11 +266,22 @@
             height: 60px;
             line-height: 60px;
             font-size: 2.2rem;
+
+            span {
+                font-size: 1.3rem;
+                vertical-align: middle;
+            }
         }
 
         .v-alert {
             margin-top: 10px;
             font-size: 1.3rem;
+        }
+
+        &_userInfo {
+            background: $color-bg;
+            padding: 10px;
+            line-height: 1.6;
         }
     }
 
