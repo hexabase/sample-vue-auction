@@ -921,6 +921,12 @@ body {
 
 // modal
 .modal {
+    &.modal-hideBack {
+        .modal-footer .cancel {
+            display: none;
+        }
+    }
+    
     .modal-content {
         @include max-screen($breakpoint-mobile) {
             padding: 20px;
