@@ -1417,8 +1417,7 @@ export default {
             this.userBirthday &&
             this.userPostalCode &&
             this.userPrefectures &&
-            this.userAddress1 &&
-            this.userAddress2
+            this.userAddress1
           ) {
             try {
               // loading overlay表示
