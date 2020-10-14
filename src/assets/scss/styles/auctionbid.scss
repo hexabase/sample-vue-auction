@@ -266,11 +266,22 @@
             height: 60px;
             line-height: 60px;
             font-size: 2.2rem;
+
+            span {
+                font-size: 1.3rem;
+                vertical-align: middle;
+            }
         }
 
         .v-alert {
             margin-top: 10px;
             font-size: 1.3rem;
+        }
+
+        &_userInfo {
+            background: $color-bg;
+            padding: 10px;
+            line-height: 1.6;
         }
     }
 
@@ -354,6 +365,11 @@
         padding: 0 40px;
         font-size: 1.8rem;
         font-weight: bold;
+
+        @include max-screen($breakpoint-mobile) {
+            padding: 0 10px;
+            min-width: 120px;
+        }
 
         .subText {
             font-size: 1.2rem;

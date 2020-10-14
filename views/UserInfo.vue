@@ -15,6 +15,7 @@
       <div class="v-stepper__header_wrap">
         <v-stepper-header class="userInfo_nav">
           <v-stepper-step
+            v-if="!stepControl.fromBid"
             :editable="stepControl.step.step0.editable"
             :complete="stepControl.step.step0.complete"
             step="0"
@@ -22,7 +23,7 @@
           >
             アカウント/通知設定
           </v-stepper-step>
-          <v-divider></v-divider>
+          <v-divider v-if="!stepControl.fromBid"></v-divider>
           <v-stepper-step
             :editable="stepControl.step.step1.editable"
             :complete="stepControl.step.step1.complete"
@@ -31,7 +32,7 @@
           >
             個人情報
             <span
-              v-if="!stepControl.fromBid && !stepControl.step.step2.complete"
+              v-if="!stepControl.fromBid && !stepControl.step.step1.complete"
               class="mark-alert"
             ></span>
           </v-stepper-step>
@@ -78,8 +79,9 @@
             <span
               v-if="
                 !stepControl.fromBid &&
-                  stepControl.step.step2.complete &&
-                  stepControl.step.step4.complete
+                  stepControl.step.step1.complete &&
+                  stepControl.step.step4.complete &&
+                  !stepControl.step.step5.complete
               "
               class="mark-alert"
             >
@@ -193,7 +195,9 @@
             </div>
             <section class="userInfo_section">
               <h3 class="userInfo_subTitle">
-                <span class="userInfo_titleLabel">Step.1</span>
+                <span v-if="stepControl.fromBid" class="userInfo_titleLabel">
+                  Step.1
+                </span>
                 個人情報の登録
               </h3>
               <p class="userInfo_text">
@@ -294,7 +298,9 @@
           <div class="content">
             <section class="userInfo_section">
               <h3 class="userInfo_subTitle">
-                <span class="userInfo_titleLabel">Step.2</span>
+                <span v-if="stepControl.fromBid" class="userInfo_titleLabel">
+                  Step.2
+                </span>
                 入金口座情報
               </h3>
               <p class="userInfo_text">
@@ -393,7 +399,9 @@
           <div class="content">
             <section class="userInfo_section">
               <h3 class="userInfo_subTitle">
-                <span class="userInfo_titleLabel">Step.3</span>
+                <span v-if="stepControl.fromBid" class="userInfo_titleLabel">
+                  Step.3
+                </span>
                 投資について
               </h3>
               <p class="userInfo_text">
@@ -555,7 +563,9 @@
           <div class="content">
             <section class="userInfo_section">
               <h3 class="userInfo_subTitle">
-                <span class="userInfo_titleLabel">Step.4</span>
+                <span v-if="stepControl.fromBid" class="userInfo_titleLabel">
+                  Step.4
+                </span>
                 本人確認書類のアップロード
               </h3>
               <p class="userInfo_text">
@@ -617,7 +627,9 @@
         <v-stepper-content step="5" class="userInfoStep-confirm">
           <section class="userInfo_section">
             <h3 class="userInfo_subTitle">
-              <span class="userInfo_titleLabel">Step.5</span>
+              <span v-if="stepControl.fromBid" class="userInfo_titleLabel">
+                Step.5
+              </span>
               登録内容の確認・利用規約
             </h3>
             <p class="userInfo_text">
@@ -906,7 +918,7 @@
     <div class="modal_wrapper">
       <MyModal
         v-if="completeModal"
-        class="modal-bid"
+        class="modal-bid modal-hideBack"
         @close="() => (completeModal = false)"
       >
         <template slot="title">ユーザー情報登録完了</template>
@@ -1098,6 +1110,7 @@ export default {
     FormTextfieldName,
     MyModal
   },
+  props: ["fromBid"],
   data() {
     return {
       token: this.$store.getters["auth/getToken"],
@@ -1177,19 +1190,41 @@ export default {
           },
           step1: {
             editable: true,
-            complete: false
+            complete: false,
+            item: [
+              "苗字",
+              "名前",
+              "苗字（カタカナ）",
+              "名前（カタカナ）",
+              "性別",
+              "国籍",
+              "携帯番号",
+              "郵便番号",
+              "都道府県",
+              "住所1"
+            ]
           },
           step2: {
             editable: true,
-            complete: false
+            complete: false,
+            item: [
+              "銀行",
+              "支店名",
+              "支店番号",
+              "口座種類",
+              "口座番号",
+              "名義人"
+            ]
           },
           step3: {
             editable: true,
-            complete: false
+            complete: false,
+            item: []
           },
           step4: {
             editable: true,
-            complete: false
+            complete: false,
+            item: ["本人確認書類写真_1", "マイナンバーカード写真_1"]
           },
           step5: {
             editable: false,
@@ -1321,6 +1356,13 @@ export default {
       for (const bankId in this.bankList) {
         this.bankListName.push(this.bankList[bankId].name);
       }
+
+      // Stepタブ表示調整
+      this.setStepControl(1, this.stepControl.fromBid, this.isStepCompleted(1));
+      this.setStepControl(2, this.stepControl.fromBid, this.isStepCompleted(2));
+      // this.setStepControl(3, this.stepControl.fromBid, this.isStepCompleted(3));
+      this.setStepControl(4, this.stepControl.fromBid, this.isStepCompleted(4));
+
       // const defaultConfig = {
       //   headers: {
       //     "Access-Control-Allow-Credentials": true,
@@ -1347,11 +1389,16 @@ export default {
       switch (this.userInfo[0].ステータス) {
         case "申請中":
           this.completeModal = true;
+          this.stepControl.step.step5.complete = true;
           break;
         case "承認済み":
           this.approvedFlag = true;
+          this.stepControl.step.step5.complete = true;
           break;
       }
+    }
+    if (this.fromBid) {
+      this.stepControl.fromBid = this.fromBid;
     }
   },
   methods: {
@@ -1370,8 +1417,7 @@ export default {
             this.userBirthday &&
             this.userPostalCode &&
             this.userPrefectures &&
-            this.userAddress1 &&
-            this.userAddress2
+            this.userAddress1
           ) {
             try {
               // loading overlay表示
@@ -1437,11 +1483,11 @@ export default {
                   is_force_update: true
                 }
               );
+              this.setStepControl(1, !this.stepControl.fromBid, true);
             } catch (e) {
               console.log(e);
             } finally {
               this.step = step;
-              console.log(this.step);
               // loading overlay非表示
               this.$store.commit("common/setLoading", false);
             }
@@ -1505,6 +1551,7 @@ export default {
                   is_force_update: true
                 }
               );
+              this.setStepControl(2, !this.stepControl.fromBid, true);
             } catch (e) {
               console.log(e);
             } finally {
@@ -1603,6 +1650,7 @@ export default {
                   );
                 }
               }
+              this.setStepControl(4, !this.stepControl.fromBid, true);
             } catch (e) {
               console.log(e);
             } finally {
@@ -1913,6 +1961,34 @@ export default {
         }
       };
       reader.readAsDataURL(file);
+    },
+    isStepCompleted(step) {
+      let data = this.userInfo[0];
+      let items = this.stepControl.step[`step${step}`].item;
+      for (const item of items) {
+        if (!data[item]) {
+          return false;
+        }
+      }
+      return true;
+    },
+    setStepControl(step, editable, complete) {
+      this.stepControl.step[`step${step}`].editable = editable;
+      this.stepControl.step[`step${step}`].complete = complete;
+      this.setStep5editable();
+    },
+    setStep5editable() {
+      if (this.stepControl.fromBid) {
+        this.stepControl.step.step5.editable =
+          this.stepControl.step.step1.complete &&
+          this.stepControl.step.step2.complete &&
+          this.stepControl.step.step3.complete &&
+          this.stepControl.step.step4.complete;
+      } else {
+        this.stepControl.step.step5.editable =
+          this.stepControl.step.step1.complete &&
+          this.stepControl.step.step4.complete;
+      }
     }
   }
 };
