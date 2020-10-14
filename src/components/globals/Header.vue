@@ -114,7 +114,7 @@
             <button class="siteHeader_userName hide-tab" v-on="on">
               <v-icon>mdi-chevron-right</v-icon>
               {{ userName }}
-              <v-tooltip bottom>
+              <v-tooltip v-if="!approvedFlag" bottom>
                 <template v-slot:activator="{ on, attrs }">
                   <span class="mark-alert" v-bind="attrs" v-on="on"></span>
                 </template>
@@ -179,10 +179,15 @@ export default {
   data() {
     return {
       token: this.$store.getters["auth/getToken"],
+      applicationId: this.$store.getters["datas/getApplicationId"],
+      datastoreIds: this.$store.getters["datas/getDatastoreIds"],
+      userId: this.$store.getters["user/getMembershipNumber"],
       currentPage: "",
       userName: "",
       isMenuOpen: false,
-      isPagetop: true
+      isPagetop: true,
+      userInfo: [],
+      approvedFlag: false
     };
   },
   watch: {
@@ -198,10 +203,18 @@ export default {
     this.currentPage = this.$route.name || "";
     this.userName = this.$store.getters["auth/getUserNameKanji"];
   },
-  mounted() {
+  mounted: async function() {
     window.addEventListener("scroll", _.throttle(this.calculateScrollY, 250), {
       passive: true
     });
+    try {
+      this.userInfo = await this.getUserInfo();
+      if (this.userInfo && this.userInfo.length > 0) {
+        this.approvedFlag = this.userInfo[0]["ステータス"] ? true : false;
+      }
+    } catch (e) {
+      console.log(e);
+    }
   },
   beforeDestroy() {
     window.removeEventListener(
@@ -238,6 +251,25 @@ export default {
       }
       this.$router.push("/#about");
       this.toggleMenu();
+    },
+    async getUserInfo() {
+      return await this.$hexalink.getItems(
+        this.token,
+        this.applicationId,
+        this.datastoreIds["ユーザDB"],
+        {
+          conditions: [
+            {
+              id: "会員番号", // Hexalink画⾯で⼊⼒したIDを指定
+              search_value: [this.userId],
+              exact_match: true // 完全⼀致で検索
+            }
+          ],
+          page: 1,
+          per_page: 1,
+          use_display_id: true
+        }
+      );
     }
   }
 };

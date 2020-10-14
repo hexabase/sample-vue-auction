@@ -107,7 +107,8 @@ const routes = [
     path: "/userinfo",
     name: "UserInfo",
     component: UserInfo,
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: true },
+    props: true
   },
   {
     path: "/contact",
