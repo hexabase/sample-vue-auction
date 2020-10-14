@@ -16,6 +16,7 @@ const defaultState = {
   email: "",
   hexaID: "",
   membershipNumber: "",
+  memberStatus: "",
   isAdmin: false
 };
 /**
@@ -66,6 +67,14 @@ const getters = {
    */
   getMembershipNumber(state) {
     return state.membershipNumber;
+  },
+  /**
+   * MemberStatus
+   *
+   * @param {*} state
+   */
+  getMemberStatus(state) {
+    return state.memberStatus;
   }
 };
 
@@ -132,6 +141,15 @@ const mutations = {
    */
   setMembershipNumber(state, membershipNumber) {
     state.membershipNumber = membershipNumber;
+  },
+  /**
+   * setMembershipNumber
+   *
+   * @param {*} state
+   * @param {*} payload
+   */
+  setMemberStatus(state, memberStatus) {
+    state.memberStatus = memberStatus;
   }
 };
 

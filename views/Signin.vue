@@ -160,6 +160,15 @@ export default {
             ? userInfo.data.u_id
             : userMaster.userID;
         const membershipNumber = userMaster.会員番号;
+        const memberStatus = userMaster.ステータス;
+        if (memberStatus === "凍結中") {
+          this.errorMess = `あなたのアカウントは凍結しました。
+                            アカウントの確認についてはお問い合わせください。`;
+          this.$store.commit("auth/stateInit");
+          this.$store.commit("datas/stateInit");
+          this.$store.commit("user/stateInit");
+          return;
+        }
         // フィールド一覧の取得
         let datastoreList = [];
         let getFieldPromise = [];
@@ -196,6 +205,7 @@ export default {
         this.$store.commit("user/setEmail", userMail);
         this.$store.commit("user/setHexaID", hexaID);
         this.$store.commit("user/setMembershipNumber", membershipNumber);
+        this.$store.commit("user/setMemberStatus", memberStatus);
         this.$store.commit("datas/setDatastoreIds", datastoreIds);
         this.$store.commit("datas/setFields", fields);
         this.$router.push("/");
