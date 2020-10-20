@@ -9,9 +9,11 @@
         <template v-for="checkbox in checkboxes">
           <v-checkbox
             :key="checkbox.label"
+            v-model="selected"
             :label="checkbox.label"
             :value="checkbox.value"
             :error-messages="errors"
+            @change="inputValue"
           />
         </template>
       </validation-provider>
@@ -40,13 +42,18 @@ export default {
       default: () => []
     },
     value: {
-      type: String,
-      default: "無"
+      type: Array,
+      default: () => []
     },
     valrule: {
       type: String,
       default: ""
     }
+  },
+  data() {
+    return {
+      selected: this.value
+    };
   },
   methods: {
     inputValue: function(e) {

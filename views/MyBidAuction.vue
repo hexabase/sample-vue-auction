@@ -1,5 +1,5 @@
 <template>
-  <div id="page_myCopyrights" data-role="page">
+  <div id="page_myBidAuction" data-role="page">
     <header class="pageHeader">
       <div class="pageHeader_img">
         <div class="content">
@@ -20,35 +20,38 @@
         </v-tab>
       </v-tabs>
     </section>
-    <section class="myCopyright">
+    <section class="myBidAuction">
       <div class="content">
-        <h2 class="myCopyright_title">保有中の著作権</h2>
-        <p class="myCopyright_lead">
-          販売したい曲がありましたら、<br class="show-mobile" />
+        <h2 class="myBidAuction_title">オークション中の著作権</h2>
+        <p class="myBidAuction_lead">
+          オークション入札中のものがあれば、<br class="show-mobile" />
           その曲をクリックしてください
         </p>
-        <div class="myCopyright_wrap">
+        <div class="myBidAuction_wrap">
           <article
-            v-for="(x, index) in displayMyCopyrightsList"
+            v-for="(x, index) in displayMyBidAuctionList"
             :key="index"
-            class="myCopyright_item"
+            class="myBidAuction_item"
           >
-            <figure class="myCopyright_item_img">
-              <img :src="displayMyCopyrightsList[index].image1" />
+            <figure class="myBidAuction_item_img">
+              <img :src="displayMyBidAuctionList[index].image1" />
             </figure>
-            <div class="myCopyright_item_content">
-              <h3 class="myCopyright_item_title">
-                {{ displayMyCopyrightsList[index].タイトル }}
+            <div class="myBidAuction_item_content">
+              <h3 class="myBidAuction_item_title">
+                {{ displayMyBidAuctionList[index].タイトル }}
               </h3>
-              <p class="myCopyright_item_artist">
-                {{ displayMyCopyrightsList[index].歌手1 }}
+              <p class="myBidAuction_item_artist">
+                {{ displayMyBidAuctionList[index].歌手1 }}
               </p>
-              <p class="myCopyright_item_date">
-                保有数：{{ displayMyCopyrightsList[index].数量 }} 口
+              <p class="myBidAuction_item_date">
+                保有数：{{ displayMyBidAuctionList[index].数量 }} 口
               </p>
-              <!-- <button class="button-action" @click="console.log('あとで')">
-                販売
-              </button> -->
+              <button
+                class="button-action"
+                @click="selectItem(displayMyBidAuctionList[index].著作権番号)"
+              >
+                確認
+              </button>
             </div>
           </article>
         </div>
@@ -86,11 +89,11 @@ export default {
     try {
       // loading overlay表示
       this.$store.commit("common/setLoading", true);
-      // 保有中の楽曲
-      this.myCopyrightsList = await this.getMyCopyrightsList();
-      for (const myCopyrightskey in this.myCopyrightsList) {
+      // 入札中オークション
+      this.myBidAuctionList = await this.getBidAuctionList();
+      for (const myBidAuctionListkey in this.myBidAuctionList) {
         const myAuctionList = await this.getAuctionList(
-          this.myCopyrightsList[myCopyrightskey].著作権番号
+          this.myBidAuctionList[myBidAuctionListkey].著作権番号
         );
 
         const image1Binary = myAuctionList[0].image1;
@@ -102,13 +105,15 @@ export default {
           myAuctionList[0].image1 = "";
         }
 
-        this.myCopyrightsList[myCopyrightskey].image1 = myAuctionList[0].image1;
-        this.myCopyrightsList[myCopyrightskey].タイトル =
+        this.myBidAuctionList[myBidAuctionListkey].image1 =
+          myAuctionList[0].image1;
+        this.myBidAuctionList[myBidAuctionListkey].タイトル =
           myAuctionList[0].タイトル;
-        this.myCopyrightsList[myCopyrightskey].歌手1 = myAuctionList[0].歌手1;
+        this.myBidAuctionList[myBidAuctionListkey].歌手1 =
+          myAuctionList[0].歌手1;
       }
-      this.length = Math.ceil(this.myCopyrightsList.length / this.pageSize);
-      this.displayMyCopyrightsList = this.myCopyrightsList.slice(
+      this.length = Math.ceil(this.myBidAuctionList.length / this.pageSize);
+      this.displayMyBidAuctionList = this.myBidAuctionList.slice(
         this.pageSize * (this.page - 1),
         this.pageSize * this.page
       );
@@ -198,6 +203,9 @@ export default {
         this.pageSize * (pageNumber - 1),
         this.pageSize * pageNumber
       );
+    },
+    selectItem(musicId) {
+      this.$router.push("/auctionbid/" + musicId);
     }
   }
 };

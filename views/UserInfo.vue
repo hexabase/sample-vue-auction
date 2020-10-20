@@ -259,11 +259,7 @@
                   :required="true"
                   placeholder="例）0312345678 ※ハイフン無し11桁"
                   hint="※ハイフン無し11桁"
-                  :value="
-                    userInfo[0] && userInfo[0].携帯番号
-                      ? userInfo[0].携帯番号
-                      : ''
-                  "
+                  :value="userInfo[0].携帯番号"
                   @input="emittedMobilePhoneNumber"
                 />
                 <FormSelectDate
@@ -414,6 +410,7 @@
                 <FormCheckbox
                   title="投資経験"
                   class="select-2column"
+                  v-model="selectedInvestmentExperience"
                   :required="true"
                   :checkboxes="[
                     { value: '国内株式', label: '国内株式' },
@@ -424,6 +421,7 @@
                     { value: '投資信託', label: '投資信託' },
                     { value: '先物・オプション', label: '先物・オプション' }
                   ]"
+                  @change="emittedInvestmentExperience"
                 />
                 <FormRadio
                   title="投資目的"
@@ -440,6 +438,12 @@
                       label: '安定収益・値上がり益のバランス投資'
                     }
                   ]"
+                  :radiochecked="
+                    userInfo[0] && userInfo[0].投資目的_投資方針
+                      ? userInfo[0].投資目的_投資方針
+                      : '利子・配当等安定収益重視'
+                  "
+                  @change="emittedInvestmentPurpose"
                 />
                 <FormRadio
                   title="投資期間"
@@ -450,6 +454,12 @@
                     { value: '中期運用', label: '中期運用' },
                     { value: '短期運用', label: '短期運用' }
                   ]"
+                  :radiochecked="
+                    userInfo[0] && userInfo[0].投資目的_投資期間
+                      ? userInfo[0].投資目的_投資期間
+                      : '長期運用'
+                  "
+                  @change="emittedInvestmentPeriod"
                 />
                 <FormRadio
                   title="現在の収入形態"
@@ -464,6 +474,12 @@
                     { value: 'なし', label: 'なし' },
                     { value: 'その他', label: 'その他' }
                   ]"
+                  :radiochecked="
+                    userInfo[0] && userInfo[0].現在の収入形態
+                      ? userInfo[0].現在の収入形態
+                      : '給与収入'
+                  "
+                  @change="emittedIncomeForm"
                 />
                 <FormRadio
                   title="現在の年収"
@@ -492,6 +508,12 @@
                       label: '１億円以上'
                     }
                   ]"
+                  :radiochecked="
+                    userInfo[0] && userInfo[0].現在の年収
+                      ? userInfo[0].現在の年収
+                      : '５百万円未満'
+                  "
+                  @change="emittedAnnualIncome"
                 />
                 <FormRadio
                   title="現在の金融資産"
@@ -520,6 +542,12 @@
                       label: '１億円以上'
                     }
                   ]"
+                  :radiochecked="
+                    userInfo[0] && userInfo[0].現在の金融資産
+                      ? userInfo[0].現在の金融資産
+                      : '５百万円未満'
+                  "
+                  @change="emittedFinancialAssets"
                 />
                 <FormRadio
                   title="運用予定額"
@@ -548,6 +576,12 @@
                       label: '１億円以上'
                     }
                   ]"
+                  :radiochecked="
+                    userInfo[0] && userInfo[0].運用予定額
+                      ? userInfo[0].運用予定額
+                      : '５百万円未満'
+                  "
+                  @change="emittedPlannedInvestmentAmount"
                 />
                 <div class="entryForm_footer">
                   <v-btn class="button-cancel" @click="step = 2">
@@ -965,14 +999,18 @@
             :required="true"
           />
         </v-form>
-        <div v-if="false" class="modalForm_complete">
+        <div v-if="nicknameSendResult" class="modalForm_complete">
           <v-icon>mdi-checkbox-marked-circle-outline</v-icon>
           <p class="modalForm_complete_text">
             ニックネームを変更しました。
           </p>
         </div>
         <template slot="footer">
-          <Button class="button-action" :disabled="true" @click="null">
+          <Button
+            class="button-action"
+            :disabled="nicknameChangeDisable"
+            @click="setNickname"
+          >
             変更する
           </Button>
         </template>
@@ -1109,7 +1147,6 @@ export default {
     FormTextfieldName,
     MyModal
   },
-  props: ["fromBid"],
   data() {
     return {
       token: this.$store.getters["auth/getToken"],
@@ -1121,6 +1158,7 @@ export default {
       step: 1,
       errorMess: "",
       email: this.$store.getters["user/getEmail"],
+      newNickname: "",
       newEmail: "",
       reNewEmail: "",
       confirmPassword: "",
@@ -1128,6 +1166,7 @@ export default {
       oldPassword: "",
       passwordSendResult: "default",
       mailSendResult: "default",
+      nicknameSendResult: false,
       countries: [],
       userInfo: [],
       fileInfo: [],
@@ -1176,6 +1215,13 @@ export default {
       approvedFlag: false,
       mailMagazine: false,
       checkedAgreements: [],
+      selectedInvestmentExperience: [],
+      selectedInvestmentPurpose: "",
+      selectedInvestmentPeriod: "",
+      selectedIncomeForm: "",
+      selectedAnnualIncome: "",
+      selectedFinancialAssets: "",
+      selectedPlannedInvestmentAmount: "",
       userDBMapping: {
         男性: "a9b8e4d5-7597-42c5-9253-449d18f8debc",
         女性: "4da9cad5-cb58-4f8d-8585-6bf216b206e4",
@@ -1249,6 +1295,9 @@ export default {
         (this.userSeiKana + this.userMeiKana).replace(/\s+/g, "")
         ? false
         : true;
+    },
+    nicknameChangeDisable() {
+      return this.newNickname ? false : true;
     }
   },
   created: async function() {},
@@ -1327,13 +1376,21 @@ export default {
           ? this.userInfo[0].口座種類
           : "普通";
         this.mailMagazine = this.userInfo[0].メールマガジン === "希望する";
-        console.log(this.userBankAccountType);
         this.userBankAccountNumber = this.userInfo[0].口座番号
           ? this.userInfo[0].口座番号
           : "";
         this.userBankAccountHolderKana = this.userInfo[0].名義人
           ? this.userInfo[0].名義人
           : "";
+        this.selectedInvestmentExperience = this.userInfo[0].投資経験
+          ? this.userInfo[0].投資経験.split(",")
+          : [];
+        this.selectedInvestmentPurpose = this.userInfo[0].投資目的_投資方針;
+        this.selectedInvestmentPeriod = this.userInfo[0].投資目的_投資期間;
+        this.selectedIncomeForm = this.userInfo[0].現在の収入形態;
+        this.selectedAnnualIncome = this.userInfo[0].現在の年収;
+        this.selectedFinancialAssets = this.userInfo[0].現在の金融資産;
+        this.selectedPlannedInvestmentAmount = this.userInfo[0].運用予定額;
 
         this.myNumberCardPicture1 = await this.getFileInfo(
           "マイナンバーカード写真_1",
@@ -1362,7 +1419,7 @@ export default {
       // Stepタブ表示調整
       this.setStepControl(1, this.stepControl.fromBid, this.isStepCompleted(1));
       this.setStepControl(2, this.stepControl.fromBid, this.isStepCompleted(2));
-      // this.setStepControl(3, this.stepControl.fromBid, this.isStepCompleted(3));
+      this.setStepControl(3, this.stepControl.fromBid, this.isStepCompleted(3));
       this.setStepControl(4, this.stepControl.fromBid, this.isStepCompleted(4));
 
       // const defaultConfig = {
@@ -1567,7 +1624,70 @@ export default {
           break;
         case "3":
           console.log(this.step);
-          this.step = step;
+          if (
+            this.selectedInvestmentExperience &&
+            this.selectedInvestmentPurpose &&
+            this.selectedInvestmentPeriod &&
+            this.selectedIncomeForm &&
+            this.selectedAnnualIncome &&
+            this.selectedFinancialAssets &&
+            this.selectedPlannedInvestmentAmount
+          ) {
+            try {
+              // loading overlay表示
+              this.$store.commit("common/setLoading", true);
+              const result = await this.updatedDataItem(
+                this.datastoreIds["ユーザDB"],
+                this.userInfo[0].i_id,
+                {
+                  history: {
+                    comment: "Step3更新"
+                  },
+                  changes: [
+                    {
+                      id: "投資経験",
+                      value: this.selectedInvestmentExperience
+                    },
+                    {
+                      id: "投資目的_投資方針",
+                      value: this.selectedInvestmentPurpose
+                    },
+                    {
+                      id: "投資目的_投資期間",
+                      value: this.selectedInvestmentPeriod
+                    },
+                    {
+                      id: "現在の収入形態",
+                      value: this.selectedIncomeForm
+                    },
+                    {
+                      id: "現在の年収",
+                      value: this.selectedAnnualIncome
+                    },
+                    {
+                      id: "現在の金融資産",
+                      value: this.selectedFinancialAssets
+                    },
+                    {
+                      id: "運用予定額",
+                      value: this.selectedPlannedInvestmentAmount
+                    }
+                  ],
+                  use_display_id: true,
+                  is_force_update: true
+                }
+              );
+              this.setStepControl(3, !this.stepControl.fromBid, true);
+            } catch (e) {
+              console.log(e);
+            } finally {
+              this.step = step;
+              // loading overlay非表示
+              this.$store.commit("common/setLoading", false);
+            }
+          } else {
+            alert("必須項目が入力されていません。");
+          }
           break;
         case "4":
           console.log(this.step);
@@ -1776,6 +1896,36 @@ export default {
         payload
       );
     },
+    async setNickname() {
+      try {
+        // loading overlay表示
+        this.$store.commit("common/setLoading", true);
+        const result = await this.updatedDataItem(
+          this.datastoreIds["ユーザDB"],
+          this.userInfo[0].i_id,
+          {
+            history: {
+              comment: "ニックネーム変更"
+            },
+            changes: [
+              {
+                id: "ユーザ名",
+                value: this.newNickname
+              }
+            ],
+            use_display_id: true,
+            is_force_update: true
+          }
+        );
+        this.nicknameSendResult = true;
+      } catch (e) {
+        this.nicknameSendResult = false;
+        console.log(e);
+      } finally {
+        // loading overlay非表示
+        this.$store.commit("common/setLoading", false);
+      }
+    },
     async setPassword() {
       const params = JSON.stringify({
         confirm_password: this.confirmPassword,
@@ -1927,6 +2077,34 @@ export default {
     emittedBankAccountHolderKana(value) {
       console.log("名義人（カタカナ）：", value);
       this.userBankAccountHolderKana = value;
+    },
+    emittedInvestmentExperience(value) {
+      console.log("投資経験：", value);
+      this.selectedInvestmentExperience = value;
+    },
+    emittedInvestmentPurpose(value) {
+      console.log("投資目的：", value);
+      this.selectedInvestmentPurpose = value;
+    },
+    emittedInvestmentPeriod(value) {
+      console.log("投資期間：", value);
+      this.selectedInvestmentPeriod = value;
+    },
+    emittedIncomeForm(value) {
+      console.log("収入形態：", value);
+      this.selectedIncomeForm = value;
+    },
+    emittedAnnualIncome(value) {
+      console.log("年収：", value);
+      this.selectedAnnualIncome = value;
+    },
+    emittedFinancialAssets(value) {
+      console.log("金融資産：", value);
+      this.selectedFinancialAssets = value;
+    },
+    emittedPlannedInvestmentAmount(value) {
+      console.log("運用予定額：", value);
+      this.selectedPlannedInvestmentAmount = value;
     },
     emittedFile(value) {
       console.log("ファイル種類", value.name);

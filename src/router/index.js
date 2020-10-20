@@ -14,6 +14,7 @@ import AuctionBid from "../../views/AuctionBid.vue";
 import Trade from "../../views/Trade.vue";
 import Mypage from "../../views/Mypage.vue";
 import MyCopyrights from "../../views/MyCopyrights.vue";
+import MyBidAuction from "../../views/MyBidAuction.vue";
 import Wallet from "../../views/Wallet.vue";
 import UserInfo from "../../views/UserInfo.vue";
 import Contact from "../../views/Contact.vue";
@@ -95,6 +96,12 @@ const routes = [
     path: "/mycopyrights",
     name: "MyCopyrights",
     component: MyCopyrights,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: "/mybidauction",
+    name: "MyBidAuction",
+    component: MyBidAuction,
     meta: { requiresAuth: true }
   },
   {

@@ -279,16 +279,20 @@ export default {
         return result.data;
       },
       /**
-       * Public APIでファイルを取得
+       * Public API経由でファイルを取得
        *
        * @param {*} fileId
+       * @param {*} workspaceId
        * @returns
        */
-      async getPublicFile(fileId) {
+      async getPublicFile(fileId, workspaceId) {
         let config = JSON.parse(JSON.stringify(defaultConfig));
         config.headers["content-type"] = "text/plain";
         config["responseType"] = "arraybuffer";
-        const result = await axios.get(`/linker-api/files/${fileId}`, config);
+        const result = await axios.get(
+          `/linker-api/files/${fileId}/${workspaceId}`,
+          config
+        );
         return result.data;
       },
       /**

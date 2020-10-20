@@ -351,9 +351,9 @@ export default {
       for (const listKey in this.auctionList) {
         const image1Binary = this.auctionList[listKey].image1;
         if (image1Binary) {
-          const ab = await this.$hexalink.getFile(
-            this.mapping.persistenceToken,
-            image1Binary
+          const ab = await this.$hexalink.getPublicFile(
+            image1Binary,
+            "5e9678e8d4b3e00006eb8745"
           );
           const blob = new Blob([ab], { type: "image/jpeg" });
           this.auctionList[listKey].image1 = window.URL.createObjectURL(blob);

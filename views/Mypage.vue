@@ -43,6 +43,7 @@
             <dd>
               <!-- <FormCalendar></FormCalendar> -->
               <v-text-field
+                v-model="startDate"
                 type="date"
                 outlined
                 single-line
@@ -50,6 +51,7 @@
               ></v-text-field>
               〜
               <v-text-field
+                v-model="endDate"
                 type="date"
                 outlined
                 single-line
@@ -68,20 +70,23 @@
             <dd>
               <v-radio-group v-model="searchTarget" row>
                 <v-radio label="全体" value="all"></v-radio>
-                <v-radio label="入金内容のみ" value="in"></v-radio>
-                <v-radio label="出金内容のみ" value="out"></v-radio>
+                <v-radio label="入金内容のみ" value="入金"></v-radio>
+                <v-radio label="出金内容のみ" value="出金"></v-radio>
+                <v-radio label="分配金内容のみ" value="分配金"></v-radio>
               </v-radio-group>
-              <v-select :items="searchTargetItems" outlined></v-select>
+              <!-- <v-select :items="searchTargetItems" outlined></v-select> -->
             </dd>
-            <dt>検索順序</dt>
+            <!-- <dt>検索順序</dt>
             <dd>
               <v-radio-group v-model="searchOrder" row>
                 <v-radio label="最近の取引履歴が上" value="0"></v-radio>
                 <v-radio label="過去の取引履歴を上" value="1"></v-radio>
               </v-radio-group>
-            </dd>
+            </dd> -->
           </dl>
-          <button class="button-main">照会する</button>
+          <button class="button-main" @click="inquireMyTransaction">
+            照会する
+          </button>
         </div>
         <div class="transaction_result">
           <template>
@@ -93,7 +98,6 @@
             ></v-data-table>
           </template>
         </div>
-        <!-- <PdfDownload></PdfDownload> -->
       </div>
     </section>
 
@@ -118,6 +122,7 @@
             title="出金額"
             :required="true"
           />
+          <div>※振込手数料が{{ fee * tax }}円かかります</div>
         </v-form>
         <div v-if="withdrawalSendResult" class="modalForm_complete">
           <v-icon>mdi-checkbox-marked-circle-outline</v-icon>
@@ -143,13 +148,11 @@ import FormPassfield from "@/components/parts/form/FormPassfield.vue";
 import FormTextfield from "@/components/parts/form/FormTextfield.vue";
 import MyModal from "./MyModal.vue";
 import moment from "moment-timezone";
-// import PdfDownload from "@/components/pdf/PdfDownload.vue";
 export default {
   components: {
     FormPassfield,
     FormTextfield,
     MyModal
-    // PdfDownload
   },
   data() {
     return {
@@ -162,7 +165,7 @@ export default {
       userId: this.$store.getters["user/getMembershipNumber"],
       email: this.$store.getters["user/getEmail"],
       period: 4,
-      searchTarget: "",
+      searchTarget: "all",
       searchTargetItems: ["全体", "あああ"],
       searchOrder: "",
       transactionHeaders: [
@@ -222,6 +225,7 @@ export default {
           price: "200,000"
         }
       ],
+      dessertsTmp: [],
       paymentMessage: "＋ 入金する",
       errorMess: "",
       password: "",
@@ -231,7 +235,9 @@ export default {
       userItemId: "",
       deposits: 0,
       tax: 1.1,
-      fee: 500
+      fee: 500,
+      startDate: "",
+      endDate: ""
     };
   },
   computed: {
@@ -286,7 +292,8 @@ export default {
           sort_order: "asc"
         }
       );
-      this.desserts = auctionLists.report_results;
+      this.dessertsTmp = auctionLists.report_results;
+      this.desserts = this.dessertsTmp;
     } catch (e) {
       console.log(e);
     } finally {
@@ -411,6 +418,30 @@ export default {
         itemId,
         payload
       );
+    },
+    inquireMyTransaction() {
+      const startDate = this.startDate;
+      const endDate = this.endDate;
+      const searchTarget = this.searchTarget;
+      this.desserts = this.dessertsTmp.filter(function(value) {
+        const diffFrom = startDate
+          ? moment(value["7c4e5d10-5fc4-4cff-81d4-de54d0fad1c8"])
+              .tz("Asia/Tokyo")
+              .diff(moment(startDate)) >= 0
+          : true;
+        const diffTo = endDate
+          ? moment(value["7c4e5d10-5fc4-4cff-81d4-de54d0fad1c8"])
+              .tz("Asia/Tokyo")
+              .diff(moment(endDate)) <= 0
+          : true;
+        const searchType =
+          searchTarget !== "all"
+            ? value["4215764f-8b26-4ec1-b67f-ec90faf741a6"].indexOf(
+                searchTarget
+              ) !== -1
+            : true;
+        return diffFrom && diffTo && searchType;
+      });
     },
     changeYen(num) {
       if (!num) return 0;

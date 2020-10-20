@@ -45,13 +45,15 @@
               :editable="isEditable()"
               valrule="required"
               :userinfo="userInfo"
+              @input="emittedNameKanji"
             />
             <FormTextfield
               title="メールアドレス"
               :required="true"
               :editable="isEditable()"
               valrule="required|email"
-              :value="setUserInfo('mail')"
+              :value="userInfo[0] && userInfo[0].Email ? userInfo[0].Email : ''"
+              @input="emittedMailAddress"
             />
             <FormTextfield
               title="タイトル"
@@ -60,6 +62,7 @@
               :editable="isEditable()"
               hint="100文字以内"
               valrule="required|doubleCount:100"
+              @input="emittedTitle"
             />
             <FormTextarea
               title="お問い合わせ内容"
@@ -68,6 +71,7 @@
               :counter="500"
               valrule="required|doubleCount:500"
               :editable="isEditable()"
+              @input="emittedContactInfo"
             />
             <div class="entryForm_footer">
               <v-btn
@@ -105,6 +109,7 @@
 import FormTextarea from "@/components/parts/form/FormTextarea.vue";
 import FormTextfield from "@/components/parts/form/FormTextfield.vue";
 import FormTextfieldName from "@/components/parts/form/FormTextfieldName.vue";
+import mapping from "@/assets/json/auctionDBMapping.json";
 export default {
   components: {
     FormTextarea,
@@ -115,16 +120,25 @@ export default {
     return {
       step: 1,
       token: this.$store.getters["auth/getToken"],
+      mapping: JSON.parse(JSON.stringify(mapping)),
       applicationId: this.$store.getters["datas/getApplicationId"],
       datastoreIds: this.$store.getters["datas/getDatastoreIds"],
       userId: this.$store.getters["user/getMembershipNumber"],
       errorMess: "",
-      userInfo: []
+      userInfo: [],
+      userSeiKanji: "",
+      userMeiKanji: "",
+      mailAddress: ""
     };
   },
   created: async function() {},
   mounted: async function() {
-    this.userInfo = await this.getUserInfo();
+    if (this.token) {
+      this.userInfo = await this.getUserInfo();
+      this.userSeiKanji = this.userInfo[0] ? this.userInfo[0].苗字 : "";
+      this.userMeiKanji = this.userInfo[0] ? this.userInfo[0].名前 : "";
+      this.mailAddress = this.userInfo[0] ? this.userInfo[0].Email : "";
+    }
   },
   methods: {
     async getUserInfo() {
@@ -148,7 +162,12 @@ export default {
     },
     setUserInfo(type) {
       if (this.userInfo) {
-        return this.userInfo[0].Email;
+        try {
+          return this.userInfo[0].Email;
+        } catch (e) {
+          console.log(e);
+          return "";
+        }
       }
     },
     isEditable() {
@@ -174,13 +193,93 @@ export default {
         behavior: "smooth"
       });
     },
-    applyContact() {
+    async applyContact() {
       // メール送信処理の実装よろしくお願いします
+      var setData = {};
+      setData["タイトル"] = this.title;
+      setData["問い合わせ内容"] = this.contactInfo;
+      setData["会員番号"] = this.userInfo[0] ? this.userInfo[0].会員番号 : "";
+      setData["メールアドレス"] = this.mailAddress;
+      setData["姓"] = this.userSeiKanji;
+      setData["名"] = this.userMeiKanji;
+
+      var param = {};
+      param["item"] = setData;
+      var insertResult = await this.insertNewItem(
+        "5f83fa2fce4480000146b845",
+        param
+      );
+      const i_id = insertResult.data.item_id;
+      param = {
+        history: {
+          comment: "アクションスクリプト起動のため更新"
+        },
+        changes: [
+          {
+            id: "タイトル",
+            value: this.title
+          }
+        ],
+        use_display_id: true,
+        is_force_update: true
+      };
+      const updateResult = await this.updatedDataItem(
+        "5f83fa2fce4480000146b845",
+        i_id,
+        param
+      );
       this.step = 3;
       window.scrollTo({
         top: 190,
         behavior: "smooth"
       });
+    },
+    // データアイテムを更新します
+    async updatedDataItem(datasotreId, itemId, payload) {
+      const applicationId = this.$store.getters["datas/getApplicationId"];
+      const token = this.$store.getters["auth/getToken"];
+      return await this.$hexalink.editItem(
+        token,
+        applicationId,
+        datasotreId,
+        itemId,
+        payload
+      );
+    },
+    // 新規Itemを作成します
+    async insertNewItem(datasotreId, param) {
+      const token = this.mapping.persistenceToken;
+      const applicationId = this.mapping.applicationId;
+      var result = {};
+      try {
+        result = await this.$hexalink.createNewItem(
+          token,
+          applicationId,
+          datasotreId,
+          param
+        );
+      } catch {
+        result = {};
+      }
+      return result;
+    },
+    emittedNameKanji(value) {
+      console.log("漢字：", value);
+      this.userSeiKanji = value.split("　")[0];
+      this.userMeiKanji = value.split("　")[1];
+      console.log(this.userSeiKanji, this.userMeiKanji);
+    },
+    emittedMailAddress(value) {
+      console.log("メールアドレス：", value);
+      this.mailAddress = value;
+    },
+    emittedTitle(value) {
+      console.log("タイトル：", value);
+      this.title = value;
+    },
+    emittedContactInfo(value) {
+      console.log("問い合わせ内容：", value);
+      this.contactInfo = value;
     }
   }
 };

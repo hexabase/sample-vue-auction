@@ -18,9 +18,9 @@
           :error-messages="errors"
           :label="label"
           :hint="hint"
+          :counter="counter"
           @input="inputValue"
           @blur="handleBlur"
-          :counter="counter"
         ></v-text-field>
       </ValidationProvider>
     </div>
@@ -29,11 +29,6 @@
 
 <script>
 export default {
-  data() {
-    return {
-      text: this.value
-    };
-  },
   props: {
     title: {
       type: String,
@@ -76,6 +71,11 @@ export default {
       type: Boolean,
       default: false
     }
+  },
+  data() {
+    return {
+      text: this.value
+    };
   },
   methods: {
     inputValue: function(e) {

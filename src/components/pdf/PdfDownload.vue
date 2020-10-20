@@ -2,6 +2,8 @@
   <button
     type="button"
     class="btn btn-refresh no-margin"
+    :value="value"
+    :pdfFile="pdfFile"
     @click="onDownloadPDFClickWithPDFMake"
   >
     PDFダウンロード
@@ -13,6 +15,16 @@ import pdfMake from "pdfmake/build/pdfmake";
 import "pdfmake/build/vfs_fonts.js";
 export default {
   name: "PdfDownload",
+  props: {
+    value: {
+      type: Object,
+      default: () => {}
+    },
+    pdfFile: {
+      type: String,
+      default: ""
+    }
+  },
   methods: {
     onDownloadPDFClickWithPDFMake() {
       pdfMake.fonts = {
@@ -23,51 +35,12 @@ export default {
           bolditalics: "GenShinGothic-Normal-Sub.ttf"
         }
       };
-      const defaultStyle = "GenShin";
-
-      // PDF出力する内容の定義
-      const docDefinition = {
-        content: [
-          {
-            text: "サンプルPDF",
-            style: "header"
-          },
-          {
-            text: "サンプルです。",
-            style: "subheader"
-          },
-          {
-            text: "※これはただのサンプルです。",
-            style: { color: "red", fontSize: 10 }
-          },
-          {
-            layout: "lightHorizontalLines",
-            table: {
-              headerRows: 1,
-              widths: ["*", "auto", 100, "*"],
-              body: [
-                ["いち", "に", "さん", "よん"],
-                ["Value 1", "Value 2", "Value 3", "Value 4"],
-                [{ text: "Bold value", bold: true }, "Val 2", "Val 3", "Val 4"]
-              ]
-            }
-          }
-        ],
-        defaultStyle: {
-          font: defaultStyle
-        },
-        styles: {
-          header: {
-            fontSize: 30
-          },
-          subheader: {
-            fontSize: 20
-          }
-        }
-      };
+      const docDefinition = this.value;
       try {
+        window.open(this.pdfFile);
         // pdfMakeでのPDF出力
         const result = pdfMake.createPdf(docDefinition);
+        // クラウドストレージへのアップロード
         result.download();
       } catch (e) {
         console.log(e);

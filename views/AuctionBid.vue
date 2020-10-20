@@ -4,6 +4,7 @@
     id="page_auction"
     data-role="page"
   >
+    <!-- <PdfDownload :value="docDefinition" :pdf-file="pdfFile"></PdfDownload> -->
     <div class="musicInfo_img-mobile"><img :src="image1" /></div>
     <section class="musicInfo">
       <div class="content">
@@ -443,7 +444,9 @@ import MyModal from "./MyModal.vue";
 import moment from "moment-timezone";
 import Chart from "@/components/parts/Chart.vue";
 import _ from "lodash";
+// import PdfDownload from "@/components/pdf/PdfDownload.vue";
 export default {
+  // components: { MyModal, Chart, PdfDownload },
   components: { MyModal, Chart },
   data() {
     return {
@@ -692,12 +695,41 @@ export default {
         }
       },
       userInfo: [],
-      userStatus: 1
+      userStatus: 1,
+      docDefinition: {
+        content: [
+          {
+            text: "保管用交付書面",
+            style: "header"
+          },
+          // {
+          //   text: "サンプルです。",
+          //   style: "subheader"
+          // },
+          {
+            text: "※これはただのサンプルです。",
+            style: { color: "red", fontSize: 10 }
+          }
+        ],
+        defaultStyle: {
+          font: "GenShin"
+        },
+        styles: {
+          header: {
+            fontSize: 30
+          },
+          subheader: {
+            fontSize: 20
+          }
+        }
+      },
+      pdfFile: ""
     };
   },
   created: function() {},
   mounted: function() {
     this.initialDisplay();
+    this.getDeliveryDocument();
     setInterval(this.updateMessage, 1000);
   },
   methods: {
@@ -861,6 +893,9 @@ export default {
         this.initialDisplay();
         this.modal = false;
         return;
+      }
+      if (this.userStatus !== 3) {
+        alert("承認されていないユーザは入札できません");
       }
       // 入札履歴があった場合は更新処理
       if (this.myAuctionBidList.length > 0) {
@@ -1244,9 +1279,9 @@ export default {
 
         const image1Binary = dataLists[0].image1;
         if (image1Binary) {
-          const ab = await this.$hexalink.getFile(
-            this.mapping.persistenceToken,
-            image1Binary
+          const ab = await this.$hexalink.getPublicFile(
+            image1Binary,
+            "5e9678e8d4b3e00006eb8745"
           );
           const blob = new Blob([ab], { type: "image/jpeg" });
           this.image1 = window.URL.createObjectURL(blob);
@@ -1414,6 +1449,47 @@ export default {
       this.$router
         .push({ name: "UserInfo", params: { fromBid: true } })
         .catch(() => {});
+    },
+    async getDeliveryDocument() {
+      const result = await this.$hexalink.getItems(
+        this.token,
+        this.applicationId,
+        this.datastoreIds["交付書面管理テーブル"],
+        {
+          conditions: [
+            {
+              id: "管理番号", // Hexalink画⾯で⼊⼒したIDを指定
+              search_value: ["1"],
+              exact_match: true // 完全⼀致で検索
+            }
+          ],
+          page: 1,
+          per_page: 9000,
+          use_display_id: true
+        }
+      );
+      const image1Binary = result[0].保管用画像;
+      if (image1Binary) {
+        const ab = await this.$hexalink.getFile(this.token, image1Binary);
+        const blob = new Blob([ab], { type: "image/jpeg" });
+        const reader = new FileReader();
+        reader.onload = e => {
+          const b64 = reader.result;
+          this.docDefinition.content.push({
+            image: b64,
+            width: 500
+          });
+        };
+        reader.readAsDataURL(blob);
+      }
+      if (result[0].交付書面PDF) {
+        const ab = await this.$hexalink.getFile(
+          this.token,
+          result[0].交付書面PDF
+        );
+        const blob = new Blob([ab], { type: "application/pdf" });
+        this.pdfFile = URL.createObjectURL(blob);
+      }
     }
   }
 };

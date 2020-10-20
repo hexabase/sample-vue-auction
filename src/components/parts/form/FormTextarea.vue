@@ -31,11 +31,6 @@
 
 <script>
 export default {
-  data() {
-    return {
-      textarea: this.value
-    };
-  },
   props: {
     title: {
       type: String,
@@ -74,6 +69,11 @@ export default {
       type: String,
       default: ""
     }
+  },
+  data() {
+    return {
+      textarea: this.value
+    };
   },
   methods: {
     inputValue: function(e) {
