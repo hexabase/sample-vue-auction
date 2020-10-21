@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import pdfMake from "pdfmake/build/pdfmake";
+import pdfMake from "pdfmake/build/pdfmake.js";
 import "pdfmake/build/vfs_fonts.js";
 import Axios from "axios";
 export default {
