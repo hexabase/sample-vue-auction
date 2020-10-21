@@ -43,6 +43,7 @@ export default {
         // pdfMakeでのPDF出力
         // const result = pdfMake.createPdf(docDefinition);
         const pdfDocGenerator = pdfMake.createPdf(docDefinition);
+        pdfDocGenerator.download();
         pdfDocGenerator.getBlob(blob => {
           // クラウドストレージへのアップロード
           const config = {
