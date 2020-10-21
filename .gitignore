@@ -1,5 +1,6 @@
 .DS_Store
 node_modules
+!node_modules/pdfmake/build/vfs_fonts.js
 /dist
 .history
 # local env files
