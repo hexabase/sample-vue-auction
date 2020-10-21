@@ -12,12 +12,15 @@ import "./assets/css/loading.css";
 import vuetify from "./plugins/vuetify";
 import validate from "./service/validation";
 
+import VueAzureUploader from "vue-azure-blob-upload";
+
 require("./assets/scss/styles.scss");
 
 Vue.use(hexalink);
 Vue.use(validate);
 Vue.use(sendgrid);
 Vue.use(moment);
+Vue.use(VueAzureUploader);
 Vue.config.productionTip = false;
 Vue.prototype.$sanitize = sanitizeHTML;
 Vue.component("downloadCsv", JsonCSV);

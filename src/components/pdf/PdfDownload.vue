@@ -13,6 +13,7 @@
 <script>
 import pdfMake from "pdfmake/build/pdfmake";
 import "pdfmake/build/vfs_fonts.js";
+import Axios from "axios";
 export default {
   name: "PdfDownload",
   props: {
@@ -27,6 +28,7 @@ export default {
   },
   methods: {
     onDownloadPDFClickWithPDFMake() {
+      const me = this;
       pdfMake.fonts = {
         GenShin: {
           normal: "GenShinGothic-Normal-Sub.ttf",
@@ -39,9 +41,29 @@ export default {
       try {
         window.open(this.pdfFile);
         // pdfMakeでのPDF出力
-        const result = pdfMake.createPdf(docDefinition);
-        // クラウドストレージへのアップロード
-        result.download();
+        // const result = pdfMake.createPdf(docDefinition);
+        const pdfDocGenerator = pdfMake.createPdf(docDefinition);
+        pdfDocGenerator.getBlob(blob => {
+          // クラウドストレージへのアップロード
+          const config = {
+            baseUrl:
+              "https://storageaccountclosia559.blob.core.windows.net/delivery-document", // baseUrl for blob file uri (i.e. http://<accountName>.blob.core.windows.net/<container>/<blobname>),
+            sasToken:
+              "DefaultEndpointsProtocol=https;AccountName=storageaccountclosia559;AccountKey=QfGa4EYcf6kBcW9sgxleeZkQE/g7BfMSycM+GnvFiGnom7OyXHw95PvvuzFn7HQJTBcszXPQb4ZUgf1Blvyfgw==;EndpointSuffix=core.windows.net", // Shared access signature querystring key/value prefixed with ?,
+            file: blob, // File object using the HTML5 File API,
+            progress: console.log("progress"), // progress callback function,
+            complete: console.log("complete"), // complete callback function,
+            error: console.log("error"), // error callback function,
+            blockSize: null // Use this to override the DefaultBlockSize,
+          };
+          const httpConfig = {
+            headers: {
+              authorizaion: "Bearer token123"
+            }
+          };
+          const axios = Axios.create(httpConfig);
+          me.$azureUpload(config, axios);
+        });
       } catch (e) {
         console.log(e);
       }

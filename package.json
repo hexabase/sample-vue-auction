@@ -20,6 +20,7 @@
     "sanitize-html": "^1.27.0",
     "vee-validate": "^3.3.5",
     "vue": "^2.6.10",
+    "vue-azure-blob-upload": "0.0.6",
     "vue-chartjs": "^3.5.1",
     "vue-json-csv": "^1.2.11",
     "vue-router": "^3.3.4",

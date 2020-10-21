@@ -63,6 +63,7 @@
 
 <script>
 import common from "@/components/mixin/common";
+import mapping from "@/assets/json/auctionDBMapping.json";
 
 export default {
   name: "Signin",
@@ -72,6 +73,7 @@ export default {
       // token: this.$store.getters["auth/getToken"],
       token:
         "eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjI1NDU4Nzk3NjcsImlhdCI6MTU5OTc5OTc2Nywic3ViIjoiNWU5Njc5ODhmNDE3MTEwMDA2ZTczMGJmIiwidW4iOiIifQ.gZDQqrVXa2mOlMDjk2cJ6FEsEYDpVb4JDYBEQiVvXGD7TXC9AuiRlpLfCtqiKw5cxMxOeKBr91LCS1QfiT03ZwSBlmZldPBuMFZFNj3vtsye3GvgHad7oVXRP5xWE0lP32Q8h7Gkqhg2Hzhwpe1qQKyQDV8kV0CIvPolgNLWE7ypeO0jBuaykAn9jxr0xIr1k4kjtrhPf4fZSPzz_r45GK7Yury13bSzxXtrVk7KbBtCkLl7QyM-uskJoSQ_Sk_vYJeCB0hm_worw7PdK4kXivyMcblOyzQa7frEOgjadRH1Njd4O7DtQDeZL0nrNAR-EGreE9RnDEoDoNuOYWrEvA",
+      mapping: JSON.parse(JSON.stringify(mapping)),
       applicationId: this.$store.getters["datas/getApplicationId"],
       datasotreIdList: this.$store.getters["datas/getDatastores"],
       datastoreIds: this.$store.getters["datas/getDatastoreIds"],
@@ -96,7 +98,7 @@ export default {
       console.log(this.token);
       return await this.$hexalink.getItems(
         this.token,
-        this.applicationId,
+        this.mapping.applicationId,
         "5ef2f6d9f2d7d2000680b3b1",
         {
           conditions: [

@@ -4,7 +4,7 @@
     id="page_auction"
     data-role="page"
   >
-    <!-- <PdfDownload :value="docDefinition" :pdf-file="pdfFile"></PdfDownload> -->
+    <PdfDownload :value="docDefinition" :pdf-file="pdfFile"></PdfDownload>
     <div class="musicInfo_img-mobile"><img :src="image1" /></div>
     <section class="musicInfo">
       <div class="content">
@@ -444,10 +444,10 @@ import MyModal from "./MyModal.vue";
 import moment from "moment-timezone";
 import Chart from "@/components/parts/Chart.vue";
 import _ from "lodash";
-// import PdfDownload from "@/components/pdf/PdfDownload.vue";
+import PdfDownload from "@/components/pdf/PdfDownload.vue";
 export default {
-  // components: { MyModal, Chart, PdfDownload },
-  components: { MyModal, Chart },
+  components: { MyModal, Chart, PdfDownload },
+  // components: { MyModal, Chart },
   data() {
     return {
       loaded: false,
