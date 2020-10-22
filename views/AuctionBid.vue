@@ -4,7 +4,11 @@
     id="page_auction"
     data-role="page"
   >
-    <PdfDownload :value="docDefinition" :pdf-file="pdfFile"></PdfDownload>
+    <PdfDownload
+      :value="docDefinition"
+      :pdf-file="pdfFile"
+      :fileName="fileName"
+    ></PdfDownload>
     <div class="musicInfo_img-mobile"><img :src="image1" /></div>
     <section class="musicInfo">
       <div class="content">
@@ -701,14 +705,6 @@ export default {
           {
             text: "保管用交付書面",
             style: "header"
-          },
-          // {
-          //   text: "サンプルです。",
-          //   style: "subheader"
-          // },
-          {
-            text: "※これはただのサンプルです。",
-            style: { color: "red", fontSize: 10 }
           }
         ],
         defaultStyle: {
@@ -723,13 +719,14 @@ export default {
           }
         }
       },
-      pdfFile: ""
+      pdfFile: "",
+      fileName: ""
     };
   },
   created: function() {},
-  mounted: function() {
-    this.initialDisplay();
-    this.getDeliveryDocument();
+  mounted: async function() {
+    await this.initialDisplay();
+    await this.getDeliveryDocument();
     setInterval(this.updateMessage, 1000);
   },
   methods: {
@@ -1476,6 +1473,18 @@ export default {
         reader.onload = e => {
           const b64 = reader.result;
           this.docDefinition.content.push({
+            text:
+              this.userInfo[0].郵便番号 +
+              this.userInfo[0].都道府県 +
+              this.userInfo[0].住所1 +
+              this.userInfo[0].住所2,
+            style: ""
+          });
+          this.docDefinition.content.push({
+            text: this.userInfo[0].苗字 + this.userInfo[0].名前,
+            style: ""
+          });
+          this.docDefinition.content.push({
             image: b64,
             width: 500
           });
@@ -1490,6 +1499,12 @@ export default {
         const blob = new Blob([ab], { type: "application/pdf" });
         this.pdfFile = URL.createObjectURL(blob);
       }
+      this.fileName =
+        "delivery-document_" +
+        this.userId +
+        "_" +
+        moment().format("YYYYMMDDTHHmmssSSS") +
+        ".pdf";
     }
   }
 };
