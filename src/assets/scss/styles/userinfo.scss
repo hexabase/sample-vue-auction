@@ -182,7 +182,7 @@
             font-size: 1.6rem;
 
             @include max-screen($breakpoint-mobile) {
-                width: 160px;
+                width: 180px;
             }
         }
     }
@@ -278,7 +278,7 @@
     }
 
     .v-input--checkbox {
-        margin-top: -8px;
+        margin-top: -4px;
 
         .v-messages {
             min-height: 0;
@@ -348,26 +348,84 @@
     }
 
     &.select-2column {
-        .formItem_body > span {
-            display: flex;
-            flex-wrap: wrap;
+        .formItem_body {
+            margin-bottom: 10px;
 
-            .v-input {
-                width: 48%;
-                margin-right: 1%;
+            & > span:not(.radio) {
+                display: flex;
+                flex-wrap: wrap;
+
+                .v-input {
+                    width: 48%;
+                    margin-right: 1%;
+
+                    @include max-screen($breakpoint-mobile) {
+                        width: 100%;
+                        margin: 0 0 2px 0;
+                        padding: 10px;
+                        background: $color-bg;
+                        border-radius: $radius-box;
+                    }
+                }
+            }
+            
+            .v-input--radio-group__input {
+                margin-top: -12px;
+                display: flex;
+                flex-wrap: wrap;
+
+                @include max-screen($breakpoint-mobile) {
+                    margin-top: 0;
+                }
+
+                .v-radio {
+                    width: 48%;
+                    margin: 0 1% 5px 0;
+
+                    @include max-screen($breakpoint-mobile) {
+                        width: 100%;
+                        margin: 0 0 2px 0;
+                        padding: 10px;
+                        background: $color-bg;
+                        border-radius: $radius-box;
+                        transition: all .3s;
+
+                        &.v-item--active {
+                            background: $color-bg-blue;
+                        }
+                    }
+                }
             }
         }
     }
 
     &.select-singleLine {
         .formItem_body {
+            margin-bottom: 10px;
 
             .v-input--radio-group__input {
                 margin-top: -12px;
                 flex-direction: column;
 
+                @include max-screen($breakpoint-mobile) {
+                    margin-top: 0;
+                }
+
                 .v-radio {
                     margin: 0 0 5px;
+
+                    @include max-screen($breakpoint-mobile) {
+                        width: 100%;
+                        margin: 0 0 2px 0;
+                        padding: 10px;
+                        background: $color-bg;
+                        border-radius: $radius-box;
+                        transition: all .3s;
+
+                        &.v-item--active {
+                            background: $color-bg-blue;
+                        }
+                    }
                 }
             }
         }

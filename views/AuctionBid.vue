@@ -156,7 +156,7 @@
               </p>
               <div v-if="userStatus === 1">
                 <button class="button-action" @click="applyUserInfo">
-                  <span>ユーザー情報を登録して</span>
+                  <span v-if="userInfo.length > 0">ユーザー情報を登録して</span>
                   入札する
                 </button>
               </div>
