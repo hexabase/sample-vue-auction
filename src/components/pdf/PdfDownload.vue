@@ -24,6 +24,10 @@ export default {
     pdfFile: {
       type: String,
       default: ""
+    },
+    fileName: {
+      type: String,
+      default: ""
     }
   },
   methods: {
@@ -43,14 +47,15 @@ export default {
         // pdfMakeでのPDF出力
         // const result = pdfMake.createPdf(docDefinition);
         const pdfDocGenerator = pdfMake.createPdf(docDefinition);
-        pdfDocGenerator.download();
+        // pdfDocGenerator.download();
         pdfDocGenerator.getBlob(blob => {
           // クラウドストレージへのアップロード
           const config = {
             baseUrl:
-              "https://storageaccountclosia559.blob.core.windows.net/delivery-document", // baseUrl for blob file uri (i.e. http://<accountName>.blob.core.windows.net/<container>/<blobname>),
+              "https://storageaccountclosia559.blob.core.windows.net/delivery-document/" +
+              this.fileName, // baseUrl for blob file uri (i.e. http://<accountName>.blob.core.windows.net/<container>/<blobname>),
             sasToken:
-              "DefaultEndpointsProtocol=https;AccountName=storageaccountclosia559;AccountKey=QfGa4EYcf6kBcW9sgxleeZkQE/g7BfMSycM+GnvFiGnom7OyXHw95PvvuzFn7HQJTBcszXPQb4ZUgf1Blvyfgw==;EndpointSuffix=core.windows.net", // Shared access signature querystring key/value prefixed with ?,
+              "?sv=2019-12-12&ss=bfqt&srt=sco&sp=rwdlacupx&se=2999-02-04T13:24:29Z&st=2020-10-21T05:24:29Z&spr=https&sig=TPcxoK2EyYLCTAN1L5SKgK8qqCdQGfSnl51gy1BPJsE%3D", // Shared access signature querystring key/value prefixed with ?,
             file: blob, // File object using the HTML5 File API,
             progress: console.log("progress"), // progress callback function,
             complete: console.log("complete"), // complete callback function,

@@ -59,11 +59,11 @@
                 hint="照会終了日"
               ></v-text-field>
               <v-btn-toggle v-model="period" rounded borderless>
-                <v-btn>当日</v-btn>
-                <v-btn>１週間</v-btn>
-                <v-btn>１ヶ月</v-btn>
-                <v-btn>３ヶ月</v-btn>
-                <v-btn>６ヶ月</v-btn>
+                <v-btn @click="clickToggle(0)">当日</v-btn>
+                <v-btn @click="clickToggle(1)">１週間</v-btn>
+                <v-btn @click="clickToggle(2)">１ヶ月</v-btn>
+                <v-btn @click="clickToggle(3)">３ヶ月</v-btn>
+                <v-btn @click="clickToggle(4)">６ヶ月</v-btn>
               </v-btn-toggle>
             </dd>
             <dt>照会内容</dt>
@@ -164,7 +164,7 @@ export default {
       datastoreIds: this.$store.getters["datas/getDatastoreIds"],
       userId: this.$store.getters["user/getMembershipNumber"],
       email: this.$store.getters["user/getEmail"],
-      period: 4,
+      period: null,
       searchTarget: "all",
       searchTargetItems: ["全体", "あああ"],
       searchOrder: "",
@@ -465,6 +465,44 @@ export default {
         event.keyCode !== 9
       ) {
         event.preventDefault();
+      }
+    },
+    clickToggle(period) {
+      if (this.period === period) {
+        this.startDate = "";
+        this.endDate = "";
+        this.period = null;
+        return;
+      }
+      switch (period) {
+        case 0:
+          this.startDate = moment().format("yyyy-MM-DD");
+          this.endDate = moment().format("yyyy-MM-DD");
+          break;
+        case 1:
+          this.startDate = moment()
+            .add("day", -7)
+            .format("yyyy-MM-DD");
+          this.endDate = moment().format("yyyy-MM-DD");
+          break;
+        case 2:
+          this.startDate = moment()
+            .add("day", -30)
+            .format("yyyy-MM-DD");
+          this.endDate = moment().format("yyyy-MM-DD");
+          break;
+        case 3:
+          this.startDate = moment()
+            .add("day", -90)
+            .format("yyyy-MM-DD");
+          this.endDate = moment().format("yyyy-MM-DD");
+          break;
+        case 4:
+          this.startDate = moment()
+            .add("day", -180)
+            .format("yyyy-MM-DD");
+          this.endDate = moment().format("yyyy-MM-DD");
+          break;
       }
     }
   }
