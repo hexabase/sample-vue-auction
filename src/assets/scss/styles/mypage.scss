@@ -261,8 +261,13 @@
             background-size: cover;
             backdrop-filter: none;
         }
+
+        &_title {
+            margin-bottom: 50px;
+        }
+
         .content {
-            height: 180px;
+            height: 240px;
         }
     }
     
@@ -372,8 +377,13 @@
             background-size: cover;
             backdrop-filter: none;
         }
+
+        &_title {
+            margin-bottom: 50px;
+        }
+        
         .content {
-            height: 180px;
+            height: 240px;
         }
     }
     

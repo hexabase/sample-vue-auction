@@ -6,20 +6,20 @@
           <h2 class="pageHeader_title">保有する楽曲権利</h2>
         </div>
       </div>
-    </header>
-    <section class="trend">
       <v-tabs hide-slider class="tabMenu">
         <v-tab :to="{ name: 'MyCopyrights' }" class="tabMenu_tabItem">
           保有中
         </v-tab>
-        <v-tab :to="{ name: 'ClosedAuction' }" class="tabMenu_tabItem">
+        <!-- <v-tab :to="{ name: 'ClosedAuction' }" class="tabMenu_tabItem">
           販売中
-        </v-tab>
+        </v-tab> -->
         <v-tab :to="{ name: 'MyBidAuction' }" class="tabMenu_tabItem">
           オークション中の著作権
         </v-tab>
       </v-tabs>
-    </section>
+    </header>
+    <!-- <section class="trend">
+    </section> -->
     <section class="myBidAuction">
       <div class="content">
         <h2 class="myBidAuction_title">オークション中の著作権</h2>

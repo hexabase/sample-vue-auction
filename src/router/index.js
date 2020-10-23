@@ -18,18 +18,12 @@ import MyBidAuction from "../../views/MyBidAuction.vue";
 import Wallet from "../../views/Wallet.vue";
 import UserInfo from "../../views/UserInfo.vue";
 import Contact from "../../views/Contact.vue";
+import News from "../../views/News.vue";
 import NotFound from "../../views/NotFound.vue";
-import Index from "../../views/Index.vue";
 
 Vue.use(VueRouter);
 
 const routes = [
-  {
-    // Movie用仮ページ
-    path: "/index",
-    name: "index",
-    component: Index
-  },
   {
     path: "/",
     name: "top",
@@ -116,6 +110,11 @@ const routes = [
     component: UserInfo,
     meta: { requiresAuth: true },
     props: true
+  },
+  {
+    path: "/news",
+    name: "News",
+    component: News
   },
   {
     path: "/contact",
