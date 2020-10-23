@@ -744,24 +744,9 @@
                       ご住所
                     </div>
                     <div class="formConfirm_item_body">
-                      {{ userPostalCode }}
-                    </div>
-                  </div>
-                  <div class="formConfirm_item">
-                    <div class="formConfirm_item_title"></div>
-                    <div class="formConfirm_item_body">
-                      {{ userPrefectures }}
-                    </div>
-                  </div>
-                  <div class="formConfirm_item">
-                    <div class="formConfirm_item_title"></div>
-                    <div class="formConfirm_item_body">
-                      {{ userAddress1 }}
-                    </div>
-                  </div>
-                  <div class="formConfirm_item">
-                    <div class="formConfirm_item_title"></div>
-                    <div class="formConfirm_item_body">
+                      〒&nbsp;{{ userPostalCode }}<br />
+                      {{ userPrefectures }}<br />
+                      {{ userAddress1 }}<br />
                       {{ userAddress2 }}
                     </div>
                   </div>

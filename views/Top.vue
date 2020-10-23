@@ -178,15 +178,15 @@
           <span class="contents_title-en">News</span>
           <span class="contents_title-jp">
             お知らせ
-            <a href="">一覧</a>
+            <router-link to="News">一覧</router-link>
           </span>
         </h3>
         <ul class="news_list">
           <li class="news_item">
-            <a href="">
+            <router-link to="News">
               <span class="news_date">2020.09.01</span>
               BATONサービスをスタートしました。
-            </a>
+            </router-link>
           </li>
         </ul>
       </div>
