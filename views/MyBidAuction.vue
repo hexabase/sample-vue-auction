@@ -44,7 +44,7 @@
                 {{ displayMyBidAuctionList[index].歌手1 }}
               </p>
               <p class="myBidAuction_item_date">
-                保有数：{{ displayMyBidAuctionList[index].数量 }} 口
+                入札数：{{ displayMyBidAuctionList[index].数量 }} 口
               </p>
               <button
                 class="button-action"
@@ -95,6 +95,10 @@ export default {
         const myAuctionList = await this.getAuctionList(
           this.myBidAuctionList[myBidAuctionListkey].著作権番号
         );
+        if (myAuctionList[0].オークション状況 === "オークション完了") {
+          delete this.myBidAuctionList[myBidAuctionListkey];
+          continue;
+        }
 
         const image1Binary = myAuctionList[0].image1;
         if (image1Binary) {

@@ -94,7 +94,7 @@
           <section class="mailSettings">
             <div class="mailSettings_box">
               <h3 class="mailSettings_title">メール通知の設定</h3>
-              <div class="mailSettings_item">
+              <!-- <div class="mailSettings_item">
                 <div class="mailSettings_item_title">
                   入札数量をすべて確保する
                 </div>
@@ -109,7 +109,7 @@
                 <div class="mailSettings_item_body">
                   <v-switch></v-switch>
                 </div>
-              </div>
+              </div> -->
               <div class="mailSettings_item">
                 <div class="mailSettings_item_title">
                   イベントニュース
