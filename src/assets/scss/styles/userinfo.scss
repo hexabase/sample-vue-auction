@@ -512,6 +512,34 @@
         input:-internal-autofill-selected {
             background-color: transparent !important;
         }
+
+        .v-input--radio-group__input {
+            .v-radio:not(.v-item--active),
+            .v-input--selection-controls__input {
+                display: none;
+            }
+
+            .v-radio.v-item--active .v-label {
+                font-weight: normal;
+                padding: 0 12px;
+            }
+        }
+
+        .v-select__slot {
+            .v-select__selection--disabled {
+                color: $color-text-default;
+            }
+
+            .v-input__append-inner {
+                display: none;
+            }
+        }
+    }
+
+    &.approved {
+        .select-year, .select-month, .select-day {
+            flex: 0 0 0;
+        }
     }
 }
 

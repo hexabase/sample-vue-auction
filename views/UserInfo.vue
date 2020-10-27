@@ -9,7 +9,7 @@
     </header>
     <v-stepper
       v-model="step"
-      :non-linear="!stepControl.fromBid"
+      non-linear
       :alt-labels="$vuetify.breakpoint.xs || $vuetify.breakpoint.sm"
     >
       <div class="v-stepper__header_wrap">
@@ -19,7 +19,6 @@
             :editable="stepControl.step.step0.editable"
             :complete="stepControl.step.step0.complete"
             step="0"
-            @click="step = 0"
           >
             アカウント/通知設定
           </v-stepper-step>
@@ -28,7 +27,6 @@
             :editable="stepControl.step.step1.editable"
             :complete="stepControl.step.step1.complete"
             step="1"
-            @click="step = 1"
           >
             個人情報
             <span
@@ -41,7 +39,6 @@
             :editable="stepControl.step.step2.editable"
             :complete="stepControl.step.step2.complete"
             step="2"
-            @click="step = 2"
           >
             口座情報
           </v-stepper-step>
@@ -50,7 +47,6 @@
             :editable="stepControl.step.step3.editable"
             :complete="stepControl.step.step3.complete"
             step="3"
-            @click="step = 3"
           >
             投資について
           </v-stepper-step>
@@ -59,7 +55,6 @@
             :editable="stepControl.step.step4.editable"
             :complete="stepControl.step.step4.complete"
             step="4"
-            @click="step = 4"
           >
             本人確認書類
             <span
@@ -67,13 +62,12 @@
               class="mark-alert"
             ></span>
           </v-stepper-step>
-          <v-divider></v-divider>
+          <v-divider v-if="!approvedFlag"></v-divider>
           <v-stepper-step
             v-if="!approvedFlag"
             :editable="stepControl.step.step5.editable"
             :complete="stepControl.step.step5.complete"
             step="5"
-            @click="step = 5"
           >
             {{ stepControl.fromBid ? "登録内容確認" : "登録申請" }}
             <span
@@ -273,6 +267,7 @@
                   :editable="!approvedFlag"
                   placeholder="選択してください"
                   @input="emittedBirthday"
+                  :class="{ approved: approvedFlag }"
                 />
                 <FormAddress
                   title="ご住所"
@@ -1147,6 +1142,7 @@ export default {
     FormTextfieldName,
     MyModal
   },
+  props: ["fromBid"],
   data() {
     return {
       token: this.$store.getters["auth/getToken"],
@@ -1266,7 +1262,14 @@ export default {
           step3: {
             editable: true,
             complete: false,
-            item: []
+            item: [
+              "銀行",
+              "支店名",
+              "支店番号",
+              "口座種類",
+              "口座番号",
+              "名義人"
+            ]
           },
           step4: {
             editable: true,
@@ -1306,6 +1309,9 @@ export default {
   },
   created: async function() {},
   mounted: async function() {
+    if (this.fromBid) {
+      this.stepControl.fromBid = this.fromBid;
+    }
     try {
       // loading overlay表示
       this.$store.commit("common/setLoading", true);
@@ -1426,10 +1432,26 @@ export default {
       }
 
       // Stepタブ表示調整
-      this.setStepControl(1, this.stepControl.fromBid, this.isStepCompleted(1));
-      this.setStepControl(2, this.stepControl.fromBid, this.isStepCompleted(2));
-      this.setStepControl(3, this.stepControl.fromBid, this.isStepCompleted(3));
-      this.setStepControl(4, this.stepControl.fromBid, this.isStepCompleted(4));
+      this.setStepControl(
+        1,
+        !this.stepControl.fromBid,
+        this.isStepCompleted(1)
+      );
+      this.setStepControl(
+        2,
+        !this.stepControl.fromBid,
+        this.isStepCompleted(2)
+      );
+      this.setStepControl(
+        3,
+        !this.stepControl.fromBid,
+        this.isStepCompleted(3)
+      );
+      this.setStepControl(
+        4,
+        !this.stepControl.fromBid,
+        this.isStepCompleted(4)
+      );
 
       // const defaultConfig = {
       //   headers: {
@@ -1464,9 +1486,6 @@ export default {
           this.stepControl.step.step5.complete = true;
           break;
       }
-    }
-    if (this.fromBid) {
-      this.stepControl.fromBid = this.fromBid;
     }
   },
   methods: {
@@ -1551,7 +1570,12 @@ export default {
                   is_force_update: true
                 }
               );
-              this.setStepControl(1, !this.stepControl.fromBid, true);
+              this.setStepControl(1, true, true);
+              this.setStepControl(
+                2,
+                true,
+                this.stepControl.step.step2.complete
+              );
             } catch (e) {
               console.log(e);
             } finally {
@@ -1619,7 +1643,12 @@ export default {
                   is_force_update: true
                 }
               );
-              this.setStepControl(2, !this.stepControl.fromBid, true);
+              this.setStepControl(2, true, true);
+              this.setStepControl(
+                3,
+                true,
+                this.stepControl.step.step3.complete
+              );
             } catch (e) {
               console.log(e);
             } finally {
@@ -1693,7 +1722,12 @@ export default {
                   is_force_update: true
                 }
               );
-              this.setStepControl(3, !this.stepControl.fromBid, true);
+              this.setStepControl(3, true, true);
+              this.setStepControl(
+                4,
+                true,
+                this.stepControl.step.step4.complete
+              );
             } catch (e) {
               console.log(e);
             } finally {
@@ -1788,7 +1822,12 @@ export default {
                   );
                 }
               }
-              this.setStepControl(4, !this.stepControl.fromBid, true);
+              this.setStepControl(4, true, true);
+              this.setStepControl(
+                5,
+                true,
+                this.stepControl.step.step5.complete
+              );
             } catch (e) {
               console.log(e);
             } finally {
