@@ -486,26 +486,26 @@
                   class="select-2column"
                   :required="true"
                   :radios="[
-                    { value: '５百万円未満', label: '５百万円未満' },
+                    { value: '百万円未満', label: '百万円未満' },
                     {
-                      value: '５百万円未満～１千万円未満',
-                      label: '５百万円未満～１千万円未満'
+                      value: '百万円～２百万円未満',
+                      label: '百万円～１千万円未満'
                     },
                     {
-                      value: '１千万円未満～３千万円未満',
-                      label: '１千万円未満～３千万円未満'
+                      value: '２百万円～３百万円未満',
+                      label: '２百万円～３百万円未満'
                     },
                     {
-                      value: '３千万円未満～５千万円未満',
-                      label: '３千万円未満～５千万円未満'
+                      value: '３百万円～４百万円未満',
+                      label: '３百万円～４百万円未満'
                     },
                     {
-                      value: '５千万円未満～１億円未満',
-                      label: '５千万円未満～１億円未満'
+                      value: '４百万円～５百円未満',
+                      label: '４百万円～５百円未満'
                     },
                     {
-                      value: '１億円以上',
-                      label: '１億円以上'
+                      value: '５百万以上',
+                      label: '５百万以上'
                     }
                   ]"
                   :radiochecked="
@@ -515,31 +515,46 @@
                   "
                   @change="emittedAnnualIncome"
                 />
+                <div
+                  v-if="selectedAnnualIncome === '百万円未満'"
+                  class="subFormBox"
+                >
+                  ※百万円未満を選択されたかたは年収額を入力してください。
+                  <v-text-field
+                    v-model="incomeValue"
+                    :rules="incomeValueRules"
+                    dense
+                    outlined
+                    single-line
+                    type="number"
+                    suffix="円"
+                  ></v-text-field>
+                </div>
                 <FormRadio
                   title="現在の金融資産"
                   class="select-2column"
                   :required="true"
                   :radios="[
-                    { value: '５百万円未満', label: '５百万円未満' },
+                    { value: '百万円未満', label: '百万円未満' },
                     {
-                      value: '５百万円未満～１千万円未満',
-                      label: '５百万円未満～１千万円未満'
+                      value: '百万円～２百万円未満',
+                      label: '百万円～１千万円未満'
                     },
                     {
-                      value: '１千万円未満～３千万円未満',
-                      label: '１千万円未満～３千万円未満'
+                      value: '２百万円～３百万円未満',
+                      label: '２百万円～３百万円未満'
                     },
                     {
-                      value: '３千万円未満～５千万円未満',
-                      label: '３千万円未満～５千万円未満'
+                      value: '３百万円～４百万円未満',
+                      label: '３百万円～４百万円未満'
                     },
                     {
-                      value: '５千万円未満～１億円未満',
-                      label: '５千万円未満～１億円未満'
+                      value: '４百万円～５百円未満',
+                      label: '４百万円～５百円未満'
                     },
                     {
-                      value: '１億円以上',
-                      label: '１億円以上'
+                      value: '５百万以上',
+                      label: '５百万以上'
                     }
                   ]"
                   :radiochecked="
@@ -554,26 +569,26 @@
                   class="select-2column"
                   :required="true"
                   :radios="[
-                    { value: '５百万円未満', label: '５百万円未満' },
+                    { value: '百万円未満', label: '百万円未満' },
                     {
-                      value: '５百万円未満～１千万円未満',
-                      label: '５百万円未満～１千万円未満'
+                      value: '百万円～２百万円未満',
+                      label: '百万円～１千万円未満'
                     },
                     {
-                      value: '１千万円未満～３千万円未満',
-                      label: '１千万円未満～３千万円未満'
+                      value: '２百万円～３百万円未満',
+                      label: '２百万円～３百万円未満'
                     },
                     {
-                      value: '３千万円未満～５千万円未満',
-                      label: '３千万円未満～５千万円未満'
+                      value: '３百万円～４百万円未満',
+                      label: '３百万円～４百万円未満'
                     },
                     {
-                      value: '５千万円未満～１億円未満',
-                      label: '５千万円未満～１億円未満'
+                      value: '４百万円～５百円未満',
+                      label: '４百万円～５百円未満'
                     },
                     {
-                      value: '１億円以上',
-                      label: '１億円以上'
+                      value: '５百万以上',
+                      label: '５百万以上'
                     }
                   ]"
                   :radiochecked="
@@ -1263,7 +1278,11 @@ export default {
             complete: false
           }
         }
-      }
+      },
+      incomeValueRules: [
+        v => !!v || "入力してください",
+        v => (v && v <= 1000000) || "100万円未満で入力してください"
+      ]
     };
   },
   computed: {
@@ -1373,7 +1392,12 @@ export default {
         this.selectedInvestmentPurpose = this.userInfo[0].投資目的_投資方針;
         this.selectedInvestmentPeriod = this.userInfo[0].投資目的_投資期間;
         this.selectedIncomeForm = this.userInfo[0].現在の収入形態;
-        this.selectedAnnualIncome = this.userInfo[0].現在の年収;
+        if (this.userInfo[0].現在の年収 === "百万円未満") {
+          this.selectedAnnualIncome = "百万円未満";
+          this.incomeValue = this.userInfo[0].現在の年収;
+        } else {
+          this.selectedAnnualIncome = this.userInfo[0].現在の年収;
+        }
         this.selectedFinancialAssets = this.userInfo[0].現在の金融資産;
         this.selectedPlannedInvestmentAmount = this.userInfo[0].運用予定額;
 
@@ -1618,6 +1642,12 @@ export default {
             this.selectedFinancialAssets &&
             this.selectedPlannedInvestmentAmount
           ) {
+            let selectedAnnualIncomeValue;
+            if (this.selectedAnnualIncome === "百万円未満") {
+              selectedAnnualIncomeValue = this.incomeValue;
+            } else {
+              selectedAnnualIncomeValue = this.selectedAnnualIncome;
+            }
             try {
               // loading overlay表示
               this.$store.commit("common/setLoading", true);
@@ -1647,7 +1677,8 @@ export default {
                     },
                     {
                       id: "現在の年収",
-                      value: this.selectedAnnualIncome
+                      value: selectedAnnualIncomeValue
+                      // value: this.selectedAnnualIncome
                     },
                     {
                       id: "現在の金融資産",
