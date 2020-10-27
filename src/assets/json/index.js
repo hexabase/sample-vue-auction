@@ -5,6 +5,7 @@ import common from "@/store/common";
 import auth from "@/store/auth";
 import datas from "@/store/datas";
 import input from "@/store/input";
+import * as Cookies from 'js-cookie'
 
 Vue.use(Vuex);
 
@@ -19,7 +20,12 @@ export default new Vuex.Store({
   plugins: [
     createPersistedState({
       key: "",
-      storage: window.sessionStorage
+      storage: {
+        getItem: key => Cookies.get(key),
+        setItem: (key, value) =>
+          Cookies.set(key, value, { expires: 7, secure: true }), //7日間有効
+        removeItem: key => Cookies.remove(key)
+      }
     })
   ]
 });
