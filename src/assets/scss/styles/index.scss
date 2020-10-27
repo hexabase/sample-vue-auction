@@ -222,6 +222,10 @@
         }
     }
 
+    .pickupAuction_wrap .pickupAuction_list .auctionList_none {
+        margin: 0 auto;
+    }
+    
     .button-main {
         @extend %index-button-main;
     }

@@ -9,7 +9,7 @@
     </header>
     <v-stepper
       v-model="step"
-      :non-linear="!stepControl.fromBid"
+      non-linear
       :alt-labels="$vuetify.breakpoint.xs || $vuetify.breakpoint.sm"
     >
       <div class="v-stepper__header_wrap">
@@ -19,7 +19,6 @@
             :editable="stepControl.step.step0.editable"
             :complete="stepControl.step.step0.complete"
             step="0"
-            @click="step = 0"
           >
             アカウント/通知設定
           </v-stepper-step>
@@ -28,7 +27,6 @@
             :editable="stepControl.step.step1.editable"
             :complete="stepControl.step.step1.complete"
             step="1"
-            @click="step = 1"
           >
             個人情報
             <span
@@ -41,7 +39,6 @@
             :editable="stepControl.step.step2.editable"
             :complete="stepControl.step.step2.complete"
             step="2"
-            @click="step = 2"
           >
             口座情報
           </v-stepper-step>
@@ -50,7 +47,6 @@
             :editable="stepControl.step.step3.editable"
             :complete="stepControl.step.step3.complete"
             step="3"
-            @click="step = 3"
           >
             投資について
           </v-stepper-step>
@@ -59,7 +55,6 @@
             :editable="stepControl.step.step4.editable"
             :complete="stepControl.step.step4.complete"
             step="4"
-            @click="step = 4"
           >
             本人確認書類
             <span
@@ -67,13 +62,12 @@
               class="mark-alert"
             ></span>
           </v-stepper-step>
-          <v-divider></v-divider>
+          <v-divider v-if="!approvedFlag"></v-divider>
           <v-stepper-step
             v-if="!approvedFlag"
             :editable="stepControl.step.step5.editable"
             :complete="stepControl.step.step5.complete"
             step="5"
-            @click="step = 5"
           >
             {{ stepControl.fromBid ? "登録内容確認" : "登録申請" }}
             <span
@@ -273,6 +267,7 @@
                   :editable="!approvedFlag"
                   placeholder="選択してください"
                   @input="emittedBirthday"
+                  :class="{ approved: approvedFlag }"
                 />
                 <FormAddress
                   title="ご住所"
@@ -486,26 +481,26 @@
                   class="select-2column"
                   :required="true"
                   :radios="[
-                    { value: '５百万円未満', label: '５百万円未満' },
+                    { value: '百万円未満', label: '百万円未満' },
                     {
-                      value: '５百万円未満～１千万円未満',
-                      label: '５百万円未満～１千万円未満'
+                      value: '百万円～２百万円未満',
+                      label: '百万円～１千万円未満'
                     },
                     {
-                      value: '１千万円未満～３千万円未満',
-                      label: '１千万円未満～３千万円未満'
+                      value: '２百万円～３百万円未満',
+                      label: '２百万円～３百万円未満'
                     },
                     {
-                      value: '３千万円未満～５千万円未満',
-                      label: '３千万円未満～５千万円未満'
+                      value: '３百万円～４百万円未満',
+                      label: '３百万円～４百万円未満'
                     },
                     {
-                      value: '５千万円未満～１億円未満',
-                      label: '５千万円未満～１億円未満'
+                      value: '４百万円～５百円未満',
+                      label: '４百万円～５百円未満'
                     },
                     {
-                      value: '１億円以上',
-                      label: '１億円以上'
+                      value: '５百万以上',
+                      label: '５百万以上'
                     }
                   ]"
                   :radiochecked="
@@ -515,31 +510,46 @@
                   "
                   @change="emittedAnnualIncome"
                 />
+                <div
+                  v-if="selectedAnnualIncome === '百万円未満'"
+                  class="subFormBox"
+                >
+                  ※百万円未満を選択されたかたは年収額を入力してください。
+                  <v-text-field
+                    v-model="incomeValue"
+                    :rules="incomeValueRules"
+                    dense
+                    outlined
+                    single-line
+                    type="number"
+                    suffix="円"
+                  ></v-text-field>
+                </div>
                 <FormRadio
                   title="現在の金融資産"
                   class="select-2column"
                   :required="true"
                   :radios="[
-                    { value: '５百万円未満', label: '５百万円未満' },
+                    { value: '百万円未満', label: '百万円未満' },
                     {
-                      value: '５百万円未満～１千万円未満',
-                      label: '５百万円未満～１千万円未満'
+                      value: '百万円～２百万円未満',
+                      label: '百万円～１千万円未満'
                     },
                     {
-                      value: '１千万円未満～３千万円未満',
-                      label: '１千万円未満～３千万円未満'
+                      value: '２百万円～３百万円未満',
+                      label: '２百万円～３百万円未満'
                     },
                     {
-                      value: '３千万円未満～５千万円未満',
-                      label: '３千万円未満～５千万円未満'
+                      value: '３百万円～４百万円未満',
+                      label: '３百万円～４百万円未満'
                     },
                     {
-                      value: '５千万円未満～１億円未満',
-                      label: '５千万円未満～１億円未満'
+                      value: '４百万円～５百円未満',
+                      label: '４百万円～５百円未満'
                     },
                     {
-                      value: '１億円以上',
-                      label: '１億円以上'
+                      value: '５百万以上',
+                      label: '５百万以上'
                     }
                   ]"
                   :radiochecked="
@@ -554,26 +564,26 @@
                   class="select-2column"
                   :required="true"
                   :radios="[
-                    { value: '５百万円未満', label: '５百万円未満' },
+                    { value: '百万円未満', label: '百万円未満' },
                     {
-                      value: '５百万円未満～１千万円未満',
-                      label: '５百万円未満～１千万円未満'
+                      value: '百万円～２百万円未満',
+                      label: '百万円～１千万円未満'
                     },
                     {
-                      value: '１千万円未満～３千万円未満',
-                      label: '１千万円未満～３千万円未満'
+                      value: '２百万円～３百万円未満',
+                      label: '２百万円～３百万円未満'
                     },
                     {
-                      value: '３千万円未満～５千万円未満',
-                      label: '３千万円未満～５千万円未満'
+                      value: '３百万円～４百万円未満',
+                      label: '３百万円～４百万円未満'
                     },
                     {
-                      value: '５千万円未満～１億円未満',
-                      label: '５千万円未満～１億円未満'
+                      value: '４百万円～５百円未満',
+                      label: '４百万円～５百円未満'
                     },
                     {
-                      value: '１億円以上',
-                      label: '１億円以上'
+                      value: '５百万以上',
+                      label: '５百万以上'
                     }
                   ]"
                   :radiochecked="
@@ -1132,6 +1142,7 @@ export default {
     FormTextfieldName,
     MyModal
   },
+  props: ["fromBid"],
   data() {
     return {
       token: this.$store.getters["auth/getToken"],
@@ -1251,7 +1262,15 @@ export default {
           step3: {
             editable: true,
             complete: false,
-            item: []
+            item: [
+              "投資経験",
+              "投資目的",
+              "投資期間",
+              "現在の収入形態",
+              "現在の年収",
+              "現在の金融資産",
+              "運用予定額"
+            ]
           },
           step4: {
             editable: true,
@@ -1263,7 +1282,11 @@ export default {
             complete: false
           }
         }
-      }
+      },
+      incomeValueRules: [
+        v => !!v || "入力してください",
+        v => (v && v <= 1000000) || "100万円未満で入力してください"
+      ]
     };
   },
   computed: {
@@ -1287,6 +1310,9 @@ export default {
   },
   created: async function() {},
   mounted: async function() {
+    if (this.fromBid) {
+      this.stepControl.fromBid = this.fromBid;
+    }
     try {
       // loading overlay表示
       this.$store.commit("common/setLoading", true);
@@ -1373,7 +1399,12 @@ export default {
         this.selectedInvestmentPurpose = this.userInfo[0].投資目的_投資方針;
         this.selectedInvestmentPeriod = this.userInfo[0].投資目的_投資期間;
         this.selectedIncomeForm = this.userInfo[0].現在の収入形態;
-        this.selectedAnnualIncome = this.userInfo[0].現在の年収;
+        if (this.userInfo[0].現在の年収 === "百万円未満") {
+          this.selectedAnnualIncome = "百万円未満";
+          this.incomeValue = this.userInfo[0].現在の年収;
+        } else {
+          this.selectedAnnualIncome = this.userInfo[0].現在の年収;
+        }
         this.selectedFinancialAssets = this.userInfo[0].現在の金融資産;
         this.selectedPlannedInvestmentAmount = this.userInfo[0].運用予定額;
 
@@ -1402,10 +1433,26 @@ export default {
       }
 
       // Stepタブ表示調整
-      this.setStepControl(1, this.stepControl.fromBid, this.isStepCompleted(1));
-      this.setStepControl(2, this.stepControl.fromBid, this.isStepCompleted(2));
-      this.setStepControl(3, this.stepControl.fromBid, this.isStepCompleted(3));
-      this.setStepControl(4, this.stepControl.fromBid, this.isStepCompleted(4));
+      this.setStepControl(
+        1,
+        !this.stepControl.fromBid,
+        this.isStepCompleted(1)
+      );
+      this.setStepControl(
+        2,
+        !this.stepControl.fromBid,
+        this.isStepCompleted(2)
+      );
+      this.setStepControl(
+        3,
+        !this.stepControl.fromBid,
+        this.isStepCompleted(3)
+      );
+      this.setStepControl(
+        4,
+        !this.stepControl.fromBid,
+        this.isStepCompleted(4)
+      );
 
       // const defaultConfig = {
       //   headers: {
@@ -1440,9 +1487,6 @@ export default {
           this.stepControl.step.step5.complete = true;
           break;
       }
-    }
-    if (this.fromBid) {
-      this.stepControl.fromBid = this.fromBid;
     }
   },
   methods: {
@@ -1527,7 +1571,12 @@ export default {
                   is_force_update: true
                 }
               );
-              this.setStepControl(1, !this.stepControl.fromBid, true);
+              this.setStepControl(1, true, true);
+              this.setStepControl(
+                2,
+                true,
+                this.stepControl.step.step2.complete
+              );
             } catch (e) {
               console.log(e);
             } finally {
@@ -1595,7 +1644,12 @@ export default {
                   is_force_update: true
                 }
               );
-              this.setStepControl(2, !this.stepControl.fromBid, true);
+              this.setStepControl(2, true, true);
+              this.setStepControl(
+                3,
+                true,
+                this.stepControl.step.step3.complete
+              );
             } catch (e) {
               console.log(e);
             } finally {
@@ -1618,6 +1672,12 @@ export default {
             this.selectedFinancialAssets &&
             this.selectedPlannedInvestmentAmount
           ) {
+            let selectedAnnualIncomeValue;
+            if (this.selectedAnnualIncome === "百万円未満") {
+              selectedAnnualIncomeValue = this.incomeValue;
+            } else {
+              selectedAnnualIncomeValue = this.selectedAnnualIncome;
+            }
             try {
               // loading overlay表示
               this.$store.commit("common/setLoading", true);
@@ -1647,7 +1707,8 @@ export default {
                     },
                     {
                       id: "現在の年収",
-                      value: this.selectedAnnualIncome
+                      value: selectedAnnualIncomeValue
+                      // value: this.selectedAnnualIncome
                     },
                     {
                       id: "現在の金融資産",
@@ -1662,7 +1723,12 @@ export default {
                   is_force_update: true
                 }
               );
-              this.setStepControl(3, !this.stepControl.fromBid, true);
+              this.setStepControl(3, true, true);
+              this.setStepControl(
+                4,
+                true,
+                this.stepControl.step.step4.complete
+              );
             } catch (e) {
               console.log(e);
             } finally {
@@ -1757,7 +1823,12 @@ export default {
                   );
                 }
               }
-              this.setStepControl(4, !this.stepControl.fromBid, true);
+              this.setStepControl(4, true, true);
+              this.setStepControl(
+                5,
+                true,
+                this.stepControl.step.step5.complete
+              );
             } catch (e) {
               console.log(e);
             } finally {
