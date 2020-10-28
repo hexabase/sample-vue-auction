@@ -66,6 +66,9 @@
               }}
             </div>
           </article>
+          <p v-if="displayAuctionList.length < 1" class="auctionList_none">
+            現在、開催中のオークションはございません
+          </p>
         </div>
       </div>
       <div class="pickupAuction_link">
@@ -74,7 +77,7 @@
         </router-link>
       </div>
     </section>
-    <section class="userMarket">
+    <section v-if="false" class="userMarket">
       <div class="content">
         <h3 class="contents_title">
           <span class="contents_title-en">User Market</span>
