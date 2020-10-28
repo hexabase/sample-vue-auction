@@ -52,7 +52,7 @@
               :required="true"
               :editable="isEditable()"
               valrule="required|email"
-              :value="userInfo[0] && userInfo[0].Email ? userInfo[0].Email : ''"
+              :value="mailAddress"
               @input="emittedMailAddress"
             />
             <FormTextfield
@@ -125,7 +125,7 @@ export default {
       datastoreIds: this.$store.getters["datas/getDatastoreIds"],
       userId: this.$store.getters["user/getMembershipNumber"],
       errorMess: "",
-      userInfo: [],
+      userInfo: [{ 苗字: "", 名前: "" }],
       userSeiKanji: "",
       userMeiKanji: "",
       mailAddress: ""
@@ -133,11 +133,11 @@ export default {
   },
   created: async function() {},
   mounted: async function() {
+    this.userInfo = await this.getUserInfo();
     if (this.token) {
-      this.userInfo = await this.getUserInfo();
-      this.userSeiKanji = this.userInfo[0] ? this.userInfo[0].苗字 : "";
-      this.userMeiKanji = this.userInfo[0] ? this.userInfo[0].名前 : "";
-      this.mailAddress = this.userInfo[0] ? this.userInfo[0].Email : "";
+      this.userSeiKanji = this.userInfo[0].苗字;
+      this.userMeiKanji = this.userInfo[0].名前;
+      this.mailAddress = this.userInfo[0].Email;
     }
   },
   methods: {
@@ -161,7 +161,7 @@ export default {
       );
     },
     setUserInfo(type) {
-      if (this.userInfo) {
+      if (this.userInfo[0].Email) {
         try {
           return this.userInfo[0].Email;
         } catch (e) {
@@ -236,8 +236,8 @@ export default {
     },
     // データアイテムを更新します
     async updatedDataItem(datasotreId, itemId, payload) {
-      const applicationId = this.$store.getters["datas/getApplicationId"];
-      const token = this.$store.getters["auth/getToken"];
+      const token = this.mapping.persistenceToken;
+      const applicationId = this.mapping.applicationId;
       return await this.$hexalink.editItem(
         token,
         applicationId,
@@ -267,6 +267,8 @@ export default {
       console.log("漢字：", value);
       this.userSeiKanji = value.split("　")[0];
       this.userMeiKanji = value.split("　")[1];
+      this.userInfo[0]["苗字"] = this.userSeiKanji;
+      this.userInfo[0]["名前"] = this.userMeiKanji;
       console.log(this.userSeiKanji, this.userMeiKanji);
     },
     emittedMailAddress(value) {

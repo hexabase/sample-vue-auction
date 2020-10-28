@@ -7,7 +7,6 @@
     <div class="formItem_body">
       <ValidationProvider v-slot="{ errors }" :name="title" :rules="valrule">
         <v-text-field
-          v-model="text"
           dense
           outlined
           single-line
