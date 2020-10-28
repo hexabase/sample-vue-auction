@@ -10,9 +10,11 @@
   "dependencies": {
     "array-foreach-async": "^1.0.1",
     "axios": "^0.19.1",
+    "browser-image-compression": "^1.0.12",
     "chart.js": "^2.9.3",
     "chartjs-plugin-datalabels": "^0.7.0",
     "core-js": "^3.6.5",
+    "js-cookie": "^2.2.1",
     "ken-all": "^0.2.1",
     "moment": "^2.27.0",
     "moment-timezone": "^0.5.31",

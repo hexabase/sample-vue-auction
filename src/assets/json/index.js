@@ -5,7 +5,7 @@ import common from "@/store/common";
 import auth from "@/store/auth";
 import datas from "@/store/datas";
 import input from "@/store/input";
-import * as Cookies from 'js-cookie'
+import Cookies from "js-cookie";
 
 Vue.use(Vuex);
 
