@@ -102,7 +102,7 @@ export default {
         }
         // Authトークンの取得
         const token = await this.$hexalink.login(this.email, this.password);
-        alert(token);
+        alert(token.length);
 
         // Hexalink UserInfoの取得
         const userInfo = await this.$hexalink.getUserInfo(token);
