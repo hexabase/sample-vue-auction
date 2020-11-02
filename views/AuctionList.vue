@@ -58,12 +58,12 @@
                   displayAuctionList[index].最高入札額
                     ? changeYen(displayAuctionList[index].最高入札額)
                     : changeYen(displayAuctionList[index].オークション開始金額)
-                }}<span class="unit">円（年2.2%）</span>
+                }}<span class="unit">円（年利回り 2.2%）</span>
               </dd>
               <dt>スタート金額</dt>
               <dd>
                 {{ changeYen(displayAuctionList[index].オークション開始金額)
-                }}<span class="unit">円（年2.2%）</span>
+                }}<span class="unit">円（年利回り 2.2%）</span>
               </dd>
               <dt>競争率</dt>
               <dd>

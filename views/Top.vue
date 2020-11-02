@@ -206,7 +206,7 @@
           </h4>
           <p class="about_text">
             好きな音楽の著作権をオークション形式で落札してあなたのものに。<br />
-            保有する権利で得られた利益が配当されます。権利は株式で分配されるので、少額から投資を始めることができます。
+            保有する権利で得られた利益が分配されます。権利は小口化され、１口から取得できますので、少額から投資を始めることができます。
           </p>
         </div>
       </div>
@@ -224,9 +224,12 @@
         <ol class="content aboutStep_list">
           <li>
             <div class="aboutStep_step">Step.<span>1</span></div>
-            <div class="aboutStep_title">新規登録を行う</div>
+            <div class="aboutStep_title">新規ユーザー登録</div>
             <figure class="aboutStep_img">
-              <img src="~@/assets/img/step1.png" alt="Step. 新規登録を行う" />
+              <img
+                src="~@/assets/img/step1.png"
+                alt="Step.1 新規ユーザー登録"
+              />
             </figure>
             <p class="aboutStep_text">
               お客様のメールアドレスのみで簡単に登録できます。
@@ -234,15 +237,15 @@
           </li>
           <li>
             <div class="aboutStep_step">Step.<span>2</span></div>
-            <div class="aboutStep_title">オンライン上で<br />必要書類提出</div>
+            <div class="aboutStep_title">オンライン上で<br />口座開設</div>
             <figure class="aboutStep_img">
               <img
                 src="~@/assets/img/step2.png"
-                alt="Step.2 オンライン上で必要書類提出"
+                alt="Step.2 オンライン上で口座開設"
               />
             </figure>
             <p class="aboutStep_text">
-              住所氏名、ご利用の金融機関など、必要な項目を入力し、本人確認資料とマイナンバーをご提示いただきます。
+              住所氏名、ご利用の金融機関など、必要な項目を入力し、本人確認書類とマイナンバーをご提示いただきます。
             </p>
           </li>
           <li>
@@ -278,7 +281,7 @@
               />
             </figure>
             <p class="aboutStep_text">
-              入金確認後に、「入金確認通知」を送信し、マイページから保有する著作権が確認できます。
+              入金確認後に、「入金確認通知」を送信します。以降、いつでもマイページから保有する著作権が確認できます。
             </p>
           </li>
           <li>
