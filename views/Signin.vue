@@ -85,6 +85,7 @@ export default {
    */
   created: async function() {
     this.$store.commit("common/setLoading", false);
+    console.log(process.env.NODE_ENV);
   },
   methods: {
     click() {
