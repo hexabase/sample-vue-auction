@@ -414,7 +414,8 @@
                     { value: '外国株式', label: '外国株式' },
                     { value: '外国債権', label: '外国債権' },
                     { value: '投資信託', label: '投資信託' },
-                    { value: '先物・オプション', label: '先物・オプション' }
+                    { value: '先物・オプション', label: '先物・オプション' },
+                    { value: 'なし', label: 'なし' }
                   ]"
                   @change="emittedInvestmentExperience"
                 />
@@ -484,7 +485,7 @@
                     { value: '百万円未満', label: '百万円未満' },
                     {
                       value: '百万円～２百万円未満',
-                      label: '百万円～１千万円未満'
+                      label: '百万円～２百万円未満'
                     },
                     {
                       value: '２百万円～３百万円未満',
@@ -495,12 +496,12 @@
                       label: '３百万円～４百万円未満'
                     },
                     {
-                      value: '４百万円～５百円未満',
-                      label: '４百万円～５百円未満'
+                      value: '４百万円～５百万円未満',
+                      label: '４百万円～５百万円未満'
                     },
                     {
-                      value: '５百万以上',
-                      label: '５百万以上'
+                      value: '５百万円以上',
+                      label: '５百万円以上'
                     }
                   ]"
                   :radiochecked="
@@ -521,6 +522,7 @@
                     dense
                     outlined
                     single-line
+                    step="1"
                     type="number"
                     suffix="円"
                   ></v-text-field>
@@ -533,7 +535,7 @@
                     { value: '百万円未満', label: '百万円未満' },
                     {
                       value: '百万円～２百万円未満',
-                      label: '百万円～１千万円未満'
+                      label: '百万円～２百万円未満'
                     },
                     {
                       value: '２百万円～３百万円未満',
@@ -544,12 +546,12 @@
                       label: '３百万円～４百万円未満'
                     },
                     {
-                      value: '４百万円～５百円未満',
-                      label: '４百万円～５百円未満'
+                      value: '４百万円～５百万円未満',
+                      label: '４百万円～５百万円未満'
                     },
                     {
-                      value: '５百万以上',
-                      label: '５百万以上'
+                      value: '５百万円以上',
+                      label: '５百万円以上'
                     }
                   ]"
                   :radiochecked="
@@ -567,7 +569,7 @@
                     { value: '百万円未満', label: '百万円未満' },
                     {
                       value: '百万円～２百万円未満',
-                      label: '百万円～１千万円未満'
+                      label: '百万円～２百万円未満'
                     },
                     {
                       value: '２百万円～３百万円未満',
@@ -578,12 +580,12 @@
                       label: '３百万円～４百万円未満'
                     },
                     {
-                      value: '４百万円～５百円未満',
-                      label: '４百万円～５百円未満'
+                      value: '４百万円～５百万円未満',
+                      label: '４百万円～５百万円未満'
                     },
                     {
-                      value: '５百万以上',
-                      label: '５百万以上'
+                      value: '５百万円以上',
+                      label: '５百万円以上'
                     }
                   ]"
                   :radiochecked="
@@ -892,20 +894,32 @@
                 </p>
                 <v-checkbox
                   v-model="checkedAgreements"
-                  label="利用規約に同意"
+                  label="利用規約及び個人情報の取扱いに同意"
                   value="1"
                   required
                 />
                 <v-checkbox
                   v-model="checkedAgreements"
-                  label="個人情報の処理方針に同意"
+                  label="電磁的方法による情報提供の同意"
                   value="2"
                   required
                 />
                 <v-checkbox
                   v-model="checkedAgreements"
-                  label="個人情報の収集および利用に同意"
+                  label="反社会的勢力ではないことの表明・確約に同意"
                   value="3"
+                  required
+                />
+                <v-checkbox
+                  v-model="checkedAgreements"
+                  label="米国の永住権をお持ちではないことの表明・確約に同意"
+                  value="4"
+                  required
+                />
+                <v-checkbox
+                  v-model="checkedAgreements"
+                  label="外国PEPsに該当しないことの表明・確約に同意"
+                  value="5"
                   required
                 />
                 <div class="formEntryBox_concent">
@@ -925,14 +939,14 @@
                 <v-checkbox
                   v-model="checkedAgreements"
                   label="全てに同意する"
-                  value="4"
+                  value="6"
                   required
                 />
                 <div class="entryForm_footer">
                   <button
                     class="button-action"
                     :disabled="
-                      checkedAgreements.length !== 4 || userNameJudgment
+                      checkedAgreements.length !== 6 || userNameJudgment
                     "
                     @click="applyMember"
                   >
@@ -1285,6 +1299,7 @@ export default {
       },
       incomeValueRules: [
         v => !!v || "入力してください",
+        v => (v && v >= 0) || "0円以上で入力してください",
         v => (v && v <= 1000000) || "100万円未満で入力してください"
       ]
     };
