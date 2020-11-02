@@ -893,20 +893,32 @@
                 </p>
                 <v-checkbox
                   v-model="checkedAgreements"
-                  label="利用規約に同意"
+                  label="利用規約及び個人情報の取扱いに同意"
                   value="1"
                   required
                 />
                 <v-checkbox
                   v-model="checkedAgreements"
-                  label="個人情報の処理方針に同意"
+                  label="電磁的方法による情報提供の同意"
                   value="2"
                   required
                 />
                 <v-checkbox
                   v-model="checkedAgreements"
-                  label="個人情報の収集および利用に同意"
+                  label="反社会的勢力ではないことの表明・確約に同意"
                   value="3"
+                  required
+                />
+                <v-checkbox
+                  v-model="checkedAgreements"
+                  label="米国の永住権をお持ちではないことの表明・確約に同意"
+                  value="4"
+                  required
+                />
+                <v-checkbox
+                  v-model="checkedAgreements"
+                  label="外国PEPsに該当しないことの表明・確約に同意"
+                  value="5"
                   required
                 />
                 <div class="formEntryBox_concent">
@@ -926,14 +938,14 @@
                 <v-checkbox
                   v-model="checkedAgreements"
                   label="全てに同意する"
-                  value="4"
+                  value="6"
                   required
                 />
                 <div class="entryForm_footer">
                   <button
                     class="button-action"
                     :disabled="
-                      checkedAgreements.length !== 4 || userNameJudgment
+                      checkedAgreements.length !== 6 || userNameJudgment
                     "
                     @click="applyMember"
                   >
