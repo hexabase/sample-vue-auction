@@ -68,7 +68,6 @@
 
 <script>
 import common from "@/components/mixin/common";
-import mapping from "@/assets/json/auctionDBMapping.json";
 
 export default {
   name: "Signin",
@@ -78,8 +77,7 @@ export default {
       email: "",
       password: "",
       errorMess: "",
-      show1: false,
-      mapping: JSON.parse(JSON.stringify(mapping))
+      show1: false
     };
   },
   /**
@@ -103,8 +101,8 @@ export default {
           throw "バリデーションエラー";
         }
         // Authトークンの取得
-        let token = await this.$hexalink.login(this.email, this.password);
-        token = this.mapping.persistenceToken;
+        const token = await this.$hexalink.login(this.email, this.password);
+        alert(token);
 
         // Hexalink UserInfoの取得
         const userInfo = await this.$hexalink.getUserInfo(token);
