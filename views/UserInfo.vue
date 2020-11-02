@@ -522,6 +522,7 @@
                     dense
                     outlined
                     single-line
+                    step="1"
                     type="number"
                     suffix="円"
                   ></v-text-field>
@@ -1298,6 +1299,7 @@ export default {
       },
       incomeValueRules: [
         v => !!v || "入力してください",
+        v => (v && v >= 0) || "0円以上で入力してください",
         v => (v && v <= 1000000) || "100万円未満で入力してください"
       ]
     };
