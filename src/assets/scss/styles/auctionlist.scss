@@ -75,17 +75,25 @@
                 flex-wrap: wrap;
                 margin-bottom: 20px;
                 
-                dt, dd {
-                    flex: 0 0 50%;
+                dt {
+                    flex: 0 0 7em;
                     margin-top: 3px;
+                    color: $color-text-darkgray;
                 }
 
                 dd {
+                    flex: 0 0 calc(100% - 7em);
+                    margin-bottom: 8px;
                     font-size: 2rem;
                 }
 
                 .unit {
-                    font-size: 1.4rem;
+                    font-size: 1.3rem;
+                }
+
+                .unit-right {
+                    font-size: 1.2rem;
+                    white-space: nowrap;
                 }
             }
 
