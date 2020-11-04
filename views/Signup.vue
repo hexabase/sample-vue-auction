@@ -21,12 +21,13 @@
             ref=""
             v-slot="{ errors }"
             name="ユーザー名"
-            rules="required"
+            rules="required|doubleCount:10"
           >
             <v-text-field
               v-model="userName"
               type="text"
               placeholder="ユーザー名"
+              :counter="10"
               :error-messages="errors"
               required
               hint="※あとから変更できます"
@@ -129,6 +130,28 @@ export default {
       alert("click!");
     },
     async getConfirmUser() {
+      if (!this.userName) {
+        this.errorMess = "ユーザ名が入力されていません";
+        return;
+      }
+      if (this.userName.length > 10) {
+        this.errorMess = "ユーザ名は10文字以内で入力してください";
+        return;
+      }
+      if (!this.password) {
+        this.errorMess = "パスワードが入力されていません";
+        return;
+      }
+      if (
+        !(this.password.match(/[A-Za-z]/g) && this.password.match(/[0-9]/g)) ||
+        !this.password.match(/^[A-Za-z0-9]*$/) ||
+        this.password.length < 8 ||
+        this.password.length > 20
+      ) {
+        this.errorMess =
+          "パスワードは8~20文字の半角英数の組み合わせで入力してください";
+        return;
+      }
       if (this.password !== this.rePassword) {
         this.errorMess = "確認用パスワードが一致していません";
         return;
@@ -142,7 +165,6 @@ export default {
       const confirmUser = await this.$hexalink.confirmUser(params);
       if (confirmUser.status == 200) {
         this.confirmUserFlag = true;
-        console.log(confirmUser.data.token);
         // ログイン処理
         await this.signin(confirmUser.data.token);
       } else {

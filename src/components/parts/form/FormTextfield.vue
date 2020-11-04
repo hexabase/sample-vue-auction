@@ -10,6 +10,8 @@
           dense
           outlined
           single-line
+          :max="digits"
+          :name="title"
           :type="number ? 'number' : 'text'"
           :readonly="!editable"
           :placeholder="placeholder"
@@ -20,6 +22,7 @@
           :counter="counter"
           @input="inputValue"
           @blur="handleBlur"
+          @keydown="keydown"
         ></v-text-field>
       </ValidationProvider>
     </div>
@@ -69,6 +72,14 @@ export default {
     number: {
       type: Boolean,
       default: false
+    },
+    keydown: {
+      type: Function,
+      default: () => []
+    },
+    digits: {
+      type: String,
+      default: ""
     }
   },
   data() {

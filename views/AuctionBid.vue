@@ -929,7 +929,6 @@ export default {
             is_force_update: true
           }
         );
-        await this.initialDisplay();
         this.modal = false;
       }
       // 初回入札は登録処理
@@ -950,9 +949,9 @@ export default {
           this.datastoreIds["オークション入札状況DB"],
           param
         );
-        await this.initialDisplay();
         this.modal = false;
       }
+      await this.initialDisplay();
     },
     async doCancel() {
       if (Number(this.myAuctionBidList[0].キャンセル回数) > 2) {
@@ -995,7 +994,7 @@ export default {
           is_force_update: true
         }
       );
-      this.initialDisplay();
+      await this.initialDisplay();
       this.cancelModal = false;
     },
     // 新規Itemを作成します
@@ -1110,7 +1109,9 @@ export default {
         event.keyCode == "69" ||
         event.keyCode == "109" ||
         event.keyCode == "110" ||
-        event.keyCode == "189"
+        event.keyCode == "189" ||
+        event.keyCode == "38" ||
+        event.keyCode == "40"
       ) {
         event.preventDefault();
       }

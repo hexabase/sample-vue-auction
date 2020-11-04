@@ -120,27 +120,7 @@ export default {
     try {
       // loading overlay表示
       this.$store.commit("common/setLoading", true);
-      var searchConditions = await this.$hexalink.getItemSearchConditions(
-        this.mapping.persistenceToken,
-        this.mapping.applicationId,
-        this.mapping.table.著作権DB
-      );
-      var searchConditonApplicabilityOnHomepage = "";
-      for (const conditionKey in searchConditions) {
-        if (
-          searchConditions[conditionKey].name.indexOf("HPに掲載可否") !== -1
-        ) {
-          for (const optionKey in searchConditions[conditionKey].options) {
-            if (
-              searchConditions[conditionKey].options[optionKey].value ==
-              "掲載する"
-            ) {
-              searchConditonApplicabilityOnHomepage =
-                searchConditions[conditionKey].options[optionKey].option_id;
-            }
-          }
-        }
-      }
+      const searchConditonApplicabilityOnHomepage = "掲載する";
       this.auctionList = await this.getAuctionList(
         searchConditonApplicabilityOnHomepage
       );

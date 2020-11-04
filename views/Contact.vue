@@ -62,6 +62,7 @@
               :editable="isEditable()"
               hint="100文字以内"
               valrule="required|doubleCount:100"
+              :value="title"
               @input="emittedTitle"
             />
             <FormTextarea
