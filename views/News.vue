@@ -61,16 +61,6 @@ export default {
   },
   created: async function() {},
   mounted: async function() {
-    this.newsList = new Array(35).fill().map((v, i) => {
-      return {
-        日付: "2020-11-04T00:53:07Z",
-        タイトル: "ああああ" + i,
-        内容: "いいい" + i
-      };
-    });
-    this.length = Math.ceil(this.newsList.length / this.pageSize);
-    this.displayNewsList = this.newsList.slice(0, this.pageSize);
-
     try {
       this.$store.commit("common/setLoading", true);
       this.newsList = await this.getNewsList();
