@@ -129,7 +129,8 @@ export default {
       userInfo: [{ 苗字: "", 名前: "" }],
       userSeiKanji: "",
       userMeiKanji: "",
-      mailAddress: ""
+      mailAddress: "",
+      title: ""
     };
   },
   created: async function() {},

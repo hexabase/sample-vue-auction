@@ -19,6 +19,7 @@
             multiple
             outlined
             dense
+            :capture="capture"
             :accept="accept"
             :value="value"
             :error-messages="errors"
@@ -49,6 +50,7 @@
 </template>
 
 <script>
+import imageCompression from "browser-image-compression";
 export default {
   props: {
     title: {
@@ -75,7 +77,11 @@ export default {
     },
     accept: {
       type: String,
-      default: ""
+      default: "image/*"
+    },
+    capture: {
+      type: String,
+      default: "environment"
     },
     editable: {
       type: Boolean,
@@ -102,7 +108,7 @@ export default {
     };
   },
   methods: {
-    changeValue(value, name) {
+    async changeValue(value, name) {
       console.log(value);
       if (value && value.length > 0) {
         this.errors = "";
@@ -113,9 +119,9 @@ export default {
         const fileType = file.type;
 
         //上限サイズは3MB
-        if (fileSize > 3000000) {
-          this.errors += "ファイルの上限サイズ3MBを超えています\n";
-        }
+        // if (fileSize > 3000000) {
+        //   this.errors += "ファイルの上限サイズ3MBを超えています\n";
+        // }
 
         //拡張子は .jpg .gif .png . pdf のみ許可
         if (
@@ -142,9 +148,13 @@ export default {
           return;
         }
         this.createImage(files[0]);
+        // 圧縮した画像を取得
+        const compFile = await this.getCompressImageFileAsync(files[0]);
+        console.log((compFile.size / 1024 / 1024).toFixed(4));
+        console.log((files[0].size / 1024 / 1024).toFixed(4));
         let formData = new FormData();
         formData.append("id", name);
-        formData.append("file", files[0]);
+        formData.append("file", compFile);
         formData.append("filename", files[0].name);
         this.$emit("change", { value: formData, name: name });
       }
@@ -160,6 +170,29 @@ export default {
     preview(file) {
       const url = URL.createObjectURL(file);
       window.open(url);
+    },
+    // アップロードされた画像ファイルを取得
+    async getCompressImageFileAsync(file) {
+      const options = {
+        maxSizeMB: 1, // 最大ファイルサイズ
+        maxWidthOrHeight: 800 // 最大画像幅もしくは高さ
+      };
+      try {
+        // 圧縮画像の生成
+        return await imageCompression(file, options);
+      } catch (error) {
+        console.error("getCompressImageFileAsync is error", error);
+        throw error;
+      }
+    },
+    // プレビュー表示用のdataurlを取得
+    async getDataUrlFromFile(file) {
+      try {
+        return await imageCompression.getDataUrlFromFile(file);
+      } catch (error) {
+        console.error("getDataUrlFromFile is error", error);
+        throw error;
+      }
     }
   }
 };

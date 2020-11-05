@@ -287,36 +287,35 @@
             {{ arranger1 }}
           </li>
           <li>
-            <span class="royaltyInfo_label">著作権保護期間</span>
+            <span class="royaltyInfo_label">権利期間</span>
             {{ protectionPeriod }}
           </li>
           <li>
             <span class="royaltyInfo_label">
-              最近12ヶ月のロイヤリティ（1口あたり）
+              組成・運営業者名
             </span>
-            1,116円
+            SYZYGY株式会社
           </li>
           <li>
-            <span class="royaltyInfo_label">最近12ヶ月の収益率</span>
-            8％
+            <span class="royaltyInfo_label">法的類型</span>
+            匿名組合契約
           </li>
           <li>
-            <span class="royaltyInfo_label">著作権信託</span>
-            社団法人日本音楽著作権協会
+            <span class="royaltyInfo_label">出資対象</span>
+            楽曲の著作権使用料
           </li>
           <li>
-            <span class="royaltyInfo_label">代表信託者</span>
-            SYZYGY
+            <span class="royaltyInfo_label">オークション期間（申込期間）</span>
+            ～{{ auctionEndDate | moment }} {{ auctionEndTime }}
           </li>
           <li>
-            <span class="royaltyInfo_label">著作権株式</span>
-            1 / 17,170<br />
-            二次的著作物の作成巻（O）
+            <span class="royaltyInfo_label">募集口数</span>
+            {{ auctionAmount }}
           </li>
-          <li>
+          <!-- <li>
             <span class="royaltyInfo_label">その他の主な事項</span>
             {{ otherNotes }}
-          </li>
+          </li> -->
         </ul>
       </div>
     </section>
@@ -451,6 +450,11 @@ import _ from "lodash";
 import PdfDownload from "@/components/pdf/PdfDownload.vue";
 export default {
   components: { MyModal, Chart, PdfDownload },
+  filters: {
+    moment: function(date) {
+      return moment(date).format("YYYY/MM/DD");
+    }
+  },
   // components: { MyModal, Chart },
   data() {
     return {

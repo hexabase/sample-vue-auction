@@ -124,7 +124,7 @@
                 ニックネーム
               </div>
               <div class="accountInfo_item_body">
-                ニックネーム
+                {{ currentNickname }}
                 <v-btn
                   class="button-secondary"
                   @click="() => (cahangeNicknameModal = true)"
@@ -250,11 +250,14 @@
                 />
                 <FormTextfield
                   title="携帯番号"
+                  digits="11"
                   :required="true"
                   placeholder="例）0312345678 ※ハイフン無し11桁"
                   hint="※ハイフン無し11桁"
                   :value="userInfo[0].携帯番号"
+                  :number="true"
                   @input="emittedMobilePhoneNumber"
+                  :keydown="multipleHandler"
                 />
                 <FormSelectDate
                   title="生年月日"
@@ -323,6 +326,8 @@
                 />
                 <FormTextfield
                   title="支店番号"
+                  digits="3"
+                  :number="true"
                   :required="true"
                   :value="
                     userInfo[0] && userInfo[0].支店番号
@@ -332,6 +337,7 @@
                   placeholder="例）123"
                   hint="半角数字"
                   @input="emittedBranchBankNumber"
+                  :keydown="multipleHandler"
                 />
                 <FormRadio
                   title="口座種類"
@@ -355,6 +361,8 @@
                 />
                 <FormTextfield
                   title="口座番号"
+                  digits="8"
+                  :number="true"
                   :required="true"
                   placeholder="例）01234567"
                   hint="数字８桁"
@@ -364,6 +372,7 @@
                       : ''
                   "
                   @input="emittedBankAccountNumber"
+                  :keydown="multipleHandler"
                 />
                 <FormTextfield
                   title="名義人（カタカナ）"
@@ -506,8 +515,10 @@
                   ]"
                   :radiochecked="
                     userInfo[0] && userInfo[0].現在の年収
-                      ? userInfo[0].現在の年収
-                      : '５百万円未満'
+                      ? isNaN(userInfo[0].現在の年収)
+                        ? userInfo[0].現在の年収
+                        : '百万円未満'
+                      : '百万円～２百万円未満'
                   "
                   @change="emittedAnnualIncome"
                 />
@@ -557,7 +568,7 @@
                   :radiochecked="
                     userInfo[0] && userInfo[0].現在の金融資産
                       ? userInfo[0].現在の金融資産
-                      : '５百万円未満'
+                      : '百万円～２百万円未満'
                   "
                   @change="emittedFinancialAssets"
                 />
@@ -591,7 +602,7 @@
                   :radiochecked="
                     userInfo[0] && userInfo[0].運用予定額
                       ? userInfo[0].運用予定額
-                      : '５百万円未満'
+                      : '百万円～２百万円未満'
                   "
                   @change="emittedPlannedInvestmentAmount"
                 />
@@ -627,7 +638,16 @@
                   ※入力した住所と同一である必要があります。※運転免許証は裏面もご提出ください。
                 </p>
               </div>
-              <v-form class="entryForm">
+              <v-form class="entryForm" @submit.prevent>
+                <!-- <FormFile
+                  v-if="!isSmartPhone"
+                  id="本人確認書類写真_1"
+                  title="本人確認書類写真1"
+                  :value="identityVerificationDocuments1"
+                  text="運転免許証（両面）・各種健康保険証・住民票の写し・パスポート・在留カード・印鑑登録証明書のいずれか。※入力した住所と同一である必要があります"
+                  :required="true"
+                  @change="emittedFile"
+                /> -->
                 <FormFile
                   id="本人確認書類写真_1"
                   title="本人確認書類写真1"
@@ -636,6 +656,31 @@
                   :required="true"
                   @change="emittedFile"
                 />
+                <!-- <div v-if="isSmartPhone">
+                  <video
+                    ref="video"
+                    id="video"
+                    width="500"
+                    height="500"
+                    autoplay
+                  ></video>
+                  <div>
+                    <button color="info" id="snap" @click="capture()">
+                      Snap Photo
+                    </button>
+                  </div>
+                  <canvas
+                    ref="canvas"
+                    id="canvas"
+                    width="500"
+                    height="500"
+                  ></canvas>
+                  <ul>
+                    <li class="capture" v-for="c in captures" v-bind:key="c.d">
+                      <img v-bind:src="c" height="50" />
+                    </li>
+                  </ul>
+                </div> -->
                 <FormFile
                   id="本人確認書類写真_2"
                   title="本人確認書類写真2"
@@ -990,7 +1035,7 @@
         @close="() => (cahangeNicknameModal = false)"
       >
         <template slot="title">ニックネームの変更</template>
-        <div v-if="false" class="error_msg">
+        <div v-if="errorMess" class="error_msg">
           <v-alert text color="red">
             {{ errorMess }}
           </v-alert>
@@ -999,7 +1044,7 @@
           <div class="currentData">
             <div class="currentData_title">現在のニックネーム：</div>
             <div class="currentData_body">
-              ニックネーム
+              {{ currentNickname }}
             </div>
           </div>
           <FormTextfield
@@ -1168,6 +1213,7 @@ export default {
       step: 1,
       errorMess: "",
       email: this.$store.getters["user/getEmail"],
+      currentNickname: "",
       newNickname: "",
       newEmail: "",
       reNewEmail: "",
@@ -1301,7 +1347,10 @@ export default {
         v => !!v || "入力してください",
         v => (v && v >= 0) || "0円以上で入力してください",
         v => (v && v <= 1000000) || "100万円未満で入力してください"
-      ]
+      ],
+      video: {},
+      canvas: {},
+      captures: []
     };
   },
   computed: {
@@ -1333,6 +1382,9 @@ export default {
       this.$store.commit("common/setLoading", true);
       this.userInfo = await this.getUserInfo();
       if (this.userInfo && this.userInfo.length > 0) {
+        this.currentNickname = this.userInfo[0].ユーザ名
+          ? this.userInfo[0].ユーザ名
+          : "";
         this.userSeiKanji = this.userInfo[0].苗字 ? this.userInfo[0].苗字 : "";
         this.userMeiKanji = this.userInfo[0].名前 ? this.userInfo[0].名前 : "";
         this.userSeiKana = this.userInfo[0]["苗字（カタカナ）"]
@@ -1411,17 +1463,35 @@ export default {
         this.selectedInvestmentExperience = this.userInfo[0].投資経験
           ? this.userInfo[0].投資経験.split(",")
           : [];
-        this.selectedInvestmentPurpose = this.userInfo[0].投資目的_投資方針;
-        this.selectedInvestmentPeriod = this.userInfo[0].投資目的_投資期間;
-        this.selectedIncomeForm = this.userInfo[0].現在の収入形態;
-        if (this.userInfo[0].現在の年収 === "百万円未満") {
-          this.selectedAnnualIncome = "百万円未満";
+        this.selectedInvestmentPurpose = this.userInfo[0].投資目的_投資方針
+          ? this.userInfo[0].投資目的_投資方針
+          : "利子・配当等安定収益重視";
+        this.selectedInvestmentPeriod = this.userInfo[0].投資目的_投資期間
+          ? this.userInfo[0].投資目的_投資期間
+          : "長期運用";
+        this.selectedIncomeForm = this.userInfo[0].現在の収入形態
+          ? this.userInfo[0].現在の収入形態
+          : "給与収入";
+        // if (this.userInfo[0].現在の年収 === "百万円未満") {
+        //   this.selectedAnnualIncome = "百万円未満";
+        //   this.incomeValue = this.userInfo[0].現在の年収;
+        // } else {
+        //   this.selectedAnnualIncome = this.userInfo[0].現在の年収;
+        // }
+        this.selectedAnnualIncome = this.userInfo[0].現在の年収
+          ? isNaN(this.userInfo[0].現在の年収)
+            ? this.userInfo[0].現在の年収
+            : "百万円未満"
+          : "百万円～２百万円未満";
+        if (!isNaN(this.userInfo[0].現在の年収)) {
           this.incomeValue = this.userInfo[0].現在の年収;
-        } else {
-          this.selectedAnnualIncome = this.userInfo[0].現在の年収;
         }
-        this.selectedFinancialAssets = this.userInfo[0].現在の金融資産;
-        this.selectedPlannedInvestmentAmount = this.userInfo[0].運用予定額;
+        this.selectedFinancialAssets = this.userInfo[0].現在の金融資産
+          ? this.userInfo[0].現在の金融資産
+          : "百万円未満";
+        this.selectedPlannedInvestmentAmount = this.userInfo[0].運用予定額
+          ? this.userInfo[0].運用予定額
+          : "百万円未満";
 
         this.myNumberCardPicture1 = await this.getFileInfo(
           "マイナンバーカード写真_1",
@@ -1523,6 +1593,13 @@ export default {
             this.userAddress1
           ) {
             try {
+              if (
+                !this.userSeiKana.match(/^[ァ-ヶー]+$/) ||
+                !this.userMeiKana.match(/^[ァ-ヶー]+$/)
+              ) {
+                alert("カタカナで入力されていません");
+                return;
+              }
               // loading overlay表示
               this.$store.commit("common/setLoading", true);
               const result = await this.updatedDataItem(
@@ -1592,10 +1669,10 @@ export default {
                 true,
                 this.stepControl.step.step2.complete
               );
+              this.step = step;
             } catch (e) {
               console.log(e);
             } finally {
-              this.step = step;
               // loading overlay非表示
               this.$store.commit("common/setLoading", false);
             }
@@ -1679,7 +1756,7 @@ export default {
         case "3":
           console.log(this.step);
           if (
-            this.selectedInvestmentExperience &&
+            this.selectedInvestmentExperience.length > 0 &&
             this.selectedInvestmentPurpose &&
             this.selectedInvestmentPeriod &&
             this.selectedIncomeForm &&
@@ -1687,6 +1764,10 @@ export default {
             this.selectedFinancialAssets &&
             this.selectedPlannedInvestmentAmount
           ) {
+            if (this.selectedIncomeForm === "なし") {
+              alert("恐れ入りますが、収入の無い方はお取引が出来ません。");
+              return;
+            }
             let selectedAnnualIncomeValue;
             if (this.selectedAnnualIncome === "百万円未満") {
               selectedAnnualIncomeValue = this.incomeValue;
@@ -1744,12 +1825,24 @@ export default {
                 true,
                 this.stepControl.step.step4.complete
               );
+              this.step = step;
             } catch (e) {
               console.log(e);
             } finally {
-              this.step = step;
               // loading overlay非表示
               this.$store.commit("common/setLoading", false);
+              // this.video = this.$refs.video;
+              // if (
+              //   navigator.mediaDevices &&
+              //   navigator.mediaDevices.getUserMedia
+              // ) {
+              //   navigator.mediaDevices
+              //     .getUserMedia({ video: true })
+              //     .then(stream => {
+              //       this.video.srcObject = stream;
+              //       this.video.play();
+              //     });
+              // }
             }
           } else {
             alert("必須項目が入力されていません。");
@@ -1971,6 +2064,14 @@ export default {
       try {
         // loading overlay表示
         this.$store.commit("common/setLoading", true);
+        if (!this.newNickname) {
+          this.errorMess = "ユーザ名が入力されていません";
+          return;
+        }
+        if (this.newNickname.length > 10) {
+          this.errorMess = "ユーザ名は10文字以内で入力してください";
+          return;
+        }
         const result = await this.updatedDataItem(
           this.datastoreIds["ユーザDB"],
           this.userInfo[0].i_id,
@@ -1989,6 +2090,9 @@ export default {
           }
         );
         this.nicknameSendResult = true;
+        this.currentNickname = this.newNickname;
+        this.$store.commit("auth/setUserNameKanji", this.newNickname);
+        this.errorMess = "";
       } catch (e) {
         this.nicknameSendResult = false;
         console.log(e);
@@ -1998,6 +2102,27 @@ export default {
       }
     },
     async setPassword() {
+      if (!this.newPassword) {
+        this.errorMess = "パスワードが入力されていません";
+        return;
+      }
+      if (
+        !(
+          this.newPassword.match(/[A-Za-z]/g) &&
+          this.newPassword.match(/[0-9]/g)
+        ) ||
+        !this.newPassword.match(/^[A-Za-z0-9]*$/) ||
+        this.newPassword.length < 8 ||
+        this.newPassword.length > 20
+      ) {
+        this.errorMess =
+          "パスワードは8~20文字の半角英数の組み合わせで入力してください";
+        return;
+      }
+      if (this.newPassword !== this.confirmPassword) {
+        this.errorMess = "確認用パスワードが一致していません";
+        return;
+      }
       const params = JSON.stringify({
         confirm_password: this.confirmPassword,
         new_password: this.newPassword,
@@ -2267,6 +2392,53 @@ export default {
           this.stepControl.step.step1.complete &&
           this.stepControl.step.step4.complete;
       }
+    },
+    checkDigits(event) {
+      if (
+        event.target.value.length > event.target.max - 1 &&
+        event.keyCode !== 8 &&
+        event.keyCode !== 46 &&
+        event.keyCode !== 37 &&
+        event.keyCode !== 39 &&
+        event.keyCode !== 9
+      ) {
+        event.preventDefault();
+      }
+    },
+    checkKeyDown(event) {
+      if (
+        event.keyCode == "190" ||
+        event.keyCode == "69" ||
+        event.keyCode == "109" ||
+        event.keyCode == "110" ||
+        event.keyCode == "189" ||
+        event.keyCode == "38" ||
+        event.keyCode == "40"
+      ) {
+        event.preventDefault();
+      }
+    },
+    multipleHandler(event) {
+      this.checkDigits(event);
+      this.checkKeyDown(event);
+    },
+    capture() {
+      this.canvas = this.$refs.canvas;
+      this.canvas.getContext("2d").drawImage(this.video, 0, 0, 500, 500);
+      this.captures.push(this.canvas.toDataURL("image/png"));
+      console.log(this.captures);
+    },
+    // スマートフォンかそれ以外かを判別する。
+    isSmartPhone() {
+      var media = [
+        "iPhone",
+        "iPad",
+        "Android"
+        /*その他、blackberry,windowsPhoneなど必要なものがあれば追加する*/
+        /*Androidは'Android'という文字列だけで全てのAndroid端末を判別出来ないので注意*/
+      ];
+      var pattern = new RegExp(media.join("|"), "i");
+      return pattern.test(navigator.userAgent);
     }
   }
 };
