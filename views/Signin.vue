@@ -84,6 +84,10 @@ export default {
    * 初期作成
    */
   created: async function() {
+    if (this.$store.getters["auth/getToken"]) {
+      // 認証済み
+      this.$router.push("/");
+    }
     this.$store.commit("common/setLoading", false);
     console.log(process.env.NODE_ENV);
   },
@@ -214,7 +218,12 @@ export default {
         const { status, statusText } = e.response;
         console.log(`Error! HTTP Status: ${status} ${statusText}`);
         if (this.$refs.signin.validate()) {
-          this.errorMess = "メールアドレスもしくはパスワードが違います。";
+          if (status === 423) {
+            this.errorMess =
+              "パスワードがロックされました。5分後に再度お試しください。";
+          } else {
+            this.errorMess = "メールアドレスもしくはパスワードが違います。";
+          }
         }
       } finally {
         this.$store.commit("common/setLoading", false);

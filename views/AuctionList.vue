@@ -59,13 +59,43 @@
                     ? changeYen(displayAuctionList[index].最高入札額)
                     : changeYen(displayAuctionList[index].オークション開始金額)
                 }}<span class="unit">円</span>
-                <span class="unit-right">（年利回り 2.2%）</span>
+                <span
+                  v-if="displayAuctionList[index].分配金額"
+                  class="unit-right"
+                >
+                  （想定年利回り
+                  {{
+                    displayAuctionList[index].分配金額
+                      ? (
+                          (displayAuctionList[index].分配金額 /
+                            displayAuctionList[index].最高入札額) *
+                          100
+                        ).toFixed(1)
+                      : 0
+                  }}
+                  %）
+                </span>
               </dd>
               <dt>スタート金額</dt>
               <dd>
                 {{ changeYen(displayAuctionList[index].オークション開始金額)
                 }}<span class="unit">円</span>
-                <span class="unit-right">（年利回り 2.2%）</span>
+                <span
+                  v-if="displayAuctionList[index].分配金額"
+                  class="unit-right"
+                >
+                  （想定年利回り
+                  {{
+                    displayAuctionList[index].分配金額
+                      ? (
+                          (displayAuctionList[index].分配金額 /
+                            displayAuctionList[index].オークション開始金額) *
+                          100
+                        ).toFixed(1)
+                      : 0
+                  }}
+                  %）
+                </span>
               </dd>
               <dt>競争率</dt>
               <dd>
@@ -143,6 +173,27 @@ export default {
           conditions: []
         }
       );
+      const distributionList = await this.getDistributionList();
+      const distributionListGroup = distributionList.reduce(function(
+        result,
+        current
+      ) {
+        const element = result.find(function(p) {
+          return p.著作権番号 === current.著作権番号;
+        });
+        if (element) {
+          element.count++; // count
+          element.分配金額 += Number(current.分配金額); // sum
+        } else {
+          result.push({
+            著作権番号: current.著作権番号,
+            count: 1,
+            分配金額: Number(current.分配金額)
+          });
+        }
+        return result;
+      },
+      []);
       for (const listKey in this.auctionList) {
         const image1Binary = this.auctionList[listKey].image1;
         if (image1Binary) {
@@ -175,6 +226,18 @@ export default {
               auctionBidReport.report_results[reportKey][
                 "a1101930-fbc0-43eb-8b7c-ae3510f5c989"
               ]
+            );
+          }
+        }
+        for (const key in distributionListGroup) {
+          if (
+            this.auctionList[listKey].著作権番号 ==
+            distributionList[key]["著作権番号"]
+          ) {
+            this.$set(
+              this.auctionList[listKey],
+              "分配金額",
+              distributionListGroup[key]["分配金額"]
             );
           }
         }
@@ -230,6 +293,34 @@ export default {
           page: 1,
           per_page: 9000,
           use_display_id: true
+        }
+      );
+    },
+    async getDistributionList() {
+      return await this.$hexalink.getPublicItems(
+        this.mapping.applicationId,
+        this.mapping.table.著作権分配金マスタ,
+        {
+          conditions: [
+            {
+              id: "日付", // Hexalink画⾯で⼊⼒したIDを指定
+              search_value: [
+                moment()
+                  .add("year", -1)
+                  .startOf("year")
+                  .format("YYYY-MM-DDTHH:mm:ss.SSS") + "Z",
+                moment()
+                  .add("year", -1)
+                  .endOf("year")
+                  .format("YYYY-MM-DDTHH:mm:ss.SSS") + "Z"
+              ]
+            }
+          ],
+          page: 1,
+          per_page: 9000,
+          use_display_id: true,
+          sort_field_id: "オークション終了時間", // Hexalink画⾯で⼊⼒したIDを指定
+          sort_order: "asc"
         }
       );
     },

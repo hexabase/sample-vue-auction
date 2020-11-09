@@ -4,11 +4,6 @@
     id="page_auction"
     data-role="page"
   >
-    <PdfDownload
-      :value="docDefinition"
-      :pdf-file="pdfFile"
-      :fileName="fileName"
-    ></PdfDownload>
     <div class="musicInfo_img-mobile"><img :src="image1" /></div>
     <section class="musicInfo">
       <div class="content">
@@ -346,6 +341,15 @@
           </tr>
         </table>
 
+        <PdfDownload
+          v-if="!displayBidResultFlag"
+          :value="docDefinition"
+          :pdf-file="pdfFile"
+          :fileName="fileName"
+          buttonName="交付書面を確認する"
+          @click="confirmDeliveryDocument"
+        ></PdfDownload>
+
         <section class="bidGuideline">
           <h3 class="bidGuideline_title">利用規約</h3>
           <div class="bidGuideline_body">
@@ -393,7 +397,7 @@
         <template slot="footer">
           <Button
             class="button-action"
-            :disabled="!agreeGuideline"
+            :disabled="!agreeGuideline || !confirmDeliveryDocumentFlag"
             @click="doSend"
           >
             <!--span class="subText">利用規約に同意して</span-->
@@ -724,7 +728,8 @@ export default {
         }
       },
       pdfFile: "",
-      fileName: ""
+      fileName: "",
+      confirmDeliveryDocumentFlag: false
     };
   },
   created: function() {},
@@ -970,14 +975,6 @@ export default {
           },
           changes: [
             {
-              id: "数量",
-              value: Number(this.bidAmount)
-            },
-            {
-              id: "入札金額",
-              value: Number(this.bidPrice)
-            },
-            {
               id: "入札時間",
               value: moment()
             },
@@ -1187,8 +1184,10 @@ export default {
           this.myAuctionBidList[0].落札状況 != "キャンセル済"
         ) {
           this.displayBidResultFlag = true;
+          this.confirmDeliveryDocumentFlag = true;
         } else {
           this.displayBidResultFlag = false;
+          this.confirmDeliveryDocumentFlag = false;
         }
         var dataLists = [];
         dataLists = await this.$hexalink.getPublicItems(
@@ -1289,6 +1288,14 @@ export default {
           this.image1 = window.URL.createObjectURL(blob);
         } else {
           this.image1 = "";
+        }
+        if (dataLists[0].交付書面) {
+          const ab = await this.$hexalink.getPublicFile(
+            dataLists[0].交付書面,
+            "5e9678e8d4b3e00006eb8745"
+          );
+          const blob = new Blob([ab], { type: "application/pdf" });
+          this.pdfFile = URL.createObjectURL(blob);
         }
 
         var rpf_bidAmount = "4384d821-8e19-4e08-949b-44cab6efa408";
@@ -1452,6 +1459,9 @@ export default {
         .push({ name: "UserInfo", params: { fromBid: true } })
         .catch(() => {});
     },
+    confirmDeliveryDocument() {
+      this.confirmDeliveryDocumentFlag = true;
+    },
     async getDeliveryDocument() {
       const result = await this.$hexalink.getItems(
         this.token,
@@ -1496,14 +1506,14 @@ export default {
         };
         reader.readAsDataURL(blob);
       }
-      if (result[0].交付書面PDF) {
-        const ab = await this.$hexalink.getFile(
-          this.token,
-          result[0].交付書面PDF
-        );
-        const blob = new Blob([ab], { type: "application/pdf" });
-        this.pdfFile = URL.createObjectURL(blob);
-      }
+      // if (result[0].交付書面PDF) {
+      //   const ab = await this.$hexalink.getFile(
+      //     this.token,
+      //     result[0].交付書面PDF
+      //   );
+      //   const blob = new Blob([ab], { type: "application/pdf" });
+      //   this.pdfFile = URL.createObjectURL(blob);
+      // }
       this.fileName =
         "delivery-document_" +
         this.userId +

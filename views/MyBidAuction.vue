@@ -116,6 +116,7 @@ export default {
         this.myBidAuctionList[myBidAuctionListkey].歌手1 =
           myAuctionList[0].歌手1;
       }
+      this.myBidAuctionList = this.myBidAuctionList.filter(v => v);
       this.length = Math.ceil(this.myBidAuctionList.length / this.pageSize);
       this.displayMyBidAuctionList = this.myBidAuctionList.slice(
         this.pageSize * (this.page - 1),

@@ -50,8 +50,9 @@
           >
             投資について
           </v-stepper-step>
-          <v-divider></v-divider>
+          <v-divider v-if="!approvedFlag"></v-divider>
           <v-stepper-step
+            v-if="!approvedFlag"
             :editable="stepControl.step.step4.editable"
             :complete="stepControl.step.step4.complete"
             step="4"
@@ -280,11 +281,19 @@
                 />
                 <div class="entryForm_footer">
                   <v-btn
+                    v-if="!approvedFlag"
                     color="primary"
                     class="button-action"
                     @click="moveStep(2)"
                   >
                     保存して次へ
+                  </v-btn>
+                  <v-btn
+                    v-if="approvedFlag"
+                    class="button-action"
+                    @click="moveStep(2)"
+                  >
+                    保存
                   </v-btn>
                 </div>
               </v-form>
@@ -390,8 +399,19 @@
                     <v-icon>mdi-chevron-left</v-icon>
                     戻る
                   </v-btn>
-                  <v-btn class="button-action" @click="moveStep(3)">
+                  <v-btn
+                    v-if="!approvedFlag"
+                    class="button-action"
+                    @click="moveStep(3)"
+                  >
                     保存して次へ
+                  </v-btn>
+                  <v-btn
+                    v-if="approvedFlag"
+                    class="button-action"
+                    @click="moveStep(3)"
+                  >
+                    保存
                   </v-btn>
                 </div>
               </v-form>
@@ -611,8 +631,19 @@
                     <v-icon>mdi-chevron-left</v-icon>
                     戻る
                   </v-btn>
-                  <v-btn class="button-action" @click="moveStep(4)">
+                  <v-btn
+                    v-if="!approvedFlag"
+                    class="button-action"
+                    @click="moveStep(4)"
+                  >
                     保存して次へ
+                  </v-btn>
+                  <v-btn
+                    v-if="approvedFlag"
+                    class="button-action"
+                    @click="moveStep(4)"
+                  >
+                    保存
                   </v-btn>
                 </div>
               </v-form>
@@ -883,6 +914,76 @@
                 <div class="formConfirm_bottom">
                   <v-btn class="button-secondary" @click="step = 2">
                     Step2を修正する
+                  </v-btn>
+                </div>
+              </section>
+              <section class="formConfirm">
+                <h4 class="formConfirm_title">Step.3&nbsp;投資について</h4>
+                <div class="formConfirm_item_wrapper">
+                  <div class="formConfirm_item">
+                    <div class="formConfirm_item_title">
+                      投資経験
+                    </div>
+                    <div class="formConfirm_item_body">
+                      {{ selectedInvestmentExperience }}
+                    </div>
+                  </div>
+                  <div class="formConfirm_item">
+                    <div class="formConfirm_item_title">
+                      投資目的
+                    </div>
+                    <div class="formConfirm_item_body">
+                      {{ selectedInvestmentPurpose }}
+                    </div>
+                  </div>
+                  <div class="formConfirm_item">
+                    <div class="formConfirm_item_title">
+                      投資期間
+                    </div>
+                    <div class="formConfirm_item_body">
+                      {{ selectedInvestmentPeriod }}
+                    </div>
+                  </div>
+                  <div class="formConfirm_item">
+                    <div class="formConfirm_item_title">
+                      現在の収入形態
+                    </div>
+                    <div class="formConfirm_item_body">
+                      {{ selectedIncomeForm }}
+                    </div>
+                  </div>
+                  <div class="formConfirm_item">
+                    <div class="formConfirm_item_title">
+                      現在の年収
+                    </div>
+                    <div class="formConfirm_item_body">
+                      {{
+                        selectedAnnualIncome === "百万円未満"
+                          ? incomeValue
+                          : selectedAnnualIncome
+                      }}
+                    </div>
+                  </div>
+                  <div class="formConfirm_item">
+                    <div class="formConfirm_item_title">
+                      現在の金融資産
+                    </div>
+                    <div class="formConfirm_item_body">
+                      {{ selectedFinancialAssets }}
+                    </div>
+                  </div>
+                  <div class="formConfirm_item">
+                    <div class="formConfirm_item_title">
+                      運用予定額
+                    </div>
+                    <div class="formConfirm_item_body">
+                      {{ selectedPlannedInvestmentAmount }}
+                    </div>
+                  </div>
+                </div>
+                <div class="formConfirm_bottom">
+                  <v-btn class="button-secondary" @click="step = 3">
+                    Step3を修正する
                   </v-btn>
                 </div>
               </section>
@@ -1345,8 +1446,8 @@ export default {
       },
       incomeValueRules: [
         v => !!v || "入力してください",
-        v => (v && v >= 0) || "0円以上で入力してください",
-        v => (v && v <= 1000000) || "100万円未満で入力してください"
+        v => (v && v >= 500000) || "50万円以上で入力してください",
+        v => (v && v < 1000000) || "100万円未満で入力してください"
       ],
       video: {},
       canvas: {},
@@ -1669,7 +1770,9 @@ export default {
                 true,
                 this.stepControl.step.step2.complete
               );
-              this.step = step;
+              if (!this.approvedFlag) {
+                this.step = step;
+              }
             } catch (e) {
               console.log(e);
             } finally {
@@ -1697,6 +1800,14 @@ export default {
             this.userBankAccountHolderKana
           ) {
             try {
+              if (
+                !this.userBankAccountHolderKana
+                  .replace(/\s+/g, "")
+                  .match(/^[ァ-ヶー]+$/)
+              ) {
+                alert("カタカナで入力されていません");
+                return;
+              }
               // loading overlay表示
               this.$store.commit("common/setLoading", true);
               const result = await this.updatedDataItem(
@@ -1742,10 +1853,12 @@ export default {
                 true,
                 this.stepControl.step.step3.complete
               );
+              if (!this.approvedFlag) {
+                this.step = step;
+              }
             } catch (e) {
               console.log(e);
             } finally {
-              this.step = step;
               // loading overlay非表示
               this.$store.commit("common/setLoading", false);
             }
@@ -1770,6 +1883,10 @@ export default {
             }
             let selectedAnnualIncomeValue;
             if (this.selectedAnnualIncome === "百万円未満") {
+              if (this.incomeValue < 500000 || this.incomeValue >= 1000000) {
+                alert("年収額は50万円以上、100万円未満でご入力ください。");
+                return;
+              }
               selectedAnnualIncomeValue = this.incomeValue;
             } else {
               selectedAnnualIncomeValue = this.selectedAnnualIncome;
@@ -1825,7 +1942,9 @@ export default {
                 true,
                 this.stepControl.step.step4.complete
               );
-              this.step = step;
+              if (!this.approvedFlag) {
+                this.step = step;
+              }
             } catch (e) {
               console.log(e);
             } finally {
@@ -1937,10 +2056,12 @@ export default {
                 true,
                 this.stepControl.step.step5.complete
               );
+              if (!this.approvedFlag) {
+                this.step = step;
+              }
             } catch (e) {
               console.log(e);
             } finally {
-              this.step = step;
               // loading overlay非表示
               this.$store.commit("common/setLoading", false);
             }

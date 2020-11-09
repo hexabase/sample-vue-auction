@@ -4,9 +4,9 @@
     class="btn btn-refresh no-margin"
     :value="value"
     :pdfFile="pdfFile"
-    @click="onDownloadPDFClickWithPDFMake"
+    @click="multipleHandler"
   >
-    PDFダウンロード
+    {{ buttonName }}
   </button>
 </template>
 
@@ -28,9 +28,23 @@ export default {
     fileName: {
       type: String,
       default: ""
+    },
+    buttonName: {
+      type: String,
+      default: ""
     }
   },
   methods: {
+    multipleHandler(event) {
+      this.clickHandler(event);
+      this.onDownloadPDFClickWithPDFMake();
+    },
+    clickHandler: function(e) {
+      if (this.disabled) {
+        return;
+      }
+      this.$emit("click", e);
+    },
     onDownloadPDFClickWithPDFMake() {
       const me = this;
       pdfMake.fonts = {
