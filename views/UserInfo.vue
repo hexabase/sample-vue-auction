@@ -1038,36 +1038,6 @@
                 <p class="formEntryBox_text">
                   よろしければ利用規約に同意いただき登録ボタンを押してください。
                 </p>
-                <v-checkbox
-                  v-model="checkedAgreements"
-                  label="利用規約及び個人情報の取扱いに同意"
-                  value="1"
-                  required
-                />
-                <v-checkbox
-                  v-model="checkedAgreements"
-                  label="電磁的方法による情報提供の同意"
-                  value="2"
-                  required
-                />
-                <v-checkbox
-                  v-model="checkedAgreements"
-                  label="反社会的勢力ではないことの表明・確約に同意"
-                  value="3"
-                  required
-                />
-                <v-checkbox
-                  v-model="checkedAgreements"
-                  label="米国の永住権をお持ちではないことの表明・確約に同意"
-                  value="4"
-                  required
-                />
-                <v-checkbox
-                  v-model="checkedAgreements"
-                  label="外国PEPsに該当しないことの表明・確約に同意"
-                  value="5"
-                  required
-                />
                 <div class="formEntryBox_concent">
                   <p>
                     BATON（以下「会社」）は、会員にサービスを提供するために、会員登録の段階で下記のように個人情報を収集利用します。<br />
@@ -1084,7 +1054,37 @@
                 </div>
                 <v-checkbox
                   v-model="checkedAgreements"
-                  label="全てに同意する"
+                  label="利用規約及び個人情報の取扱いに同意"
+                  value="1"
+                  required
+                />
+                <v-checkbox
+                  v-model="checkedAgreements"
+                  label="所得税法第224条に基づき、氏名・住所・個人番号の告知に同意"
+                  value="2"
+                  required
+                />
+                <v-checkbox
+                  v-model="checkedAgreements"
+                  label="電磁的方法による情報提供の同意"
+                  value="3"
+                  required
+                />
+                <v-checkbox
+                  v-model="checkedAgreements"
+                  label="反社会的勢力ではないことの表明・確約に同意"
+                  value="4"
+                  required
+                />
+                <v-checkbox
+                  v-model="checkedAgreements"
+                  label="米国の永住権をお持ちではないことの表明・確約に同意"
+                  value="5"
+                  required
+                />
+                <v-checkbox
+                  v-model="checkedAgreements"
+                  label="外国PEPsに該当しないことの表明・確約に同意"
                   value="6"
                   required
                 />
