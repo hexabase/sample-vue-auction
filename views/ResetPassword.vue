@@ -85,7 +85,6 @@ export default {
   mixins: [common],
   data() {
     return {
-      token: this.$store.getters["auth/getToken"], //ここは共通Tokenに書き換える
       email: "",
       userName: "",
       password: "",

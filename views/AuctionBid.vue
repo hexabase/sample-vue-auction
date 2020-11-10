@@ -155,7 +155,9 @@
               </p>
               <div v-if="userStatus === 1">
                 <button class="button-action" @click="applyUserInfo">
-                  <span v-if="userInfo.length > 0">ユーザー情報を登録して</span>
+                  <span v-if="userInfo.length > 0">
+                    ユーザー情報を登録して
+                  </span>
                   入札する
                 </button>
               </div>
@@ -735,7 +737,9 @@ export default {
   created: function() {},
   mounted: async function() {
     await this.initialDisplay();
-    await this.getDeliveryDocument();
+    if (this.token) {
+      await this.getDeliveryDocument();
+    }
     setInterval(this.updateMessage, 1000);
   },
   methods: {
@@ -772,35 +776,43 @@ export default {
           return false;
         }
         if (this.userId) {
-          this.myAuctionBidList = await this.getAuctionBidList();
-          this.myTransactionList = await this.getTransactionList();
-          if (this.displayBidResultFlag) {
-            if (
-              Number(this.bidPrice) < Number(this.myAuctionBidList[0].入札金額)
-            ) {
-              this.alertMessage =
-                "前回の入札価格より少ない入札価格では入札できません。※キャンセル（回数制限有）から入札は可能です";
-              return false;
-            } else if (
-              Number(this.bidPrice) ==
-                Number(this.myAuctionBidList[0].入札金額) &&
-              Number(this.bidAmount) < Number(this.myAuctionBidList[0].数量)
-            ) {
-              this.alertMessage =
-                "前回の数量より少ない数量では入札できません。※キャンセル（回数制限有）から入札は可能です";
-              return false;
-            } else if (
-              Number(this.bidPrice) ==
-                Number(this.myAuctionBidList[0].入札金額) &&
-              Number(this.bidAmount) == Number(this.myAuctionBidList[0].数量)
-            ) {
-              this.alertMessage =
-                "前回と同じ入札価格・数量では入札できません。";
-              return false;
+          try {
+            this.myAuctionBidList = await this.getAuctionBidList();
+            this.myTransactionList = await this.getTransactionList();
+            if (this.displayBidResultFlag) {
+              if (
+                Number(this.bidPrice) <
+                Number(this.myAuctionBidList[0].入札金額)
+              ) {
+                this.alertMessage =
+                  "前回の入札価格より少ない入札価格では入札できません。※キャンセル（回数制限有）から入札は可能です";
+                return false;
+              } else if (
+                Number(this.bidPrice) ==
+                  Number(this.myAuctionBidList[0].入札金額) &&
+                Number(this.bidAmount) < Number(this.myAuctionBidList[0].数量)
+              ) {
+                this.alertMessage =
+                  "前回の数量より少ない数量では入札できません。※キャンセル（回数制限有）から入札は可能です";
+                return false;
+              } else if (
+                Number(this.bidPrice) ==
+                  Number(this.myAuctionBidList[0].入札金額) &&
+                Number(this.bidAmount) == Number(this.myAuctionBidList[0].数量)
+              ) {
+                this.alertMessage =
+                  "前回と同じ入札価格・数量では入札できません。";
+                return false;
+              }
             }
+            this.alertMessage = "";
+            this.modal = true;
+          } catch (e) {
+            this.$store.commit("auth/stateInit");
+            this.$store.commit("datas/stateInit");
+            this.$store.commit("user/stateInit");
+            this.$router.push("/signin");
           }
-          this.alertMessage = "";
-          this.modal = true;
         } else {
           // ログインしていないユーザ
           alert("入札は会員登録後、ログインしてから行えます。");
@@ -894,109 +906,123 @@ export default {
       );
     },
     async doSend() {
-      if (this.auctionFinishedFlag) {
-        alert("既にオークションが終了しているため入札できません");
-        this.initialDisplay();
-        this.modal = false;
-        return;
+      try {
+        if (this.auctionFinishedFlag) {
+          alert("既にオークションが終了しているため入札できません");
+          this.initialDisplay();
+          this.modal = false;
+          return;
+        }
+        if (this.userStatus !== 3) {
+          alert("承認されていないユーザは入札できません");
+        }
+        // 入札履歴があった場合は更新処理
+        if (this.myAuctionBidList.length > 0) {
+          var result = await this.updatedDataItem(
+            this.datastoreIds["オークション入札状況DB"],
+            this.myAuctionBidList[0].i_id,
+            {
+              history: {
+                comment: "再入札"
+              },
+              changes: [
+                {
+                  id: "数量",
+                  value: Number(this.bidAmount)
+                },
+                {
+                  id: "入札金額",
+                  value: Number(this.bidPrice)
+                },
+                {
+                  id: "入札時間",
+                  value: moment()
+                },
+                {
+                  id: "連続入札回数",
+                  value: Number(this.myAuctionBidList[0].連続入札回数) + 1
+                },
+                {
+                  id: "落札状況",
+                  value: "入札"
+                }
+              ],
+              use_display_id: true,
+              is_force_update: true
+            }
+          );
+          this.modal = false;
+        }
+        // 初回入札は登録処理
+        else {
+          var setData = {};
+          setData["著作権番号"] = this.musicId;
+          setData["会員番号"] = this.userId;
+          setData["数量"] = Number(this.bidAmount);
+          setData["入札金額"] = Number(this.bidPrice);
+          setData["入札時間"] = moment();
+          setData["連続入札回数"] = 0;
+          setData["キャンセル回数"] = 0;
+          setData["落札状況"] = "入札";
+
+          var param = {};
+          param["item"] = setData;
+          var insertResult = await this.insertNewItem(
+            this.datastoreIds["オークション入札状況DB"],
+            param
+          );
+          this.modal = false;
+        }
+        await this.initialDisplay();
+      } catch (e) {
+        this.$store.commit("auth/stateInit");
+        this.$store.commit("datas/stateInit");
+        this.$store.commit("user/stateInit");
+        this.$router.push("/signin");
       }
-      if (this.userStatus !== 3) {
-        alert("承認されていないユーザは入札できません");
-      }
-      // 入札履歴があった場合は更新処理
-      if (this.myAuctionBidList.length > 0) {
+    },
+    async doCancel() {
+      try {
+        if (Number(this.myAuctionBidList[0].キャンセル回数) > 2) {
+          return false;
+        }
         var result = await this.updatedDataItem(
           this.datastoreIds["オークション入札状況DB"],
           this.myAuctionBidList[0].i_id,
           {
             history: {
-              comment: "再入札"
+              comment: "キャンセル"
             },
             changes: [
-              {
-                id: "数量",
-                value: Number(this.bidAmount)
-              },
-              {
-                id: "入札金額",
-                value: Number(this.bidPrice)
-              },
               {
                 id: "入札時間",
                 value: moment()
               },
               {
                 id: "連続入札回数",
-                value: Number(this.myAuctionBidList[0].連続入札回数) + 1
+                value: 0
+              },
+              {
+                id: "キャンセル回数",
+                value: Number(this.myAuctionBidList[0].キャンセル回数) + 1
               },
               {
                 id: "落札状況",
-                value: "入札"
+                value: "キャンセル済"
               }
             ],
             use_display_id: true,
             is_force_update: true
           }
         );
-        this.modal = false;
+        await this.initialDisplay();
+        this.cancelModal = false;
+      } catch (e) {
+        this.$store.commit("auth/stateInit");
+        this.$store.commit("datas/stateInit");
+        this.$store.commit("user/stateInit");
+        this.$router.push("/signin");
       }
-      // 初回入札は登録処理
-      else {
-        var setData = {};
-        setData["著作権番号"] = this.musicId;
-        setData["会員番号"] = this.userId;
-        setData["数量"] = Number(this.bidAmount);
-        setData["入札金額"] = Number(this.bidPrice);
-        setData["入札時間"] = moment();
-        setData["連続入札回数"] = 0;
-        setData["キャンセル回数"] = 0;
-        setData["落札状況"] = "入札";
-
-        var param = {};
-        param["item"] = setData;
-        var insertResult = await this.insertNewItem(
-          this.datastoreIds["オークション入札状況DB"],
-          param
-        );
-        this.modal = false;
-      }
-      await this.initialDisplay();
-    },
-    async doCancel() {
-      if (Number(this.myAuctionBidList[0].キャンセル回数) > 2) {
-        return false;
-      }
-      var result = await this.updatedDataItem(
-        this.datastoreIds["オークション入札状況DB"],
-        this.myAuctionBidList[0].i_id,
-        {
-          history: {
-            comment: "キャンセル"
-          },
-          changes: [
-            {
-              id: "入札時間",
-              value: moment()
-            },
-            {
-              id: "連続入札回数",
-              value: 0
-            },
-            {
-              id: "キャンセル回数",
-              value: Number(this.myAuctionBidList[0].キャンセル回数) + 1
-            },
-            {
-              id: "落札状況",
-              value: "キャンセル済"
-            }
-          ],
-          use_display_id: true,
-          is_force_update: true
-        }
-      );
-      await this.initialDisplay();
-      this.cancelModal = false;
     },
     // 新規Itemを作成します
     async insertNewItem(datasotreId, param) {
@@ -1413,7 +1439,7 @@ export default {
         this.updateMessage();
         this.agreeGuideline = false;
 
-        this.userInfo = await this.getUserInfo();
+        if (this.token) this.userInfo = await this.getUserInfo();
         if (this.userInfo && this.userInfo.length > 0) {
           switch (this.userInfo[0]["ステータス"]) {
             case "申請中":
@@ -1430,6 +1456,10 @@ export default {
         }
       } catch (e) {
         console.log(e);
+        this.$store.commit("auth/stateInit");
+        this.$store.commit("datas/stateInit");
+        this.$store.commit("user/stateInit");
+        this.$router.push("/signin");
       } finally {
         // loading overlay非表示
         this.$store.commit("common/setLoading", false);

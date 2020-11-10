@@ -95,7 +95,6 @@ export default {
       alert("click!");
     },
     async getUserDB(email) {
-      console.log(this.token);
       return await this.$hexalink.getItems(
         this.token,
         this.mapping.applicationId,
@@ -120,31 +119,41 @@ export default {
           /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
         )
       ) {
-        const userExists = await this.getUserDB(this.email);
-        if (userExists.length > 0) {
-          alert("既に登録されているメールアドレスでは登録できません");
-        } else {
-          let params = JSON.stringify({
-            email: this.email,
-            g_id: "5f76ad7daa3d8a0001269956",
-            // w_id: "ワークスペースのID",
-            username: this.email
-          });
-          const userAddResult = await this.$hexalink.createUser(
-            this.token,
-            params
-          );
-          params = JSON.stringify({
-            users: [
-              {
-                email: this.email
-              }
-            ],
-            domain: "az-baton.hexabase.com", //az-baton.hexabase.com
-            invitation_path: "signup"
-          });
-          this.sendResult = await this.$hexalink.inviteUser(this.token, params);
-          this.errorMess = "";
+        try {
+          const userExists = await this.getUserDB(this.email);
+          if (userExists.length > 0) {
+            alert("既に登録されているメールアドレスでは登録できません");
+          } else {
+            let params = JSON.stringify({
+              email: this.email,
+              g_id: "5f76ad7daa3d8a0001269956",
+              // w_id: "ワークスペースのID",
+              username: this.email
+            });
+            const userAddResult = await this.$hexalink.createUser(
+              this.token,
+              params
+            );
+            params = JSON.stringify({
+              users: [
+                {
+                  email: this.email
+                }
+              ],
+              domain: "az-baton.hexabase.com", //az-baton.hexabase.com
+              invitation_path: "signup"
+            });
+            this.sendResult = await this.$hexalink.inviteUser(
+              this.token,
+              params
+            );
+            this.errorMess = "";
+          }
+        } catch (e) {
+          this.$store.commit("auth/stateInit");
+          this.$store.commit("datas/stateInit");
+          this.$store.commit("user/stateInit");
+          this.$router.push("/signin");
         }
       } else {
         this.errorMess = "メールアドレスを入力してください";

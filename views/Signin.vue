@@ -89,7 +89,6 @@ export default {
       this.$router.push("/");
     }
     this.$store.commit("common/setLoading", false);
-    console.log(process.env.NODE_ENV);
   },
   methods: {
     click() {

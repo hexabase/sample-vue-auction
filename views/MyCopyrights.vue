@@ -114,6 +114,10 @@ export default {
       );
     } catch (e) {
       console.log(e);
+      this.$store.commit("auth/stateInit");
+      this.$store.commit("datas/stateInit");
+      this.$store.commit("user/stateInit");
+      this.$router.push("/signin");
     } finally {
       // loading overlay非表示
       this.$store.commit("common/setLoading", false);
