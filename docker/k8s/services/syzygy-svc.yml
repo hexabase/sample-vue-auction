@@ -7,10 +7,10 @@ metadata:
     component: microservice
 spec:
   ports:
-  - name: 80-80
-    port: 80
+  - name: 443-443
+    port: 443
     protocol: TCP
-    targetPort: 80
+    targetPort: 443
   selector:
     app: syzygy
   sessionAffinity: None
