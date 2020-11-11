@@ -49,6 +49,6 @@ spec:
         imagePullPolicy: Always
         ports:
         - name: syzygy
-          containerPort: 443
+          containerPort: 80
       nodeSelector:
         type: node00
