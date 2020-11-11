@@ -660,16 +660,165 @@
                 本人確認書類のアップロード
               </h3>
               <p class="userInfo_text">
-                本人確認書類・マイナンバーカード（通知カードも可）のスキャンまたは撮影データをアップロードしてください。<br />
+                お使いのパソコンまたはスマートフォンに内蔵されているカメラを使って撮影します。<br />
+                ※カメラ内臓のデバイスをご利用ください。
               </p>
-              <div class="userInfo_notice">
-                <p class="userInfo_notice_subtext">
-                  【利用可能な本人確認書類】マイナンバーカード両面（または通知カード）、運転免許証（両面）・各種健康保険証・住民票の写し・パスポート・在留カード・印鑑登録証明書のいずれか<br />
-                  【ファイル形式】JPG、JPEG、GIF、BMP、PNG、TIF、TIFF、PDF（サイズ：3MB以下）<br />
-                  ※入力した住所と同一である必要があります。※運転免許証は裏面もご提出ください。
-                </p>
-              </div>
-              <v-form class="entryForm" @submit.prevent>
+              <v-form class="entryForm photoUpload" @submit.prevent>
+                <div class="formItem">
+                  <div class="formItem_title">
+                    本人顔写真アップロード
+                    <span class="formItem_required">※必須</span>
+                  </div>
+                  <div class="photoUpload_box">
+                    <div class="photoUpload_title">
+                      顔の正面を撮影してください。
+                    </div>
+                    <figure class="photoUpload_img">
+                      <img src="~@/assets/img/photo-flow1.png" alt="" />
+                    </figure>
+                    <v-btn
+                      v-if="!approvedFlag"
+                      class="button-action"
+                      @click="openPhotoModal(1)"
+                    >
+                      <v-icon>mdi-camera</v-icon>
+                      撮影する
+                    </v-btn>
+                  </div>
+                  <div class="photoUpload_box">
+                    <div class="photoUpload_title">
+                      横顔を撮影してください。
+                    </div>
+                    <figure class="photoUpload_img">
+                      <img src="~@/assets/img/photo-flow2.png" alt="" />
+                    </figure>
+                    <v-btn
+                      v-if="!approvedFlag"
+                      class="button-action"
+                      @click="openPhotoModal(2)"
+                    >
+                      <v-icon>mdi-camera</v-icon>
+                      撮影する
+                    </v-btn>
+                  </div>
+                </div>
+                <div class="formItem">
+                  <div class="formItem_title">
+                    本人確認書類アップロード
+                    <span class="formItem_required">※必須</span>
+                  </div>
+                  <p class="formItem_text">
+                    【利用可能な本人確認書類】運転免許証・マイナンバーカード、パスポート・在留カードのいずれかとなります。<br />
+                    ※必ず顔写真があるものをご使用ください。
+                  </p>
+                  <div class="photoUpload_box">
+                    <div class="photoUpload_title">
+                      おもて面を撮影してください。
+                    </div>
+                    <figure
+                      v-if="identityVerificationDocuments1Image"
+                      class="photoUpload_photo"
+                    >
+                      <img :src="identityVerificationDocuments1Image" />
+                      <v-icon>mdi-check-bold</v-icon>
+                    </figure>
+                    <figure v-else class="photoUpload_img">
+                      <img src="~@/assets/img/photo-flow3.png" alt="" />
+                    </figure>
+                    <v-btn
+                      v-if="identityVerificationDocuments1Image"
+                      class="button-secondary"
+                      @click="openPhotoModal(3)"
+                    >
+                      撮り直す
+                    </v-btn>
+                    <v-btn
+                      v-else
+                      class="button-action"
+                      @click="openPhotoModal(3)"
+                    >
+                      <v-icon>mdi-camera</v-icon>
+                      撮影する
+                    </v-btn>
+                  </div>
+                  <div class="photoUpload_box">
+                    <div class="photoUpload_title">
+                      斜めに向けて撮影してください。
+                    </div>
+                    <p class="photoUpload_text">
+                      ※書類の厚みを撮影するため斜めに向けて撮影する必要があります。
+                    </p>
+                    <figure class="photoUpload_img">
+                      <img src="~@/assets/img/photo-flow4.png" alt="" />
+                    </figure>
+                    <v-btn
+                      v-if="!approvedFlag"
+                      class="button-action"
+                      @click="openPhotoModal(4)"
+                    >
+                      <v-icon>mdi-camera</v-icon>
+                      撮影する
+                    </v-btn>
+                  </div>
+                  <div class="photoUpload_box">
+                    <div class="photoUpload_title">
+                      裏面を撮影してください。
+                    </div>
+                    <figure class="photoUpload_img">
+                      <img src="~@/assets/img/photo-flow5.png" alt="" />
+                    </figure>
+                    <v-btn
+                      v-if="!approvedFlag"
+                      class="button-action"
+                      @click="openPhotoModal(5)"
+                    >
+                      <v-icon>mdi-camera</v-icon>
+                      撮影する
+                    </v-btn>
+                  </div>
+                </div>
+                <div class="formItem">
+                  <div class="formItem_title">
+                    マイナンバーアップロード
+                    <span class="formItem_required">※必須</span>
+                  </div>
+                  <p class="formItem_text">
+                    マイナンバーカード、もしくは通知カードを撮影してください。
+                  </p>
+                  <div class="photoUpload_box">
+                    <div class="photoUpload_title">
+                      表面を撮影してください。
+                    </div>
+                    <figure class="photoUpload_img">
+                      <img src="~@/assets/img/photo-flow6.png" alt="" />
+                    </figure>
+                    <v-btn
+                      v-if="!approvedFlag"
+                      class="button-action"
+                      @click="openPhotoModal(6)"
+                    >
+                      <v-icon>mdi-camera</v-icon>
+                      撮影する
+                    </v-btn>
+                  </div>
+                  <div class="photoUpload_box">
+                    <div class="photoUpload_title">
+                      裏面を撮影してください。
+                    </div>
+                    <figure class="photoUpload_img">
+                      <img src="~@/assets/img/photo-flow7.png" alt="" />
+                    </figure>
+                    <v-btn
+                      v-if="!approvedFlag"
+                      class="button-action"
+                      @click="openPhotoModal(7)"
+                    >
+                      <v-icon>mdi-camera</v-icon>
+                      撮影する
+                    </v-btn>
+                  </div>
+                </div>
+
                 <!-- <FormFile
                   v-if="!isSmartPhone"
                   id="本人確認書類写真_1"
@@ -1269,6 +1418,84 @@
           </p>
         </div>
       </MyModal>
+      <MyModal v-if="photoModal" class="modal-photo" @close="closeModal">
+        <template slot="title">
+          {{ photoTitle[currentPhotoType] }}
+        </template>
+        <figure v-if="photoFlow === 1" class="modal-photo_img">
+          <img
+            v-if="currentPhotoType === 1"
+            src="~@/assets/img/photo-flow1.png"
+          />
+          <img
+            v-if="currentPhotoType === 2"
+            src="~@/assets/img/photo-flow2.png"
+          />
+          <img
+            v-if="currentPhotoType === 3"
+            src="~@/assets/img/photo-flow3.png"
+          />
+          <img
+            v-if="currentPhotoType === 4"
+            src="~@/assets/img/photo-flow4.png"
+          />
+          <img
+            v-if="currentPhotoType === 5"
+            src="~@/assets/img/photo-flow5.png"
+          />
+          <img
+            v-if="currentPhotoType === 6"
+            src="~@/assets/img/photo-flow6.png"
+          />
+          <img
+            v-if="currentPhotoType === 7"
+            src="~@/assets/img/photo-flow7.png"
+          />
+        </figure>
+        <div v-if="photoFlow === 2" class="modal-photo_camera">
+          camera画面
+        </div>
+        <div v-if="photoFlow === 3" class="modal-photo_confirm">
+          <img src="~@/assets/img/photo-flow1.png" />
+          <div class="modal-photo_complete">
+            <v-icon>mdi-checkbox-marked-circle-outline</v-icon>
+            撮影しました
+          </div>
+        </div>
+        <div class="modal-photo-footer">
+          <v-btn
+            v-if="photoFlow !== 3"
+            class="button-cancel"
+            @click="closeModal"
+          >
+            キャンセル
+          </v-btn>
+          <v-btn
+            v-if="photoFlow === 3"
+            class="button-cancel"
+            @click="photoFlow = 2"
+          >
+            撮影し直す
+          </v-btn>
+          <v-btn
+            v-if="photoFlow === 1"
+            @click="photoFlow = 2"
+            class="button-action"
+          >
+            <v-icon>mdi-camera</v-icon>
+            カメラを起動
+          </v-btn>
+          <v-btn
+            v-if="photoFlow === 2"
+            @click="photoFlow = 3"
+            class="button-action"
+          >
+            <v-icon>mdi-camera</v-icon>
+            撮影する
+          </v-btn>
+          <v-btn v-if="photoFlow === 3" class="button-action">OK</v-btn>
+        </div>
+      </MyModal>
     </div>
   </div>
 </template>
@@ -1451,7 +1678,19 @@ export default {
       ],
       video: {},
       canvas: {},
-      captures: []
+      captures: [],
+      photoModal: false,
+      currentPhotoType: 1,
+      photoTitle: {
+        1: "顔の正面を撮影してください",
+        2: "横顔を撮影してください",
+        3: "本人確認書類の表面を撮影してください",
+        4: "本人確認書類を斜めに向けて撮影してください",
+        5: "本人確認書類の裏面を撮影してください",
+        6: "マイナンバーカードの表面を撮影してください",
+        7: "マイナンバーカードの裏面を撮影してください"
+      },
+      photoFlow: 1
     };
   },
   computed: {
@@ -2332,6 +2571,7 @@ export default {
       this.cahangePasswordModal = false;
       this.mailSendResult = "default";
       this.cahangeMailModal = false;
+      this.photoModal = false;
     },
     emittedNameKanji(value) {
       console.log("漢字：", value);
@@ -2581,6 +2821,11 @@ export default {
       ];
       var pattern = new RegExp(media.join("|"), "i");
       return pattern.test(navigator.userAgent);
+    },
+    openPhotoModal(type) {
+      this.photoModal = true;
+      this.photoFlow = 1;
+      this.currentPhotoType = type;
     }
   }
 };
