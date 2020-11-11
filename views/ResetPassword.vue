@@ -119,7 +119,6 @@ export default {
           this.confirmUserFlag = true;
         } catch (e) {
           this.errorMess = "パスワード変更中にエラーが発生しました。";
-          this.disabled = true;
         }
       } else {
         this.errorMess = "確認パスワードが一致しません。";

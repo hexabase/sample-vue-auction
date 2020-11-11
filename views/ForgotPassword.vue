@@ -98,7 +98,7 @@ export default {
       ) {
         let param = {
           email: this.email, //パスワードをリセットしたいユーザーのemail 必須
-          host: "https://az-baton.hexabase.com" //例：https://stg.xxxxxx.com 必須
+          host: "https://" + window.env.VUE_APP_BASEURL //例：https://stg.xxxxxx.com 必須
         };
         this.sendResult = await this.$hexalink.resetPassword(param);
         this.errorMess = "";

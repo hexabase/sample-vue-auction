@@ -95,8 +95,8 @@ export default {
       });
       var auctionBidReport = {};
       auctionBidReport = await this.$hexalink.getPublicReports(
-        this.mapping.applicationId,
-        "5ec76bffaa8a6c0007136f92",
+        window.env.VUE_APP_APPLICATION_ID,
+        window.env.report.VUE_APP_AUCTIONLISTREPORT_ID,
         {
           conditions: []
         }
@@ -106,7 +106,7 @@ export default {
         if (image1Binary) {
           const ab = await this.$hexalink.getPublicFile(
             image1Binary,
-            "5e9678e8d4b3e00006eb8745"
+            window.env.VUE_APP_WORKSPACE_ID
           );
           const blob = new Blob([ab], { type: "image/jpeg" });
           this.auctionList[listKey].image1 = window.URL.createObjectURL(blob);
@@ -159,8 +159,8 @@ export default {
   methods: {
     async getClosedAuctionList() {
       return await this.$hexalink.getPublicItems(
-        this.mapping.applicationId,
-        this.mapping.table.著作権DB,
+        window.env.VUE_APP_APPLICATION_ID,
+        window.env.table.VUE_APP_COPYRIGHTTABLE_ID,
         {
           conditions: [
             {

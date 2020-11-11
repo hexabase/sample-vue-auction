@@ -2290,7 +2290,8 @@ export default {
         try {
           const params = JSON.stringify({
             email: this.newEmail,
-            registration_path: "https://az-baton.hexabase.com/updateemail"
+            registration_path:
+              "https://" + window.env.VUE_APP_BASEURL + "/updateemail"
           });
           const result = await this.$hexalink.setMailAddress(
             this.token,

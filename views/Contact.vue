@@ -238,8 +238,8 @@ export default {
     },
     // データアイテムを更新します
     async updatedDataItem(datasotreId, itemId, payload) {
-      const token = this.mapping.persistenceToken;
-      const applicationId = this.mapping.applicationId;
+      const token = window.env.VUE_APP_PERSISTENCETOKEN;
+      const applicationId = window.env.VUE_APP_APPLICATION_ID;
       return await this.$hexalink.editItem(
         token,
         applicationId,
@@ -250,8 +250,8 @@ export default {
     },
     // 新規Itemを作成します
     async insertNewItem(datasotreId, param) {
-      const token = this.mapping.persistenceToken;
-      const applicationId = this.mapping.applicationId;
+      const token = window.env.VUE_APP_PERSISTENCETOKEN;
+      const applicationId = window.env.VUE_APP_APPLICATION_ID;
       var result = {};
       try {
         result = await this.$hexalink.createNewItem(

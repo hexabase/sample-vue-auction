@@ -97,8 +97,8 @@ export default {
     async getUserDB(email) {
       return await this.$hexalink.getItems(
         this.token,
-        this.mapping.applicationId,
-        "5ef2f6d9f2d7d2000680b3b1",
+        window.env.VUE_APP_APPLICATION_ID,
+        window.env.table.VUE_APP_USERINFOTABLE_ID,
         {
           conditions: [
             {
@@ -140,7 +140,7 @@ export default {
                   email: this.email
                 }
               ],
-              domain: "az-baton.hexabase.com", //az-baton.hexabase.com
+              domain: window.env.VUE_APP_BASEURL, //az-baton.hexabase.com
               invitation_path: "signup"
             });
             this.sendResult = await this.$hexalink.inviteUser(

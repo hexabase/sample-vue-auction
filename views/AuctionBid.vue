@@ -830,8 +830,8 @@ export default {
     },
     async getAuctionBidList() {
       return await this.$hexalink.getPublicItems(
-        this.mapping.applicationId,
-        this.mapping.table.オークション入札状況DB,
+        window.env.VUE_APP_APPLICATION_ID,
+        window.env.table.VUE_APP_AUCTIONBIDTABLE_ID,
         {
           conditions: [
             {
@@ -854,8 +854,8 @@ export default {
     async getTransactionList() {
       return await this.$hexalink.getItems(
         this.token,
-        this.mapping.applicationId,
-        this.mapping.table.取引DB,
+        window.env.VUE_APP_APPLICATION_ID,
+        window.env.table.VUE_APP_TRANSACTIONTABLE_ID,
         {
           conditions: [
             {
@@ -877,8 +877,8 @@ export default {
     },
     async getDistributionList() {
       return await this.$hexalink.getPublicItems(
-        this.mapping.applicationId,
-        this.mapping.table.著作権分配金マスタ,
+        window.env.VUE_APP_APPLICATION_ID,
+        window.env.table.VUE_APP_COPYRIGHTDISTRIBUTIONTABLE_ID,
         {
           conditions: [
             {
@@ -1217,8 +1217,8 @@ export default {
         }
         var dataLists = [];
         dataLists = await this.$hexalink.getPublicItems(
-          this.mapping.applicationId,
-          this.mapping.table.著作権DB,
+          window.env.VUE_APP_APPLICATION_ID,
+          window.env.table.VUE_APP_COPYRIGHTTABLE_ID,
           {
             conditions: [
               {
@@ -1308,7 +1308,7 @@ export default {
         if (image1Binary) {
           const ab = await this.$hexalink.getPublicFile(
             image1Binary,
-            "5e9678e8d4b3e00006eb8745"
+            window.env.VUE_APP_WORKSPACE_ID
           );
           const blob = new Blob([ab], { type: "image/jpeg" });
           this.image1 = window.URL.createObjectURL(blob);
@@ -1318,7 +1318,7 @@ export default {
         if (dataLists[0].交付書面) {
           const ab = await this.$hexalink.getPublicFile(
             dataLists[0].交付書面,
-            "5e9678e8d4b3e00006eb8745"
+            window.env.VUE_APP_WORKSPACE_ID
           );
           const blob = new Blob([ab], { type: "application/pdf" });
           this.pdfFile = URL.createObjectURL(blob);
@@ -1336,8 +1336,8 @@ export default {
 
         var auctionLists = [];
         auctionLists = await this.$hexalink.getPublicReports(
-          this.mapping.applicationId,
-          "5ea69310206c0d0006e494ab",
+          window.env.VUE_APP_APPLICATION_ID,
+          window.env.report.VUE_APP_AUCTIONBIDAGGREGATIONREPORT_ID,
           {
             conditions: [
               {
@@ -1485,9 +1485,13 @@ export default {
       );
     },
     applyUserInfo() {
-      this.$router
-        .push({ name: "UserInfo", params: { fromBid: true } })
-        .catch(() => {});
+      if (this.token) {
+        this.$router
+          .push({ name: "UserInfo", params: { fromBid: true } })
+          .catch(() => {});
+      } else {
+        this.$router.push("/registration").catch(() => {});
+      }
     },
     confirmDeliveryDocument() {
       this.confirmDeliveryDocumentFlag = true;
