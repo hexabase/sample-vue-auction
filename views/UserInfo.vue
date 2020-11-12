@@ -128,7 +128,7 @@
                 {{ currentNickname }}
                 <v-btn
                   class="button-secondary"
-                  @click="() => (cahangeNicknameModal = true)"
+                  @click="() => (changeNicknameModal = true)"
                 >
                   変更
                 </v-btn>
@@ -142,7 +142,7 @@
                 {{ email }}
                 <v-btn
                   class="button-secondary"
-                  @click="() => (cahangeMailModal = true)"
+                  @click="() => (changeMailModal = true)"
                 >
                   変更
                 </v-btn>
@@ -156,7 +156,7 @@
                 ********
                 <v-btn
                   class="button-secondary"
-                  @click="() => (cahangePasswordModal = true)"
+                  @click="() => (changePasswordModal = true)"
                 >
                   変更
                 </v-btn>
@@ -1311,11 +1311,7 @@
           </Button>
         </template>
       </MyModal>
-      <MyModal
-        v-if="cahangeNicknameModal"
-        class="modal-bid"
-        @close="() => (cahangeNicknameModal = false)"
-      >
+      <MyModal v-if="changeNicknameModal" class="modal-bid" @close="closeModal">
         <template slot="title">ニックネームの変更</template>
         <div v-if="errorMess" class="error_msg">
           <v-alert text color="red">
@@ -1333,6 +1329,7 @@
             v-model="newNickname"
             title="新しいニックネーム"
             :required="true"
+            :counter="10"
           />
         </v-form>
         <div v-if="nicknameSendResult" class="modalForm_complete">
@@ -1351,7 +1348,7 @@
           </Button>
         </template>
       </MyModal>
-      <MyModal v-if="cahangeMailModal" class="modal-bid" @close="closeModal">
+      <MyModal v-if="changeMailModal" class="modal-bid" @close="closeModal">
         <template slot="title">メールアドレスの変更</template>
         <div v-if="errorMess" class="error_msg">
           <v-alert text color="red">
@@ -1398,11 +1395,7 @@
           </Button>
         </template>
       </MyModal>
-      <MyModal
-        v-if="cahangePasswordModal"
-        class="modal-bid"
-        @close="closeModal"
-      >
+      <MyModal v-if="changePasswordModal" class="modal-bid" @close="closeModal">
         <template slot="title">パスワードの変更</template>
         <div v-if="errorMess" class="error_msg">
           <v-alert text color="red">
@@ -1419,13 +1412,18 @@
             v-model="newPassword"
             title="新しいパスワード"
             :required="true"
+            :counter="20"
           />
           <FormPassfield
             v-model="confirmPassword"
             title="新しいパスワード（確認）"
             :required="true"
+            :counter="20"
           />
         </v-form>
+        <span>
+          パスワードは8~20文字の半角英数の組み合わせで入力してください
+        </span>
         <template slot="footer">
           <Button
             class="button-action"
@@ -1626,9 +1624,9 @@ export default {
       identityVerificationDocuments3Image: [],
       addressInfo: {},
       completeModal: false,
-      cahangeNicknameModal: false,
-      cahangeMailModal: false,
-      cahangePasswordModal: false,
+      changeNicknameModal: false,
+      changeMailModal: false,
+      changePasswordModal: false,
       userSeiKanji: "",
       userMeiKanji: "",
       userSeiKana: "",
@@ -2308,6 +2306,7 @@ export default {
               this.myNumberCardPicture2FormData,
               this.identityVerificationDocuments1FormData,
               this.identityVerificationDocuments2FormData,
+              this.identityVerificationDocuments3FormData,
               this.identityPhoto1FormData,
               this.identityPhoto2FormData
             );
@@ -2650,9 +2649,10 @@ export default {
       this.oldPassword = "";
       this.errorMess = "";
       this.passwordSendResult = "default";
-      this.cahangePasswordModal = false;
+      this.changePasswordModal = false;
       this.mailSendResult = "default";
-      this.cahangeMailModal = false;
+      this.changeMailModal = false;
+      this.changeNicknameModal = false;
       this.photoModal = false;
     },
     emittedNameKanji(value) {
