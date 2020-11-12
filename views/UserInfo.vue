@@ -2893,6 +2893,9 @@ export default {
         case (1, 2):
           constrains = { video: { facingMode: "user" } };
           break;
+        default:
+          constrains = { video: { facingMode: "environment" } };
+          break;
       }
       if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         navigator.mediaDevices.getUserMedia(constrains).then(stream => {
