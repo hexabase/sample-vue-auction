@@ -66,11 +66,11 @@
 
             &_title {
                 margin-bottom: 5px;
-                font-size: 1.8rem;
+                font-size: 2rem;
             }
 
             &_artist {
-                margin-bottom: 20px;
+                margin-bottom: 25px;
                 color: $color-text-gray;
                 font-size: 1.3rem;
             }
@@ -78,18 +78,22 @@
             &_info {
                 display: flex;
                 flex-wrap: wrap;
-                margin-bottom: 20px;
+                margin-bottom: 5px;
                 
                 dt {
-                    flex: 0 0 7em;
+                    flex: 0 0 100px;
                     margin-top: 3px;
                     color: $color-text-darkgray;
+                    font-size: 1.5rem;
                 }
 
                 dd {
-                    flex: 0 0 calc(100% - 7em);
-                    margin-bottom: 8px;
+                    flex: 0 0 calc(100% - 100px);
+                    max-width: calc(100% - 100px);
+                    min-height: 36px;
+                    margin-bottom: 4px;
                     font-size: 2rem;
+                    text-align: right;
                 }
 
                 .unit {
@@ -97,8 +101,11 @@
                 }
 
                 .unit-right {
+                    display: block;
+                    padding-top: 3px;
                     font-size: 1.2rem;
                     white-space: nowrap;
+                    color: $color-text-darkgray;
                 }
             }
 
