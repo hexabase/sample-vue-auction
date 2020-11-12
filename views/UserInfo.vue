@@ -2890,11 +2890,27 @@ export default {
       this.video = this.$refs.video;
       let constrains = { video: true };
       switch (this.currentPhotoType) {
-        case (1, 2):
+        case 1:
+        case 2:
           constrains = { video: { facingMode: "user" } };
           break;
-        case (3, 4, 5, 6, 7):
-          constrains = { video: { facingMode: "environment" } };
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+        case 7:
+          if (
+            navigator.userAgent.indexOf("iPhone") > 0 ||
+            (navigator.userAgent.indexOf("Android") > 0 &&
+              navigator.userAgent.indexOf("Mobile") > 0) ||
+            navigator.userAgent.indexOf("iPad") > 0 ||
+            navigator.userAgent.indexOf("Android") > 0
+          ) {
+            // スマートフォン・タブレット向けの記述
+            constrains = { video: { facingMode: { exact: "environment" } } };
+          } else {
+            constrains = { video: { facingMode: "user" } };
+          }
           break;
       }
       if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
