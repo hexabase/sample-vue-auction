@@ -2893,7 +2893,7 @@ export default {
         case (1, 2):
           constrains = { video: { facingMode: "user" } };
           break;
-        default:
+        case (3, 4, 5, 6, 7):
           constrains = { video: { facingMode: "environment" } };
           break;
       }
