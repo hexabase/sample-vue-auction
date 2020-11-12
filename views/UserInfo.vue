@@ -673,7 +673,14 @@
                     <div class="photoUpload_title">
                       顔の正面を撮影してください。
                     </div>
-                    <figure class="photoUpload_img">
+                    <figure
+                      v-if="identityPhoto1Image.length > 0"
+                      class="photoUpload_photo"
+                    >
+                      <img :src="identityPhoto1Image" />
+                      <v-icon>mdi-check-bold</v-icon>
+                    </figure>
+                    <figure v-else class="photoUpload_img">
                       <img src="~@/assets/img/photo-flow1.png" alt="" />
                     </figure>
                     <v-btn
@@ -689,7 +696,14 @@
                     <div class="photoUpload_title">
                       横顔を撮影してください。
                     </div>
-                    <figure class="photoUpload_img">
+                    <figure
+                      v-if="identityPhoto2Image.length > 0"
+                      class="photoUpload_photo"
+                    >
+                      <img :src="identityPhoto2Image" />
+                      <v-icon>mdi-check-bold</v-icon>
+                    </figure>
+                    <figure v-else class="photoUpload_img">
                       <img src="~@/assets/img/photo-flow2.png" alt="" />
                     </figure>
                     <v-btn
@@ -716,7 +730,7 @@
                       おもて面を撮影してください。
                     </div>
                     <figure
-                      v-if="identityVerificationDocuments1Image"
+                      v-if="identityVerificationDocuments1Image.length > 0"
                       class="photoUpload_photo"
                     >
                       <img :src="identityVerificationDocuments1Image" />
@@ -748,7 +762,14 @@
                     <p class="photoUpload_text">
                       ※書類の厚みを撮影するため斜めに向けて撮影する必要があります。
                     </p>
-                    <figure class="photoUpload_img">
+                    <figure
+                      v-if="identityVerificationDocuments3Image.length > 0"
+                      class="photoUpload_photo"
+                    >
+                      <img :src="identityVerificationDocuments3Image" />
+                      <v-icon>mdi-check-bold</v-icon>
+                    </figure>
+                    <figure v-else class="photoUpload_img">
                       <img src="~@/assets/img/photo-flow4.png" alt="" />
                     </figure>
                     <v-btn
@@ -764,7 +785,14 @@
                     <div class="photoUpload_title">
                       裏面を撮影してください。
                     </div>
-                    <figure class="photoUpload_img">
+                    <figure
+                      v-if="identityVerificationDocuments2Image.length > 0"
+                      class="photoUpload_photo"
+                    >
+                      <img :src="identityVerificationDocuments2Image" />
+                      <v-icon>mdi-check-bold</v-icon>
+                    </figure>
+                    <figure v-else class="photoUpload_img">
                       <img src="~@/assets/img/photo-flow5.png" alt="" />
                     </figure>
                     <v-btn
@@ -789,7 +817,14 @@
                     <div class="photoUpload_title">
                       表面を撮影してください。
                     </div>
-                    <figure class="photoUpload_img">
+                    <figure
+                      v-if="myNumberCardPicture1Image.length > 0"
+                      class="photoUpload_photo"
+                    >
+                      <img :src="myNumberCardPicture1Image" />
+                      <v-icon>mdi-check-bold</v-icon>
+                    </figure>
+                    <figure v-else class="photoUpload_img">
                       <img src="~@/assets/img/photo-flow6.png" alt="" />
                     </figure>
                     <v-btn
@@ -805,7 +840,14 @@
                     <div class="photoUpload_title">
                       裏面を撮影してください。
                     </div>
-                    <figure class="photoUpload_img">
+                    <figure
+                      v-if="myNumberCardPicture2Image.length > 0"
+                      class="photoUpload_photo"
+                    >
+                      <img :src="myNumberCardPicture2Image" />
+                      <v-icon>mdi-check-bold</v-icon>
+                    </figure>
+                    <figure v-else class="photoUpload_img">
                       <img src="~@/assets/img/photo-flow7.png" alt="" />
                     </figure>
                     <v-btn
@@ -820,15 +862,6 @@
                 </div>
 
                 <!-- <FormFile
-                  v-if="!isSmartPhone"
-                  id="本人確認書類写真_1"
-                  title="本人確認書類写真1"
-                  :value="identityVerificationDocuments1"
-                  text="運転免許証（両面）・各種健康保険証・住民票の写し・パスポート・在留カード・印鑑登録証明書のいずれか。※入力した住所と同一である必要があります"
-                  :required="true"
-                  @change="emittedFile"
-                /> -->
-                <FormFile
                   id="本人確認書類写真_1"
                   title="本人確認書類写真1"
                   :value="identityVerificationDocuments1"
@@ -836,31 +869,6 @@
                   :required="true"
                   @change="emittedFile"
                 />
-                <!-- <div v-if="isSmartPhone">
-                  <video
-                    ref="video"
-                    id="video"
-                    width="500"
-                    height="500"
-                    autoplay
-                  ></video>
-                  <div>
-                    <button color="info" id="snap" @click="capture()">
-                      Snap Photo
-                    </button>
-                  </div>
-                  <canvas
-                    ref="canvas"
-                    id="canvas"
-                    width="500"
-                    height="500"
-                  ></canvas>
-                  <ul>
-                    <li class="capture" v-for="c in captures" v-bind:key="c.d">
-                      <img v-bind:src="c" height="50" />
-                    </li>
-                  </ul>
-                </div> -->
                 <FormFile
                   id="本人確認書類写真_2"
                   title="本人確認書類写真2"
@@ -880,7 +888,7 @@
                   title="マイナンバーカード写真2"
                   :value="myNumberCardPicture2"
                   @change="emittedFile"
-                />
+                /> -->
                 <div class="entryForm_footer">
                   <v-btn class="button-cancel" @click="step = 3">
                     <v-icon>mdi-chevron-left</v-icon>
@@ -1141,7 +1149,23 @@
                 <div class="formConfirm_item_wrapper">
                   <div class="formConfirm_item">
                     <div class="formConfirm_item_title">
-                      本人確認書類写真1
+                      本人顔写真 正面
+                    </div>
+                    <div class="formConfirm_item_body">
+                      <img :src="identityPhoto1Image" />
+                    </div>
+                  </div>
+                  <div class="formConfirm_item">
+                    <div class="formConfirm_item_title">
+                      本人顔写真 横顔
+                    </div>
+                    <div class="formConfirm_item_body">
+                      <img :src="identityPhoto2Image" />
+                    </div>
+                  </div>
+                  <div class="formConfirm_item">
+                    <div class="formConfirm_item_title">
+                      本人確認書類写真 表面
                     </div>
                     <div class="formConfirm_item_body">
                       <img :src="identityVerificationDocuments1Image" />
@@ -1149,7 +1173,15 @@
                   </div>
                   <div class="formConfirm_item">
                     <div class="formConfirm_item_title">
-                      本人確認書類写真2
+                      本人確認書類写真 斜め
+                    </div>
+                    <div class="formConfirm_item_body">
+                      <img :src="identityVerificationDocuments3Image" />
+                    </div>
+                  </div>
+                  <div class="formConfirm_item">
+                    <div class="formConfirm_item_title">
+                      本人確認書類写真 裏面
                     </div>
                     <div class="formConfirm_item_body">
                       <img :src="identityVerificationDocuments2Image" />
@@ -1452,11 +1484,25 @@
             src="~@/assets/img/photo-flow7.png"
           />
         </figure>
-        <div v-if="photoFlow === 2" class="modal-photo_camera">
+        <div v-show="photoFlow === 2" class="modal-photo_camera">
           camera画面
+          <video
+            ref="video"
+            id="video"
+            width="100%"
+            muted
+            autoplay
+            playsinline
+          ></video>
         </div>
-        <div v-if="photoFlow === 3" class="modal-photo_confirm">
-          <img src="~@/assets/img/photo-flow1.png" />
+        <div v-show="photoFlow === 3" class="modal-photo_confirm">
+          <!-- <img src="~@/assets/img/photo-flow1.png" /> -->
+          <canvas ref="canvas" id="canvas" width="300" height="225"></canvas>
+          <!-- <ul>
+            <li class="capture" v-for="c in captures" v-bind:key="c.d">
+              <img v-bind:src="c" height="50" />
+            </li>
+          </ul> -->
           <div class="modal-photo_complete">
             <v-icon>mdi-checkbox-marked-circle-outline</v-icon>
             撮影しました
@@ -1479,7 +1525,7 @@
           </v-btn>
           <v-btn
             v-if="photoFlow === 1"
-            @click="photoFlow = 2"
+            @click="confirmCapture(2)"
             class="button-action"
           >
             <v-icon>mdi-camera</v-icon>
@@ -1487,7 +1533,7 @@
           </v-btn>
           <v-btn
             v-if="photoFlow === 2"
-            @click="photoFlow = 3"
+            @click="capture(3)"
             class="button-action"
           >
             <v-icon>mdi-camera</v-icon>
@@ -1500,7 +1546,7 @@
   </div>
 </template>
 <script>
-import FormFile from "@/components/parts/form/FormFile.vue";
+// import FormFile from "@/components/parts/form/FormFile.vue";
 import FormPassfield from "@/components/parts/form/FormPassfield.vue";
 import FormRadio from "@/components/parts/form/FormRadio.vue";
 import FormCheckbox from "@/components/parts/form/FormCheckbox.vue";
@@ -1518,7 +1564,6 @@ import moment from "moment";
 
 export default {
   components: {
-    FormFile,
     FormPassfield,
     FormRadio,
     FormCheckbox,
@@ -1560,16 +1605,25 @@ export default {
       bankListName: [],
       myNumberCardPicture1: [],
       myNumberCardPicture2: [],
+      identityPhoto1: [],
+      identityPhoto2: [],
       identityVerificationDocuments1: [],
       identityVerificationDocuments2: [],
+      identityVerificationDocuments3: [],
       myNumberCardPicture1FormData: new FormData(),
       myNumberCardPicture2FormData: new FormData(),
+      identityPhoto1FormData: new FormData(),
+      identityPhoto2FormData: new FormData(),
       identityVerificationDocuments1FormData: new FormData(),
       identityVerificationDocuments2FormData: new FormData(),
+      identityVerificationDocuments3FormData: new FormData(),
       myNumberCardPicture1Image: [],
       myNumberCardPicture2Image: [],
+      identityPhoto1Image: [],
+      identityPhoto2Image: [],
       identityVerificationDocuments1Image: [],
       identityVerificationDocuments2Image: [],
+      identityVerificationDocuments3Image: [],
       addressInfo: {},
       completeModal: false,
       cahangeNicknameModal: false,
@@ -1841,12 +1895,24 @@ export default {
           "マイナンバーカード写真_2",
           this.userInfo[0].i_id
         );
+        this.identityPhoto1 = await this.getFileInfo(
+          "本人顔写真_1",
+          this.userInfo[0].i_id
+        );
+        this.identityPhoto2 = await this.getFileInfo(
+          "本人顔写真_2",
+          this.userInfo[0].i_id
+        );
         this.identityVerificationDocuments1 = await this.getFileInfo(
           "本人確認書類写真_1",
           this.userInfo[0].i_id
         );
         this.identityVerificationDocuments2 = await this.getFileInfo(
           "本人確認書類写真_2",
+          this.userInfo[0].i_id
+        );
+        this.identityVerificationDocuments3 = await this.getFileInfo(
+          "本人確認書類写真_3",
           this.userInfo[0].i_id
         );
       }
@@ -2230,15 +2296,19 @@ export default {
             // (this.myNumberCardPicture2 ||
             //   this.myNumberCardPicture2FormData.get("file")) &&
             (this.identityVerificationDocuments1 ||
-              this.identityVerificationDocuments1FormData.get("file")) //&&
+              this.identityVerificationDocuments1FormData.get("file")) &&
             // (this.identityVerificationDocuments2 ||
             //   this.identityVerificationDocuments2FormData.get("file"))
+            (this.identityPhoto1 || this.identityPhoto1FormData.get("file")) &&
+            (this.identityPhoto2 || this.identityPhoto2FormData.get("file"))
           ) {
             this.fileInfo.push(
               this.myNumberCardPicture1FormData,
               this.myNumberCardPicture2FormData,
               this.identityVerificationDocuments1FormData,
-              this.identityVerificationDocuments2FormData
+              this.identityVerificationDocuments2FormData,
+              this.identityPhoto1FormData,
+              this.identityPhoto2FormData
             );
             try {
               // loading overlay表示
@@ -2367,6 +2437,12 @@ export default {
         const ab = await this.$hexalink.getFile(this.token, fileBinary);
         const blob = new Blob([ab], { type: "image/jpeg" });
         switch (fileField) {
+          case "本人顔写真_1":
+            this.identityPhoto1Image = window.URL.createObjectURL(blob);
+            break;
+          case "本人顔写真_2":
+            this.identityPhoto2Image = window.URL.createObjectURL(blob);
+            break;
           case "本人確認書類写真_1":
             this.identityVerificationDocuments1Image = window.URL.createObjectURL(
               blob
@@ -2374,6 +2450,11 @@ export default {
             break;
           case "本人確認書類写真_2":
             this.identityVerificationDocuments2Image = window.URL.createObjectURL(
+              blob
+            );
+            break;
+          case "本人確認書類写真_3":
+            this.identityVerificationDocuments3Image = window.URL.createObjectURL(
               blob
             );
             break;
@@ -2804,11 +2885,99 @@ export default {
       this.checkDigits(event);
       this.checkKeyDown(event);
     },
-    capture() {
+    confirmCapture(flow) {
+      this.photoFlow = flow;
+      this.video = this.$refs.video;
+      let constrains = { video: true };
+      switch (this.currentPhotoType) {
+        case (1, 2):
+          constrains = { video: { facingMode: "user" } };
+          break;
+      }
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices.getUserMedia(constrains).then(stream => {
+          this.video.srcObject = stream;
+          this.video.play();
+        });
+      }
+    },
+    capture(flow) {
+      this.photoFlow = flow;
+      let formData = new FormData();
       this.canvas = this.$refs.canvas;
-      this.canvas.getContext("2d").drawImage(this.video, 0, 0, 500, 500);
-      this.captures.push(this.canvas.toDataURL("image/png"));
-      console.log(this.captures);
+      this.canvas
+        .getContext("2d")
+        .drawImage(
+          this.video,
+          0,
+          0,
+          this.video.clientWidth,
+          this.video.clientHeight
+        );
+      var base64 = this.canvas.toDataURL("image/png"),
+        bin = atob(base64.replace(/^.*,/, "")),
+        buffer = new Uint8Array(bin.length);
+      for (let i = 0; i < bin.length; i++) {
+        buffer[i] = bin.charCodeAt(i);
+      }
+      var blob = new Blob([buffer], { type: "image/jpeg" });
+      switch (this.currentPhotoType) {
+        case 1:
+          this.identityPhoto1Image = window.URL.createObjectURL(blob);
+          formData.append("id", "本人顔写真_1");
+          formData.append("file", blob);
+          formData.append("filename", "本人顔写真正面");
+          this.identityPhoto1FormData = formData;
+          break;
+        case 2:
+          this.identityPhoto2Image = window.URL.createObjectURL(blob);
+          formData.append("id", "本人顔写真_2");
+          formData.append("file", blob);
+          formData.append("filename", "本人顔写真横顔");
+          this.identityPhoto2FormData = formData;
+          break;
+        case 3:
+          this.identityVerificationDocuments1Image = window.URL.createObjectURL(
+            blob
+          );
+          formData.append("id", "本人確認書類写真_1");
+          formData.append("file", blob);
+          formData.append("filename", "本人確認書類表面");
+          this.identityVerificationDocuments1FormData = formData;
+          break;
+        case 4:
+          this.identityVerificationDocuments3Image = window.URL.createObjectURL(
+            blob
+          );
+          formData.append("id", "本人確認書類写真_3");
+          formData.append("file", blob);
+          formData.append("filename", "本人確認書類斜め");
+          this.identityVerificationDocuments3FormData = formData;
+          break;
+        case 5:
+          this.identityVerificationDocuments2Image = window.URL.createObjectURL(
+            blob
+          );
+          formData.append("id", "本人確認書類写真_2");
+          formData.append("file", blob);
+          formData.append("filename", "本人確認書類裏面");
+          this.identityVerificationDocuments2FormData = formData;
+          break;
+        case 6:
+          this.myNumberCardPicture1Image = window.URL.createObjectURL(blob);
+          formData.append("id", "マイナンバーカード写真_1");
+          formData.append("file", blob);
+          formData.append("filename", "マイナンバーカード写真表面");
+          this.myNumberCardPicture1FormData = formData;
+          break;
+        case 7:
+          this.myNumberCardPicture2Image = window.URL.createObjectURL(blob);
+          formData.append("id", "マイナンバーカード写真_2");
+          formData.append("file", blob);
+          formData.append("filename", "マイナンバーカード写真裏面");
+          this.myNumberCardPicture2FormData = formData;
+          break;
+      }
     },
     // スマートフォンかそれ以外かを判別する。
     isSmartPhone() {
