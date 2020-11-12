@@ -13,7 +13,35 @@
         <div class="musicInfo_wrap">
           <h2 class="musicInfo_title">{{ title }}</h2>
           <p class="musicInfo_artist">{{ singer1 }}</p>
-          <table class="musicInfo_data">
+          <div class="musicInfo_data">
+            <dl class="musicInfo_remain">
+              <dt>残り時間</dt>
+              <dd>
+                <div v-if="auctionFinishedFlag">Closed</div>
+                <div v-if="!auctionFinishedFlag">
+                  {{ remainingTime.days }}<span class="unit">日</span>
+                  {{ remainingTime.hours }}<span class="unit">時間</span>
+                  {{ remainingTime.minutes }}<span class="unit">分</span>
+                  {{ remainingTime.seconds }}<span class="unit">秒</span>
+                </div>
+              </dd>
+            </dl>
+            <dl class="musicInfo_amount">
+              <dt>オークション数量</dt>
+              <dd>
+                {{ auctionAmount }}
+                <span class="unit">口</span>
+              </dd>
+            </dl>
+            <dl class="musicInfo_startPrice">
+              <dt>オークション開始価格<span>（1口、消費税を含む）</span></dt>
+              <dd>
+                {{ changeYen(Number(auctionStartPrice)) }}
+                <span class="unit">円</span>
+              </dd>
+            </dl>
+          </div>
+          <table v-if="false" class="musicInfo_data">
             <tr>
               <th>残り時間</th>
               <th>オークション数量</th>
@@ -534,7 +562,13 @@ export default {
       bidTotalAmount: 0,
       bidPrice: 0,
       bidAmount: 1,
-      remainingTime: "",
+      counterInterval: null,
+      remainingTime: {
+        days: 0,
+        hours: 0,
+        minutes: 0,
+        seconds: 0
+      },
       agreeGuideline: false,
       musicId: "",
       myAuctionBidList: {},
@@ -740,7 +774,7 @@ export default {
     if (this.token) {
       await this.getDeliveryDocument();
     }
-    setInterval(this.updateMessage, 1000);
+    this.counterInterval = setInterval(this.updateMessage, 1000);
   },
   methods: {
     isProcessing() {
@@ -1089,15 +1123,10 @@ export default {
       const seconds = duration.seconds();
 
       //カウントダウンの結果を変数に代入
-      this.remainingTime =
-        days +
-        "<span class='unit'>日</span>" +
-        ("00" + hours).slice(-2) +
-        "<span class='unit'>時間</span>" +
-        ("00" + minutes).slice(-2) +
-        "<span class='unit'>分</span>" +
-        ("00" + seconds).slice(-2) +
-        "<span class='unit'>秒</span>";
+      this.remainingTime.days = days;
+      this.remainingTime.hours = ("00" + hours).slice(-2);
+      this.remainingTime.minutes = ("00" + minutes).slice(-2);
+      this.remainingTime.seconds = ("00" + seconds).slice(-2);
     },
     changeYen(num) {
       if (!num) return 0;
@@ -1555,6 +1584,9 @@ export default {
         moment().format("YYYYMMDDTHHmmssSSS") +
         ".pdf";
     }
+  },
+  beforeDestroy: function() {
+    clearInterval(this.counterInterval);
   }
 };
 </script>

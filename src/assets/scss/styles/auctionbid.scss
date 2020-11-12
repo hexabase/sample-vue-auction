@@ -9,13 +9,13 @@
     padding: 80px 0;
 
     @include max-screen($breakpoint-mobile) {
-        padding: 40px 0 20px;
+        padding: 20px 0;
     }
 
     .content {
         display: flex;
 
-        @include max-screen($breakpoint-mobile) {
+        @include max-screen($breakpoint-tab) {
             display: block;
             padding: 0 15px;
         }
@@ -27,12 +27,19 @@
         @extend .figure-fix;
         padding-bottom: inherit;
 
-        @include max-screen($breakpoint-mobile) {
+        @include max-screen($breakpoint-tab) {
             float: left;
-            width: 12vw;
-            height: 12vw;
+            width: 140px;
+            max-width: 140px;
+            height: 140px;
             margin-right: 15px;
             margin-bottom: 15px;
+        }
+
+        @include max-screen($breakpoint-mobile) {
+            width: 80px;
+            max-width: 80px;
+            height: 80px;
         }
 
         &-mobile {
@@ -58,7 +65,7 @@
         padding-left: 5%;
         text-align: left;
 
-        @include max-screen($breakpoint-mobile) {
+        @include max-screen($breakpoint-tab) {
             padding-left: 0;
         }
     }
@@ -77,6 +84,10 @@
             content: "♪";
             margin-right: 5px;
             color: $color-theme-center;
+
+            @include max-screen($breakpoint-mobile) {
+                display: none;
+            }
         }
     }
 
@@ -92,76 +103,76 @@
     
     &_data {
         width: 100%;
-        border-top: 15px solid $color-bg;
-        border-bottom: 15px solid $color-bg;
+        padding: 15px 0;
         background: $color-bg;
+        display: flex;
 
         @include max-screen($breakpoint-mobile) {
-            clear: both;
-            position: relative;
-            border-top-width: 90px;
-            border-bottom: none;
+            flex-wrap: wrap;
+            padding: 0;
         }
 
-        th {
+        dl {
             padding: 0 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+
+            @include max-screen($breakpoint-mobile) {
+                padding: 10px;
+            }
+
+            + dl {
+                border-left: $border-default;
+
+                @include max-screen($breakpoint-mobile) {
+                    &:not(:last-child) {
+                        border-left: none;
+                    }
+                }
+            }
+        }
+
+        dt {
             font-size: 1.5rem;
             font-weight: normal;
             vertical-align: top;
-            border-right: $border-default;
 
             span {
                 display: block;
                 font-size: 1.1rem;
                 color: $color-text-lightgray;
             }
-
-            @include max-screen($breakpoint-mobile) {
-                padding-top: 10px;
-                    
-                &:first-child {
-                    position: absolute;
-                    top: -90px;
-                    border: none;
-                }
-            }
         }
 
-        td {
-            padding: 5px 15px 0;
-            border-right: $border-default;
+        dd {
             font-size: 3.4rem;
             font-weight: 400;
             font-family: $font-mix;
             letter-spacing: -0.02em;
             color: $color-theme-center;
             text-align: center;
-
-            div {
-                min-width: 240px;
-            }
-
-            @include max-screen($breakpoint-mobile) {
-                padding-bottom: 15px;
-                &:first-child {
-                    position: absolute;
-                    top: -80px;
-                    width: 100%;
-                    padding: 15px;
-                    line-height: 50px;
-                    border-right: none;
-                    border-bottom: $border-default;
-                }
-            }
-        }
-
-        th:last-child, td:last-child {
-            border-right: none;
         }
 
         .unit {
-            margin-right: 7px;
             font-size: 1.4rem;
+        }
+    }
+
+    &_remain {
+        @include max-screen($breakpoint-mobile) {
+            width: 100%;
+            border-bottom: $border-default;
+        }
+        
+        dd {
+            min-width: 240px;
+        }
+    }
+
+    &_amount, &_startPrice {
+        @include max-screen($breakpoint-mobile) {
+            width: 50%;
         }
     }
 }
@@ -173,14 +184,26 @@
     &_title {
         @extend %section-title;
         margin-bottom: 60px;
+
+        @include max-screen($breakpoint-mobile) {
+            margin-bottom: 30px;
+        }
     }
 
     &_wrap {
         display: flex;
+
+        @include max-screen($breakpoint-mobile) {
+            display: block;
+        }
     }
 
     &_left {
         flex: 1 1 100%;
+
+        @include max-screen($breakpoint-mobile) {
+            margin-bottom: 80px;
+        }
     }
 
     .bidList {
@@ -200,6 +223,10 @@
     &_right {
         flex: 1 1 100%;
         padding-left: 4%;
+
+        @include max-screen($breakpoint-mobile) {
+            padding-left: 0;
+        }
     }
 
     .bidBox {
@@ -207,6 +234,11 @@
         padding: 0 40px 40px;
         border: $border-blue;
         overflow: hidden;
+
+        @include max-screen($breakpoint-tab) {
+            margin-bottom: 20px;
+            padding:  0 20px 20px;
+        }
 
         &_title {
             margin-bottom: 30px;
@@ -506,6 +538,10 @@
             width: 100%;
             margin-top: -60px;
             margin-bottom: 30px;
+
+            @include max-screen($breakpoint-mobile) {
+                margin-top: -30px;
+            }
         }
 
         &_title {
