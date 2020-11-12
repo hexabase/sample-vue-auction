@@ -1744,7 +1744,8 @@ export default {
         6: "マイナンバーカードの表面を撮影してください",
         7: "マイナンバーカードの裏面を撮影してください"
       },
-      photoFlow: 1
+      photoFlow: 1,
+      curStream: null
     };
   },
   computed: {
@@ -2899,28 +2900,18 @@ export default {
         case 5:
         case 6:
         case 7:
-          if (
-            navigator.userAgent.indexOf("iPhone") > 0 ||
-            (navigator.userAgent.indexOf("Android") > 0 &&
-              navigator.userAgent.indexOf("Mobile") > 0) ||
-            navigator.userAgent.indexOf("iPad") > 0 ||
-            navigator.userAgent.indexOf("Android") > 0
-          ) {
-            // スマートフォン・タブレット向けの記述
-            constrains = { video: { facingMode: { exact: "environment" } } };
-          } else {
-            constrains = { video: { facingMode: "user" } };
-          }
+          constrains = { video: { facingMode: "environment" } };
           break;
       }
       // すでにカメラと接続していたら停止
-      if (this.video.srcObject !== null) {
-        this.video.srcObject.getVideoTracks().forEach(camera => {
+      if (this.curStream !== null) {
+        this.curStream.getVideoTracks().forEach(camera => {
           camera.stop();
         });
       }
       if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         navigator.mediaDevices.getUserMedia(constrains).then(stream => {
+          this.curStream = stream;
           this.video.srcObject = stream;
           this.video.play();
         });
