@@ -16,6 +16,7 @@
           :value="value"
           :error-messages="errors"
           :label="label"
+          :counter="counter"
           @input="inputValue"
           @blur="handleBlur"
         ></v-text-field>
@@ -55,6 +56,10 @@ export default {
     valrule: {
       type: String,
       default: ""
+    },
+    counter: {
+      type: Number,
+      default: null
     }
   },
   methods: {
