@@ -537,7 +537,7 @@ export default {
       remainingTime: "",
       agreeGuideline: false,
       musicId: "",
-      myAuctionBidList: {},
+      myAuctionBidList: [],
       myAuctionResult: "",
       alertMessage: "",
       displayBidResultFlag: false,
@@ -973,8 +973,15 @@ export default {
           );
           this.modal = false;
         }
-        await this.initialDisplay();
+        // await this.initialDisplay();
+        this.myAuctionBidList[0] = {
+          入札金額: this.bidPrice,
+          数量: this.bidAmount,
+          キャンセル回数: 0
+        };
+        this.displayBidResultFlag = true;
       } catch (e) {
+        console.log(e);
         this.$store.commit("auth/stateInit");
         this.$store.commit("datas/stateInit");
         this.$store.commit("user/stateInit");
@@ -1015,8 +1022,9 @@ export default {
             is_force_update: true
           }
         );
-        await this.initialDisplay();
+        // await this.initialDisplay();
         this.cancelModal = false;
+        this.displayBidResultFlag = false;
       } catch (e) {
         this.$store.commit("auth/stateInit");
         this.$store.commit("datas/stateInit");
