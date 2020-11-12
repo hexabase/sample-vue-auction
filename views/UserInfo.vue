@@ -2913,6 +2913,12 @@ export default {
           }
           break;
       }
+      // すでにカメラと接続していたら停止
+      if (this.video.srcObject !== null) {
+        this.video.srcObject.getVideoTracks().forEach(camera => {
+          camera.stop();
+        });
+      }
       if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         navigator.mediaDevices.getUserMedia(constrains).then(stream => {
           this.video.srcObject = stream;
