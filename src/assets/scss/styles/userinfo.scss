@@ -1102,6 +1102,13 @@
         }
     }
 
+    .modal-title {
+        font-size: 1.8rem;
+        align-self: center;
+        line-height: 1.1;
+        padding-right: 20px;
+    }
+
     .modal-content {
         overflow: initial;
         position: relative;
@@ -1124,19 +1131,50 @@
         &::before {
             content: "";
             position: absolute;
-            top: -2px;
+            top: -5px;
             display: block;
-            width: 10px;
-            height: 10px;
+            width: 15px;
+            height: 15px;
             border-top: $border-gray;
         }
         &::before {
-            left: -2px;
+            left: -5px;
             border-left: $border-gray;
         }
         &::after {
-            right: -2px;
+            right: -5px;
             border-right: $border-gray;
+        }
+
+        > div {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+
+            &::after ,
+            &::before {
+                content: "";
+                position: absolute;
+                bottom: -5px;
+                display: block;
+                width: 15px;
+                height: 15px;
+                border-bottom: $border-gray;
+            }
+            &::before {
+                left: -5px;
+                border-left: $border-gray;
+            }
+            &::after {
+                right: -5px;
+                border-right: $border-gray;
+            }
+        }
+
+        video {
+            height: 100%;
         }
     }
 
