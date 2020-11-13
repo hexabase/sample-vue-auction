@@ -464,7 +464,7 @@
         }
 
         & + .v-input--checkbox {
-            margin-bottom: -20px;
+            // margin-bottom: -20px;
             text-align: center;
             
             .v-input__slot {
@@ -473,6 +473,44 @@
 
             .v-label {
                 flex: 0 0 auto;
+            }
+        }
+        &_wrap {
+            .btn {
+                font-size: 1.5rem;
+                color: $color-text-sub;
+                text-decoration: underline;
+                color: $color-theme-right;
+                outline: none;
+
+                &:hover {
+                    text-decoration: none;
+                }
+
+                &::before {
+                    content: "\F131";
+                    display: inline-block;
+                    width: 18px;
+                    height: 18px;
+                    margin: 0 10px 0 0;
+                    vertical-align: bottom;
+                    font: $font-mdi;
+                    color: rgba(0, 0, 0, 0.54);
+                    text-decoration: none;
+
+                    &:hover {
+                        text-decoration: none;
+                    }
+                }
+
+                &.pdfChecked {
+                    color: $color-text-visited;
+
+                    &::before {
+                        content: "\F132";
+                        color: $color-vuetify-primary;
+                    }
+                }
             }
         }
     }
