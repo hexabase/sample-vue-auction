@@ -94,6 +94,17 @@ footer,header,hgroup,menu,nav,section {
     }
 
     button {
+        
+        &:hover,
+        &:focus,
+        &:active  {
+            outline: none;
+        }
+        &:focus,
+        &:active {
+            outline: #edf3ff solid 3px;
+        }
+
         &[disabled] {
             cursor: not-allowed;
         }

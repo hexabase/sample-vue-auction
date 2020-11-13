@@ -684,7 +684,14 @@
                       <img src="~@/assets/img/photo-flow1.png" alt="" />
                     </figure>
                     <v-btn
-                      v-if="!approvedFlag"
+                      v-if="identityPhoto1Image.length > 0"
+                      class="button-secondary"
+                      @click="openPhotoModal(1)"
+                    >
+                      撮り直す
+                    </v-btn>
+                    <v-btn
+                      v-else
                       class="button-action"
                       @click="openPhotoModal(1)"
                     >
@@ -707,7 +714,14 @@
                       <img src="~@/assets/img/photo-flow2.png" alt="" />
                     </figure>
                     <v-btn
-                      v-if="!approvedFlag"
+                      v-if="identityPhoto2Image.length > 0"
+                      class="button-secondary"
+                      @click="openPhotoModal(2)"
+                    >
+                      撮り直す
+                    </v-btn>
+                    <v-btn
+                      v-else
                       class="button-action"
                       @click="openPhotoModal(2)"
                     >
@@ -740,7 +754,7 @@
                       <img src="~@/assets/img/photo-flow3.png" alt="" />
                     </figure>
                     <v-btn
-                      v-if="identityVerificationDocuments1Image"
+                      v-if="identityVerificationDocuments1Image.length > 0"
                       class="button-secondary"
                       @click="openPhotoModal(3)"
                     >
@@ -773,7 +787,14 @@
                       <img src="~@/assets/img/photo-flow4.png" alt="" />
                     </figure>
                     <v-btn
-                      v-if="!approvedFlag"
+                      v-if="identityVerificationDocuments3Image.length > 0"
+                      class="button-secondary"
+                      @click="openPhotoModal(4)"
+                    >
+                      撮り直す
+                    </v-btn>
+                    <v-btn
+                      v-else
                       class="button-action"
                       @click="openPhotoModal(4)"
                     >
@@ -796,7 +817,14 @@
                       <img src="~@/assets/img/photo-flow5.png" alt="" />
                     </figure>
                     <v-btn
-                      v-if="!approvedFlag"
+                      v-if="identityVerificationDocuments2Image.length > 0"
+                      class="button-secondary"
+                      @click="openPhotoModal(5)"
+                    >
+                      撮り直す
+                    </v-btn>
+                    <v-btn
+                      v-else
                       class="button-action"
                       @click="openPhotoModal(5)"
                     >
@@ -828,7 +856,14 @@
                       <img src="~@/assets/img/photo-flow6.png" alt="" />
                     </figure>
                     <v-btn
-                      v-if="!approvedFlag"
+                      v-if="myNumberCardPicture1Image.length > 0"
+                      class="button-secondary"
+                      @click="openPhotoModal(6)"
+                    >
+                      撮り直す
+                    </v-btn>
+                    <v-btn
+                      v-else
                       class="button-action"
                       @click="openPhotoModal(6)"
                     >
@@ -851,7 +886,14 @@
                       <img src="~@/assets/img/photo-flow7.png" alt="" />
                     </figure>
                     <v-btn
-                      v-if="!approvedFlag"
+                      v-if="myNumberCardPicture2Image.length > 0"
+                      class="button-secondary"
+                      @click="openPhotoModal(7)"
+                    >
+                      撮り直す
+                    </v-btn>
+                    <v-btn
+                      v-else
                       class="button-action"
                       @click="openPhotoModal(7)"
                     >
@@ -1483,18 +1525,18 @@
           />
         </figure>
         <div v-show="photoFlow === 2" class="modal-photo_camera">
-          camera画面
-          <video
-            ref="video"
-            id="video"
-            width="100%"
-            muted
-            autoplay
-            playsinline
-          ></video>
+          <div>
+            <video
+              ref="video"
+              id="video"
+              width="100%"
+              muted
+              autoplay
+              playsinline
+            ></video>
+          </div>
         </div>
         <div v-show="photoFlow === 3" class="modal-photo_confirm">
-          <!-- <img src="~@/assets/img/photo-flow1.png" /> -->
           <canvas ref="canvas" id="canvas" width="300" height="225"></canvas>
           <!-- <ul>
             <li class="capture" v-for="c in captures" v-bind:key="c.d">
@@ -1537,7 +1579,13 @@
             <v-icon>mdi-camera</v-icon>
             撮影する
           </v-btn>
-          <v-btn v-if="photoFlow === 3" class="button-action">OK</v-btn>
+          <v-btn
+            v-if="photoFlow === 3"
+            class="button-action"
+            @click="closeModal"
+          >
+            OK
+          </v-btn>
         </div>
       </MyModal>
     </div>
