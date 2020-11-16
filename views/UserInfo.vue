@@ -1526,18 +1526,16 @@
         </figure>
         <div v-show="photoFlow === 2" class="modal-photo_camera">
           <div>
-            <video
-              ref="video"
-              id="video"
-              width="100%"
-              muted
-              autoplay
-              playsinline
-            ></video>
+            <div class="modal-photo_flame">
+              <video ref="video" id="video" muted autoplay playsinline></video>
+            </div>
           </div>
         </div>
         <div v-show="photoFlow === 3" class="modal-photo_confirm">
-          <canvas ref="canvas" id="canvas" width="300" height="225"></canvas>
+          <div class="modal-photo_flame">
+            <canvas ref="canvas" id="canvas" width="260" height="260"></canvas>
+            <!-- <canvas ref="canvas" id="canvas" width="260" height="195"></canvas> -->
+          </div>
           <!-- <ul>
             <li class="capture" v-for="c in captures" v-bind:key="c.d">
               <img v-bind:src="c" height="50" />
