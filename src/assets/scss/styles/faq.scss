@@ -1,0 +1,129 @@
+@charset "UTF-8";
+@import "../utils/variables.scss";
+@import "../utils/functions.scss";
+
+/* mypage */
+#page_faq {
+    .pageHeader {
+        &_title {
+            letter-spacing: 0.2em;
+        }
+
+        &_img {
+            background: url("~@/assets/img/bg-faq.jpg") no-repeat center center;
+            background-size: cover;
+            backdrop-filter: none;
+        }
+
+        .content {
+            height: 180px;
+        }
+    }
+
+    .faq {
+        @extend %padding-contents;
+        
+        &_title {
+            margin-bottom: 60px;
+            font-size: 2.4rem;
+            font-weight: normal;
+        }
+
+        &_item {
+            width: 100%;
+            max-width: 680px;
+            margin: 0 auto 10px;
+            border: $border-default;
+            border-radius: $radius-box;
+            text-align: left;
+            transition: all .3s;
+
+            &:hover {
+                border-color: $color-border-bluegray;
+            }
+        }
+
+        &_question {
+            position: relative;
+            font-size: 1.6rem;
+            line-height: 1.2;
+            font-weight: normal;
+
+            &::before {
+                content: "Q";
+                position: absolute;
+                top: 10px;
+                left: 15px;
+                font-size: 2.2rem;
+                color: $color-theme-right;
+                font-weight: bold;
+            }
+
+            &::after {
+                content: "+";
+                position: absolute;
+                width: 1em;
+                top: 15px;
+                right: 10px;
+                font-size: 1.8rem;
+                color: $color-theme-right;
+                text-align: center;
+            }
+
+            label {
+                position: relative;
+                display: block;
+                padding: 15px 45px;
+                cursor: pointer;
+                z-index: $zIndex-element;
+            }
+        }
+
+        &_answer {
+            position: relative;
+            transition: all .5s;
+            max-height: 0;
+            padding: 0 25px;
+            font-size: 1.4rem;
+            line-height: 1.8;
+            color: #fff;
+            overflow: hidden;
+
+            &::before {
+                content: "Answer：";
+                position: absolute;
+                top: 10px;
+                left: 15px;
+                color: $color-text-placeholder;
+                font-size: 1.5rem;
+                font-weight: bold;
+                opacity: 0;
+                transition: opacity .2s;
+            }
+        }
+
+        &_switch {
+            display: none;
+
+            &:checked + .faq_content {
+                .faq_question {
+                    &::after {
+                        content: "-";
+                    }
+                }
+
+                .faq_answer {
+                    max-height: 1000px;
+                    padding: 40px 25px 20px;
+                    overflow: auto;
+                    border-top: $border-default;
+                    color: $color-text-darkgray;
+
+                    &::before {
+                        opacity: 0.8;
+                    }
+                }
+            }
+        }
+    }
+}

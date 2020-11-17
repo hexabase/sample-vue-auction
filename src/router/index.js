@@ -18,6 +18,7 @@ import MyBidAuction from "../../views/MyBidAuction.vue";
 import Wallet from "../../views/Wallet.vue";
 import UserInfo from "../../views/UserInfo.vue";
 import Contact from "../../views/Contact.vue";
+import Faq from "../../views/Faq.vue";
 import News from "../../views/News.vue";
 import NotFound from "../../views/NotFound.vue";
 
@@ -110,6 +111,11 @@ const routes = [
     component: UserInfo,
     meta: { requiresAuth: true },
     props: true
+  },
+  {
+    path: "/faq",
+    name: "Faq",
+    component: Faq
   },
   {
     path: "/news",
