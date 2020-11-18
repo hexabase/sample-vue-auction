@@ -50,5 +50,13 @@ spec:
         ports:
         - name: syzygy
           containerPort: 80
+        volumeMounts:
+          - name: syzygy-configs
+            mountPath: /var/www/config.js
+            subPath: config.js
+      volumes:
+        - name: syzygy-configs
+          configMap:
+              name: syzygy-configs
       nodeSelector:
         type: node00
