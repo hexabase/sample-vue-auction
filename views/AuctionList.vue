@@ -58,12 +58,13 @@
                   displayAuctionList[index].最高入札額
                     ? changeYen(displayAuctionList[index].最高入札額)
                     : changeYen(displayAuctionList[index].オークション開始金額)
-                }}<span class="unit">円</span>
+                }}
+                <span class="unit">円</span>
                 <span
                   v-if="displayAuctionList[index].分配金額"
                   class="unit-right"
                 >
-                  （想定年利回り
+                  (想定年利回り
                   {{
                     displayAuctionList[index].分配金額
                       ? (
@@ -73,18 +74,18 @@
                         ).toFixed(1)
                       : 0
                   }}
-                  %）
+                  %)
                 </span>
               </dd>
               <dt>スタート金額</dt>
               <dd>
-                {{ changeYen(displayAuctionList[index].オークション開始金額)
-                }}<span class="unit">円</span>
+                {{ changeYen(displayAuctionList[index].オークション開始金額) }}
+                <span class="unit">円</span>
                 <span
                   v-if="displayAuctionList[index].分配金額"
                   class="unit-right"
                 >
-                  （想定年利回り
+                  (想定年利回り
                   {{
                     displayAuctionList[index].分配金額
                       ? (
@@ -94,7 +95,7 @@
                         ).toFixed(1)
                       : 0
                   }}
-                  %）
+                  %)
                 </span>
               </dd>
               <dt>競争率</dt>

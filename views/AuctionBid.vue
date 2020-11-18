@@ -13,7 +13,35 @@
         <div class="musicInfo_wrap">
           <h2 class="musicInfo_title">{{ title }}</h2>
           <p class="musicInfo_artist">{{ singer1 }}</p>
-          <table class="musicInfo_data">
+          <div class="musicInfo_data">
+            <dl class="musicInfo_remain">
+              <dt>残り時間</dt>
+              <dd>
+                <div v-if="auctionFinishedFlag">Closed</div>
+                <div v-if="!auctionFinishedFlag">
+                  {{ remainingTime.days }}<span class="unit">日</span>
+                  {{ remainingTime.hours }}<span class="unit">時間</span>
+                  {{ remainingTime.minutes }}<span class="unit">分</span>
+                  {{ remainingTime.seconds }}<span class="unit">秒</span>
+                </div>
+              </dd>
+            </dl>
+            <dl class="musicInfo_amount">
+              <dt>オークション数量</dt>
+              <dd>
+                {{ auctionAmount }}
+                <span class="unit">口</span>
+              </dd>
+            </dl>
+            <dl class="musicInfo_startPrice">
+              <dt>オークション開始価格<span>（1口、消費税を含む）</span></dt>
+              <dd>
+                {{ changeYen(Number(auctionStartPrice)) }}
+                <span class="unit">円</span>
+              </dd>
+            </dl>
+          </div>
+          <table v-if="false" class="musicInfo_data">
             <tr>
               <th>残り時間</th>
               <th>オークション数量</th>
@@ -343,76 +371,77 @@
           </tr>
         </table>
 
-        <PdfDownload
-          v-if="!displayBidResultFlag && pdfFileBuffer1"
-          :value="docDefinition"
-          :pdf-file="pdfFile1"
-          :pdfFileBuffer="pdfFileBuffer1"
-          :fileName="fileName1"
-          buttonName="交付書面①を確認する"
-          @click="confirmDeliveryDocument(1)"
-        ></PdfDownload>
-        <PdfDownload
-          v-if="!displayBidResultFlag && pdfFileBuffer2"
-          :value="docDefinition"
-          :pdf-file="pdfFile2"
-          :pdfFileBuffer="pdfFileBuffer2"
-          :fileName="fileName2"
-          buttonName="交付書面②を確認する"
-          @click="confirmDeliveryDocument(2)"
-        ></PdfDownload>
-        <PdfDownload
-          v-if="!displayBidResultFlag && pdfFileBuffer3"
-          :value="docDefinition"
-          :pdf-file="pdfFile3"
-          :pdfFileBuffer="pdfFileBuffer3"
-          :fileName="fileName3"
-          buttonName="交付書面③を確認する"
-          @click="confirmDeliveryDocument(3)"
-        ></PdfDownload>
+        <div class="bidGuideline_wrap">
+          <section class="bidGuideline">
+            <h3 class="bidGuideline_title">利用規約</h3>
+            <div class="bidGuideline_body">
+              <p class="bidGuideline_text">
+                ヤフオク!とは<br />
+                ヤフオク!（以下「本サービス」といいます）とは、お客様間の商品の売買や役務の提供（以下、商品と役務を合わせて「商品等」といいます）にかかる取引の機会を提供するサービスです。<br />
+                本サービスは、お客様間の交渉を通じて商品等にかかる契約締結の機会を提供するものにすぎません。お客様間の商品等の販売または提供にかかる契約は、取引条件に関する双方の意思が合致したときに成立します。お客様間で商品等の販売または提供に関する取引条件をよくご確認いただき、取引を行うかどうかの判断はお客様ご自身で行ってください。<br />
+                本サービスの利用を契機としてお客様間で成立した契約に基づく商品の送付または役務の提供、代金の支払、代金の回収等の一切の事項については、Yahoo!かんたん決済利用規約に定める当社の義務を除き、お客様の責任となります。当社は、当該契約に関して契約当事者としての責任、権利および権限は一切有さず、当該契約について一切の責任を負いません。<br />
+                当社所定の条件に該当する商品は、PayPayフリマにも掲載されます。PayPayフリマに掲載された商品の出品者および落札者には、ヤフオク!ガイドラインとあわせて、ヤフオク!ガイドライン細則第2編PayPayフリマ掲載特約が適用され、当社は、当該特約に基づき、お客様間で成立した売買契約を解除することがあります。<br />
+                本サービスのご利用に際しての順守事項および利用条件は、ヤフオク!ガイドライン細則やヘルプページにも詳しく記載されていますので、こちらも必ずご確認ください。これら当社所定のルールについても当ガイドラインの一部を構成し、当該ルールに違反した場合には、当ガイドラインに違反したものとみなします。<br />
+                利用資格<br />
+                本サービスを利用するには、出品する場合、入札する場合それぞれに応じて以下の利用資格を全て満たし、かつ、本サービスの利用期間中、これを継続して維持する必要があります。また、複数のYahoo!JAPANIDを利用する場合は、Yahoo!JAPANIDごとに以下資格を満たしていることが必要です。<br />
+                A.出品に必要な利用資格<br />
+                本サービスに商品等の情報を掲載（以下「出品」といい、出品するお客様を「出品者」といいます）するには、以下の条件を全て満たしていることが必要です。<br />
+                （ア）満年齢が18歳以上であること<br />
+                未成年者が出品を行う場合は、事前に保護者等の法定代理人の同意を得ていただく必要があります。その他、利用者の年齢に関し特にご注意いただきたい事項はこちらのページに記載されていますので、よくご確認のうえご利用ください。<br />
+                （イ）消費税の納税義務を負わない方であること（ただし、消費税相当額を徴収する免税事業者を除きます）<br />
+                消費税の納税義務を負う事業者および消費税相当額を徴収する免税事業者は、当社とオークションストア利用約款に基づきオークションストア利用契約を締結し、ストア出店者として出品してください。<br />
+                （ウ）日本語を理解し、読み書きができること<br />
+                （エ）Yahoo! JAPAN IDを取得していること<br />
+                （オ）Yahoo!ウォレットに登録していること（ただし、Yahoo!ウォレットへの登録は不要である旨当社が別途指定する場合を除きます）<br />
+                （カ）Yahoo!かんたん決済が利用可能な状態であること<br />
+                （キ）出品形式や出品商品等により、Yahoo!プレミアムに会員登録していること<br />
+                詳しくは、こちらのページに記載されていますので、よくご確認のうえご利用ください。<br />
+                （ク）その他、当社所定の利用登録を完了していること<br />
+                B.入札に必要な利用資格<br />
+                本サービスで商品等に入札（以下「入札」といい、入札したお客様を「入札者」といいます）するには、以下の条件を全て満たしていることが必要です。<br />
+                （ア）15歳以上であること（「15歳以上」とは、以下のとおりとします）<br />
+                1月1日から4月1日生まれの方は、満15歳に達する年の4月1日から<br />
+                4月2日から12月31日生まれの方は、満16歳に達する年の4月1日から<br />
+                未成年者が入札を行う場合は、事前に保護者等の法定代理人の同意を得ていただく必要があります。その他、利用者の年齢に関し特にご注意いただきたい事項はこちらのページに記載されていますので、よくご確認のうえご利用ください。<br />
+                （イ）日本語を理解し、読み書きができること<br />
+                （ウ）Yahoo! JAPAN IDを取得していること<br />
+                （エ）Yahoo!かんたん決済が利用可能な状態にあること
+              </p>
+            </div>
+          </section>
+          <v-checkbox
+            v-model="agreeGuideline"
+            label="利用規約に同意する"
+          ></v-checkbox>
 
-        <section class="bidGuideline">
-          <h3 class="bidGuideline_title">利用規約</h3>
-          <div class="bidGuideline_body">
-            <p class="bidGuideline_text">
-              ヤフオク!とは<br />
-              ヤフオク!（以下「本サービス」といいます）とは、お客様間の商品の売買や役務の提供（以下、商品と役務を合わせて「商品等」といいます）にかかる取引の機会を提供するサービスです。<br />
-              本サービスは、お客様間の交渉を通じて商品等にかかる契約締結の機会を提供するものにすぎません。お客様間の商品等の販売または提供にかかる契約は、取引条件に関する双方の意思が合致したときに成立します。お客様間で商品等の販売または提供に関する取引条件をよくご確認いただき、取引を行うかどうかの判断はお客様ご自身で行ってください。<br />
-              本サービスの利用を契機としてお客様間で成立した契約に基づく商品の送付または役務の提供、代金の支払、代金の回収等の一切の事項については、Yahoo!かんたん決済利用規約に定める当社の義務を除き、お客様の責任となります。当社は、当該契約に関して契約当事者としての責任、権利および権限は一切有さず、当該契約について一切の責任を負いません。<br />
-              当社所定の条件に該当する商品は、PayPayフリマにも掲載されます。PayPayフリマに掲載された商品の出品者および落札者には、ヤフオク!ガイドラインとあわせて、ヤフオク!ガイドライン細則第2編PayPayフリマ掲載特約が適用され、当社は、当該特約に基づき、お客様間で成立した売買契約を解除することがあります。<br />
-              本サービスのご利用に際しての順守事項および利用条件は、ヤフオク!ガイドライン細則やヘルプページにも詳しく記載されていますので、こちらも必ずご確認ください。これら当社所定のルールについても当ガイドラインの一部を構成し、当該ルールに違反した場合には、当ガイドラインに違反したものとみなします。<br />
-              利用資格<br />
-              本サービスを利用するには、出品する場合、入札する場合それぞれに応じて以下の利用資格を全て満たし、かつ、本サービスの利用期間中、これを継続して維持する必要があります。また、複数のYahoo!JAPANIDを利用する場合は、Yahoo!JAPANIDごとに以下資格を満たしていることが必要です。<br />
-              A.出品に必要な利用資格<br />
-              本サービスに商品等の情報を掲載（以下「出品」といい、出品するお客様を「出品者」といいます）するには、以下の条件を全て満たしていることが必要です。<br />
-              （ア）満年齢が18歳以上であること<br />
-              未成年者が出品を行う場合は、事前に保護者等の法定代理人の同意を得ていただく必要があります。その他、利用者の年齢に関し特にご注意いただきたい事項はこちらのページに記載されていますので、よくご確認のうえご利用ください。<br />
-              （イ）消費税の納税義務を負わない方であること（ただし、消費税相当額を徴収する免税事業者を除きます）<br />
-              消費税の納税義務を負う事業者および消費税相当額を徴収する免税事業者は、当社とオークションストア利用約款に基づきオークションストア利用契約を締結し、ストア出店者として出品してください。<br />
-              （ウ）日本語を理解し、読み書きができること<br />
-              （エ）Yahoo! JAPAN IDを取得していること<br />
-              （オ）Yahoo!ウォレットに登録していること（ただし、Yahoo!ウォレットへの登録は不要である旨当社が別途指定する場合を除きます）<br />
-              （カ）Yahoo!かんたん決済が利用可能な状態であること<br />
-              （キ）出品形式や出品商品等により、Yahoo!プレミアムに会員登録していること<br />
-              詳しくは、こちらのページに記載されていますので、よくご確認のうえご利用ください。<br />
-              （ク）その他、当社所定の利用登録を完了していること<br />
-              B.入札に必要な利用資格<br />
-              本サービスで商品等に入札（以下「入札」といい、入札したお客様を「入札者」といいます）するには、以下の条件を全て満たしていることが必要です。<br />
-              （ア）15歳以上であること（「15歳以上」とは、以下のとおりとします）<br />
-              1月1日から4月1日生まれの方は、満15歳に達する年の4月1日から<br />
-              4月2日から12月31日生まれの方は、満16歳に達する年の4月1日から<br />
-              未成年者が入札を行う場合は、事前に保護者等の法定代理人の同意を得ていただく必要があります。その他、利用者の年齢に関し特にご注意いただきたい事項はこちらのページに記載されていますので、よくご確認のうえご利用ください。<br />
-              （イ）日本語を理解し、読み書きができること<br />
-              （ウ）Yahoo! JAPAN IDを取得していること<br />
-              （エ）Yahoo!かんたん決済が利用可能な状態にあること
-            </p>
-          </div>
-        </section>
-        <v-checkbox
-          v-model="agreeGuideline"
-          label="利用規約に同意する"
-        ></v-checkbox>
-
+          <PdfDownload
+            v-if="!displayBidResultFlag && pdfFileBuffer1"
+            :value="docDefinition"
+            :pdf-file="pdfFile1"
+            :pdfFileBuffer="pdfFileBuffer1"
+            :fileName="fileName1"
+            buttonName="交付書面①を確認する"
+            @click="confirmDeliveryDocument(1)"
+          ></PdfDownload>
+          <PdfDownload
+            v-if="!displayBidResultFlag && pdfFileBuffer2"
+            :value="docDefinition"
+            :pdf-file="pdfFile2"
+            :pdfFileBuffer="pdfFileBuffer2"
+            :fileName="fileName2"
+            buttonName="交付書面②を確認する"
+            @click="confirmDeliveryDocument(2)"
+          ></PdfDownload>
+          <PdfDownload
+            v-if="!displayBidResultFlag && pdfFileBuffer3"
+            :value="docDefinition"
+            :pdf-file="pdfFile3"
+            :pdfFileBuffer="pdfFileBuffer3"
+            :fileName="fileName3"
+            buttonName="交付書面③を確認する"
+            @click="confirmDeliveryDocument(3)"
+          ></PdfDownload>
+        </div>
         <!-- /default -->
         <!-- footer スロットコンテンツ -->
         <template slot="footer">
@@ -558,7 +587,13 @@ export default {
       bidTotalAmount: 0,
       bidPrice: 0,
       bidAmount: 1,
-      remainingTime: "",
+      counterInterval: null,
+      remainingTime: {
+        days: 0,
+        hours: 0,
+        minutes: 0,
+        seconds: 0
+      },
       agreeGuideline: false,
       musicId: "",
       myAuctionBidList: [],
@@ -770,10 +805,7 @@ export default {
   created: function() {},
   mounted: async function() {
     await this.initialDisplay();
-    // if (this.token) {
-    //   await this.getDeliveryDocument();
-    // }
-    setInterval(this.updateMessage, 1000);
+    this.counterInterval = setInterval(this.updateMessage, 1000);
   },
   methods: {
     isProcessing() {
@@ -1157,15 +1189,10 @@ export default {
       const seconds = duration.seconds();
 
       //カウントダウンの結果を変数に代入
-      this.remainingTime =
-        days +
-        "<span class='unit'>日</span>" +
-        ("00" + hours).slice(-2) +
-        "<span class='unit'>時間</span>" +
-        ("00" + minutes).slice(-2) +
-        "<span class='unit'>分</span>" +
-        ("00" + seconds).slice(-2) +
-        "<span class='unit'>秒</span>";
+      this.remainingTime.days = days;
+      this.remainingTime.hours = ("00" + hours).slice(-2);
+      this.remainingTime.minutes = ("00" + minutes).slice(-2);
+      this.remainingTime.seconds = ("00" + seconds).slice(-2);
     },
     changeYen(num) {
       if (!num) return 0;
@@ -1638,6 +1665,9 @@ export default {
           break;
       }
     }
+  },
+  beforeDestroy: function() {
+    clearInterval(this.counterInterval);
   }
 };
 </script>
