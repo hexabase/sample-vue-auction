@@ -38,6 +38,7 @@ $color-text-placeholder: #ccc;
 $color-text-visited: #660099;
 // border
 $color-border: #ddd;
+$color-border-bluegray: #acafc4;
 $border-default: 1px solid $color-border;
 $border-default-dot: 1px dotted $color-border;
 $border-light: 1px solid #eee;
@@ -64,6 +65,7 @@ $userNav-height: 38px;
 // z-index
 $zIndex-header: 50;
 $zIndex-contents: 10;
+$zIndex-element: 20;
 $zIndex-contents-bg: -1;
 
 

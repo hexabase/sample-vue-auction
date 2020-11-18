@@ -50,7 +50,9 @@
             <!-- </router-link> -->
           </li>
           <li>
-            <a href="" class="siteHeader_gnav_link">Q&amp;A</a>
+            <router-link to="/faq">
+              Q&amp;A
+            </router-link>
           </li>
         </ul>
         <ul v-if="token" class="siteHeader_userNav-tablet">
