@@ -18,11 +18,15 @@
             :key="index"
             class="newsItem"
           >
-            <p class="newsItem_date">{{ news.日付 | moment("YYYY.MM.DD") }}</p>
-            <h4 class="newsItem_title">{{ news.タイトル }}</h4>
+            <p class="newsItem_date">
+              {{ displayNewsList[index].日付 | moment("YYYY.MM.DD") }}
+            </p>
+            <h4 class="newsItem_title">
+              {{ displayNewsList[index].タイトル }}
+            </h4>
             <div class="newsItem_content">
               <p>
-                {{ news.内容 }}
+                {{ displayNewsList[index].内容 }}
               </p>
             </div>
           </article>
@@ -33,6 +37,12 @@
             @input="pageChange"
           ></v-pagination>
         </div>
+        <!-- <v-pagination
+          v-if="displayNewsList.length > 0"
+          v-model="page"
+          :length="length"
+          @input="pageChange(page)"
+        ></v-pagination> -->
       </div>
     </section>
   </div>
@@ -52,20 +62,25 @@ export default {
   data() {
     return {
       page: 1,
+      pageSize: 4,
       length: 0,
-      pageSize: 10,
+      token: this.$store.getters["auth/getToken"],
+      mapping: JSON.parse(JSON.stringify(mapping)),
       newsList: [],
-      displayNewsList: [],
-      mapping: JSON.parse(JSON.stringify(mapping))
+      displayNewsList: []
     };
   },
   created: async function() {},
   mounted: async function() {
     try {
+      console.log(window.env.table.VUE_APP_AUCTIONBIDTABLE_ID);
       this.$store.commit("common/setLoading", true);
       this.newsList = await this.getNewsList();
       this.length = Math.ceil(this.newsList.length / this.pageSize);
-      this.displayNewsList = this.newsList.slice(0, this.pageSize);
+      this.displayNewsList = this.newsList.slice(
+        this.pageSize * (this.page - 1),
+        this.pageSize * this.page
+      );
     } catch (e) {
       console.log(e);
     } finally {
@@ -73,28 +88,38 @@ export default {
     }
   },
   methods: {
-    async getNewsList() {
-      return await this.$hexalink.getPublicItems(
-        this.mapping.applicationId,
-        this.mapping.table.ニューステーブル,
-        {
-          page: 1,
-          per_page: 0,
-          use_display_id: true,
-          sort_field_id: "日付",
-          sort_order: "asc"
-        }
-      );
-    },
-    pageChange: function(pageNumber) {
+    pageChange(pageNumber) {
       this.displayNewsList = this.newsList.slice(
         this.pageSize * (pageNumber - 1),
         this.pageSize * pageNumber
       );
-      window.scrollTo({
-        top: 190,
-        behavior: "smooth"
-      });
+    },
+    async getNewsList() {
+      return await this.$hexalink.getPublicItems(
+        window.env.VUE_APP_APPLICATION_ID,
+        window.env.table.VUE_APP_NEWSTABLE_ID,
+        {
+          conditions: [],
+          page: 1,
+          per_page: 9000,
+          use_display_id: true,
+          sort_field_id: "日付", // Hexalink画⾯で⼊⼒したIDを指定
+          sort_order: "desc"
+        }
+      );
+      // return await this.$hexalink.getItems(
+      //   this.token,
+      //   window.env.VUE_APP_APPLICATION_ID,
+      //   window.env.table.VUE_APP_NEWSTABLE_ID,
+      //   {
+      //     conditions: [],
+      //     page: 1,
+      //     per_page: 9000,
+      //     use_display_id: true,
+      //     sort_field_id: "日付", // Hexalink画⾯で⼊⼒したIDを指定
+      //     sort_order: "desc"
+      //   }
+      // );
     }
   }
 };

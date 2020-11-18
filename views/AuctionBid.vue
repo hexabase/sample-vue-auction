@@ -344,12 +344,31 @@
         </table>
 
         <PdfDownload
-          v-if="!displayBidResultFlag"
+          v-if="!displayBidResultFlag && pdfFileBuffer1"
           :value="docDefinition"
-          :pdf-file="pdfFile"
-          :fileName="fileName"
-          buttonName="交付書面を確認する"
-          @click="confirmDeliveryDocument"
+          :pdf-file="pdfFile1"
+          :pdfFileBuffer="pdfFileBuffer1"
+          :fileName="fileName1"
+          buttonName="交付書面①を確認する"
+          @click="confirmDeliveryDocument(1)"
+        ></PdfDownload>
+        <PdfDownload
+          v-if="!displayBidResultFlag && pdfFileBuffer2"
+          :value="docDefinition"
+          :pdf-file="pdfFile2"
+          :pdfFileBuffer="pdfFileBuffer2"
+          :fileName="fileName2"
+          buttonName="交付書面②を確認する"
+          @click="confirmDeliveryDocument(2)"
+        ></PdfDownload>
+        <PdfDownload
+          v-if="!displayBidResultFlag && pdfFileBuffer3"
+          :value="docDefinition"
+          :pdf-file="pdfFile3"
+          :pdfFileBuffer="pdfFileBuffer3"
+          :fileName="fileName3"
+          buttonName="交付書面③を確認する"
+          @click="confirmDeliveryDocument(3)"
         ></PdfDownload>
 
         <section class="bidGuideline">
@@ -399,7 +418,12 @@
         <template slot="footer">
           <Button
             class="button-action"
-            :disabled="!agreeGuideline || !confirmDeliveryDocumentFlag"
+            :disabled="
+              !agreeGuideline ||
+                !confirmDeliveryDocumentFlag1 ||
+                !confirmDeliveryDocumentFlag2 ||
+                !confirmDeliveryDocumentFlag3
+            "
             @click="doSend"
           >
             <!--span class="subText">利用規約に同意して</span-->
@@ -729,17 +753,26 @@ export default {
           }
         }
       },
-      pdfFile: "",
-      fileName: "",
-      confirmDeliveryDocumentFlag: false
+      pdfFile1: "",
+      pdfFileBuffer1: null,
+      pdfFile2: "",
+      pdfFileBuffer2: null,
+      pdfFile3: "",
+      pdfFileBuffer3: null,
+      fileName1: "",
+      fileName2: "",
+      fileName3: "",
+      confirmDeliveryDocumentFlag1: false,
+      confirmDeliveryDocumentFlag2: false,
+      confirmDeliveryDocumentFlag3: false
     };
   },
   created: function() {},
   mounted: async function() {
     await this.initialDisplay();
-    if (this.token) {
-      await this.getDeliveryDocument();
-    }
+    // if (this.token) {
+    //   await this.getDeliveryDocument();
+    // }
     setInterval(this.updateMessage, 1000);
   },
   methods: {
@@ -896,6 +929,33 @@ export default {
                 moment()
                   .endOf("year")
                   .format("YYYY-MM-DDTHH:mm:ss.SSS") + "Z"
+              ]
+            }
+          ],
+          page: 1,
+          per_page: 9000,
+          use_display_id: true
+        }
+      );
+    },
+    async getDistributionListCurrentYear() {
+      return await this.$hexalink.getPublicItems(
+        window.env.VUE_APP_APPLICATION_ID,
+        window.env.table.VUE_APP_COPYRIGHTDISTRIBUTIONTABLE_ID,
+        {
+          conditions: [
+            {
+              id: "著作権番号", // Hexalink画⾯で⼊⼒したIDを指定
+              search_value: [this.musicId],
+              exact_match: true // 完全⼀致で検索
+            },
+            {
+              id: "日付", // Hexalink画⾯で⼊⼒したIDを指定
+              search_value: [
+                moment()
+                  .add("year", -1)
+                  .format("YYYY-MM-DDTHH:mm:ss.SSS") + "Z",
+                moment().format("YYYY-MM-DDTHH:mm:ss.SSS") + "Z"
               ]
             }
           ],
@@ -1170,15 +1230,15 @@ export default {
       groups["第2四半期"] = [];
       groups["第3四半期"] = [];
       groups["第4四半期"] = [];
-      const formatQuater = moment().format("YYYY");
-      const currentQuaterArray = array.filter(function(item, index) {
-        const jst = moment(item["日付"])
-          .tz("Asia/Tokyo")
-          .format("YYYY-MM");
-        if (jst.indexOf(formatQuater) !== -1) return true;
-      });
-      for (const key in currentQuaterArray) {
-        const jstMonth = moment(currentQuaterArray[key]["日付"])
+      // const formatQuater = moment().format("YYYY");
+      // const currentQuaterArray = array.filter(function(item, index) {
+      //   const jst = moment(item["日付"])
+      //     .tz("Asia/Tokyo")
+      //     .format("YYYY-MM");
+      //   if (jst.indexOf(formatQuater) !== -1) return true;
+      // });
+      for (const key in array) {
+        const jstMonth = moment(array[key]["日付"])
           .tz("Asia/Tokyo")
           .format("YYYY-MM")
           .slice(5, 7);
@@ -1186,22 +1246,22 @@ export default {
           case "01":
           case "02":
           case "03":
-            groups["第1四半期"].push(currentQuaterArray[key]);
+            groups["第1四半期"].push(array[key]);
             break;
           case "04":
           case "05":
           case "06":
-            groups["第2四半期"].push(currentQuaterArray[key]);
+            groups["第2四半期"].push(array[key]);
             break;
           case "07":
           case "08":
           case "09":
-            groups["第3四半期"].push(currentQuaterArray[key]);
+            groups["第3四半期"].push(array[key]);
             break;
           case "10":
           case "11":
           case "12":
-            groups["第4四半期"].push(currentQuaterArray[key]);
+            groups["第4四半期"].push(array[key]);
             break;
         }
       }
@@ -1218,10 +1278,14 @@ export default {
           this.myAuctionBidList[0].落札状況 != "キャンセル済"
         ) {
           this.displayBidResultFlag = true;
-          this.confirmDeliveryDocumentFlag = true;
+          this.confirmDeliveryDocumentFlag1 = true;
+          this.confirmDeliveryDocumentFlag2 = true;
+          this.confirmDeliveryDocumentFlag3 = true;
         } else {
           this.displayBidResultFlag = false;
-          this.confirmDeliveryDocumentFlag = false;
+          this.confirmDeliveryDocumentFlag1 = false;
+          this.confirmDeliveryDocumentFlag2 = false;
+          this.confirmDeliveryDocumentFlag3 = false;
         }
         var dataLists = [];
         dataLists = await this.$hexalink.getPublicItems(
@@ -1323,13 +1387,53 @@ export default {
         } else {
           this.image1 = "";
         }
-        if (dataLists[0].交付書面) {
+        if (dataLists[0].交付書面PDF1) {
           const ab = await this.$hexalink.getPublicFile(
-            dataLists[0].交付書面,
+            dataLists[0].交付書面PDF1,
             window.env.VUE_APP_WORKSPACE_ID
           );
+          const buf = Buffer.alloc(ab.byteLength);
+          const view = new Uint8Array(ab);
+          for (let i = 0; i < buf.length; ++i) {
+            buf[i] = view[i];
+          }
+          this.pdfFileBuffer1 = buf;
           const blob = new Blob([ab], { type: "application/pdf" });
-          this.pdfFile = URL.createObjectURL(blob);
+          this.pdfFile1 = URL.createObjectURL(blob);
+        } else {
+          this.confirmDeliveryDocumentFlag1 = true;
+        }
+        if (dataLists[0].交付書面PDF2) {
+          const ab = await this.$hexalink.getPublicFile(
+            dataLists[0].交付書面PDF2,
+            window.env.VUE_APP_WORKSPACE_ID
+          );
+          const buf = Buffer.alloc(ab.byteLength);
+          const view = new Uint8Array(ab);
+          for (let i = 0; i < buf.length; ++i) {
+            buf[i] = view[i];
+          }
+          this.pdfFileBuffer2 = buf;
+          const blob = new Blob([ab], { type: "application/pdf" });
+          this.pdfFile2 = URL.createObjectURL(blob);
+        } else {
+          this.confirmDeliveryDocumentFlag2 = true;
+        }
+        if (dataLists[0].交付書面PDF3) {
+          const ab = await this.$hexalink.getPublicFile(
+            dataLists[0].交付書面PDF3,
+            window.env.VUE_APP_WORKSPACE_ID
+          );
+          const buf = Buffer.alloc(ab.byteLength);
+          const view = new Uint8Array(ab);
+          for (let i = 0; i < buf.length; ++i) {
+            buf[i] = view[i];
+          }
+          this.pdfFileBuffer3 = buf;
+          const blob = new Blob([ab], { type: "application/pdf" });
+          this.pdfFile3 = URL.createObjectURL(blob);
+        } else {
+          this.confirmDeliveryDocumentFlag3 = true;
         }
 
         var rpf_bidAmount = "4384d821-8e19-4e08-949b-44cab6efa408";
@@ -1405,6 +1509,7 @@ export default {
         this.auctionListsGroup = auctionListsGroupSort;
 
         const distributionList = await this.getDistributionList();
+        const distributionCurrentList = await this.getDistributionListCurrentYear();
         const distributionListGroupYear = this.groupByYear(distributionList);
         for (let i = 4; i > -1; i--) {
           this.distributionListGroupYear.labels.push(
@@ -1426,7 +1531,7 @@ export default {
         this.chart1.data.datasets[0].data = this.distributionListGroupYear.data;
 
         const distributionListGroupQuarter = this.groupByQuarter(
-          distributionList
+          distributionCurrentList
         );
         this.distributionListGroupQuarter.labels = Object.keys(
           distributionListGroupQuarter
@@ -1449,6 +1554,25 @@ export default {
 
         if (this.token) this.userInfo = await this.getUserInfo();
         if (this.userInfo && this.userInfo.length > 0) {
+          // 保管用PDFユーザ情報定義
+          this.docDefinition.content.push({
+            text:
+              this.userInfo[0].郵便番号 +
+              this.userInfo[0].都道府県 +
+              this.userInfo[0].住所1 +
+              this.userInfo[0].住所2,
+            style: ""
+          });
+          this.docDefinition.content.push({
+            text: this.userInfo[0].苗字 + this.userInfo[0].名前,
+            style: ""
+          });
+          this.fileName1 =
+            "delivery-document1_" + this.userId + "_" + this.musicId;
+          this.fileName2 =
+            "delivery-document2_" + this.userId + "_" + this.musicId;
+          this.fileName3 =
+            "delivery-document3_" + this.userId + "_" + this.musicId;
           switch (this.userInfo[0]["ステータス"]) {
             case "申請中":
               this.userStatus = 2;
@@ -1501,67 +1625,18 @@ export default {
         this.$router.push("/registration").catch(() => {});
       }
     },
-    confirmDeliveryDocument() {
-      this.confirmDeliveryDocumentFlag = true;
-    },
-    async getDeliveryDocument() {
-      const result = await this.$hexalink.getItems(
-        this.token,
-        this.applicationId,
-        this.datastoreIds["交付書面管理テーブル"],
-        {
-          conditions: [
-            {
-              id: "管理番号", // Hexalink画⾯で⼊⼒したIDを指定
-              search_value: ["1"],
-              exact_match: true // 完全⼀致で検索
-            }
-          ],
-          page: 1,
-          per_page: 9000,
-          use_display_id: true
-        }
-      );
-      const image1Binary = result[0].保管用画像;
-      if (image1Binary) {
-        const ab = await this.$hexalink.getFile(this.token, image1Binary);
-        const blob = new Blob([ab], { type: "image/jpeg" });
-        const reader = new FileReader();
-        reader.onload = e => {
-          const b64 = reader.result;
-          this.docDefinition.content.push({
-            text:
-              this.userInfo[0].郵便番号 +
-              this.userInfo[0].都道府県 +
-              this.userInfo[0].住所1 +
-              this.userInfo[0].住所2,
-            style: ""
-          });
-          this.docDefinition.content.push({
-            text: this.userInfo[0].苗字 + this.userInfo[0].名前,
-            style: ""
-          });
-          this.docDefinition.content.push({
-            image: b64,
-            width: 500
-          });
-        };
-        reader.readAsDataURL(blob);
+    confirmDeliveryDocument(type) {
+      switch (type) {
+        case 1:
+          this.confirmDeliveryDocumentFlag1 = true;
+          break;
+        case 2:
+          this.confirmDeliveryDocumentFlag2 = true;
+          break;
+        case 3:
+          this.confirmDeliveryDocumentFlag3 = true;
+          break;
       }
-      // if (result[0].交付書面PDF) {
-      //   const ab = await this.$hexalink.getFile(
-      //     this.token,
-      //     result[0].交付書面PDF
-      //   );
-      //   const blob = new Blob([ab], { type: "application/pdf" });
-      //   this.pdfFile = URL.createObjectURL(blob);
-      // }
-      this.fileName =
-        "delivery-document_" +
-        this.userId +
-        "_" +
-        moment().format("YYYYMMDDTHHmmssSSS") +
-        ".pdf";
     }
   }
 };

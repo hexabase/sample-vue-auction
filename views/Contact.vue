@@ -208,7 +208,7 @@ export default {
       var param = {};
       param["item"] = setData;
       var insertResult = await this.insertNewItem(
-        "5f83fa2fce4480000146b845",
+        window.env.table.VUE_APP_INQUIRYTABLE_ID,
         param
       );
       const i_id = insertResult.data.item_id;
@@ -226,7 +226,7 @@ export default {
         is_force_update: true
       };
       const updateResult = await this.updatedDataItem(
-        "5f83fa2fce4480000146b845",
+        window.env.table.VUE_APP_INQUIRYTABLE_ID,
         i_id,
         param
       );

@@ -279,7 +279,7 @@ export default {
       const auctionLists = await this.$hexalink.getReports(
         this.token,
         this.applicationId,
-        "5f0c013ccd0bb1000697e685",
+        window.env.report.VUE_APP_TRADINGHISTORYREPORT_ID,
         {
           conditions: [
             {

@@ -71,8 +71,7 @@ export default {
   data() {
     return {
       // token: this.$store.getters["auth/getToken"],
-      token:
-        "eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjI1NDU4Nzk3NjcsImlhdCI6MTU5OTc5OTc2Nywic3ViIjoiNWU5Njc5ODhmNDE3MTEwMDA2ZTczMGJmIiwidW4iOiIifQ.gZDQqrVXa2mOlMDjk2cJ6FEsEYDpVb4JDYBEQiVvXGD7TXC9AuiRlpLfCtqiKw5cxMxOeKBr91LCS1QfiT03ZwSBlmZldPBuMFZFNj3vtsye3GvgHad7oVXRP5xWE0lP32Q8h7Gkqhg2Hzhwpe1qQKyQDV8kV0CIvPolgNLWE7ypeO0jBuaykAn9jxr0xIr1k4kjtrhPf4fZSPzz_r45GK7Yury13bSzxXtrVk7KbBtCkLl7QyM-uskJoSQ_Sk_vYJeCB0hm_worw7PdK4kXivyMcblOyzQa7frEOgjadRH1Njd4O7DtQDeZL0nrNAR-EGreE9RnDEoDoNuOYWrEvA",
+      token: window.env.VUE_APP_PERSISTENCETOKEN,
       mapping: JSON.parse(JSON.stringify(mapping)),
       applicationId: this.$store.getters["datas/getApplicationId"],
       datasotreIdList: this.$store.getters["datas/getDatastores"],
@@ -126,7 +125,7 @@ export default {
           } else {
             let params = JSON.stringify({
               email: this.email,
-              g_id: "5f76ad7daa3d8a0001269956",
+              g_id: window.env.VUE_APP_HEXABASEGROUP_ID, //"5f76ad7daa3d8a0001269956",
               // w_id: "ワークスペースのID",
               username: this.email
             });

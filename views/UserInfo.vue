@@ -2915,6 +2915,8 @@ export default {
           this.video.srcObject = stream;
           this.video.play();
         });
+      } else {
+        alert("カメラに非対応のブラウザです。ブラウザを変えてお試しください。");
       }
     },
     capture(flow) {
