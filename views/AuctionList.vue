@@ -61,7 +61,7 @@
                 }}
                 <span class="unit">円</span>
                 <span
-                  v-if="displayAuctionList[index].分配金額"
+                  v-if="displayAuctionList[index].分配金額 > 0"
                   class="unit-right"
                 >
                   (想定年利回り
@@ -82,7 +82,7 @@
                 {{ changeYen(displayAuctionList[index].オークション開始金額) }}
                 <span class="unit">円</span>
                 <span
-                  v-if="displayAuctionList[index].分配金額"
+                  v-if="displayAuctionList[index].分配金額 > 0"
                   class="unit-right"
                 >
                   (想定年利回り
@@ -174,28 +174,34 @@ export default {
           conditions: []
         }
       );
-      const distributionList = await this.getDistributionList();
-      const distributionListGroup = distributionList.reduce(function(
-        result,
-        current
-      ) {
-        const element = result.find(function(p) {
-          return p.著作権番号 === current.著作権番号;
-        });
-        if (element) {
-          element.count++; // count
-          element.分配金額 += Number(current.分配金額); // sum
-        } else {
-          result.push({
-            著作権番号: current.著作権番号,
-            count: 1,
-            分配金額: Number(current.分配金額)
-          });
-        }
-        return result;
-      },
-      []);
+      // const distributionList = await this.getDistributionList();
+      // const distributionListGroup = distributionList.reduce(function(
+      //   result,
+      //   current
+      // ) {
+      //   const element = result.find(function(p) {
+      //     return p.著作権番号 === current.著作権番号;
+      //   });
+      //   if (element) {
+      //     element.count++; // count
+      //     element.分配金額 += Number(current.分配金額); // sum
+      //   } else {
+      //     result.push({
+      //       著作権番号: current.著作権番号,
+      //       count: 1,
+      //       分配金額: Number(current.分配金額)
+      //     });
+      //   }
+      //   return result;
+      // },
+      // []);
       for (const listKey in this.auctionList) {
+        // 著作権番号から分配金を取得する
+        this.$set(
+          this.auctionList[listKey],
+          "分配金額",
+          await this.getDistributionList(this.auctionList[listKey].著作権番号)
+        );
         const image1Binary = this.auctionList[listKey].image1;
         if (image1Binary) {
           const ab = await this.$hexalink.getPublicFile(
@@ -230,18 +236,18 @@ export default {
             );
           }
         }
-        for (const key in distributionListGroup) {
-          if (
-            this.auctionList[listKey].著作権番号 ==
-            distributionList[key]["著作権番号"]
-          ) {
-            this.$set(
-              this.auctionList[listKey],
-              "分配金額",
-              distributionListGroup[key]["分配金額"]
-            );
-          }
-        }
+        // for (const key in distributionListGroup) {
+        //   if (
+        //     this.auctionList[listKey].著作権番号 ==
+        //     distributionList[key]["著作権番号"]
+        //   ) {
+        //     this.$set(
+        //       this.auctionList[listKey],
+        //       "分配金額",
+        //       distributionListGroup[key]["分配金額"]
+        //     );
+        //   }
+        // }
       }
       this.auctionList = this.multiSort(this.auctionList, [
         "オークション終了時間",
@@ -297,33 +303,203 @@ export default {
         }
       );
     },
-    async getDistributionList() {
-      return await this.$hexalink.getPublicItems(
+    async getDistributionList(musicId) {
+      let searchFrom = "";
+      let searchTo = "";
+      const latestRecord = await this.$hexalink.getPublicItems(
         window.env.VUE_APP_APPLICATION_ID,
         window.env.table.VUE_APP_COPYRIGHTDISTRIBUTIONTABLE_ID,
         {
           conditions: [
             {
+              id: "著作権番号", // Hexalink画⾯で⼊⼒したIDを指定
+              search_value: [musicId],
+              exact_match: true // 完全⼀致で検索
+            }
+          ],
+          page: 1,
+          per_page: 1,
+          use_display_id: true,
+          sort_field_id: "日付", // Hexalink画⾯で⼊⼒したIDを指定
+          sort_order: "desc"
+        }
+      );
+      if (!latestRecord.length > 0) return [];
+      const jstMonth = moment(latestRecord[0].日付)
+        .tz("Asia/Tokyo")
+        .format("YYYY-MM")
+        .slice(5, 7);
+      switch (jstMonth) {
+        case "10":
+        case "11":
+        case "12":
+          searchFrom =
+            moment(latestRecord[0].日付)
+              .utc()
+              .add("year", -1)
+              .startOf("year")
+              .format("YYYY-MM-DDTHH:mm:ss.SSS") + "Z";
+          searchTo =
+            moment(latestRecord[0].日付)
+              .utc()
+              .add("year", -1)
+              .endOf("year")
+              .format("YYYY-MM-DDTHH:mm:ss.SSS") + "Z";
+          break;
+        case "01":
+        case "02":
+        case "03":
+          searchFrom =
+            moment(latestRecord[0].日付)
+              .add("year", -1)
+              .format("YYYY-03-31T15:00:00.000") + "Z";
+          searchTo =
+            moment(latestRecord[0].日付).format("YYYY-03-30T15:00:00.000") +
+            "Z";
+          break;
+        case "04":
+        case "05":
+        case "06":
+          searchFrom =
+            moment(latestRecord[0].日付)
+              .utc()
+              .add("year", -1)
+              .format("YYYY-06-30T15:00:00.000") + "Z";
+          searchTo =
+            moment(latestRecord[0].日付).format("YYYY-06-29T15:00:00.000") +
+            "Z";
+          break;
+        case "07":
+        case "08":
+        case "09":
+          searchFrom =
+            moment(latestRecord[0].日付)
+              .utc()
+              .add("year", -1)
+              .format("YYYY-09-30T15:00:00.000") + "Z";
+          searchTo =
+            moment(latestRecord[0].日付).format("YYYY-09-29T15:00:00.000") +
+            "Z";
+          break;
+      }
+      const distributionTargetSeasonList = await this.$hexalink.getPublicItems(
+        window.env.VUE_APP_APPLICATION_ID,
+        window.env.table.VUE_APP_COPYRIGHTDISTRIBUTIONTABLE_ID,
+        {
+          conditions: [
+            {
+              id: "著作権番号", // Hexalink画⾯で⼊⼒したIDを指定
+              search_value: [musicId],
+              exact_match: true // 完全⼀致で検索
+            },
+            {
               id: "日付", // Hexalink画⾯で⼊⼒したIDを指定
-              search_value: [
-                moment()
-                  .add("year", -1)
-                  .startOf("year")
-                  .format("YYYY-MM-DDTHH:mm:ss.SSS") + "Z",
-                moment()
-                  .add("year", -1)
-                  .endOf("year")
-                  .format("YYYY-MM-DDTHH:mm:ss.SSS") + "Z"
-              ]
+              search_value: [searchFrom, searchTo]
             }
           ],
           page: 1,
           per_page: 9000,
-          use_display_id: true,
-          sort_field_id: "オークション終了時間", // Hexalink画⾯で⼊⼒したIDを指定
-          sort_order: "asc"
+          use_display_id: true
         }
       );
+      const distributionTargetSeasonListGroupQuarter = this.groupByQuarter(
+        distributionTargetSeasonList
+      );
+      let musicDistribution = 0;
+      for (const i in distributionTargetSeasonListGroupQuarter) {
+        for (const j in distributionTargetSeasonListGroupQuarter[i]) {
+          musicDistribution += Number(
+            distributionTargetSeasonListGroupQuarter[i][j].分配金額
+          );
+        }
+      }
+      console.log(musicDistribution);
+      return musicDistribution;
+    },
+    groupByQuarter(array) {
+      if (!array.length > 0) return;
+      const groups = {};
+      array.sort(function(a, b) {
+        return a.日付 < b.日付 ? 1 : -1;
+      });
+      console.log(array[0].日付);
+      const latestRecordSeason = moment(array[0]["日付"])
+        .tz("Asia/Tokyo")
+        .format("YYYY-MM")
+        .slice(5, 7);
+      const latestRecordYear = moment(array[0]["日付"])
+        .tz("Asia/Tokyo")
+        .format("YYYY-MM")
+        .slice(0, 4);
+      switch (latestRecordSeason) {
+        case "01":
+        case "02":
+        case "03":
+          groups[String(Number(latestRecordYear) - 1) + "年第1四半期"] = [];
+          groups[String(Number(latestRecordYear) - 1) + "年第2四半期"] = [];
+          groups[String(Number(latestRecordYear) - 1) + "年第3四半期"] = [];
+          groups[latestRecordYear + "年第4四半期"] = [];
+          break;
+        case "04":
+        case "05":
+        case "06":
+          groups[String(Number(latestRecordYear) - 1) + "年第3四半期"] = [];
+          groups[String(Number(latestRecordYear) - 1) + "年第4四半期"] = [];
+          groups[latestRecordYear + "年第1四半期"] = [];
+          groups[latestRecordYear + "年第2四半期"] = [];
+          break;
+        case "07":
+        case "08":
+        case "09":
+          groups[String(Number(latestRecordYear) - 1) + "年第4四半期"] = [];
+          groups[latestRecordYear + "年第1四半期"] = [];
+          groups[latestRecordYear + "年第2四半期"] = [];
+          groups[latestRecordYear + "年第3四半期"] = [];
+          break;
+        case "10":
+        case "11":
+        case "12":
+          groups[latestRecordYear + "年第1四半期"] = [];
+          groups[latestRecordYear + "年第2四半期"] = [];
+          groups[latestRecordYear + "年第3四半期"] = [];
+          groups[latestRecordYear + "年第4四半期"] = [];
+          break;
+      }
+
+      for (const key in array) {
+        const jstMonth = moment(array[key]["日付"])
+          .tz("Asia/Tokyo")
+          .format("YYYY-MM")
+          .slice(5, 7);
+        const jstYear = moment(array[key]["日付"])
+          .tz("Asia/Tokyo")
+          .format("YYYY-MM")
+          .slice(0, 4);
+        switch (jstMonth) {
+          case "01":
+          case "02":
+          case "03":
+            groups[jstYear + "年第1四半期"].push(array[key]);
+            break;
+          case "04":
+          case "05":
+          case "06":
+            groups[jstYear + "年第2四半期"].push(array[key]);
+            break;
+          case "07":
+          case "08":
+          case "09":
+            groups[jstYear + "年第3四半期"].push(array[key]);
+            break;
+          case "10":
+          case "11":
+          case "12":
+            groups[jstYear + "年第4四半期"].push(array[key]);
+            break;
+        }
+      }
+      Object.keys(groups).sort();
+      return groups;
     },
     selectItem(musicId) {
       this.$router.push("/auctionbid/" + musicId);

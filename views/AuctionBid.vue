@@ -235,7 +235,7 @@
         <h2 class="trend_title">最近の動向</h2>
         <div class="trend_wrap">
           <section class="trend_barChart">
-            <h3 class="trend_subTitle">最近5年間の著作権料</h3>
+            <h3 class="trend_subTitle">最近5年間の分配金</h3>
             <!-- <img src="~@/assets/img/auction-detail-graph1.png" alt="" /> -->
             <div class="trend_graph">
               <Chart
@@ -247,7 +247,7 @@
           </section>
           <section class="trend_royalty">
             <h3 class="trend_subTitle">
-              最近12ヶ月の著作権料
+              最近12ヶ月の分配金
             </h3>
             <!-- <img src="~@/assets/img/auction-detail-graph2.png" alt="" /> -->
             <div class="trend_graph">
@@ -971,6 +971,85 @@ export default {
       );
     },
     async getDistributionListCurrentYear() {
+      let searchFrom = "";
+      let searchTo = "";
+      // 最新の対象楽曲分配金レコードを取得
+      const latestRecord = await this.$hexalink.getPublicItems(
+        window.env.VUE_APP_APPLICATION_ID,
+        window.env.table.VUE_APP_COPYRIGHTDISTRIBUTIONTABLE_ID,
+        {
+          conditions: [
+            {
+              id: "著作権番号", // Hexalink画⾯で⼊⼒したIDを指定
+              search_value: [this.musicId],
+              exact_match: true // 完全⼀致で検索
+            }
+          ],
+          page: 1,
+          per_page: 1,
+          use_display_id: true,
+          sort_field_id: "日付", // Hexalink画⾯で⼊⼒したIDを指定
+          sort_order: "desc"
+        }
+      );
+      if (!latestRecord.length > 0) return [];
+      const jstMonth = moment(latestRecord[0].日付)
+        .tz("Asia/Tokyo")
+        .format("YYYY-MM")
+        .slice(5, 7);
+      switch (jstMonth) {
+        case "10":
+        case "11":
+        case "12":
+          searchFrom =
+            moment(latestRecord[0].日付)
+              .utc()
+              .add("year", -1)
+              .startOf("year")
+              .format("YYYY-MM-DDTHH:mm:ss.SSS") + "Z";
+          searchTo =
+            moment(latestRecord[0].日付)
+              .utc()
+              .add("year", -1)
+              .endOf("year")
+              .format("YYYY-MM-DDTHH:mm:ss.SSS") + "Z";
+          break;
+        case "01":
+        case "02":
+        case "03":
+          searchFrom =
+            moment(latestRecord[0].日付)
+              .add("year", -1)
+              .format("YYYY-03-31T15:00:00.000") + "Z";
+          searchTo =
+            moment(latestRecord[0].日付).format("YYYY-03-30T15:00:00.000") +
+            "Z";
+          break;
+        case "04":
+        case "05":
+        case "06":
+          searchFrom =
+            moment(latestRecord[0].日付)
+              .utc()
+              .add("year", -1)
+              .format("YYYY-06-30T15:00:00.000") + "Z";
+          searchTo =
+            moment(latestRecord[0].日付).format("YYYY-06-29T15:00:00.000") +
+            "Z";
+          break;
+        case "07":
+        case "08":
+        case "09":
+          searchFrom =
+            moment(latestRecord[0].日付)
+              .utc()
+              .add("year", -1)
+              .format("YYYY-09-30T15:00:00.000") + "Z";
+          searchTo =
+            moment(latestRecord[0].日付).format("YYYY-09-29T15:00:00.000") +
+            "Z";
+          break;
+      }
       return await this.$hexalink.getPublicItems(
         window.env.VUE_APP_APPLICATION_ID,
         window.env.table.VUE_APP_COPYRIGHTDISTRIBUTIONTABLE_ID,
@@ -983,12 +1062,7 @@ export default {
             },
             {
               id: "日付", // Hexalink画⾯で⼊⼒したIDを指定
-              search_value: [
-                moment()
-                  .add("year", -1)
-                  .format("YYYY-MM-DDTHH:mm:ss.SSS") + "Z",
-                moment().format("YYYY-MM-DDTHH:mm:ss.SSS") + "Z"
-              ]
+              search_value: [searchFrom, searchTo]
             }
           ],
           page: 1,
@@ -1252,46 +1326,88 @@ export default {
       return groups;
     },
     groupByQuarter(array) {
+      if (!array.length > 0) return;
       const groups = {};
-      groups["第1四半期"] = [];
-      groups["第2四半期"] = [];
-      groups["第3四半期"] = [];
-      groups["第4四半期"] = [];
-      // const formatQuater = moment().format("YYYY");
-      // const currentQuaterArray = array.filter(function(item, index) {
-      //   const jst = moment(item["日付"])
-      //     .tz("Asia/Tokyo")
-      //     .format("YYYY-MM");
-      //   if (jst.indexOf(formatQuater) !== -1) return true;
-      // });
+      array.sort(function(a, b) {
+        return a.日付 < b.日付 ? 1 : -1;
+      });
+      console.log(array[0].日付);
+      const latestRecordSeason = moment(array[0]["日付"])
+        .tz("Asia/Tokyo")
+        .format("YYYY-MM")
+        .slice(5, 7);
+      const latestRecordYear = moment(array[0]["日付"])
+        .tz("Asia/Tokyo")
+        .format("YYYY-MM")
+        .slice(0, 4);
+      switch (latestRecordSeason) {
+        case "01":
+        case "02":
+        case "03":
+          groups[String(Number(latestRecordYear) - 1) + "年第1四半期"] = [];
+          groups[String(Number(latestRecordYear) - 1) + "年第2四半期"] = [];
+          groups[String(Number(latestRecordYear) - 1) + "年第3四半期"] = [];
+          groups[latestRecordYear + "年第4四半期"] = [];
+          break;
+        case "04":
+        case "05":
+        case "06":
+          groups[String(Number(latestRecordYear) - 1) + "年第3四半期"] = [];
+          groups[String(Number(latestRecordYear) - 1) + "年第4四半期"] = [];
+          groups[latestRecordYear + "年第1四半期"] = [];
+          groups[latestRecordYear + "年第2四半期"] = [];
+          break;
+        case "07":
+        case "08":
+        case "09":
+          groups[String(Number(latestRecordYear) - 1) + "年第4四半期"] = [];
+          groups[latestRecordYear + "年第1四半期"] = [];
+          groups[latestRecordYear + "年第2四半期"] = [];
+          groups[latestRecordYear + "年第3四半期"] = [];
+          break;
+        case "10":
+        case "11":
+        case "12":
+          groups[latestRecordYear + "年第1四半期"] = [];
+          groups[latestRecordYear + "年第2四半期"] = [];
+          groups[latestRecordYear + "年第3四半期"] = [];
+          groups[latestRecordYear + "年第4四半期"] = [];
+          break;
+      }
+
       for (const key in array) {
         const jstMonth = moment(array[key]["日付"])
           .tz("Asia/Tokyo")
           .format("YYYY-MM")
           .slice(5, 7);
+        const jstYear = moment(array[key]["日付"])
+          .tz("Asia/Tokyo")
+          .format("YYYY-MM")
+          .slice(0, 4);
         switch (jstMonth) {
           case "01":
           case "02":
           case "03":
-            groups["第1四半期"].push(array[key]);
+            groups[jstYear + "年第1四半期"].push(array[key]);
             break;
           case "04":
           case "05":
           case "06":
-            groups["第2四半期"].push(array[key]);
+            groups[jstYear + "年第2四半期"].push(array[key]);
             break;
           case "07":
           case "08":
           case "09":
-            groups["第3四半期"].push(array[key]);
+            groups[jstYear + "年第3四半期"].push(array[key]);
             break;
           case "10":
           case "11":
           case "12":
-            groups["第4四半期"].push(array[key]);
+            groups[jstYear + "年第4四半期"].push(array[key]);
             break;
         }
       }
+      Object.keys(groups).sort();
       return groups;
     },
     async initialDisplay() {
@@ -1560,9 +1676,10 @@ export default {
         const distributionListGroupQuarter = this.groupByQuarter(
           distributionCurrentList
         );
-        this.distributionListGroupQuarter.labels = Object.keys(
-          distributionListGroupQuarter
-        );
+        if (distributionListGroupQuarter)
+          this.distributionListGroupQuarter.labels = Object.keys(
+            distributionListGroupQuarter
+          );
         for (const keyYear in distributionListGroupQuarter) {
           let quaterDistribution = 0;
           for (const keyMonth in distributionListGroupQuarter[keyYear]) {
