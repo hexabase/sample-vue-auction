@@ -2990,14 +2990,14 @@ export default {
           this.identityPhoto1Image = window.URL.createObjectURL(blob);
           formData.append("id", "本人顔写真_1");
           formData.append("file", blob);
-          formData.append("filename", "本人顔写真正面");
+          formData.append("filename", "本人顔写真正面.png");
           this.identityPhoto1FormData = formData;
           break;
         case 2:
           this.identityPhoto2Image = window.URL.createObjectURL(blob);
           formData.append("id", "本人顔写真_2");
           formData.append("file", blob);
-          formData.append("filename", "本人顔写真横顔");
+          formData.append("filename", "本人顔写真横顔.png");
           this.identityPhoto2FormData = formData;
           break;
         case 3:
@@ -3006,7 +3006,7 @@ export default {
           );
           formData.append("id", "本人確認書類写真_1");
           formData.append("file", blob);
-          formData.append("filename", "本人確認書類表面");
+          formData.append("filename", "本人確認書類表面.png");
           this.identityVerificationDocuments1FormData = formData;
           break;
         case 4:
@@ -3015,7 +3015,7 @@ export default {
           );
           formData.append("id", "本人確認書類写真_3");
           formData.append("file", blob);
-          formData.append("filename", "本人確認書類斜め");
+          formData.append("filename", "本人確認書類斜め.png");
           this.identityVerificationDocuments3FormData = formData;
           break;
         case 5:
@@ -3024,21 +3024,21 @@ export default {
           );
           formData.append("id", "本人確認書類写真_2");
           formData.append("file", blob);
-          formData.append("filename", "本人確認書類裏面");
+          formData.append("filename", "本人確認書類裏面.png");
           this.identityVerificationDocuments2FormData = formData;
           break;
         case 6:
           this.myNumberCardPicture1Image = window.URL.createObjectURL(blob);
           formData.append("id", "マイナンバーカード写真_1");
           formData.append("file", blob);
-          formData.append("filename", "マイナンバーカード写真表面");
+          formData.append("filename", "マイナンバーカード写真表面.png");
           this.myNumberCardPicture1FormData = formData;
           break;
         case 7:
           this.myNumberCardPicture2Image = window.URL.createObjectURL(blob);
           formData.append("id", "マイナンバーカード写真_2");
           formData.append("file", blob);
-          formData.append("filename", "マイナンバーカード写真裏面");
+          formData.append("filename", "マイナンバーカード写真裏面.png");
           this.myNumberCardPicture2FormData = formData;
           break;
       }
