@@ -112,6 +112,17 @@ export default {
         confirm_password: this.rePassword, //必須 確認用パスワード 例：test この値は新規作成の値と同じでなければならない
         id: this.confirmationId //必須 パスワード初期化開始のapi送信後にemailのリンク内部に埋め込まれた情報をここに入れる
       };
+      // パスワード判定
+      if (
+        !(this.password.match(/[A-Za-z]/g) && this.password.match(/[0-9]/g)) ||
+        !this.password.match(/^[A-Za-z0-9]*$/) ||
+        this.password.length < 8 ||
+        this.password.length > 20
+      ) {
+        this.errorMess =
+          "パスワードは8~20文字の半角英数の組み合わせで入力してください";
+        return;
+      }
       if (this.password === this.rePassword) {
         try {
           const setNewPassword = await this.$hexalink.setNewPassword(param);

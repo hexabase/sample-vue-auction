@@ -96,9 +96,12 @@ export default {
           /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
         )
       ) {
+        const confirmationId = await this.$hexalink.getConfirmations();
         let param = {
           email: this.email, //パスワードをリセットしたいユーザーのemail 必須
-          host: "https://" + window.env.VUE_APP_BASEURL //例：https://stg.xxxxxx.com 必須
+          host: "https://" + window.env.VUE_APP_BASEURL, //例：https://stg.xxxxxx.com 必須
+          email_templates_id: "5fb37d0f2633558ba6547707",
+          confirmation_id: confirmationId
         };
         this.sendResult = await this.$hexalink.resetPassword(param);
         this.errorMess = "";

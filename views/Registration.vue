@@ -119,35 +119,28 @@ export default {
         )
       ) {
         try {
-          const userExists = await this.getUserDB(this.email);
-          if (userExists.length > 0) {
-            alert("既に登録されているメールアドレスでは登録できません");
-          } else {
-            let params = JSON.stringify({
-              email: this.email,
-              g_id: window.env.VUE_APP_HEXABASEGROUP_ID, //"5f76ad7daa3d8a0001269956",
-              // w_id: "ワークスペースのID",
-              username: this.email
-            });
-            const userAddResult = await this.$hexalink.createUser(
-              this.token,
-              params
-            );
-            params = JSON.stringify({
-              users: [
-                {
-                  email: this.email
-                }
-              ],
-              domain: window.env.VUE_APP_BASEURL, //az-baton.hexabase.com
-              invitation_path: "signup"
-            });
-            this.sendResult = await this.$hexalink.inviteUser(
-              this.token,
-              params
-            );
-            this.errorMess = "";
-          }
+          let params = JSON.stringify({
+            email: this.email,
+            g_id: window.env.VUE_APP_GROUP_ID, //"5f76ad7daa3d8a0001269956",
+            // w_id: "ワークスペースのID",
+            username: this.email
+          });
+          const userAddResult = await this.$hexalink.createUser(
+            this.token,
+            params
+          );
+          params = JSON.stringify({
+            users: [
+              {
+                email: this.email
+              }
+            ],
+            domain: window.env.VUE_APP_BASEURL, //az-baton.hexabase.com
+            invitation_path: "signup",
+            email_templates_id: "5fb37d0f2633558ba6547707" //et_id
+          });
+          this.sendResult = await this.$hexalink.inviteUser(this.token, params);
+          this.errorMess = "";
         } catch (e) {
           this.$store.commit("auth/stateInit");
           this.$store.commit("datas/stateInit");

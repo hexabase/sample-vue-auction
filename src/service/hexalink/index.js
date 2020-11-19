@@ -526,6 +526,14 @@ export default {
         return result;
       },
       /*
+       * パスワードリセット用confirmation_idを取得
+       */
+      async getConfirmations() {
+        let config = JSON.parse(JSON.stringify(defaultConfig));
+        const result = await axios.post(`/linker-api/confirmations`, config);
+        return result.data.confirmation_id;
+      },
+      /*
        * パスワード初期化リクエスト
        * @param {*} param
        */
