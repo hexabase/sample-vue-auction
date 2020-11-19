@@ -228,11 +228,11 @@ export default {
   methods: {
     async signout() {
       // store 初期化
-      await this.$hexalink.logout(this.token);
       this.$store.commit("auth/stateInit");
       this.$store.commit("datas/stateInit");
       this.$store.commit("user/stateInit");
       this.$router.push("/signin");
+      await this.$hexalink.logout(this.token);
     },
     toggleMenu() {
       this.isMenuOpen = !this.isMenuOpen;
