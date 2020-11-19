@@ -25,7 +25,7 @@ Vue.config.productionTip = false;
 Vue.prototype.$sanitize = sanitizeHTML;
 Vue.component("downloadCsv", JsonCSV);
 //workspaceNameの指定が必要です。
-Vue.prototype.$workspaceName = "【開発用】SYZYGY様";
+Vue.prototype.$workspaceName = window.env.VUE_APP_WORKSPACE_NAME;
 new Vue({
   router,
   store,
