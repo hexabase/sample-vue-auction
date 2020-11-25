@@ -120,7 +120,9 @@
           <FormTextfield
             v-model="withdrawalValue"
             title="出金額"
+            :number="true"
             :required="true"
+            :keydown="checkKeyDown"
           />
           <div>※振込手数料が{{ fee * tax }}円かかります</div>
         </v-form>
@@ -175,7 +177,8 @@ export default {
         { text: "歌手", value: "69b91c69-3231-4956-a34e-c6bd737fd206" },
         { text: "単価", value: "1023791c-f698-4314-af98-2a8a732c0474" },
         { text: "数量", value: "91854461-18ce-4652-88c5-6ae63d23c689" },
-        { text: "税金", value: "d03ba2ed-0555-4cf7-b2ee-39e025989c59" },
+        { text: "税金", value: "4f9d5960-5f89-430b-9f03-d3549a97cf0a" },
+        { text: "手数料", value: "d03ba2ed-0555-4cf7-b2ee-39e025989c59" },
         {
           text: "合計金額",
           value: "230edd8a-f368-449f-be30-53738150d166",
@@ -289,7 +292,7 @@ export default {
             }
           ],
           sort_field_id: "7c4e5d10-5fc4-4cff-81d4-de54d0fad1c8",
-          sort_order: "asc"
+          sort_order: "desc"
         }
       );
       this.dessertsTmp = auctionLists.report_results;
@@ -355,6 +358,7 @@ export default {
           setData["著作権番号"] = "‐";
           setData["取引単価"] = Number(this.withdrawalValue);
           setData["取引総額"] = Number(this.withdrawalValue);
+          setData["手数料"] = Number(this.fee * this.tax);
 
           let param = {};
           param["item"] = setData;
@@ -373,19 +377,40 @@ export default {
               changes: [
                 {
                   id: "残高",
-                  value: withdrawalValueDeposits
+                  value: withdrawalValueDeposits - this.fee * this.tax
                 }
               ],
               use_display_id: true,
               is_force_update: true
             }
           );
-          this.deposits = this.changeYen(withdrawalValueDeposits);
+          this.deposits = this.changeYen(
+            withdrawalValueDeposits - this.fee * this.tax
+          );
           this.errorMess = "";
           this.withdrawalSendResult =
             withdrawalInsertResult && depositsUpdateResult;
           this.withdrawalValue = "";
           this.password = "";
+          // 取引履歴を取得
+          const auctionLists = await this.$hexalink.getReports(
+            this.token,
+            this.applicationId,
+            window.env.report.VUE_APP_TRADINGHISTORYREPORT_ID,
+            {
+              conditions: [
+                {
+                  rpf_id: "0877fa61-b085-4df3-a184-9761d73db9ae",
+                  search_value: [this.userId],
+                  exact_match: true
+                }
+              ],
+              sort_field_id: "7c4e5d10-5fc4-4cff-81d4-de54d0fad1c8",
+              sort_order: "desc"
+            }
+          );
+          this.dessertsTmp = auctionLists.report_results;
+          this.desserts = this.dessertsTmp;
         } catch (e) {
           this.errorMess = "出金申請時にエラーが発生しました。";
         } finally {
@@ -459,18 +484,6 @@ export default {
         .reverse()
         .join("");
     },
-    checkDigits(event) {
-      if (
-        event.target.value.length > event.target.max.length - 1 &&
-        event.keyCode !== 8 &&
-        event.keyCode !== 46 &&
-        event.keyCode !== 37 &&
-        event.keyCode !== 39 &&
-        event.keyCode !== 9
-      ) {
-        event.preventDefault();
-      }
-    },
     clickToggle(period) {
       if (this.period === period) {
         this.startDate = "";
@@ -507,6 +520,19 @@ export default {
             .format("yyyy-MM-DD");
           this.endDate = moment().format("yyyy-MM-DD");
           break;
+      }
+    },
+    checkKeyDown(event) {
+      if (
+        event.keyCode == "190" ||
+        event.keyCode == "69" ||
+        event.keyCode == "109" ||
+        event.keyCode == "110" ||
+        event.keyCode == "189" ||
+        event.keyCode == "38" ||
+        event.keyCode == "40"
+      ) {
+        event.preventDefault();
       }
     }
   }
