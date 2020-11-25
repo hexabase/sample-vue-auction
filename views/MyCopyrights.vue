@@ -33,10 +33,16 @@
             :key="index"
             class="myCopyright_item"
           >
-            <figure class="myCopyright_item_img">
+            <figure
+              class="myCopyright_item_img"
+              @click="selectItem(displayMyCopyrightsList[index].著作権番号)"
+            >
               <img :src="displayMyCopyrightsList[index].image1" />
             </figure>
-            <div class="myCopyright_item_content">
+            <div
+              class="myCopyright_item_content"
+              @click="selectItem(displayMyCopyrightsList[index].著作権番号)"
+            >
               <h3 class="myCopyright_item_title">
                 {{ displayMyCopyrightsList[index].タイトル }}
               </h3>
@@ -202,6 +208,9 @@ export default {
         this.pageSize * (pageNumber - 1),
         this.pageSize * pageNumber
       );
+    },
+    selectItem(musicId) {
+      this.$router.push("/auctionbid/" + musicId);
     }
   }
 };
