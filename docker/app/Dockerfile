@@ -11,7 +11,6 @@ RUN npm run build
 
 FROM nginx:1.19.2-alpine
 COPY docker/app/nginx.conf /etc/nginx/
-COPY docker/app/.htpasswd /etc/nginx/conf.d/
 COPY --from=builder /app/dist /var/www
 EXPOSE 80
 STOPSIGNAL SIGQUIT
