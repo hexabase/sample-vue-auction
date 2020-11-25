@@ -48,7 +48,7 @@
             @blur="handleBlur"
           ></v-text-field>
         </validation-provider>
-        <a class="formItem_link">住所表示</a>
+        <!-- <a class="formItem_link">住所表示</a> -->
       </div>
       <div class="formItem_itemWrap">
         <validation-provider
