@@ -20,6 +20,10 @@ import UserInfo from "../../views/UserInfo.vue";
 import Contact from "../../views/Contact.vue";
 import Faq from "../../views/Faq.vue";
 import News from "../../views/News.vue";
+import Solicitation from "../../views/Solicitation.vue";
+import Privacy from "../../views/Privacy.vue";
+import Antisocial from "../../views/Antisocial.vue";
+import Terms from "../../views/Terms.vue";
 import NotFound from "../../views/NotFound.vue";
 
 Vue.use(VueRouter);
@@ -126,6 +130,26 @@ const routes = [
     path: "/contact",
     name: "Contact",
     component: Contact
+  },
+  {
+    path: "/solicitation",
+    name: "Solicitation",
+    component: Solicitation
+  },
+  {
+    path: "/privacy",
+    name: "Privacy",
+    component: Privacy
+  },
+  {
+    path: "/antisocial",
+    name: "Antisocial",
+    component: Antisocial
+  },
+  {
+    path: "/terms",
+    name: "Terms",
+    component: Terms
   },
   {
     path: "*",
