@@ -296,6 +296,49 @@ export default {
         }
       );
       this.dessertsTmp = auctionLists.report_results;
+      for (const key in this.dessertsTmp) {
+        if (!this.dessertsTmp[key]["1023791c-f698-4314-af98-2a8a732c0474"])
+          this.dessertsTmp[key]["4f9d5960-5f89-430b-9f03-d3549a97cf0a"] = 0;
+        if (!this.dessertsTmp[key]["d03ba2ed-0555-4cf7-b2ee-39e025989c59"])
+          this.dessertsTmp[key]["d03ba2ed-0555-4cf7-b2ee-39e025989c59"] = 0;
+        if (!this.dessertsTmp[key]["4f9d5960-5f89-430b-9f03-d3549a97cf0a"])
+          this.dessertsTmp[key]["4f9d5960-5f89-430b-9f03-d3549a97cf0a"] = 0;
+        switch (this.dessertsTmp[key]["4215764f-8b26-4ec1-b67f-ec90faf741a6"]) {
+          case "出金申請中":
+          case "出金完了":
+            // 合計金額 = -単価 - 手数料
+            this.dessertsTmp[key]["230edd8a-f368-449f-be30-53738150d166"] =
+              0 -
+              Number(
+                this.dessertsTmp[key]["1023791c-f698-4314-af98-2a8a732c0474"]
+              ) -
+              Number(
+                this.dessertsTmp[key]["d03ba2ed-0555-4cf7-b2ee-39e025989c59"]
+              );
+            break;
+          case "分配金":
+            if (!this.dessertsTmp[key]["91854461-18ce-4652-88c5-6ae63d23c689"])
+              this.dessertsTmp[key]["91854461-18ce-4652-88c5-6ae63d23c689"] = 1;
+            // 合計金額 = 単価 * 数量 - 税金 - 手数料
+            this.dessertsTmp[key]["230edd8a-f368-449f-be30-53738150d166"] =
+              Number(
+                this.dessertsTmp[key]["1023791c-f698-4314-af98-2a8a732c0474"]
+              ) *
+                Number(
+                  this.dessertsTmp[key]["91854461-18ce-4652-88c5-6ae63d23c689"]
+                ) -
+              Number(
+                this.dessertsTmp[key]["4f9d5960-5f89-430b-9f03-d3549a97cf0a"]
+              ) -
+              Number(
+                this.dessertsTmp[key]["d03ba2ed-0555-4cf7-b2ee-39e025989c59"]
+              );
+            break;
+          case "入金":
+            // 合計金額 = 単価 - 税金 - 手数料
+            break;
+        }
+      }
       this.desserts = this.dessertsTmp;
     } catch (e) {
       console.log(e);

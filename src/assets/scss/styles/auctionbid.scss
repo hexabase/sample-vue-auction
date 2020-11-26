@@ -494,6 +494,10 @@
                     text-decoration: none;
                 }
 
+                &[disabled] {
+                    background: transparent !important;
+                }
+
                 &::before {
                     content: "\F131";
                     display: inline-block;

@@ -26,9 +26,7 @@
               {{ displayNewsList[index].タイトル }}
             </h4>
             <div class="newsItem_content">
-              <p>
-                {{ displayNewsList[index].内容 }}
-              </p>
+              <p v-html="displayNewsList[index].内容"></p>
             </div>
           </article>
           <v-pagination
@@ -49,6 +47,7 @@
   </div>
 </template>
 <script>
+import marked from "marked";
 import mapping from "@/assets/json/auctionDBMapping.json";
 import moment from "moment-timezone";
 
@@ -78,6 +77,9 @@ export default {
       this.$store.commit("common/setLoading", true);
       this.newsList = await this.getNewsList();
       this.length = Math.ceil(this.newsList.length / this.pageSize);
+      for (const key in this.newsList) {
+        this.newsList[key].内容 = marked(this.newsList[key].内容);
+      }
       this.displayNewsList = this.newsList.slice(
         this.pageSize * (this.page - 1),
         this.pageSize * this.page

@@ -5,6 +5,7 @@
     :value="value"
     :pdfFile="pdfFile"
     :pdfFileBuffer="pdfFileBuffer"
+    :disabled="disabled"
     @click="multipleHandler"
   >
     {{ buttonName }}
@@ -38,6 +39,10 @@ export default {
     buttonName: {
       type: String,
       default: ""
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   methods: {
