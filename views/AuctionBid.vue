@@ -416,6 +416,7 @@
 
           <PdfDownload
             v-if="!displayBidResultFlag && pdfFileBuffer1"
+            :class="{ pdfChecked: confirmDeliveryDocumentFlag1 }"
             :value="docDefinition"
             :pdf-file="pdfFile1"
             :pdfFileBuffer="pdfFileBuffer1"
@@ -425,6 +426,7 @@
           ></PdfDownload>
           <PdfDownload
             v-if="!displayBidResultFlag && pdfFileBuffer2"
+            :class="{ pdfChecked: confirmDeliveryDocumentFlag2 }"
             :value="docDefinition"
             :pdf-file="pdfFile2"
             :pdfFileBuffer="pdfFileBuffer2"
@@ -434,6 +436,7 @@
           ></PdfDownload>
           <PdfDownload
             v-if="!displayBidResultFlag && pdfFileBuffer3"
+            :class="{ pdfChecked: confirmDeliveryDocumentFlag3 }"
             :value="docDefinition"
             :pdf-file="pdfFile3"
             :pdfFileBuffer="pdfFileBuffer3"
