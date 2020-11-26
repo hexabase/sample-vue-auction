@@ -24,7 +24,7 @@
             </h3>
             <div class="faq_list">
               <article class="faq_item">
-                <input type="checkbox" class="faq_switch" id="faq1" />
+                <input id="faq1" type="checkbox" class="faq_switch" />
                 <div class="faq_content">
                   <h4 class="faq_question">
                     <label for="faq1">
@@ -39,7 +39,7 @@
                 </div>
               </article>
               <article class="faq_item">
-                <input type="checkbox" class="faq_switch" id="faq2" />
+                <input id="faq2" type="checkbox" class="faq_switch" />
                 <div class="faq_content">
                   <h4 class="faq_question">
                     <label for="faq2">
@@ -55,7 +55,7 @@
                 </div>
               </article>
               <article class="faq_item">
-                <input type="checkbox" class="faq_switch" id="faq3" />
+                <input id="faq3" type="checkbox" class="faq_switch" />
                 <div class="faq_content">
                   <h4 class="faq_question">
                     <label for="faq3">
@@ -71,7 +71,7 @@
                 </div>
               </article>
               <article class="faq_item">
-                <input type="checkbox" class="faq_switch" id="faq4" />
+                <input id="faq4" type="checkbox" class="faq_switch" />
                 <div class="faq_content">
                   <h4 class="faq_question">
                     <label for="faq4">
@@ -86,7 +86,7 @@
                 </div>
               </article>
               <article class="faq_item">
-                <input type="checkbox" class="faq_switch" id="faq5" />
+                <input id="faq5" type="checkbox" class="faq_switch" />
                 <div class="faq_content">
                   <h4 class="faq_question">
                     <label for="faq5">
@@ -101,7 +101,7 @@
                 </div>
               </article>
               <article class="faq_item">
-                <input type="checkbox" class="faq_switch" id="faq6" />
+                <input id="faq6" type="checkbox" class="faq_switch" />
                 <div class="faq_content">
                   <h4 class="faq_question">
                     <label for="faq6">
@@ -118,7 +118,7 @@
                 </div>
               </article>
               <article class="faq_item">
-                <input type="checkbox" class="faq_switch" id="faq7" />
+                <input id="faq7" type="checkbox" class="faq_switch" />
                 <div class="faq_content">
                   <h4 class="faq_question">
                     <label for="faq7">
@@ -133,7 +133,7 @@
                 </div>
               </article>
               <article class="faq_item">
-                <input type="checkbox" class="faq_switch" id="faq8" />
+                <input id="faq8" type="checkbox" class="faq_switch" />
                 <div class="faq_content">
                   <h4 class="faq_question">
                     <label for="faq8">
@@ -155,7 +155,7 @@
             </h3>
             <div class="faq_list">
               <article class="faq_item">
-                <input type="checkbox" class="faq_switch" id="faq-a1" />
+                <input id="faq-a1" type="checkbox" class="faq_switch" />
                 <div class="faq_content">
                   <h4 class="faq_question">
                     <label for="faq-a1">
@@ -170,7 +170,7 @@
                 </div>
               </article>
               <article class="faq_item">
-                <input type="checkbox" class="faq_switch" id="faq-a2" />
+                <input id="faq-a2" type="checkbox" class="faq_switch" />
                 <div class="faq_content">
                   <h4 class="faq_question">
                     <label for="faq-a2">
@@ -185,7 +185,7 @@
                 </div>
               </article>
               <article class="faq_item">
-                <input type="checkbox" class="faq_switch" id="faq-a3" />
+                <input id="faq-a3" type="checkbox" class="faq_switch" />
                 <div class="faq_content">
                   <h4 class="faq_question">
                     <label for="faq-a3">
@@ -200,7 +200,7 @@
                 </div>
               </article>
               <article class="faq_item">
-                <input type="checkbox" class="faq_switch" id="faq-a4" />
+                <input id="faq-a4" type="checkbox" class="faq_switch" />
                 <div class="faq_content">
                   <h4 class="faq_question">
                     <label for="faq-a4">
@@ -215,7 +215,7 @@
                 </div>
               </article>
               <article class="faq_item">
-                <input type="checkbox" class="faq_switch" id="faq-a5" />
+                <input id="faq-a5" type="checkbox" class="faq_switch" />
                 <div class="faq_content">
                   <h4 class="faq_question">
                     <label for="faq-a5">
@@ -230,7 +230,7 @@
                 </div>
               </article>
               <article class="faq_item">
-                <input type="checkbox" class="faq_switch" id="faq-a6" />
+                <input id="faq-a6" type="checkbox" class="faq_switch" />
                 <div class="faq_content">
                   <h4 class="faq_question">
                     <label for="faq-a6">
@@ -245,7 +245,7 @@
                 </div>
               </article>
               <article class="faq_item">
-                <input type="checkbox" class="faq_switch" id="faq-a7" />
+                <input id="faq-a7" type="checkbox" class="faq_switch" />
                 <div class="faq_content">
                   <h4 class="faq_question">
                     <label for="faq-a7">
@@ -260,7 +260,7 @@
                 </div>
               </article>
               <article class="faq_item">
-                <input type="checkbox" class="faq_switch" id="faq-a8" />
+                <input id="faq-a8" type="checkbox" class="faq_switch" />
                 <div class="faq_content">
                   <h4 class="faq_question">
                     <label for="faq-a8">
