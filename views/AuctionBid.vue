@@ -416,28 +416,34 @@
 
           <PdfDownload
             v-if="!displayBidResultFlag && pdfFileBuffer1"
+            :class="confirmDeliveryDocumentFlag1 ? 'pdfChecked' : ''"
             :value="docDefinition"
             :pdf-file="pdfFile1"
             :pdfFileBuffer="pdfFileBuffer1"
             :fileName="fileName1"
+            :disabled="confirmDeliveryDocumentFlag1"
             buttonName="交付書面①を確認する"
             @click="confirmDeliveryDocument(1)"
           ></PdfDownload>
           <PdfDownload
             v-if="!displayBidResultFlag && pdfFileBuffer2"
+            :class="confirmDeliveryDocumentFlag2 ? 'pdfChecked' : ''"
             :value="docDefinition"
             :pdf-file="pdfFile2"
             :pdfFileBuffer="pdfFileBuffer2"
             :fileName="fileName2"
+            :disabled="confirmDeliveryDocumentFlag2"
             buttonName="交付書面②を確認する"
             @click="confirmDeliveryDocument(2)"
           ></PdfDownload>
           <PdfDownload
             v-if="!displayBidResultFlag && pdfFileBuffer3"
+            :class="confirmDeliveryDocumentFlag3 ? 'pdfChecked' : ''"
             :value="docDefinition"
             :pdf-file="pdfFile3"
             :pdfFileBuffer="pdfFileBuffer3"
             :fileName="fileName3"
+            :disabled="confirmDeliveryDocumentFlag3"
             buttonName="交付書面③を確認する"
             @click="confirmDeliveryDocument(3)"
           ></PdfDownload>
@@ -1449,6 +1455,7 @@ export default {
         );
         if (dataLists.length == 0 || dataLists[0].HPに掲載可否 != "掲載する") {
           this.$router.push("/notFound");
+          return;
         }
 
         var titleEn = "タイトル（英語）";
