@@ -475,8 +475,15 @@
                 flex: 0 0 auto;
             }
         }
+
         &_wrap {
+            .v-input--checkbox .v-label {
+                padding-right: 0.95em;
+            }
+
             .btn {
+                display: block;
+                margin: 0 auto 10px;
                 font-size: 1.5rem;
                 color: $color-text-sub;
                 text-decoration: underline;
@@ -485,6 +492,10 @@
 
                 &:hover {
                     text-decoration: none;
+                }
+
+                &[disabled] {
+                    background: transparent !important;
                 }
 
                 &::before {

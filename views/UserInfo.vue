@@ -1262,18 +1262,9 @@
                   よろしければ利用規約に同意いただき登録ボタンを押してください。
                 </p>
                 <div class="formEntryBox_concent">
-                  <p>
-                    BATON（以下「会社」）は、会員にサービスを提供するために、会員登録の段階で下記のように個人情報を収集利用します。<br />
-                    収集・利用目的<br />
-                    -&nbsp;サービスを提供し、利用者の識別と本人かどうか確認<br />
-                    -&nbsp;未成年者に対する法定代理人同意を<br />
-                    収集アイテム<br />
-                    -&nbsp;ID、パスワード、氏名、生年月日、性別、メールアドレス、携帯電話番号、口座番号、住所<br />
-                    -&nbsp;法定代理人情報（氏名、生年月日、電子メールアドレス）<br />
-                    保有・利用期間<br />
-                    退会または収集・利用目的の達成時まで<br />
-                    ※お客様は、個人情報の収集・利用に同意しないことができるが、本個人情報は、同社がサービスを提供するために必要な最小限の個人情報であるため、同意を拒否した場合のサービス利用が不可能です
-                  </p>
+                  <p class="formEntryBox_concent_title">利用規約</p>
+                  <Terms />
+                  <Privacy />
                 </div>
                 <v-checkbox
                   v-model="checkedAgreements"
@@ -1605,6 +1596,8 @@ import BankList from "@/assets/json/bankList.json";
 import MyModal from "./MyModal.vue";
 import axios from "axios";
 import moment from "moment";
+import Terms from "./Terms.vue";
+import Privacy from "./Privacy.vue";
 
 export default {
   components: {
@@ -1616,7 +1609,9 @@ export default {
     FormAddress,
     FormTextfield,
     FormTextfieldName,
-    MyModal
+    MyModal,
+    Terms,
+    Privacy
   },
   props: ["fromBid"],
   data() {
