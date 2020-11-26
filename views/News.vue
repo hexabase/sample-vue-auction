@@ -26,7 +26,7 @@
               {{ displayNewsList[index].タイトル }}
             </h4>
             <div class="newsItem_content">
-              <p v-html="displayNewsList[index].内容"></p>
+              <div v-html="displayNewsList[index].内容"></div>
             </div>
           </article>
           <v-pagination

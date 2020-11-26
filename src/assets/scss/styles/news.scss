@@ -60,8 +60,69 @@
         &_content {
             font-size: 1.4rem;
             line-height: 1.8;
-            color: $color-text-darkgray;
-            white-space : pre;
+            color: $color-text-sub;
+
+            h1, h2, h3, h4 {
+                color: $color-text-default;
+            }
+
+            h1 {
+                margin: 25px 0 15px;
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                margin: 20px 0 10px;
+                font-size: 1.6rem;
+            }
+
+            h3 {
+                margin: 10px 0 5px;
+                font-size: 1.4rem;
+            }
+
+            h4 {
+                margin: 10px 0 5px;
+                font-size: 1.4rem;
+                color: $color-text-darkgray;
+            }
+
+            p {
+                white-space : pre;
+            }
+
+            ul {
+                list-style: disc;
+                margin-left: 20px;
+            }
+            ol {
+                list-style: decimal;
+                margin-left: 20px;
+            }
+
+            code {
+                display: block;
+                margin: 5px 0;
+                padding: 15px;
+                background: $color-bg;
+                color: $color-text-sub;
+                font-weight: normal;
+                font-size: 1.3rem;
+            }
+
+            a {
+                text-decoration: underline;
+
+                &:hover {
+                    text-decoration: none;
+                }
+            }
+
+            blockquote {
+                border-left: 3px solid $color-border;
+                padding: 3px 0 3px 10px;
+                white-space: pre;
+            }
         }
     }
 }
