@@ -884,6 +884,27 @@
         line-height: 1.8;
         text-align: left;
 
+        &_title,
+        #page_policy .policy_title {
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.8rem;
+        }
+
+        #page_policy + #page_policy {
+            border-top: $border-default;
+            margin-top: 40px;
+            padding-top: 40px;
+        }
+
+        .pageHeader {
+            display: none;
+        }
+
+        #page_policy .policy {
+            padding: 0;
+        }
+
         @include max-screen($breakpoint-mobile) {
 
         }
