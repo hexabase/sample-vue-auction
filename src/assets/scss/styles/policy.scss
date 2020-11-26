@@ -1,0 +1,98 @@
+@charset "UTF-8";
+@import "../utils/variables.scss";
+@import "../utils/functions.scss";
+
+/* mypage */
+#page_policy {
+    .pageHeader {
+
+        &_img {
+            background: url("~@/assets/img/bg-faq.jpg") no-repeat center center;
+            background-size: cover;
+            backdrop-filter: none;
+        }
+
+        .content {
+            height: 180px;
+        }
+    }
+
+    .policy {
+        @extend %padding-contents;
+        max-width: 640px;
+        margin: auto;
+        text-align: left;
+        line-height: 1.7;
+
+        @include max-screen($breakpoint-mobile) {
+            padding: 0 15px;
+        }
+
+        &_section {
+            margin-bottom: 80px;
+
+            & + .policy_section {
+                border-top: $border-default;
+                padding-top: 40px;
+            }
+        }
+        
+        &_title {
+            margin-bottom: 60px;
+            font-size: 2.4rem;
+            font-weight: normal;
+            text-align: center;
+        }
+
+        &_lead {
+            margin-bottom: 40px;
+            font-size: 1.4rem;
+        }
+
+        &_dlist {
+            dt {
+                margin-bottom: 10px;
+                font-size: 1.5rem;
+                font-weight: bold;
+
+                &:not(:first-child) {
+                    margin-top: 30px;
+                }
+            }
+
+            dd {
+                font-size: 1.3rem;
+                line-height: 1.5;
+            }
+        }
+
+        &_olist {
+            margin-top: 10px;
+            margin-left: 20px;
+            list-style: decimal outside;
+
+            li {
+                line-height: 1.5;
+
+                &:not(:first-child) {
+                    margin-top: 15px;
+                }
+            }
+        }
+
+        &_list {
+            margin-top: 15px;
+            margin-left: 20px;
+            list-style: disc outside;
+
+            li {
+                line-height: 1.5;
+
+                &:not(:first-child) {
+                    margin-top: 15px;
+                }
+            }
+        }
+
+    }
+}
