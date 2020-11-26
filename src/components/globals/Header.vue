@@ -229,6 +229,7 @@ export default {
     async signout() {
       // store 初期化
       this.$store.commit("auth/stateInit");
+      this.$store.commit("auth/setToken", "");
       this.$store.commit("datas/stateInit");
       this.$store.commit("user/stateInit");
       this.$router.push("/signin");
