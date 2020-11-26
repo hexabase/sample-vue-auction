@@ -7,7 +7,7 @@
         </div>
       </div>
     </header>
-    <section class="news">
+    <section id="news11" class="news">
       <div class="content">
         <h3 class="news_title">
           プレスリリース
@@ -16,6 +16,7 @@
           <article
             v-for="(news, index) in displayNewsList"
             :key="index"
+            :id="`news${index}`"
             class="newsItem"
           >
             <p class="newsItem_date">
@@ -87,6 +88,12 @@ export default {
       this.$store.commit("common/setLoading", false);
     }
   },
+  updated() {
+    const hash = this.$route.hash;
+    if (hash && hash.match(/^#.+$/)) {
+      this.scrollToHash(hash);
+    }
+  },
   methods: {
     pageChange(pageNumber) {
       this.displayNewsList = this.newsList.slice(
@@ -120,6 +127,16 @@ export default {
       //     sort_order: "desc"
       //   }
       // );
+    },
+    scrollToHash(hash) {
+      let hashName = hash.replace("#", "");
+      let elmPosi = document.getElementById(hashName).getBoundingClientRect();
+      let headerHeight = window.innerWidth < 800 ? 80 : 150;
+      let hashY = elmPosi.top + window.pageYOffset - headerHeight;
+      window.scrollTo({
+        top: hashY,
+        behavior: "smooth"
+      });
     }
   }
 };

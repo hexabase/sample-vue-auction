@@ -185,10 +185,12 @@
           </span>
         </h3>
         <ul class="news_list">
-          <li class="news_item">
-            <router-link to="News">
-              <span class="news_date">2020.09.01</span>
-              BATONサービスをスタートしました。
+          <li v-for="(news, index) in newsList" :key="index" class="news_item">
+            <router-link :to="{ name: 'News', hash: `#news${index}` }">
+              <span class="news_date">
+                {{ formatNewsDate(newsList[index].日付) }}
+              </span>
+              {{ newsList[index].タイトル }}
             </router-link>
           </li>
         </ul>
@@ -328,7 +330,8 @@ export default {
       datastoreIds: this.$store.getters["datas/getDatastoreIds"],
       userId: this.$store.getters["user/getHexaID"],
       auctionList: [],
-      displayAuctionList: []
+      displayAuctionList: [],
+      newsList: []
     };
   },
   created: async function() {},
@@ -401,6 +404,7 @@ export default {
       );
       this.updateMessage();
       setInterval(this.updateMessage, 1000);
+      this.newsList = await this.getNewsList();
       const hash = this.$route.hash;
       if (hash && hash.match(/^#.+$/)) {
         this.scrollToHash(hash);
@@ -505,6 +509,20 @@ export default {
       });
       return _data;
     },
+    async getNewsList() {
+      return await this.$hexalink.getPublicItems(
+        window.env.VUE_APP_APPLICATION_ID,
+        window.env.table.VUE_APP_NEWSTABLE_ID,
+        {
+          conditions: [],
+          page: 1,
+          per_page: 3,
+          use_display_id: true,
+          sort_field_id: "日付",
+          sort_order: "desc"
+        }
+      );
+    },
     scrollToHash(hash) {
       let hashName = hash.replace("#", "");
       let elmPosi = document.getElementById(hashName).getBoundingClientRect();
@@ -522,6 +540,11 @@ export default {
         top: hashY,
         behavior: "smooth"
       });
+    },
+    formatNewsDate(date) {
+      return moment(date)
+        .tz("Asia/Tokyo")
+        .format("YYYY.MM.DD");
     }
   }
 };
