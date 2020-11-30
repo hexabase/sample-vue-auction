@@ -1595,7 +1595,12 @@ export default {
         var rpf_bidPrice = "d2813a9b-33e5-405f-9116-ff9c97a0bf06";
 
         // diffメソッドを使って、日時の差を、ミリ秒で取得
-        const diff = moment(this.auctionEndDate).diff(moment());
+        const diff = moment(
+          moment(this.auctionEndDate)
+            .tz("Asia/Tokyo")
+            .format()
+            .slice(0, -14) + this.auctionEndTime
+        ).diff(moment());
         if (diff < 0 || this.applicabilityOnHomepage !== "掲載する") {
           this.auctionFinishedFlag = true;
         }
@@ -1633,6 +1638,7 @@ export default {
             auctionListsGroupSort[key][rpf_bidAmount]
           );
           if (auctionAmountCount <= dataLists[0].オークション数量) {
+            console.log(this.auctionFinishedFlag);
             auctionListsGroupSort[key].落札状況 = this.auctionFinishedFlag
               ? "落札"
               : "落札圏内";

@@ -100,7 +100,7 @@ export default {
         let param = {
           email: this.email, //パスワードをリセットしたいユーザーのemail 必須
           host: "https://" + window.env.VUE_APP_BASEURL, //例：https://stg.xxxxxx.com 必須
-          email_templates_id: "5fb37d0f2633558ba6547707",
+          email_templates_id: window.env.VUE_APP_ET_ID,
           confirmation_id: confirmationId
         };
         this.sendResult = await this.$hexalink.resetPassword(param);

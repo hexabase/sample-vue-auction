@@ -2651,9 +2651,9 @@ export default {
         try {
           const params = JSON.stringify({
             email: this.newEmail,
-            registration_path:
-              "https://" + window.env.VUE_APP_BASEURL + "/updateemail",
-            email_templates_id: "5fb37d0f2633558ba6547707"
+            registration_domain: window.env.VUE_APP_BASEURL,
+            registration_path: "updateemail",
+            email_templates_id: window.env.VUE_APP_ET_ID
           });
           const result = await this.$hexalink.setMailAddress(
             this.token,

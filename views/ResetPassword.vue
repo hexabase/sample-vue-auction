@@ -59,7 +59,7 @@
       <div v-if="confirmUserFlag" class="loginBox_complete">
         <v-icon>mdi-checkbox-marked-circle-outline</v-icon>
         <p class="loginBox_lead">
-          新しいパスワードを設定しました！<br />ログイン画面に移動します...
+          新しいパスワードを設定しました！
         </p>
       </div>
       <div v-if="!confirmUserFlag" class="loginBox_footer">

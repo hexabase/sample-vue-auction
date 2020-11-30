@@ -180,7 +180,7 @@ router.beforeEach((to, from, next) => {
       // 認証済み
       next();
     } else {
-      next({ name: "signin" });
+      next({ name: "signin", query: { redirect: to.fullPath } });
     }
   } else {
     next();

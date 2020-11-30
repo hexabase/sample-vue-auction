@@ -66,7 +66,12 @@ export default {
   data() {
     return {
       token: this.$store.getters["auth/getToken"],
+      applicationId: this.$store.getters["datas/getApplicationId"],
+      datasotreIdList: this.$store.getters["datas/getDatastores"],
+      datastoreIds: this.$store.getters["datas/getDatastoreIds"],
+      fields: this.$store.getters["datas/getFields"],
       email: this.$store.getters["user/getEmail"],
+      userId: "",
       tmpEmail: "",
       userName: "",
       password: "",
@@ -116,6 +121,40 @@ export default {
             param
           );
           this.confirmUserFlag = true;
+          const userInfo = await this.$hexalink.getItems(
+            this.token,
+            this.applicationId,
+            this.datastoreIds["ユーザDB"],
+            {
+              conditions: [
+                {
+                  id: "hexaID", // Hexalink画⾯で⼊⼒したIDを指定
+                  search_value: [this.getConfirmUserData.data.user.id],
+                  exact_match: true // 完全⼀致で検索
+                }
+              ],
+              page: 1,
+              per_page: 1,
+              use_display_id: true
+            }
+          );
+          const result = await this.updatedDataItem(
+            this.datastoreIds["ユーザDB"],
+            userInfo[0].i_id,
+            {
+              history: {
+                comment: "メールアドレス変更"
+              },
+              changes: [
+                {
+                  id: "Email",
+                  value: this.tmpEmail
+                }
+              ],
+              use_display_id: true,
+              is_force_update: true
+            }
+          );
           await this.$hexalink.logout(this.token);
           setTimeout(() => {
             // store 初期化
@@ -126,11 +165,24 @@ export default {
             this.$router.push("/signin");
           }, 3000);
         } catch (e) {
+          console.log(e);
           this.errorMess = "メールアドレス変更中にエラーが発生しました。";
           this.disabled = true;
           this.$store.commit("common/setLoading", false);
         }
       }
+    },
+    // データアイテムを更新します
+    async updatedDataItem(datasotreId, itemId, payload) {
+      const applicationId = this.$store.getters["datas/getApplicationId"];
+      const token = this.$store.getters["auth/getToken"];
+      return await this.$hexalink.editItem(
+        token,
+        applicationId,
+        datasotreId,
+        itemId,
+        payload
+      );
     }
   }
 };

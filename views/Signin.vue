@@ -212,7 +212,8 @@ export default {
         this.$store.commit("user/setMemberStatus", memberStatus);
         this.$store.commit("datas/setDatastoreIds", datastoreIds);
         this.$store.commit("datas/setFields", fields);
-        this.$router.push("/");
+        this.$router.replace(this.$route.query.redirect || "/");
+        // this.$router.push("/");
       } catch (e) {
         const { status, statusText } = e.response;
         console.log(`Error! HTTP Status: ${status} ${statusText}`);
