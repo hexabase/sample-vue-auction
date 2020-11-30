@@ -373,15 +373,20 @@
         padding: 0 10px;
         font-size: 1.2rem;
         text-align: left;
-        line-height: 1.6;
+        line-height: 1.4;
 
         dt {
+            margin-bottom: 5px;
             font-weight: bold;
         }
 
         dd {
-            margin-bottom: 15px;
+            margin-top: 3px;
             color: $color-text-gray;
+
+            + dt {
+                margin-top: 15px;
+            }
         }
     }
 }
