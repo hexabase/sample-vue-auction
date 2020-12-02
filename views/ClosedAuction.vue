@@ -165,7 +165,7 @@ export default {
           conditions: [
             {
               id: "HPに掲載可否", // Hexalink画⾯で⼊⼒したIDを指定
-              search_value: ["bb8de5a3-0f70-4369-b49a-6197ad8f1bff"]
+              search_value: ["掲載する"]
             }
           ],
           page: 1,
