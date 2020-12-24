@@ -41,6 +41,9 @@ spec:
           preStop:
             exec:
               command: [ "/bin/sleep", "20" ]
+        env:
+          - name: ENV
+            value: production
         resources:
           requests:
             memory: "64Mi"
