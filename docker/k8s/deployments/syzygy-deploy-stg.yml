@@ -1,0 +1,65 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: syzygy
+  labels:
+    app: syzygy
+    component: microservice
+spec:
+  selector:
+    matchLabels:
+      app: syzygy
+      component: microservice
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 100%
+      maxUnavailable: 0
+  progressDeadlineSeconds: 300
+  template:
+    metadata:
+      name: syzygy
+      labels:
+        app: syzygy
+        component: microservice
+    spec:
+      terminationGracePeriodSeconds: 600
+      containers:
+      - name: beee-syzygy
+        image: hexabase.azurecr.io/beee-syzygy
+        readinessProbe:
+          failureThreshold: 3
+          successThreshold: 1
+          httpGet:
+            path: /health_check
+            port: syzygy
+          initialDelaySeconds: 1
+          periodSeconds: 10
+          timeoutSeconds: 3
+        lifecycle:
+          preStop:
+            exec:
+              command: [ "/bin/sleep", "20" ]
+        env:
+          - name: ENV
+            value: dev
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "30m"
+          limits: {}
+        imagePullPolicy: Always
+        ports:
+        - name: syzygy
+          containerPort: 80
+        volumeMounts:
+          - name: syzygy-configs
+            mountPath: /var/www/config.js
+            subPath: config.js
+      volumes:
+        - name: syzygy-configs
+          configMap:
+              name: syzygy-configs
+      nodeSelector:
+        type: node00

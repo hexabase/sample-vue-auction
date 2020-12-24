@@ -75,7 +75,7 @@ stages:
             inputs:
               action: deploy
               manifests: |
-                $(Pipeline.Workspace)/manifests/deployments/syzygy-deploy.yml
+                $(Pipeline.Workspace)/manifests/deployments/syzygy-deploy-stg.yml
                 $(Pipeline.Workspace)/manifests/services/syzygy-svc.yml
               containers: |
                 $(containerRegistry)/$(imageRepository):$(tag)
