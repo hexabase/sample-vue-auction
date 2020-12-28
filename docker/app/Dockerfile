@@ -1,12 +1,9 @@
 FROM node:lts-alpine as builder
 RUN apk update && apk add --no-cache make git nodejs
 WORKDIR /app
-COPY package*.json ./
+COPY package*.json /app/
 RUN npm install
-COPY *.js ./
-COPY src ./src/
-COPY public ./public/
-COPY views ./views/
+COPY . .
 RUN npm run build
 
 FROM nginx:1.19.2-alpine-perl

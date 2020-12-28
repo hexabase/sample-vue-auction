@@ -57,6 +57,14 @@ spec:
           - name: syzygy-configs
             mountPath: /var/www/config.js
             subPath: config.js
+      - name: dnsmasq
+        image: "janeczku/go-dnsmasq:release-1.0.7"
+        args:
+          - --listen
+          - "127.0.0.1:53"
+          - --default-resolver
+          - --enable-search
+        resources: {}
       volumes:
         - name: syzygy-configs
           configMap:

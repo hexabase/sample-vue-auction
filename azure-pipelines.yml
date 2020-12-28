@@ -14,20 +14,35 @@ resources:
 - repo: self
 
 variables:
-  - name: dockerRegistryServiceConnection
-    value: '5b2c1a86-adaf-4fe6-84f9-536f844827fc'
-  - name: imageRepository
-    value: 'beee-syzygy'
-  - name: containerRegistry
-    value: 'hexabase.azurecr.io'
-  - name: dockerfilePath
-    value: 'docker/app/Dockerfile'
-  - name: tag
-    value: '$(Build.BuildNumber)'
-  - name: vmImageName
+  - group: docker-variables
+  - group: deploy-variables
+  - name: 'appName'
+    value: 'syzygy'
+  - name: 'chartName'
+    value: 'hx-syzygy'
+  - name: 'vmImageName'
     value: 'ubuntu-latest'
+  - name: 'dockerfilePath'
+    value: 'docker/app/Dockerfile'
+  - name: 'imageRepository'
+    value: 'syzygy'
+  - name: 'tag'
+    value: '$(Build.BuildNumber)'
 
 stages:
+- stage: UpdateBuildNumber
+  jobs:
+  - job: UpdateBuildNumber
+    steps:
+    - bash: |
+        echo "##vso[build.updatebuildnumber]$(System.PullRequest.SourceBranch).$(Build.BuildNumber)"
+      condition: eq(variables['Build.Reason'], 'PullRequest')
+      name: SetPRBuildName
+    - bash: |
+          echo "##vso[build.updatebuildnumber]$(Build.SourceBranchName).$(Build.BuildNumber)"
+      condition: ne(variables['Build.Reason'], 'PullRequest')
+      name: SetBranchBuildName
+
 - stage: Build
   displayName: Build stage
   jobs:  
@@ -36,6 +51,8 @@ stages:
     pool:
       vmImage: $(vmImageName)
     steps:
+    # - bash: printenv
+    #   displayName: List environment variables
     - task: Docker@2
       displayName: Build image
       inputs:
@@ -54,28 +71,37 @@ stages:
         containerRegistry: $(dockerRegistryServiceConnection)
         tags: |
           $(tag)
-    - publish: docker/k8s
-      artifact: manifests
+    - publish: helm/
+      artifact: helm
 
 - stage: Deploy
   displayName: Deploy stage
   dependsOn: Build
+  # exclude from PR validations
+  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
   jobs:
   - deployment: Deploy
     displayName: Deploy
     pool:
       vmImage: $(vmImageName)
-    environment: 'linker-staging.default'
+    environment: $(deployEnvironment_1)
     strategy:
       runOnce:
         deploy:
           steps:
           - task: KubernetesManifest@0
+            name: bake
+            displayName: Bake K8s manifests from Helm chart
+            inputs:
+              action: 'bake'
+              helmChart: $(Pipeline.Workspace)/helm/$(chartName)
+              releaseName: $(appName)
+              overrides: |
+                nodeSelector.agentpool:$(nodeSelectorAgentPool)
+                image.repository:$(containerRegistry)/$(imageRepository)
+                image.tag:$(Build.BuildNumber)
+          - task: KubernetesManifest@0
             displayName: Deploy to Kubernetes cluster
             inputs:
               action: deploy
-              manifests: |
-                $(Pipeline.Workspace)/manifests/deployments/syzygy-deploy-stg.yml
-                $(Pipeline.Workspace)/manifests/services/syzygy-svc.yml
-              containers: |
-                $(containerRegistry)/$(imageRepository):$(tag)
+              manifests: $(bake.manifestsBundle)
