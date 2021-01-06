@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}
+  labels:
+    {{- include "hx-syzygy.labels" . | nindent 4 }}
+    component: microservice
+    tier: frontend
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+  {{- range .Values.service.ports }}
+    - port: {{ .port }}
+      targetPort: {{ .targetPort }}
+      protocol: {{ .protocol }}
+      name: {{ .name | quote }}
+  {{- end }}
+  selector:
+    {{- include "hx-syzygy.selectorLabels" . | nindent 4 }}
+    component: microservice
+    tier: frontend

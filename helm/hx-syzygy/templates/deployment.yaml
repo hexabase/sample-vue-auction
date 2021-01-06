@@ -1,0 +1,101 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+  labels:
+    {{- include "hx-syzygy.labels" . | nindent 4 }}
+    component: microservice
+    tier: frontend
+spec:
+  progressDeadlineSeconds: 300
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "hx-syzygy.selectorLabels" . | nindent 6 }}
+      component: microservice
+      tier: frontend
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 100%
+      maxUnavailable: 0
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "hx-syzygy.selectorLabels" . | nindent 8 }}
+        component: microservice
+        tier: frontend
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      terminationGracePeriodSeconds: {{ .Values.podTerminationGracePeriodSeconds }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            successThreshold: 1
+            httpGet:
+              path: /health_check
+              port: http
+            initialDelaySeconds: 1
+            periodSeconds: 10
+            timeoutSeconds: 3
+          lifecycle:
+            preStop:
+              exec:
+                command: [ "/bin/sleep", "20" ]
+          env:
+            - name: NODE_ENV
+              value: {{ .Values.envVars.NODE_ENV | quote }}
+          {{- range $key, $val := .Values.extraEnvVars }}
+            - name: {{ $key }}
+              value: {{ $val | quote }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: syzygy-configs
+              mountPath: /var/www/config.js
+              subPath: config.js
+        - name: dnsmasq
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "janeczku/go-dnsmasq:release-1.0.7"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            - --listen
+            - "127.0.0.1:53"
+            - --default-resolver
+            - --enable-search
+      volumes:
+        - name: syzygy-configs
+          configMap:
+              name: syzygy-configs
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

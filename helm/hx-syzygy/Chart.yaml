@@ -1,0 +1,9 @@
+apiVersion: v2
+name: hx-syzygy
+description: A Helm chart for Hexabase syzygy
+
+type: application
+
+version: 0.1.0
+
+appVersion: 0.1.0
