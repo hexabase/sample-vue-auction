@@ -529,6 +529,14 @@
                 }
             }
         }
+
+        .pageHeader {
+            display: none !important;
+        }
+
+        .policy {
+            padding: 10px 0 !important;
+        }
     }
 
     &_text {
