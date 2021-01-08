@@ -286,7 +286,7 @@ export default {
         {
           conditions: [
             {
-              rpf_id: "0877fa61-b085-4df3-a184-9761d73db9ae",
+              id: "0877fa61-b085-4df3-a184-9761d73db9ae",
               search_value: [this.userId],
               exact_match: true
             }
@@ -443,7 +443,7 @@ export default {
             {
               conditions: [
                 {
-                  rpf_id: "0877fa61-b085-4df3-a184-9761d73db9ae",
+                  id: "0877fa61-b085-4df3-a184-9761d73db9ae",
                   search_value: [this.userId],
                   exact_match: true
                 }

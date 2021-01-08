@@ -1612,8 +1612,9 @@ export default {
           {
             conditions: [
               {
-                rpf_id: "d3e553f2-7281-47b7-96ef-3ac55a72f1ee",
-                search_value: [this.musicId]
+                id: "d3e553f2-7281-47b7-96ef-3ac55a72f1ee",
+                search_value: [this.musicId],
+                exact_match: true
               }
             ]
           }
