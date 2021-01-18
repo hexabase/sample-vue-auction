@@ -9,6 +9,7 @@ RUN npm run build
 FROM nginx:1.19.2-alpine-perl
 RUN apk add --no-cache nginx-mod-http-perl
 COPY docker/app/nginx.conf /etc/nginx/
+COPY docker/app/.htpasswd /etc/nginx/
 COPY --from=builder /app/dist /var/www
 
 ENV ENV "dev"
