@@ -135,7 +135,9 @@ export default {
   },
   created: async function() {},
   mounted: async function() {
-    this.userInfo = await this.getUserInfo();
+    let registerdUserInfo = await this.getUserInfo();
+    let mergedUserInfo = [{ ...this.userInfo[0], ...registerdUserInfo[0] }]; //ユーザ情報登録前は苗字・名前フィールドがない状態になるため
+    this.userInfo = mergedUserInfo;
     if (this.token) {
       this.userSeiKanji = this.userInfo[0].苗字;
       this.userMeiKanji = this.userInfo[0].名前;
@@ -266,23 +268,23 @@ export default {
       return result;
     },
     emittedNameKanji(value) {
-      console.log("漢字：", value);
+      // console.log("漢字：", value);
       this.userSeiKanji = value.split("　")[0];
       this.userMeiKanji = value.split("　")[1];
       this.userInfo[0]["苗字"] = this.userSeiKanji;
       this.userInfo[0]["名前"] = this.userMeiKanji;
-      console.log(this.userSeiKanji, this.userMeiKanji);
+      // console.log(this.userSeiKanji, this.userMeiKanji);
     },
     emittedMailAddress(value) {
-      console.log("メールアドレス：", value);
+      // console.log("メールアドレス：", value);
       this.mailAddress = value;
     },
     emittedTitle(value) {
-      console.log("タイトル：", value);
+      // console.log("タイトル：", value);
       this.title = value;
     },
     emittedContactInfo(value) {
-      console.log("問い合わせ内容：", value);
+      // console.log("問い合わせ内容：", value);
       this.contactInfo = value;
     }
   }
