@@ -2025,8 +2025,13 @@ export default {
     }
   },
   methods: {
+    showErrors(errors) {
+      let errorString = errors.join("\n");
+      alert(errorString);
+    },
     async moveStep(step) {
       console.log(step);
+      let errorList = [];
       switch (String(this.step)) {
         case "1":
           if (
@@ -2047,7 +2052,26 @@ export default {
                 !this.userSeiKana.match(/^[ァ-ヶー]+$/) ||
                 !this.userMeiKana.match(/^[ァ-ヶー]+$/)
               ) {
-                alert("カタカナで入力されていません");
+                errorList.push("カタカナで入力されていません。");
+                // alert("カタカナで入力されていません");
+                // return;
+              }
+              if (
+                this.userMobilePhoneNumber.length !== 11 ||
+                !this.userMobilePhoneNumber.match(/[0-9]/)
+              ) {
+                errorList.push(
+                  "携帯番号はハイフン無し11桁で入力してください。"
+                );
+              }
+              if (
+                this.userPostalCode.split("-")[0].length != 3 ||
+                this.userPostalCode.split("-")[1].length != 4
+              ) {
+                errorList.push("正しい郵便番号を入力してください。");
+              }
+              if (errorList.length > 0) {
+                this.showErrors(errorList);
                 return;
               }
               // loading overlay表示
@@ -2158,7 +2182,24 @@ export default {
                   .replace(/\s+/g, "")
                   .match(/^[ァ-ヶー]+$/)
               ) {
-                alert("カタカナで入力されていません");
+                // alert("カタカナで入力されていません");
+                // return;
+                errorList.push("カタカナで入力されていません");
+              }
+              if (
+                this.userBranchBankNumber.length > 3 ||
+                !this.userBranchBankNumber.match(/[0-9]/)
+              ) {
+                errorList.push("支店番号は半角数字3桁以内で入力してください。");
+              }
+              if (
+                this.userBankAccountNumber.length > 8 ||
+                !this.userBankAccountNumber.match(/[0-9]/)
+              ) {
+                errorList.push("口座番号は半角数字8桁以内で入力してください。");
+              }
+              if (errorList.length > 0) {
+                this.showErrors(errorList);
                 return;
               }
               // loading overlay表示

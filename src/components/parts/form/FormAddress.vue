@@ -23,6 +23,7 @@
             :value="value.zip1"
             :error-messages="errors"
             hint="数字３桁"
+            @keydown="zipKeydown($event, 'zip1')"
             @input="inputValue($event, 'zip1')"
             @blur="handleBlur"
           ></v-text-field>
@@ -44,6 +45,7 @@
             :value="value.zip2"
             :error-messages="errors"
             hint="数字4桁"
+            @keydown="zipKeydown($event, 'zip2')"
             @input="inputValue($event, 'zip2')"
             @blur="handleBlur"
           ></v-text-field>
@@ -270,6 +272,18 @@ export default {
     },
     handleBlur: function(e) {
       this.$emit("blur", e);
+    },
+    zipKeydown: function(e, name) {
+      if (/[-.]/.test(e.key)) {
+        e.preventDefault();
+        return;
+      }
+      let numPattern = /[0-9]/;
+      let numKeydown = numPattern.test(e.key);
+      let maxLength = name == "zip1" ? 2 : 3;
+      if (numKeydown && e.target.value.length > maxLength) {
+        e.preventDefault();
+      }
     }
   }
 };
