@@ -72,4 +72,4 @@ spec:
           configMap:
               name: syzygy-configs
       nodeSelector:
-        type: nodehx
+        type: nodehxpart
