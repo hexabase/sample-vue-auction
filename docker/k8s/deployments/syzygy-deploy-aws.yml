@@ -29,7 +29,7 @@ spec:
       terminationGracePeriodSeconds: 600
       containers:
       - name: beee-syzygy
-        image: hexabase.azurecr.io/beee-syzygy
+        image: 348686912638.dkr.ecr.ap-northeast-1.amazonaws.com/beee-syzygy:latest
         readinessProbe:
           failureThreshold: 3
           successThreshold: 1
