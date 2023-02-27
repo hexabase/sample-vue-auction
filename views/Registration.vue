@@ -136,8 +136,7 @@ export default {
               }
             ],
             domain: window.env.VUE_APP_BASEURL, //az-baton.hexabase.com
-            invitation_path: "signup",
-            email_templates_id: window.env.VUE_APP_ET_ID //et_id
+            invitation_path: "signup"
           });
           this.sendResult = await this.$hexalink.inviteUser(this.token, params);
           this.errorMess = "";

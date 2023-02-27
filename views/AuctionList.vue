@@ -167,13 +167,20 @@ export default {
         return diff > 0;
       });
       var auctionBidReport = {};
-      auctionBidReport = await this.$hexalink.getPublicReports(
-        window.env.VUE_APP_APPLICATION_ID,
-        window.env.report.VUE_APP_AUCTIONLISTREPORT_ID,
-        {
+      const params = {
+        workspace_id: window.env.VUE_APP_WORKSPACE_ID,
+        url:
+          "/api/v0/applications/" +
+          window.env.VUE_APP_APPLICATION_ID +
+          "/reports/" +
+          window.env.report.VUE_APP_AUCTIONLISTREPORT_ID +
+          "/filter",
+        method: "POST",
+        params: {
           conditions: []
         }
-      );
+      };
+      auctionBidReport = await this.$hexalink.unauthorizedCall(params);
       // const distributionList = await this.getDistributionList();
       // const distributionListGroup = distributionList.reduce(function(
       //   result,
@@ -204,10 +211,12 @@ export default {
         );
         const image1Binary = this.auctionList[listKey].image1;
         if (image1Binary) {
-          const ab = await this.$hexalink.getPublicFile(
-            image1Binary,
-            window.env.VUE_APP_WORKSPACE_ID
-          );
+          const params = {
+            workspace_id: window.env.VUE_APP_WORKSPACE_ID,
+            url: "/api/v0/files/" + image1Binary,
+            method: "GET"
+          };
+          const ab = await this.$hexalink.unauthorizedCallFile(params);
           const blob = new Blob([ab], { type: "image/jpeg" });
           this.auctionList[listKey].image1 = window.URL.createObjectURL(blob);
         } else {
@@ -267,10 +276,16 @@ export default {
   },
   methods: {
     async getAuctionList(searchConditonApplicabilityOnHomepage) {
-      return await this.$hexalink.getPublicItems(
-        window.env.VUE_APP_APPLICATION_ID,
-        window.env.table.VUE_APP_COPYRIGHTTABLE_ID,
-        {
+      const params = {
+        workspace_id: window.env.VUE_APP_WORKSPACE_ID,
+        url:
+          "/api/v0/applications/" +
+          window.env.VUE_APP_APPLICATION_ID +
+          "/datastores/" +
+          window.env.table.VUE_APP_COPYRIGHTTABLE_ID +
+          "/items/search",
+        method: "POST",
+        params: {
           conditions: [
             {
               id: "HPに掲載可否", // Hexalink画⾯で⼊⼒したIDを指定
@@ -283,13 +298,20 @@ export default {
           sort_field_id: "オークション終了時間", // Hexalink画⾯で⼊⼒したIDを指定
           sort_order: "asc"
         }
-      );
+      };
+      return (await this.$hexalink.unauthorizedCall(params)).items;
     },
     async getClosedAuctionList() {
-      return await this.$hexalink.getPublicItems(
-        window.env.VUE_APP_APPLICATION_ID,
-        window.env.table.VUE_APP_COPYRIGHTTABLE_ID,
-        {
+      const params = {
+        workspace_id: window.env.VUE_APP_WORKSPACE_ID,
+        url:
+          "/api/v0/applications/" +
+          window.env.VUE_APP_APPLICATION_ID +
+          "/datastores/" +
+          window.env.table.VUE_APP_COPYRIGHTTABLE_ID +
+          "/items/search",
+        method: "POST",
+        params: {
           conditions: [
             {
               id: "オークション状況", // Hexalink画⾯で⼊⼒したIDを指定
@@ -301,15 +323,22 @@ export default {
           per_page: 9000,
           use_display_id: true
         }
-      );
+      };
+      return (await this.$hexalink.unauthorizedCall(params)).items;
     },
     async getDistributionList(musicId) {
       let searchFrom = "";
       let searchTo = "";
-      const latestRecord = await this.$hexalink.getPublicItems(
-        window.env.VUE_APP_APPLICATION_ID,
-        window.env.table.VUE_APP_COPYRIGHTDISTRIBUTIONTABLE_ID,
-        {
+      const params = {
+        workspace_id: window.env.VUE_APP_WORKSPACE_ID,
+        url:
+          "/api/v0/applications/" +
+          window.env.VUE_APP_APPLICATION_ID +
+          "/datastores/" +
+          window.env.table.VUE_APP_COPYRIGHTDISTRIBUTIONTABLE_ID +
+          "/items/search",
+        method: "POST",
+        params: {
           conditions: [
             {
               id: "著作権番号", // Hexalink画⾯で⼊⼒したIDを指定
@@ -323,7 +352,9 @@ export default {
           sort_field_id: "日付", // Hexalink画⾯で⼊⼒したIDを指定
           sort_order: "desc"
         }
-      );
+      };
+      const latestRecord = (await this.$hexalink.unauthorizedCall(params))
+        .items;
       if (!latestRecord.length > 0) return [];
       const jstMonth = moment(latestRecord[0].日付)
         .tz("Asia/Tokyo")
@@ -382,10 +413,16 @@ export default {
             "Z";
           break;
       }
-      const distributionTargetSeasonList = await this.$hexalink.getPublicItems(
-        window.env.VUE_APP_APPLICATION_ID,
-        window.env.table.VUE_APP_COPYRIGHTDISTRIBUTIONTABLE_ID,
-        {
+      const paramsDate = {
+        workspace_id: window.env.VUE_APP_WORKSPACE_ID,
+        url:
+          "/api/v0/applications/" +
+          window.env.VUE_APP_APPLICATION_ID +
+          "/datastores/" +
+          window.env.table.VUE_APP_COPYRIGHTDISTRIBUTIONTABLE_ID +
+          "/items/search",
+        method: "POST",
+        params: {
           conditions: [
             {
               id: "著作権番号", // Hexalink画⾯で⼊⼒したIDを指定
@@ -401,6 +438,9 @@ export default {
           per_page: 9000,
           use_display_id: true
         }
+      };
+      const distributionTargetSeasonList = await this.$hexalink.unauthorizedCall(
+        paramsDate
       );
       const distributionTargetSeasonListGroupQuarter = this.groupByQuarter(
         distributionTargetSeasonList

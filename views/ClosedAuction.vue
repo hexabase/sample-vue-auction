@@ -94,20 +94,29 @@ export default {
         return diff < 0;
       });
       var auctionBidReport = {};
-      auctionBidReport = await this.$hexalink.getPublicReports(
-        window.env.VUE_APP_APPLICATION_ID,
-        window.env.report.VUE_APP_AUCTIONLISTREPORT_ID,
-        {
+      const params = {
+        workspace_id: window.env.VUE_APP_WORKSPACE_ID,
+        url:
+          "/api/v0/applications/" +
+          window.env.VUE_APP_APPLICATION_ID +
+          "/reports/" +
+          window.env.report.VUE_APP_AUCTIONLISTREPORT_ID +
+          "/filter",
+        method: "POST",
+        params: {
           conditions: []
         }
-      );
+      };
+      auctionBidReport = await this.$hexalink.unauthorizedCall(params);
       for (const listKey in this.auctionList) {
         const image1Binary = this.auctionList[listKey].image1;
         if (image1Binary) {
-          const ab = await this.$hexalink.getPublicFile(
-            image1Binary,
-            window.env.VUE_APP_WORKSPACE_ID
-          );
+          const params = {
+            workspace_id: window.env.VUE_APP_WORKSPACE_ID,
+            url: "/api/v0/files/" + image1Binary,
+            method: "GET"
+          };
+          const ab = await this.$hexalink.unauthorizedCallFile(params);
           const blob = new Blob([ab], { type: "image/jpeg" });
           this.auctionList[listKey].image1 = window.URL.createObjectURL(blob);
         } else {
@@ -158,23 +167,29 @@ export default {
   },
   methods: {
     async getClosedAuctionList() {
-      return await this.$hexalink.getPublicItems(
-        window.env.VUE_APP_APPLICATION_ID,
-        window.env.table.VUE_APP_COPYRIGHTTABLE_ID,
-        {
+      const params = {
+        workspace_id: window.env.VUE_APP_WORKSPACE_ID,
+        url:
+          "/api/v0/applications/" +
+          window.env.VUE_APP_APPLICATION_ID +
+          "/datastores/" +
+          window.env.table.VUE_APP_COPYRIGHTTABLE_ID +
+          "/items/search",
+        method: "POST",
+        params: {
           conditions: [
             {
-              id: "HPに掲載可否", // Hexalink画⾯で⼊⼒したIDを指定
-              search_value: ["掲載する"]
+              id: "オークション状況", // Hexalink画⾯で⼊⼒したIDを指定
+              search_value: ["オークション完了"],
+              exact_match: true // 完全⼀致で検索
             }
           ],
           page: 1,
           per_page: 9000,
-          use_display_id: true,
-          sort_field_id: "オークション終了時間", // Hexalink画⾯で⼊⼒したIDを指定
-          sort_order: "desc"
+          use_display_id: true
         }
-      );
+      };
+      return (await this.$hexalink.unauthorizedCall(params)).items;
     },
     selectItem(musicId) {
       this.$router.push("/auctionbid/" + musicId);
