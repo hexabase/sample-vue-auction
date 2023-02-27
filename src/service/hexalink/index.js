@@ -670,6 +670,26 @@ export default {
           config
         );
         return result.data.result;
+      },
+      async unauthorizedCall(params) {
+        let config = JSON.parse(JSON.stringify(defaultConfig));
+        const result = await axios.post(
+          `/linker-api/auth/unauthorized-call`,
+          params,
+          config
+        );
+        return result.data;
+      },
+      async unauthorizedCallFile(params) {
+        let config = JSON.parse(JSON.stringify(defaultConfig));
+        config.headers["content-type"] = "text/plain";
+        config["responseType"] = "arraybuffer";
+        const result = await axios.post(
+          `/linker-api/auth/unauthorized-call`,
+          params,
+          config
+        );
+        return result.data;
       }
     };
   }

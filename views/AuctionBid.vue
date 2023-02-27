@@ -877,10 +877,16 @@ export default {
       }
     },
     async getAuctionBidList() {
-      return await this.$hexalink.getPublicItems(
-        window.env.VUE_APP_APPLICATION_ID,
-        window.env.table.VUE_APP_AUCTIONBIDTABLE_ID,
-        {
+      const params = {
+        workspace_id: window.env.VUE_APP_WORKSPACE_ID,
+        url:
+          "/api/v0/applications/" +
+          window.env.VUE_APP_APPLICATION_ID +
+          "/datastores/" +
+          window.env.table.VUE_APP_AUCTIONBIDTABLE_ID +
+          "/items/search",
+        method: "POST",
+        params: {
           conditions: [
             {
               id: "著作権番号", // Hexalink画⾯で⼊⼒したIDを指定
@@ -897,7 +903,8 @@ export default {
           per_page: 9000,
           use_display_id: true
         }
-      );
+      };
+      return (await this.$hexalink.unauthorizedCall(params)).items;
     },
     async getTransactionList() {
       return await this.$hexalink.getItems(
@@ -924,10 +931,16 @@ export default {
       );
     },
     async getDistributionList() {
-      return await this.$hexalink.getPublicItems(
-        window.env.VUE_APP_APPLICATION_ID,
-        window.env.table.VUE_APP_COPYRIGHTDISTRIBUTIONTABLE_ID,
-        {
+      const params = {
+        workspace_id: window.env.VUE_APP_WORKSPACE_ID,
+        url:
+          "/api/v0/applications/" +
+          window.env.VUE_APP_APPLICATION_ID +
+          "/datastores/" +
+          window.env.table.VUE_APP_COPYRIGHTDISTRIBUTIONTABLE_ID +
+          "/items/search",
+        method: "POST",
+        params: {
           conditions: [
             {
               id: "著作権番号", // Hexalink画⾯で⼊⼒したIDを指定
@@ -951,16 +964,23 @@ export default {
           per_page: 9000,
           use_display_id: true
         }
-      );
+      };
+      return (await this.$hexalink.unauthorizedCall(params)).items;
     },
     async getDistributionListCurrentYear() {
       let searchFrom = "";
       let searchTo = "";
       // 最新の対象楽曲分配金レコードを取得
-      const latestRecord = await this.$hexalink.getPublicItems(
-        window.env.VUE_APP_APPLICATION_ID,
-        window.env.table.VUE_APP_COPYRIGHTDISTRIBUTIONTABLE_ID,
-        {
+      const params = {
+        workspace_id: window.env.VUE_APP_WORKSPACE_ID,
+        url:
+          "/api/v0/applications/" +
+          window.env.VUE_APP_APPLICATION_ID +
+          "/datastores/" +
+          window.env.table.VUE_APP_COPYRIGHTDISTRIBUTIONTABLE_ID +
+          "/items/search",
+        method: "POST",
+        params: {
           conditions: [
             {
               id: "著作権番号", // Hexalink画⾯で⼊⼒したIDを指定
@@ -974,7 +994,9 @@ export default {
           sort_field_id: "日付", // Hexalink画⾯で⼊⼒したIDを指定
           sort_order: "desc"
         }
-      );
+      };
+      const latestRecord = (await this.$hexalink.unauthorizedCall(params))
+        .items;
       if (!latestRecord.length > 0) return [];
       const jstMonth = moment(latestRecord[0].日付)
         .tz("Asia/Tokyo")
@@ -1033,10 +1055,16 @@ export default {
             "Z";
           break;
       }
-      return await this.$hexalink.getPublicItems(
-        window.env.VUE_APP_APPLICATION_ID,
-        window.env.table.VUE_APP_COPYRIGHTDISTRIBUTIONTABLE_ID,
-        {
+      const paramsDate = {
+        workspace_id: window.env.VUE_APP_WORKSPACE_ID,
+        url:
+          "/api/v0/applications/" +
+          window.env.VUE_APP_APPLICATION_ID +
+          "/datastores/" +
+          window.env.table.VUE_APP_COPYRIGHTDISTRIBUTIONTABLE_ID +
+          "/items/search",
+        method: "POST",
+        params: {
           conditions: [
             {
               id: "著作権番号", // Hexalink画⾯で⼊⼒したIDを指定
@@ -1052,7 +1080,8 @@ export default {
           per_page: 9000,
           use_display_id: true
         }
-      );
+      };
+      return await this.$hexalink.unauthorizedCall(paramsDate);
     },
     async doSend() {
       try {
@@ -1414,10 +1443,16 @@ export default {
           this.confirmDeliveryDocumentFlag3 = false;
         }
         var dataLists = [];
-        dataLists = await this.$hexalink.getPublicItems(
-          window.env.VUE_APP_APPLICATION_ID,
-          window.env.table.VUE_APP_COPYRIGHTTABLE_ID,
-          {
+        const params = {
+          workspace_id: window.env.VUE_APP_WORKSPACE_ID,
+          url:
+            "/api/v0/applications/" +
+            window.env.VUE_APP_APPLICATION_ID +
+            "/datastores/" +
+            window.env.table.VUE_APP_COPYRIGHTTABLE_ID +
+            "/items/search",
+          method: "POST",
+          params: {
             conditions: [
               {
                 id: "著作権番号", // Hexalink画⾯で⼊⼒したIDを指定
@@ -1429,7 +1464,8 @@ export default {
             per_page: 9000,
             use_display_id: true
           }
-        );
+        };
+        dataLists = (await this.$hexalink.unauthorizedCall(params)).items;
         if (dataLists.length == 0 || dataLists[0].HPに掲載可否 != "掲載する") {
           this.$router.push("/notFound");
           return;
@@ -1505,20 +1541,24 @@ export default {
 
         const image1Binary = dataLists[0].image1;
         if (image1Binary) {
-          const ab = await this.$hexalink.getPublicFile(
-            image1Binary,
-            window.env.VUE_APP_WORKSPACE_ID
-          );
+          const params = {
+            workspace_id: window.env.VUE_APP_WORKSPACE_ID,
+            url: "/api/v0/files/" + image1Binary,
+            method: "GET"
+          };
+          const ab = await this.$hexalink.unauthorizedCallFile(params);
           const blob = new Blob([ab], { type: "image/jpeg" });
           this.image1 = window.URL.createObjectURL(blob);
         } else {
           this.image1 = "";
         }
         if (dataLists[0].交付書面PDF1) {
-          const ab = await this.$hexalink.getPublicFile(
-            dataLists[0].交付書面PDF1,
-            window.env.VUE_APP_WORKSPACE_ID
-          );
+          const params = {
+            workspace_id: window.env.VUE_APP_WORKSPACE_ID,
+            url: "/api/v0/files/" + dataLists[0].交付書面PDF1,
+            method: "GET"
+          };
+          const ab = await this.$hexalink.unauthorizedCallFile(params);
           const buf = Buffer.alloc(ab.byteLength);
           const view = new Uint8Array(ab);
           for (let i = 0; i < buf.length; ++i) {
@@ -1531,10 +1571,12 @@ export default {
           this.confirmDeliveryDocumentFlag1 = true;
         }
         if (dataLists[0].交付書面PDF2) {
-          const ab = await this.$hexalink.getPublicFile(
-            dataLists[0].交付書面PDF2,
-            window.env.VUE_APP_WORKSPACE_ID
-          );
+          const params = {
+            workspace_id: window.env.VUE_APP_WORKSPACE_ID,
+            url: "/api/v0/files/" + dataLists[0].交付書面PDF2,
+            method: "GET"
+          };
+          const ab = await this.$hexalink.unauthorizedCallFile(params);
           const buf = Buffer.alloc(ab.byteLength);
           const view = new Uint8Array(ab);
           for (let i = 0; i < buf.length; ++i) {
@@ -1547,10 +1589,12 @@ export default {
           this.confirmDeliveryDocumentFlag2 = true;
         }
         if (dataLists[0].交付書面PDF3) {
-          const ab = await this.$hexalink.getPublicFile(
-            dataLists[0].交付書面PDF3,
-            window.env.VUE_APP_WORKSPACE_ID
-          );
+          const params = {
+            workspace_id: window.env.VUE_APP_WORKSPACE_ID,
+            url: "/api/v0/files/" + dataLists[0].交付書面PDF3,
+            method: "GET"
+          };
+          const ab = await this.$hexalink.unauthorizedCallFile(params);
           const buf = Buffer.alloc(ab.byteLength);
           const view = new Uint8Array(ab);
           for (let i = 0; i < buf.length; ++i) {
@@ -1579,10 +1623,16 @@ export default {
         }
 
         var auctionLists = [];
-        auctionLists = await this.$hexalink.getPublicReports(
-          window.env.VUE_APP_APPLICATION_ID,
-          window.env.report.VUE_APP_AUCTIONBIDAGGREGATIONREPORT_ID,
-          {
+        const paramsReport = {
+          workspace_id: window.env.VUE_APP_WORKSPACE_ID,
+          url:
+            "/api/v0/applications/" +
+            window.env.VUE_APP_APPLICATION_ID +
+            "/reports/" +
+            window.env.report.VUE_APP_AUCTIONBIDAGGREGATIONREPORT_ID +
+            "/filter",
+          method: "POST",
+          params: {
             conditions: [
               {
                 id: "d3e553f2-7281-47b7-96ef-3ac55a72f1ee",
@@ -1591,7 +1641,8 @@ export default {
               }
             ]
           }
-        );
+        };
+        auctionLists = await this.$hexalink.unauthorizedCall(paramsReport);
 
         var auctionListsGroupSort = auctionLists.report_results.sort(function(
           a,

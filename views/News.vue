@@ -104,10 +104,16 @@ export default {
       );
     },
     async getNewsList() {
-      return await this.$hexalink.getPublicItems(
-        window.env.VUE_APP_APPLICATION_ID,
-        window.env.table.VUE_APP_NEWSTABLE_ID,
-        {
+      const params = {
+        workspace_id: window.env.VUE_APP_WORKSPACE_ID,
+        url:
+          "/api/v0/applications/" +
+          window.env.VUE_APP_APPLICATION_ID +
+          "/datastores/" +
+          window.env.table.VUE_APP_NEWSTABLE_ID +
+          "/items/search",
+        method: "POST",
+        params: {
           conditions: [],
           page: 1,
           per_page: 9000,
@@ -115,7 +121,8 @@ export default {
           sort_field_id: "日付", // Hexalink画⾯で⼊⼒したIDを指定
           sort_order: "desc"
         }
-      );
+      };
+      return (await this.$hexalink.unauthorizedCall(params)).items;
       // return await this.$hexalink.getItems(
       //   this.token,
       //   window.env.VUE_APP_APPLICATION_ID,
