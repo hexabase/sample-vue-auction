@@ -9,6 +9,8 @@ const defaultConfig = {
   }
 };
 
+const apiDomain = "https://az-api.hexabase.com/api/v0";
+
 export default {
   install(Vue) {
     Vue.prototype.$hexalink = {
@@ -25,13 +27,13 @@ export default {
           email: email,
           password: password
         };
-        const result = await axios.post("/linker-api/login", params, config);
+        const result = await axios.post(`${apiDomain}/login`, params, config);
         return result.data.token;
       },
       async logout(token) {
         let config = JSON.parse(JSON.stringify(defaultConfig));
         config.headers["Authorization"] = `Bearer ${token}`;
-        await axios.post("/linker-api/users/logout", {}, config);
+        await axios.post(`${apiDomain}/users/logout`, {}, config);
       },
       /**
        * ログインユーザーIDを取得
@@ -42,7 +44,7 @@ export default {
       async getCurrentUserName(token) {
         let config = JSON.parse(JSON.stringify(defaultConfig));
         config.headers["Authorization"] = `Bearer ${token}`;
-        const result = await axios.get("/linker-api/userinfo", config);
+        const result = await axios.get(`${apiDomain}/userinfo`, config);
         return result.data.username;
       },
       /**
@@ -64,7 +66,7 @@ export default {
         let config = JSON.parse(JSON.stringify(defaultConfig));
         config.headers["Authorization"] = `Bearer ${token}`;
         const result = await axios.post(
-          `/linker-api/applications/${applicationId}/datastores/${datastoreId}/items/search`,
+          `${apiDomain}/applications/${applicationId}/datastores/${datastoreId}/items/search`,
           {
             conditions: [
               {
@@ -93,7 +95,7 @@ export default {
       async getWorkspaces(token) {
         let config = JSON.parse(JSON.stringify(defaultConfig));
         config.headers["Authorization"] = `Bearer ${token}`;
-        const result = await axios.get("/linker-api/workspaces", config);
+        const result = await axios.get(`${apiDomain}/workspaces`, config);
         return result.data.workspaces;
       },
       /**
@@ -107,7 +109,7 @@ export default {
         let config = JSON.parse(JSON.stringify(defaultConfig));
         config.headers["Authorization"] = `Bearer ${token}`;
         const result = await axios.get(
-          `/linker-api/workspaces/${workspaceId}/applications`,
+          `${apiDomain}/workspaces/${workspaceId}/applications`,
           config
         );
         return result.data;
@@ -124,7 +126,7 @@ export default {
         let config = JSON.parse(JSON.stringify(defaultConfig));
         config.headers["Authorization"] = `Bearer ${token}`;
         const result = await axios.get(
-          `/linker-api/applications/${applicationId}/datastores/${datastoreId}/fields`,
+          `${apiDomain}/applications/${applicationId}/datastores/${datastoreId}/fields`,
           config
         );
         return result.data.fields;
@@ -142,7 +144,7 @@ export default {
         let config = JSON.parse(JSON.stringify(defaultConfig));
         config.headers["Authorization"] = `Bearer ${token}`;
         const result = await axios.post(
-          `/linker-api/applications/${applicationId}/datastores/${datastoreId}/items/search`,
+          `${apiDomain}/applications/${applicationId}/datastores/${datastoreId}/items/search`,
           params,
           config
         );
@@ -159,7 +161,7 @@ export default {
       async getPublicItems(applicationId, datastoreId, params) {
         let config = JSON.parse(JSON.stringify(defaultConfig));
         const result = await axios.post(
-          `/linker-api/applications/${applicationId}/datastores/${datastoreId}/items/search`,
+          `${apiDomain}/applications/${applicationId}/datastores/${datastoreId}/items/search`,
           params,
           config
         );
@@ -178,7 +180,7 @@ export default {
         let config = JSON.parse(JSON.stringify(defaultConfig));
         config.headers["Authorization"] = `Bearer ${token}`;
         const result = await axios.post(
-          `/linker-api/applications/${applicationId}/datastores/${datastoreId}/items/search`,
+          `${apiDomain}/applications/${applicationId}/datastores/${datastoreId}/items/search`,
           params,
           config
         );
@@ -196,7 +198,7 @@ export default {
         let config = JSON.parse(JSON.stringify(defaultConfig));
         config.headers["Authorization"] = `Bearer ${token}`;
         const result = await axios.get(
-          `/linker-api/datastores/${datastoreId}/items/${itemId}`,
+          `${apiDomain}/datastores/${datastoreId}/items/${itemId}`,
           config
         );
         return result.data.field_values;
@@ -211,7 +213,7 @@ export default {
         let config = JSON.parse(JSON.stringify(defaultConfig));
         config.headers["Authorization"] = `Bearer ${token}`;
         const result = await axios.get(
-          `/linker-api/datastores/${datastoreId}/items/${itemId}`,
+          `${apiDomain}/datastores/${datastoreId}/items/${itemId}`,
           config
         );
         console.log("getActionList", result);
@@ -230,7 +232,7 @@ export default {
         let config = JSON.parse(JSON.stringify(defaultConfig));
         config.headers["Authorization"] = `Bearer ${token}`;
         const result = await axios.post(
-          `/linker-api/applications/${applicationId}/datastores/${datastoreId}/items/search`,
+          `${apiDomain}/applications/${applicationId}/datastores/${datastoreId}/items/search`,
           {
             conditions: [],
             page: 1,
@@ -256,7 +258,7 @@ export default {
         let config = JSON.parse(JSON.stringify(defaultConfig));
         config.headers["Authorization"] = `Bearer ${token}`;
         const result = await axios.post(
-          `/linker-api/items/${itemId}/actions/${actionId}`,
+          `${apiDomain}/items/${itemId}/actions/${actionId}`,
           params,
           config
         );
@@ -275,7 +277,7 @@ export default {
         config.headers["Authorization"] = `Bearer ${token}`;
         config.headers["content-type"] = "text/plain";
         config["responseType"] = "arraybuffer";
-        const result = await axios.get(`/linker-api/files/${fileId}`, config);
+        const result = await axios.get(`${apiDomain}/files/${fileId}`, config);
         return result.data;
       },
       /**
@@ -290,7 +292,7 @@ export default {
         config.headers["content-type"] = "text/plain";
         config["responseType"] = "arraybuffer";
         const result = await axios.get(
-          `/linker-api/files/${fileId}/${workspaceId}`,
+          `${apiDomain}/files/${fileId}/${workspaceId}`,
           config
         );
         return result.data;
@@ -307,7 +309,7 @@ export default {
         let config = JSON.parse(JSON.stringify(defaultConfig));
         config.headers["Authorization"] = `Bearer ${token}`;
         const result = await axios.post(
-          `/linker-api/applications/${applicationId}/datastores/${datastoreId}/items/new`,
+          `${apiDomain}/applications/${applicationId}/datastores/${datastoreId}/items/new`,
           params,
           config
         );
@@ -318,7 +320,7 @@ export default {
         let config = JSON.parse(JSON.stringify(defaultConfig));
         config.headers["Authorization"] = `Bearer ${token}`;
         const result = await axios.post(
-          `/linker-api/applications/${applicationId}/datastores/${datastoreId}/items/new`,
+          `${apiDomain}/applications/${applicationId}/datastores/${datastoreId}/items/new`,
           params,
           config
         );
@@ -344,7 +346,7 @@ export default {
         console.log("params", params);
         config.headers["Authorization"] = `Bearer ${token}`;
         const result = await axios.post(
-          `/linker-api/applications/${applicationId}/datastores/${datastoreId}/items/edit/${itemId}`,
+          `${apiDomain}/applications/${applicationId}/datastores/${datastoreId}/items/edit/${itemId}`,
           params,
           config
         );
@@ -354,7 +356,7 @@ export default {
         let config = JSON.parse(JSON.stringify(defaultConfig));
         config.headers["Authorization"] = `Bearer ${token}`;
         const result = await axios.post(
-          `/linker-api/items/${itemId}/fields/${fieldId}/attachments`,
+          `${apiDomain}/items/${itemId}/fields/${fieldId}/attachments`,
           formData,
           config
         );
@@ -365,7 +367,7 @@ export default {
         let config = JSON.parse(JSON.stringify(defaultConfig));
         config.headers["Authorization"] = `Bearer ${token}`;
         const result = await axios.delete(
-          `/linker-api/items/${itemId}/fields/${fieldId}/attachments/${fileId}`,
+          `${apiDomain}/items/${itemId}/fields/${fieldId}/attachments/${fileId}`,
           config
         );
         console.log("deleteFile", result);
@@ -380,7 +382,7 @@ export default {
       async getUserInfo(token) {
         let config = JSON.parse(JSON.stringify(defaultConfig));
         config.headers["Authorization"] = `Bearer ${token}`;
-        const result = await axios.get(`/linker-api/userinfo`, config);
+        const result = await axios.get(`${apiDomain}/userinfo`, config);
         return result;
       },
       /**
@@ -393,7 +395,7 @@ export default {
         var headers = {};
         headers["Authorization"] = `Bearer ${token}`;
         const result = await axios.delete(
-          `/linker-api/applications/${applicationId}/datastores/${datastoreId}/items/delete/${itemId} `,
+          `${apiDomain}/applications/${applicationId}/datastores/${datastoreId}/items/delete/${itemId} `,
           { headers, data: {} }
         );
         return result;
@@ -407,7 +409,7 @@ export default {
       async getGroupTree(token) {
         let config = JSON.parse(JSON.stringify(defaultConfig));
         config.headers["Authorization"] = `Bearer ${token}`;
-        const result = await axios.get("/linker-api/grouptree", config);
+        const result = await axios.get(`${apiDomain}/grouptree`, config);
         return result.data.result;
       },
       /**
@@ -421,7 +423,7 @@ export default {
         let config = JSON.parse(JSON.stringify(defaultConfig));
         config.headers["Authorization"] = `Bearer ${token}`;
         const result = await axios.post(
-          `/linker-api/userinvite`,
+          `${apiDomain}/userinvite`,
           params,
           config
         );
@@ -438,7 +440,7 @@ export default {
         let config = JSON.parse(JSON.stringify(defaultConfig));
         config.headers["Authorization"] = `Bearer ${token}`;
         const result = await axios.post(
-          `/linker-api/userinvite`,
+          `${apiDomain}/userinvite`,
           params,
           config
         );
@@ -454,7 +456,7 @@ export default {
       async createUser(token, params) {
         let config = JSON.parse(JSON.stringify(defaultConfig));
         config.headers["Authorization"] = `Bearer ${token}`;
-        const result = await axios.post(`/linker-api/users`, params, config);
+        const result = await axios.post(`${apiDomain}/users`, params, config);
         return result;
       },
       /**
@@ -468,7 +470,7 @@ export default {
         let config = JSON.parse(JSON.stringify(defaultConfig));
         config.headers["Authorization"] = `Bearer ${token}`;
         const result = await axios.post(
-          `/linker-api/users/registration`,
+          `${apiDomain}/users/registration`,
           params,
           config
         );
@@ -482,7 +484,7 @@ export default {
       async deleteUsers(token, params) {
         var headers = {};
         headers["Authorization"] = `Bearer ${token}`;
-        const result = await axios.delete(`/linker-api/users`, {
+        const result = await axios.delete(`${apiDomain}/users`, {
           headers,
           data: params
         });
@@ -499,7 +501,7 @@ export default {
         let config = JSON.parse(JSON.stringify(defaultConfig));
         config.headers["Authorization"] = `Bearer ${token}`;
         const result = await axios.get(
-          `/linker-api/datastores/${datastoreId}/items/${itemId}/links/${linkedDatastoreId}`,
+          `${apiDomain}/datastores/${datastoreId}/items/${itemId}/links/${linkedDatastoreId}`,
           config
         );
         return result.data.items;
@@ -510,7 +512,7 @@ export default {
        */
       async getConfirmUserData(confirmatioId) {
         const result = await axios.get(
-          `/linker-api/users/registration/confirm?id=${confirmatioId}`
+          `${apiDomain}/users/registration/confirm?id=${confirmatioId}`
         );
         return result;
       },
@@ -520,7 +522,7 @@ export default {
        */
       async confirmUser(param) {
         const result = await axios.post(
-          `/linker-api/users/registration/confirm`,
+          `${apiDomain}/users/registration/confirm`,
           param
         );
         return result;
@@ -530,7 +532,7 @@ export default {
        */
       async getConfirmations() {
         let config = JSON.parse(JSON.stringify(defaultConfig));
-        const result = await axios.post(`/linker-api/confirmations`, config);
+        const result = await axios.post(`${apiDomain}/confirmations`, config);
         return result.data.confirmation_id;
       },
       /*
@@ -539,7 +541,7 @@ export default {
        */
       async resetPassword(param) {
         const result = await axios.post(
-          `/linker-api/users/password/forgot`,
+          `${apiDomain}/users/password/forgot`,
           param
         );
         return result;
@@ -550,7 +552,7 @@ export default {
        */
       async setNewPassword(param) {
         const result = await axios.put(
-          `/linker-api/users/password/forgot`,
+          `${apiDomain}/users/password/forgot`,
           param
         );
         return result;
@@ -563,7 +565,7 @@ export default {
         let config = JSON.parse(JSON.stringify(defaultConfig));
         config.headers["Authorization"] = `Bearer ${token}`;
         const result = await axios.put(
-          `/linker-api/users/password`,
+          `${apiDomain}/users/password`,
           param,
           config
         );
@@ -577,7 +579,7 @@ export default {
         let config = JSON.parse(JSON.stringify(defaultConfig));
         config.headers["Authorization"] = `Bearer ${token}`;
         const result = await axios.post(
-          `/linker-api/users/email`,
+          `${apiDomain}/users/email`,
           param,
           config
         );
@@ -592,7 +594,7 @@ export default {
         let config = JSON.parse(JSON.stringify(defaultConfig));
         config.headers["Authorization"] = `Bearer ${token}`;
         const result = await axios.get(
-          `/linker-api/users/confirmations/${confirmationId}`,
+          `${apiDomain}/users/confirmations/${confirmationId}`,
           config
         );
         return result;
@@ -605,7 +607,7 @@ export default {
         let config = JSON.parse(JSON.stringify(defaultConfig));
         config.headers["Authorization"] = `Bearer ${token}`;
         const result = await axios.post(
-          `/linker-api/users/confirmations`,
+          `${apiDomain}/users/confirmations`,
           param,
           config
         );
@@ -621,7 +623,7 @@ export default {
         let config = JSON.parse(JSON.stringify(defaultConfig));
         config.headers["Authorization"] = `Bearer ${token}`;
         const result = await axios.get(
-          `/linker-api/groups/${groupId}/users?recursive=${recursive}`,
+          `${apiDomain}/groups/${groupId}/users?recursive=${recursive}`,
           config
         );
         return result;
@@ -639,7 +641,7 @@ export default {
         let config = JSON.parse(JSON.stringify(defaultConfig));
         config.headers["Authorization"] = `Bearer ${token}`;
         const result = await axios.post(
-          `/linker-api/applications/${applicationId}/reports/${reportId}/filter`,
+          `${apiDomain}/applications/${applicationId}/reports/${reportId}/filter`,
           params,
           config
         );
@@ -656,7 +658,7 @@ export default {
       async getPublicReports(applicationId, reportId, params) {
         let config = JSON.parse(JSON.stringify(defaultConfig));
         const result = await axios.post(
-          `/linker-api/applications/${applicationId}/reports/${reportId}/filter`,
+          `${apiDomain}/applications/${applicationId}/reports/${reportId}/filter`,
           params,
           config
         );
@@ -666,7 +668,7 @@ export default {
         let config = JSON.parse(JSON.stringify(defaultConfig));
         config.headers["Authorization"] = `Bearer ${token}`;
         const result = await axios.get(
-          `/linker-api/applications/${applicationId}/datastores/${datastoreId}/items/conditions`,
+          `${apiDomain}/applications/${applicationId}/datastores/${datastoreId}/items/conditions`,
           config
         );
         return result.data.result;
@@ -674,7 +676,7 @@ export default {
       async unauthorizedCall(params) {
         let config = JSON.parse(JSON.stringify(defaultConfig));
         const result = await axios.post(
-          `/linker-api/auth/unauthorized-call`,
+          `${apiDomain}/auth/unauthorized-call`,
           params,
           config
         );
@@ -685,7 +687,7 @@ export default {
         config.headers["content-type"] = "text/plain";
         config["responseType"] = "arraybuffer";
         const result = await axios.post(
-          `/linker-api/auth/unauthorized-call`,
+          `${apiDomain}/auth/unauthorized-call`,
           params,
           config
         );
