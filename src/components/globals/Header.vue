@@ -29,11 +29,11 @@
               オークション
             </router-link>
           </li>
-          <li>
+          <!-- <li>
             <router-link to="/trade">
               ユーザー間売買
             </router-link>
-          </li>
+          </li> -->
           <!-- <li>
             <a href="" class="siteHeader_gnav_link">楽曲一覧</a>
           </li> -->
@@ -45,7 +45,7 @@
               }"
             > -->
             <a @click="gotoAbout">
-              BATONについて
+              Hexabidについて
             </a>
             <!-- </router-link> -->
           </li>
@@ -66,7 +66,7 @@
           </li> -->
           <li>
             <router-link to="/mycopyrights">
-              保有する楽曲権利
+              落札した商品
             </router-link>
           </li>
           <!-- <li>
@@ -154,7 +154,7 @@
         </li> -->
         <li>
           <router-link to="/mycopyrights">
-            保有する楽曲権利
+            落札した商品
           </router-link>
         </li>
         <!-- <li>

@@ -3,18 +3,18 @@
     <header class="pageHeader">
       <div class="pageHeader_img">
         <div class="content">
-          <h2 class="pageHeader_title">保有する楽曲権利</h2>
+          <h2 class="pageHeader_title">落札した商品</h2>
         </div>
       </div>
       <v-tabs hide-slider class="tabMenu">
         <v-tab :to="{ name: 'MyCopyrights' }" class="tabMenu_tabItem">
-          保有中
+          落札した商品
         </v-tab>
         <!-- <v-tab :to="{ name: 'ClosedAuction' }" class="tabMenu_tabItem">
           販売中
         </v-tab> -->
         <v-tab :to="{ name: 'MyBidAuction' }" class="tabMenu_tabItem">
-          オークション中の著作権
+          オークション中の商品
         </v-tab>
       </v-tabs>
     </header>
@@ -95,26 +95,28 @@ export default {
         const myAuctionList = await this.getAuctionList(
           this.myBidAuctionList[myBidAuctionListkey].著作権番号
         );
-        if (myAuctionList[0].オークション状況 === "オークション完了") {
-          delete this.myBidAuctionList[myBidAuctionListkey];
-          continue;
-        }
+        if (myAuctionList.length > 0) {
+          if (myAuctionList[0].オークション状況 === "オークション完了") {
+            delete this.myBidAuctionList[myBidAuctionListkey];
+            continue;
+          }
 
-        const image1Binary = myAuctionList[0].image1;
-        if (image1Binary) {
-          const ab = await this.$hexalink.getFile(this.token, image1Binary);
-          const blob = new Blob([ab], { type: "image/jpeg" });
-          myAuctionList[0].image1 = window.URL.createObjectURL(blob);
-        } else {
-          myAuctionList[0].image1 = "";
-        }
+          const image1Binary = myAuctionList[0].image1;
+          if (image1Binary) {
+            const ab = await this.$hexalink.getFile(this.token, image1Binary);
+            const blob = new Blob([ab], { type: "image/jpeg" });
+            myAuctionList[0].image1 = window.URL.createObjectURL(blob);
+          } else {
+            myAuctionList[0].image1 = "";
+          }
 
-        this.myBidAuctionList[myBidAuctionListkey].image1 =
-          myAuctionList[0].image1;
-        this.myBidAuctionList[myBidAuctionListkey].タイトル =
-          myAuctionList[0].タイトル;
-        this.myBidAuctionList[myBidAuctionListkey].歌手1 =
-          myAuctionList[0].歌手1;
+          this.myBidAuctionList[myBidAuctionListkey].image1 =
+            myAuctionList[0].image1;
+          this.myBidAuctionList[myBidAuctionListkey].タイトル =
+            myAuctionList[0].タイトル;
+          this.myBidAuctionList[myBidAuctionListkey].歌手1 =
+            myAuctionList[0].歌手1;
+        }
       }
       this.myBidAuctionList = this.myBidAuctionList.filter(v => v);
       this.length = Math.ceil(this.myBidAuctionList.length / this.pageSize);

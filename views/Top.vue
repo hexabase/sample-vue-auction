@@ -1,11 +1,13 @@
 <template>
   <div class="top">
     <section class="heroHeader">
-      <h2 class="heroHeader_title">音楽著作権を資産に</h2>
-      <p class="heroHeader_enText">
+      <h2 class="heroHeader_title">
+        もう諦めていた“アレ”が手に入るオークションサイト
+      </h2>
+      <!-- <p class="heroHeader_enText">
         The marketplace for buying music royalties
-      </p>
-      <p class="heroHeader_text">ロイヤリティ共有プラットフォーム ”BATON”</p>
+      </p> -->
+      <p class="heroHeader_text">Hexabid</p>
       <a class="button-main" @click="scrollToHash('#about')">
         どんなサービス
       </a>
@@ -199,16 +201,16 @@
     <section id="about" class="about">
       <div class="content">
         <h3 class="contents_title">
-          <span class="contents_title-en">What is “Music royalty”</span>
+          <span class="contents_title-en">What is “Hexabid”</span>
         </h3>
         <div class="about_wrap">
           <h4 class="about_title">
-            音楽著作権が資産になる、<br />
-            新しい投資スタイル
+            あの時欲しかったものを発掘する<br />
+            オークションサイト
           </h4>
           <p class="about_text">
-            好きな音楽の著作権をオークション形式で落札してあなたのものに。<br />
-            保有する権利で得られた利益が分配されます。権利は小口化され、１口から取得できますので、少額から投資を始めることができます。
+            子供のころ欲しかったアレは今なら買える。<br />
+            是非あなたのコレクションに懐かしのアイテムを追加してください。
           </p>
         </div>
       </div>
@@ -275,18 +277,18 @@
           </li>
           <li>
             <div class="aboutStep_step">Step.<span>5</span></div>
-            <div class="aboutStep_title">著作権資産を保有</div>
+            <div class="aboutStep_title">落札した商品が到着</div>
             <figure class="aboutStep_img">
               <img
                 src="~@/assets/img/step5.png"
-                alt="Step.5 著作権資産を保有"
+                alt="Step.5 落札した商品が到着"
               />
             </figure>
             <p class="aboutStep_text">
-              入金確認後に、「入金確認通知」を送信します。以降、いつでもマイページから保有する著作権が確認できます。
+              入金確認後に、「入金確認通知」を送信します。その後出品者から商品が届きます。
             </p>
           </li>
-          <li>
+          <!-- <li>
             <div class="aboutStep_step">Step.<span>6</span></div>
             <div class="aboutStep_title">分配金を受取る</div>
             <figure class="aboutStep_img">
@@ -295,7 +297,7 @@
             <p class="aboutStep_text">
               四半期ごとに、保有する著作権資産の分配金を受け取ることができます。
             </p>
-          </li>
+          </li> -->
         </ol>
       </section>
     </section>

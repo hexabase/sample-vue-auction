@@ -10,9 +10,9 @@
         <v-tab href="#tab-user" class="tabMenu_tabItem">
           ユーザー向けQ&amp;A
         </v-tab>
-        <v-tab href="#tab-artist" class="tabMenu_tabItem">
+        <!-- <v-tab href="#tab-artist" class="tabMenu_tabItem">
           アーティスト向けQ&amp;A
-        </v-tab>
+        </v-tab> -->
       </v-tabs>
     </header>
     <section class="faq">
@@ -112,7 +112,7 @@
                     <p>
                       オークション完了後、落札者に落札通知および入金用の振込口座を記載したメールを送信致します。<br />
                       メールに記載する締切日までに指定振込口座に必要金額を振り込んで頂きます。<br />
-                      入金が確認されましたら、楽曲権利を譲渡します。
+                      入金が確認されましたら、出品者から商品が発送されます。
                     </p>
                   </div>
                 </div>
@@ -132,7 +132,7 @@
                   </div>
                 </div>
               </article>
-              <article class="faq_item">
+              <!-- <article class="faq_item">
                 <input id="faq8" type="checkbox" class="faq_switch" />
                 <div class="faq_content">
                   <h4 class="faq_question">
@@ -146,10 +146,10 @@
                     </p>
                   </div>
                 </div>
-              </article>
+              </article> -->
             </div>
           </v-tab-item>
-          <v-tab-item value="tab-artist">
+          <!-- <v-tab-item value="tab-artist">
             <h3 class="faq_title">
               アーティスト向けQ&amp;A
             </h3>
@@ -275,7 +275,7 @@
                 </div>
               </article>
             </div>
-          </v-tab-item>
+          </v-tab-item> -->
         </v-tabs-items>
       </div>
     </section>
