@@ -8,7 +8,7 @@
       </div>
       <v-tabs hide-slider class="tabMenu">
         <v-tab :to="{ name: 'MyCopyrights' }" class="tabMenu_tabItem">
-          落札した商品
+          落札済み
         </v-tab>
         <!-- <v-tab :to="{ name: 'ClosedAuction' }" class="tabMenu_tabItem">
           販売中
@@ -22,10 +22,10 @@
     </section> -->
     <section class="myBidAuction">
       <div class="content">
-        <h2 class="myBidAuction_title">オークション中の著作権</h2>
+        <h2 class="myBidAuction_title">オークション中の商品</h2>
         <p class="myBidAuction_lead">
           オークション入札中のものがあれば、<br class="show-mobile" />
-          その曲をクリックしてください
+          その商品をクリックしてください
         </p>
         <div class="myBidAuction_wrap">
           <article

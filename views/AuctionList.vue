@@ -4,7 +4,7 @@
       <div class="pageHeader_img">
         <div class="content">
           <p class="pageHeader_lead">
-            BATONでは音楽著作権を資産にして<br />毎月著作権料を受け取ることができます！
+            Hexabidでなつかしのアイテムをお探しください！
           </p>
         </div>
       </div>
@@ -26,9 +26,9 @@
     </header>
     <section class="auctionList">
       <h2 class="page_title">取引中オークション</h2>
-      <p class="auctionList_lead">
+      <!-- <p class="auctionList_lead">
         BATONでは毎週新しい音楽がオークションに出品されます
-      </p>
+      </p> -->
       <div class="content">
         <div class="auctionList_wrap">
           <p v-if="displayAuctionList.length < 1" class="auctionList_none">

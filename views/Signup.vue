@@ -7,7 +7,7 @@
       </h1>
       <p v-if="!confirmUserFlag" class="loginBox_lead">
         {{ email }}のメールアドレスで<br />
-        BATONのアカウントを作成します。<br />
+        Hexabidのアカウントを作成します。<br />
         ユーザー名とパスワードを決めてください。
       </p>
       <div v-if="errorMess != ''" class="error_msg">
