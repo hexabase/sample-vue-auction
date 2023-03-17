@@ -3,18 +3,18 @@
     <header class="pageHeader">
       <div class="pageHeader_img">
         <div class="content">
-          <h2 class="pageHeader_title">保有する楽曲権利</h2>
+          <h2 class="pageHeader_title">落札した商品</h2>
         </div>
       </div>
       <v-tabs hide-slider class="tabMenu">
         <v-tab :to="{ name: 'MyCopyrights' }" class="tabMenu_tabItem">
-          保有中
+          落札済み
         </v-tab>
         <!-- <v-tab :to="{ name: 'ClosedAuction' }" class="tabMenu_tabItem">
           販売中
         </v-tab> -->
         <v-tab :to="{ name: 'MyBidAuction' }" class="tabMenu_tabItem">
-          オークション中の著作権
+          オークション中の商品
         </v-tab>
       </v-tabs>
     </header>
@@ -22,11 +22,11 @@
     </section> -->
     <section class="myCopyright">
       <div class="content">
-        <h2 class="myCopyright_title">保有中の著作権</h2>
-        <p class="myCopyright_lead">
+        <h2 class="myCopyright_title">落札した商品</h2>
+        <!-- <p class="myCopyright_lead">
           販売したい曲がありましたら、<br class="show-mobile" />
           その曲をクリックしてください
-        </p>
+        </p> -->
         <div class="myCopyright_wrap">
           <article
             v-for="(x, index) in displayMyCopyrightsList"

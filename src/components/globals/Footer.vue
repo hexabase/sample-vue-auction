@@ -4,12 +4,12 @@
       <h2 class="siteFooter_logo">
         <a href="/">
           <img
-            src="~@/assets/img/logo-w.png"
+            src="~@/assets/img/logo.png"
             alt="BATON Marketplace for music royalty"
           />
         </a>
       </h2>
-      <ul class="siteFooter_nav" role="navigation">
+      <!-- <ul class="siteFooter_nav" role="navigation">
         <li class="siteFooter_nav-link">
           <router-link to="/">
             運営会社
@@ -38,15 +38,15 @@
         <li class="siteFooter_nav-link">
           <router-link to="/contact">お問い合わせ</router-link>
         </li>
-      </ul>
+      </ul> -->
       <dl class="siteFooter_company-info">
-        <dt>SYZYGY株式会社</dt>
-        <dd>第二種金融商品取引業者&nbsp;&nbsp;関東財務局長（金商）第●号</dd>
-        <dd>加入協会：一般社団法人第二種金融商品取引業協会</dd>
+        <dt>株式会社Hexabase</dt>
+        <!-- <dd>第二種金融商品取引業者&nbsp;&nbsp;関東財務局長（金商）第●号</dd>
+        <dd>加入協会：一般社団法人第二種金融商品取引業協会</dd> -->
       </dl>
-      <small class="siteFooter_copy">
+      <!-- <small class="siteFooter_copy">
         Copyright 2020 BATON All Rights Reserved.
-      </small>
+      </small> -->
     </div>
   </footer>
 </template>

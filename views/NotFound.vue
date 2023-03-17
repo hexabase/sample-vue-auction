@@ -12,7 +12,7 @@
         <h3 class="notFound_title">ご指定のページは見つかりませんでした。</h3>
         <div class="notFound_link">
           <router-link to="/" class="button-main">
-            BATON トップページへ
+            Hexabid トップページへ
           </router-link>
         </div>
       </div>

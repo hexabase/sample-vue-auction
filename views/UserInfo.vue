@@ -43,13 +43,13 @@
             口座情報
           </v-stepper-step>
           <v-divider></v-divider>
-          <v-stepper-step
+          <!-- <v-stepper-step
             :editable="stepControl.step.step3.editable"
             :complete="stepControl.step.step3.complete"
             step="3"
           >
             投資について
-          </v-stepper-step>
+          </v-stepper-step> -->
           <v-divider v-if="!approvedFlag"></v-divider>
           <v-stepper-step
             v-if="!approvedFlag"

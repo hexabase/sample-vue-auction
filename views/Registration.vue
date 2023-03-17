@@ -2,12 +2,12 @@
   <v-row align="center" justify="center" class="login">
     <div class="loginBox">
       <h1 class="contents_title">
-        <span class="contents_title-en">Join BATON!</span>
+        <span class="contents_title-en">Join Hexabid!</span>
         <span class="contents_title-jp">新規会員登録</span>
       </h1>
       <p v-if="!sendResult" class="loginBox_lead">
         登録URLをメールで通知します。<br />
-        BATONで利用するメールアドレスを入力し<br class="hide-mobile" />
+        Hexabidで利用するメールアドレスを入力し<br class="hide-mobile" />
         送信してください。
       </p>
       <div v-if="errorMess != ''" class="error_msg">
