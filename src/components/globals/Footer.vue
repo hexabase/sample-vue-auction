@@ -40,7 +40,7 @@
         </li>
       </ul> -->
       <dl class="siteFooter_company-info">
-        <dt>株式会社Hexabase</dt>
+        <dt>&copy; Hexabase</dt>
         <!-- <dd>第二種金融商品取引業者&nbsp;&nbsp;関東財務局長（金商）第●号</dd>
         <dd>加入協会：一般社団法人第二種金融商品取引業協会</dd> -->
       </dl>
