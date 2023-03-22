@@ -45,7 +45,7 @@
               </p>
               <button
                 class="button-action"
-                @click="selectItem(displayMyBidAuctionList[index].著作権番号)"
+                @click="selectItem(displayMyBidAuctionList[index].商品番号)"
               >
                 確認
               </button>
@@ -90,7 +90,7 @@ export default {
       this.myBidAuctionList = await this.getBidAuctionList();
       for (const myBidAuctionListkey in this.myBidAuctionList) {
         const myAuctionList = await this.getAuctionList(
-          this.myBidAuctionList[myBidAuctionListkey].著作権番号
+          this.myBidAuctionList[myBidAuctionListkey].商品番号
         );
         if (myAuctionList.length > 0) {
           if (myAuctionList[0].オークション状況 === "オークション完了") {
@@ -183,7 +183,7 @@ export default {
         }
       );
     },
-    async getAuctionList(musicId) {
+    async getAuctionList(itemId) {
       return await this.$hexalink.getItems(
         this.token,
         this.applicationId,
@@ -191,8 +191,8 @@ export default {
         {
           conditions: [
             {
-              id: "著作権番号", // Hexalink画⾯で⼊⼒したIDを指定
-              search_value: [musicId],
+              id: "商品番号", // Hexalink画⾯で⼊⼒したIDを指定
+              search_value: [itemId],
               exact_match: true // 完全⼀致で検索
             }
           ],
@@ -210,8 +210,8 @@ export default {
         this.pageSize * pageNumber
       );
     },
-    selectItem(musicId) {
-      this.$router.push("/auctionbid/" + musicId);
+    selectItem(itemId) {
+      this.$router.push("/auctionbid/" + itemId);
     }
   }
 };

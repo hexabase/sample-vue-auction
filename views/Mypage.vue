@@ -398,7 +398,7 @@ export default {
           setData["タイプ"] = "1b9ccc50-7013-4045-8a56-45e0420bf1ba";
           setData["取引日"] = moment();
           setData["会員番号"] = this.userId;
-          setData["著作権番号"] = "";
+          setData["商品番号"] = "";
           setData["取引単価"] = Number(this.withdrawalValue);
           setData["取引総額"] = Number(this.withdrawalValue);
           setData["手数料"] = Number(this.fee * this.tax);
