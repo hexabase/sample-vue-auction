@@ -280,12 +280,7 @@
         <template slot="footer">
           <Button
             class="button-action"
-            :disabled="
-              !agreeGuideline ||
-                !confirmDeliveryDocumentFlag1 ||
-                !confirmDeliveryDocumentFlag2 ||
-                !confirmDeliveryDocumentFlag3
-            "
+            :disabled="!agreeGuideline"
             @click="doSend"
           >
             <!--span class="subText">利用規約に同意して</span-->

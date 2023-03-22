@@ -192,8 +192,14 @@ export default {
           token,
           workspaceId
         );
-        const applicationId = applications[0].application_id;
-        const datastores = applications[0].datastores;
+        const applicationId = applications.find(
+          application =>
+            application.display_id === window.env.VUE_APP_APPLICATION_ID
+        ).application_id;
+        const datastores = applications.find(
+          application =>
+            application.display_id === window.env.VUE_APP_APPLICATION_ID
+        ).datastores;
 
         let datastoreIds = {};
         datastores.forEach(datastore => {
@@ -233,7 +239,7 @@ export default {
         };
         var userMasters = await this.$hexalink.getItems(
           token,
-          applicationId,
+          window.env.VUE_APP_APPLICATION_ID,
           window.env.table.VUE_APP_USERINFOTABLE_ID,
           params
         );
@@ -260,7 +266,7 @@ export default {
           getFieldPromise.push(
             this.$hexalink.getFields(
               token,
-              applicationId,
+              window.env.VUE_APP_APPLICATION_ID,
               datastore.datastore_id
             )
           );
