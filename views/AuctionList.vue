@@ -41,9 +41,6 @@
             <h3 class="auctionList_item_title">
               {{ displayAuctionList[index].タイトル }}
             </h3>
-            <p class="auctionList_item_artist">
-              {{ displayAuctionList[index].歌手1 }}
-            </p>
             <dl class="auctionList_item_info">
               <dt>最高値</dt>
               <dd>
