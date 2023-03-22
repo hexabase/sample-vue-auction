@@ -9,7 +9,7 @@ const defaultConfig = {
   }
 };
 
-const apiDomain = "https://az-api.hexabase.com/api/v0";
+const apiDomain = window.env.VUE_APP_APIDOMAIN;
 
 export default {
   install(Vue) {

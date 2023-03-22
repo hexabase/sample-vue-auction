@@ -1,8 +1,9 @@
 window.env = {
   VUE_APP_BASEURL: "auctions.hexabase.app",
+  VUE_APP_APIDOMAIN: "https://az-api.hexabase.com/api/v0",
   VUE_APP_APPLICATION_ID: "auction_demo",
   VUE_APP_WORKSPACE_ID: "5e9678e8d4b3e00006eb8745",
-  VUE_APP_WORKSPACE_NAME: "【開発用】SYZYGY様",
+  VUE_APP_WORKSPACE_NAME: "DemoWorkspace",
   VUE_APP_GROUP_ID: "demo", // set group_id want to invite
   table: {
     VUE_APP_COPYRIGHTTABLE_ID: "t_goods",
