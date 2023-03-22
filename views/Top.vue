@@ -39,9 +39,6 @@
             <div class="pickupAuction_title">
               {{ displayAuctionList[index].タイトル }}
             </div>
-            <div class="pickupAuction_artist">
-              {{ displayAuctionList[index].歌手1 }}
-            </div>
             <div class="pickupAuction_price">
               {{ changeYen(displayAuctionList[index].オークション開始金額) }}
               <span class="unit">円〜</span>

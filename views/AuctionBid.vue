@@ -12,7 +12,6 @@
         </figure>
         <div class="musicInfo_wrap">
           <h2 class="musicInfo_title">{{ title }}</h2>
-          <p class="musicInfo_artist">{{ singer1 }}</p>
           <div class="musicInfo_data">
             <dl class="musicInfo_remain">
               <dt>残り時間</dt>
@@ -360,7 +359,6 @@ export default {
       userId: this.$store.getters["user/getMembershipNumber"],
       userName: this.$store.getters["auth/getUserNameKanji"],
       copyrightNumber: "",
-      jasracCode: "",
       image1: "",
       image2: "",
       image3: "",
@@ -368,22 +366,6 @@ export default {
       title: "",
       titleEn: "",
       titleKr: "",
-      singer1: "",
-      singer2: "",
-      singer3: "",
-      singer4: "",
-      composer1: "",
-      composer2: "",
-      composer3: "",
-      composer4: "",
-      lyricist1: "",
-      lyricist2: "",
-      lyricist3: "",
-      lyricist4: "",
-      arranger1: "",
-      arranger2: "",
-      arranger3: "",
-      arranger4: "",
       explanatoryText: "",
       explanatoryTextEn: "",
       explanatoryTextKr: "",
@@ -396,7 +378,6 @@ export default {
       ddHoldingInterest: "",
       eeHoldingInterest: "",
       possessionNotes: "",
-      videoUrl: "",
       otherNotes: "",
       Tag: "",
       applicability: "",
@@ -412,8 +393,6 @@ export default {
       auctionAmount: "",
       auctionStartPrice: "",
       auctionEndPrice: "",
-      videoSourceUrl: "",
-      officialUrl: "",
       auctionListsGroup: [],
       bidTotalAmount: 0,
       bidPrice: 0,
@@ -1001,42 +980,19 @@ export default {
         var explanatoryTextEn = "説明文（英語）";
         var explanatoryTextKr = "説明文（韓国）";
         this.copyrightNumber = dataLists[0].著作権番号;
-        this.jasracCode = dataLists[0].JASRAC作品コード;
         this.image2 = dataLists[0].image2;
         this.image3 = dataLists[0].image3;
         this.copyrightType = dataLists[0].著作権タイプ;
         this.title = dataLists[0].タイトル;
         this.titleEn = dataLists[0].titleEn;
         this.titleKr = dataLists[0].titleKr;
-        this.singer1 = dataLists[0].歌手1;
-        this.singer2 = dataLists[0].歌手2;
-        this.singer3 = dataLists[0].歌手3;
-        this.singer4 = dataLists[0].歌手4;
-        this.composer1 = dataLists[0].作曲1;
-        this.composer2 = dataLists[0].作曲2;
-        this.composer3 = dataLists[0].作曲3;
-        this.composer4 = dataLists[0].作曲4;
-        this.lyricist1 = dataLists[0].作詞1;
-        this.lyricist2 = dataLists[0].作詞2;
-        this.lyricist3 = dataLists[0].作詞3;
-        this.lyricist4 = dataLists[0].作詞4;
-        this.arranger1 = dataLists[0].編曲1;
-        this.arranger2 = dataLists[0].編曲2;
-        this.arranger3 = dataLists[0].編曲3;
-        this.arranger4 = dataLists[0].編曲4;
         this.explanatoryText = dataLists[0].説明文;
         this.explanatoryTextEn = dataLists[0].explanatoryTextEn;
         this.explanatoryTextKr = dataLists[0].explanatoryTextKr;
         this.publicationDate = dataLists[0].公表日;
         this.originalAuthorDeathDate = dataLists[0].原作者死亡日;
         this.protectionPeriod = dataLists[0].保護期間;
-        this.aaHoldingInterest = dataLists[0].AA権保有持分;
-        this.bbHoldingInterest = dataLists[0].BB権保有持分;
-        this.ccHoldingInterest = dataLists[0].CC権保有持分;
-        this.ddHoldingInterest = dataLists[0].DD権保有持分;
-        this.eeHoldingInterest = dataLists[0].EE権保有持分;
         this.possessionNotes = dataLists[0].持ち分注意事項;
-        this.videoUrl = dataLists[0].動画URL;
         this.otherNotes = dataLists[0].その他注意事項;
         this.Tag = dataLists[0].タグ;
         this.applicability = dataLists[0].掲載可否;
@@ -1053,17 +1009,12 @@ export default {
         this.auctionAmount = dataLists[0].オークション数量;
         this.auctionStartPrice = dataLists[0].オークション開始金額;
         this.auctionEndPrice = dataLists[0].オークション落札金額;
-        this.officialUrl = dataLists[0].公式URL;
         this.bidPrice =
           this.myAuctionBidList.length > 0
             ? this.myAuctionBidList[0].入札金額
             : dataLists[0].オークション開始金額;
         this.bidAmount =
           this.myAuctionBidList.length > 0 ? this.myAuctionBidList[0].数量 : 1;
-        this.videoSourceUrl =
-          "https://www.youtube.com/embed/" +
-          dataLists[0].動画URL.split("v=")[1];
-
         const image1Binary = dataLists[0].image1;
         if (image1Binary) {
           const ab = await this.$hexalink.getFile(this.token, image1Binary);
