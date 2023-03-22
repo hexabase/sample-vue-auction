@@ -8,10 +8,6 @@
           </p>
         </div>
       </div>
-      <!-- <ul class="pageHeader_tab">
-        <li class="pageHeader_tabItem-current">取引中オークション</li>
-        <li class="pageHeader_tabItem">オークション終了</li>
-      </ul> -->
       <v-tabs hide-slider class="tabMenu">
         <v-tab
           :to="{ name: 'Auctionlist' }"
@@ -26,9 +22,6 @@
     </header>
     <section class="auctionList">
       <h2 class="page_title">取引中オークション</h2>
-      <!-- <p class="auctionList_lead">
-        BATONでは毎週新しい音楽がオークションに出品されます
-      </p> -->
       <div class="content">
         <div class="auctionList_wrap">
           <p v-if="displayAuctionList.length < 1" class="auctionList_none">

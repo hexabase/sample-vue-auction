@@ -3,7 +3,7 @@
     <header class="pageHeader">
       <div class="pageHeader_img">
         <div class="content">
-          <h2 class="pageHeader_title">BATON NEWS</h2>
+          <h2 class="pageHeader_title">Hexabid NEWS</h2>
         </div>
       </div>
     </header>

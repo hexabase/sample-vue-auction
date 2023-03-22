@@ -13,7 +13,7 @@
         <router-link to="/">
           <img
             src="~@/assets/img/logo.png"
-            alt="BATON Marketplace for music royalty"
+            alt="Hexabid Marketplace for music royalty"
           />
         </router-link>
       </h1>

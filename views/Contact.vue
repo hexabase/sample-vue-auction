@@ -16,7 +16,7 @@
         </h3>
         <p class="contactForm_text">
           <span v-if="step === 1">
-            BATONへのお問い合わせは、以下のフォームより送信してください。<br />
+            Hexabidへのお問い合わせは、以下のフォームより送信してください。<br />
             ご不明な点につきましては、
             <router-link to="qa">Q&amp;A</router-link>もご覧ください。
           </span>

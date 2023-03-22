@@ -16,7 +16,7 @@
         </p>
         <div class="commingsoon_link">
           <router-link to="/" class="button-main">
-            BATON トップページへ
+            Hexabid トップページへ
           </router-link>
         </div>
       </div>
