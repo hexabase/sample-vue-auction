@@ -2427,7 +2427,7 @@ export default {
                 let changes = [];
                 console.log(attachmentList[fileInfoKey]);
                 changes.push({
-                  id: this.fields["ユーザDB"][fieldId],
+                  id: this.fields["ユーザマスタ"][fieldId],
                   value: [attachmentList[fileInfoKey]]
                 });
 
