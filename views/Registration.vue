@@ -171,8 +171,14 @@ export default {
           token,
           workspaceId
         );
-        const applicationId = applications[0].application_id;
-        const datastores = applications[0].datastores;
+        const applicationId = applications.find(
+          application =>
+            application.display_id === window.env.VUE_APP_APPLICATION_ID
+        ).application_id;
+        const datastores = applications.find(
+          application =>
+            application.display_id === window.env.VUE_APP_APPLICATION_ID
+        ).datastores;
 
         let datastoreIds = {};
         datastores.forEach(datastore => {
