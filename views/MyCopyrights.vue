@@ -35,13 +35,13 @@
           >
             <figure
               class="myCopyright_item_img"
-              @click="selectItem(displayMyCopyrightsList[index].著作権番号)"
+              @click="selectItem(displayMyCopyrightsList[index].商品番号)"
             >
               <img :src="displayMyCopyrightsList[index].image1" />
             </figure>
             <div
               class="myCopyright_item_content"
-              @click="selectItem(displayMyCopyrightsList[index].著作権番号)"
+              @click="selectItem(displayMyCopyrightsList[index].商品番号)"
             >
               <h3 class="myCopyright_item_title">
                 {{ displayMyCopyrightsList[index].タイトル }}
@@ -93,7 +93,7 @@ export default {
       this.myCopyrightsList = await this.getMyCopyrightsList();
       for (const myCopyrightskey in this.myCopyrightsList) {
         const myAuctionList = await this.getAuctionList(
-          this.myCopyrightsList[myCopyrightskey].著作権番号
+          this.myCopyrightsList[myCopyrightskey].商品番号
         );
 
         const image1Binary = myAuctionList[0].image1;
@@ -178,7 +178,7 @@ export default {
         }
       );
     },
-    async getAuctionList(musicId) {
+    async getAuctionList(itemId) {
       return await this.$hexalink.getItems(
         this.token,
         this.applicationId,
@@ -186,8 +186,8 @@ export default {
         {
           conditions: [
             {
-              id: "著作権番号", // Hexalink画⾯で⼊⼒したIDを指定
-              search_value: [musicId],
+              id: "商品番号", // Hexalink画⾯で⼊⼒したIDを指定
+              search_value: [itemId],
               exact_match: true // 完全⼀致で検索
             }
           ],
@@ -205,8 +205,8 @@ export default {
         this.pageSize * pageNumber
       );
     },
-    selectItem(musicId) {
-      this.$router.push("/auctionbid/" + musicId);
+    selectItem(itemId) {
+      this.$router.push("/auctionbid/" + itemId);
     }
   }
 };

@@ -33,7 +33,7 @@
             v-for="(x, index) in displayAuctionList"
             :key="index"
             class="auctionList_item"
-            @click="selectItem(displayAuctionList[index].著作権番号)"
+            @click="selectItem(displayAuctionList[index].商品番号)"
           >
             <figure class="auctionList_item_img">
               <img :src="displayAuctionList[index].image1" />
@@ -111,7 +111,7 @@ export default {
         ).format("YYYY年MM月DD日");
         for (const reportKey in auctionBidReport.report_results) {
           if (
-            this.auctionList[listKey].著作権番号 ==
+            this.auctionList[listKey].商品番号 ==
             auctionBidReport.report_results[reportKey][
               "ba62cfe6-dcd4-46b7-9028-2ccd73240e52"
             ]
@@ -169,8 +169,8 @@ export default {
         }
       );
     },
-    selectItem(musicId) {
-      this.$router.push("/auctionbid/" + musicId);
+    selectItem(itemId) {
+      this.$router.push("/auctionbid/" + itemId);
     },
     pageChange(pageNumber) {
       this.displayAuctionList = this.auctionList.slice(

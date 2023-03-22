@@ -34,7 +34,7 @@
           >
             <figure
               class="auctionList_item_img"
-              @click="selectItem(displayAuctionList[index].著作権番号)"
+              @click="selectItem(displayAuctionList[index].商品番号)"
             >
               <img :src="displayAuctionList[index].image1" />
             </figure>
@@ -104,7 +104,7 @@
             </dl>
             <button
               class="button-action"
-              @click="selectItem(displayAuctionList[index].著作権番号)"
+              @click="selectItem(displayAuctionList[index].商品番号)"
             >
               入札する
             </button>
@@ -174,7 +174,7 @@ export default {
         }
         for (const reportKey in auctionBidReport.report_results) {
           if (
-            this.auctionList[listKey].著作権番号 ==
+            this.auctionList[listKey].商品番号 ==
             auctionBidReport.report_results[reportKey][
               "ba62cfe6-dcd4-46b7-9028-2ccd73240e52"
             ]
@@ -337,8 +337,8 @@ export default {
       Object.keys(groups).sort();
       return groups;
     },
-    selectItem(musicId) {
-      this.$router.push("/auctionbid/" + musicId);
+    selectItem(itemId) {
+      this.$router.push("/auctionbid/" + itemId);
     },
     pageChange(pageNumber) {
       this.displayAuctionList = this.auctionList.slice(
