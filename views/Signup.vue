@@ -158,6 +158,7 @@ export default {
       }
       const params = {
         confirmation_id: this.confirmationId,
+        workspace: "required",
         email: this.getConfirmUserData.data.user.email,
         username: this.userName,
         password: this.password
@@ -209,7 +210,7 @@ export default {
         let userDBparam = {};
         userDBparam["item"] = setData;
         const insertResult = await this.insertNewItem(
-          datastoreIds["ユーザDB"],
+          window.env.table.VUE_APP_USERINFOTABLE_ID,
           userDBparam,
           token
         );
@@ -233,7 +234,7 @@ export default {
         var userMasters = await this.$hexalink.getItems(
           token,
           applicationId,
-          datastoreIds["ユーザDB"],
+          window.env.table.VUE_APP_USERINFOTABLE_ID,
           params
         );
         var userMaster = "";
@@ -296,12 +297,11 @@ export default {
     },
     // 新規Itemを作成します
     async insertNewItem(datasotreId, param, token) {
-      const applicationId = this.$store.getters["datas/getApplicationId"];
       var result = {};
       try {
         result = await this.$hexalink.createNewItem(
           token,
-          applicationId,
+          window.env.VUE_APP_APPLICATION_ID,
           datasotreId,
           param
         );

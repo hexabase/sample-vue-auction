@@ -61,7 +61,6 @@
 </template>
 <script>
 import moment from "moment-timezone";
-import mapping from "@/assets/json/auctionDBMapping.json";
 export default {
   data() {
     return {
@@ -69,7 +68,6 @@ export default {
       pageSize: 4,
       length: 0,
       token: this.$store.getters["auth/getToken"],
-      mapping: JSON.parse(JSON.stringify(mapping)),
       applicationId: this.$store.getters["datas/getApplicationId"],
       datasotreIdList: this.$store.getters["datas/getDatastores"],
       datastoreIds: this.$store.getters["datas/getDatastoreIds"],
@@ -94,29 +92,18 @@ export default {
         return diff < 0;
       });
       var auctionBidReport = {};
-      const params = {
-        workspace_id: window.env.VUE_APP_WORKSPACE_ID,
-        url:
-          "/api/v0/applications/" +
-          window.env.VUE_APP_APPLICATION_ID +
-          "/reports/" +
-          window.env.report.VUE_APP_AUCTIONLISTREPORT_ID +
-          "/filter",
-        method: "POST",
-        params: {
+      auctionBidReport = await this.$hexalink.getReports(
+        this.token,
+        window.env.VUE_APP_APPLICATION_ID,
+        window.env.report.VUE_APP_AUCTIONLISTREPORT_ID,
+        {
           conditions: []
         }
-      };
-      auctionBidReport = await this.$hexalink.unauthorizedCall(params);
+      );
       for (const listKey in this.auctionList) {
         const image1Binary = this.auctionList[listKey].image1;
         if (image1Binary) {
-          const params = {
-            workspace_id: window.env.VUE_APP_WORKSPACE_ID,
-            url: "/api/v0/files/" + image1Binary,
-            method: "GET"
-          };
-          const ab = await this.$hexalink.unauthorizedCallFile(params);
+          const ab = await this.$hexalink.getFile(this.token, image1Binary);
           const blob = new Blob([ab], { type: "image/jpeg" });
           this.auctionList[listKey].image1 = window.URL.createObjectURL(blob);
         } else {
@@ -167,16 +154,11 @@ export default {
   },
   methods: {
     async getClosedAuctionList() {
-      const params = {
-        workspace_id: window.env.VUE_APP_WORKSPACE_ID,
-        url:
-          "/api/v0/applications/" +
-          window.env.VUE_APP_APPLICATION_ID +
-          "/datastores/" +
-          window.env.table.VUE_APP_COPYRIGHTTABLE_ID +
-          "/items/search",
-        method: "POST",
-        params: {
+      return await this.$hexalink.getItems(
+        this.token,
+        window.env.VUE_APP_APPLICATION_ID,
+        window.env.table.VUE_APP_COPYRIGHTTABLE_ID,
+        {
           conditions: [
             {
               id: "オークション状況", // Hexalink画⾯で⼊⼒したIDを指定
@@ -188,8 +170,7 @@ export default {
           per_page: 9000,
           use_display_id: true
         }
-      };
-      return (await this.$hexalink.unauthorizedCall(params)).items;
+      );
     },
     selectItem(musicId) {
       this.$router.push("/auctionbid/" + musicId);

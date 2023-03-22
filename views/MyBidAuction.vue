@@ -140,7 +140,7 @@ export default {
       return await this.$hexalink.getItems(
         this.token,
         this.applicationId,
-        this.datastoreIds["ユーザ所有著作権一覧"],
+        window.env.table.VUE_APP_USEROWNEDCOPYRIGHTTABLE_ID,
         {
           conditions: [
             {
@@ -166,7 +166,7 @@ export default {
       return await this.$hexalink.getItems(
         this.token,
         this.applicationId,
-        this.datastoreIds["オークション入札状況DB"],
+        window.env.table.VUE_APP_AUCTIONBIDTABLE_ID,
         {
           conditions: [
             {
@@ -192,7 +192,7 @@ export default {
       return await this.$hexalink.getItems(
         this.token,
         this.applicationId,
-        this.datastoreIds["著作権DB"],
+        window.env.table.VUE_APP_COPYRIGHTTABLE_ID,
         {
           conditions: [
             {

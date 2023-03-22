@@ -146,7 +146,7 @@ export default {
         var userMasters = await this.$hexalink.getItems(
           token,
           applicationId,
-          datastoreIds["ユーザDB"],
+          window.env.table.VUE_APP_USERINFOTABLE_ID,
           params
         );
         var userMaster = "";

@@ -63,16 +63,13 @@
 
 <script>
 import common from "@/components/mixin/common";
-import mapping from "@/assets/json/auctionDBMapping.json";
 
 export default {
   name: "Signin",
   mixins: [common],
   data() {
     return {
-      // token: this.$store.getters["auth/getToken"],
-      token: window.env.VUE_APP_PERSISTENCETOKEN,
-      mapping: JSON.parse(JSON.stringify(mapping)),
+      token: this.$store.getters["auth/getToken"],
       applicationId: this.$store.getters["datas/getApplicationId"],
       datasotreIdList: this.$store.getters["datas/getDatastores"],
       datastoreIds: this.$store.getters["datas/getDatastoreIds"],
@@ -121,8 +118,7 @@ export default {
         try {
           let params = JSON.stringify({
             email: this.email,
-            g_id: window.env.VUE_APP_GROUP_ID, //"5f76ad7daa3d8a0001269956",
-            // w_id: "ワークスペースのID",
+            g_id: window.env.VUE_APP_GROUP_ID,
             username: this.email
           });
           const userAddResult = await this.$hexalink.createUser(
@@ -200,7 +196,7 @@ export default {
         var userMasters = await this.$hexalink.getItems(
           token,
           applicationId,
-          datastoreIds["ユーザーマスタDB"],
+          window.env.table.VUE_APP_USERINFOTABLE_ID,
           params
         );
         var userMaster = "";

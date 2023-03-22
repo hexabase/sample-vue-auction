@@ -271,7 +271,7 @@ export default {
       const userInfo = await this.$hexalink.getItems(
         this.token,
         this.applicationId,
-        this.datastoreIds["ユーザDB"],
+        window.env.table.VUE_APP_USERINFOTABLE_ID,
         params
       );
       this.deposits = userInfo[0].残高 ? this.changeYen(userInfo[0].残高) : 0;
@@ -406,12 +406,12 @@ export default {
           let param = {};
           param["item"] = setData;
           const withdrawalInsertResult = await this.insertNewItem(
-            this.datastoreIds["取引DB"],
+            window.env.table.VUE_APP_TRANSACTIONTABLE_ID,
             param
           );
           // ユーザDBの残高更新
           const depositsUpdateResult = await this.updatedDataItem(
-            this.datastoreIds["ユーザDB"],
+            window.env.table.VUE_APP_USERINFOTABLE_ID,
             this.userItemId,
             {
               history: {

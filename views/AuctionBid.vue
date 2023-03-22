@@ -237,120 +237,6 @@
         </div>
       </div>
     </section>
-    <section class="trend">
-      <div class="content">
-        <h2 class="trend_title">最近の動向</h2>
-        <div class="trend_wrap">
-          <section class="trend_barChart">
-            <h3 class="trend_subTitle">最近5年間の分配金</h3>
-            <!-- <img src="~@/assets/img/auction-detail-graph1.png" alt="" /> -->
-            <div class="trend_graph">
-              <Chart
-                v-if="loaded"
-                :data="chart1.data"
-                :options="chart1.options"
-              ></Chart>
-            </div>
-          </section>
-          <section class="trend_royalty">
-            <h3 class="trend_subTitle">
-              最近12ヶ月の分配金
-            </h3>
-            <!-- <img src="~@/assets/img/auction-detail-graph2.png" alt="" /> -->
-            <div class="trend_graph">
-              <Chart
-                v-if="loaded"
-                :data="chart2.data"
-                :options="chart2.options"
-              ></Chart>
-            </div>
-          </section>
-        </div>
-      </div>
-    </section>
-    <section class="musicDetail">
-      <div class="content">
-        <h2 class="musicDetail_title">Music Information</h2>
-        <section class="musicDetailContent">
-          <iframe
-            v-if="videoUrl"
-            width="640"
-            height="360"
-            :src="videoSourceUrl"
-            frameborder="0"
-            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen
-          >
-          </iframe>
-          <h3 class="musicDetailContent_title">{{ title }}</h3>
-          <p class="musicDetailContent_artist">{{ singer1 }}</p>
-          <p class="musicDetailContent_text">{{ explanatoryText }}</p>
-          <div v-if="officialUrl" class="musicDetailContent_link">
-            <a :href="officialUrl" target="_blank" rel="noopener noreferrer">
-              <v-icon>mdi-chevron-right</v-icon>
-              <span>オフィシャルサイト</span>
-            </a>
-          </div>
-        </section>
-      </div>
-    </section>
-    <section class="royaltyInfo">
-      <div class="content">
-        <h2 class="royaltyInfo_title">著作権情報</h2>
-        <ul class="royaltyInfo_list">
-          <li>
-            <span class="royaltyInfo_label">公表日</span>
-            {{ publicationDate }}
-          </li>
-          <li>
-            <span class="royaltyInfo_label">歌手</span>
-            {{ singer1 }}
-          </li>
-          <li>
-            <span class="royaltyInfo_label">作曲</span>
-            {{ composer1 }}
-          </li>
-          <li>
-            <span class="royaltyInfo_label">作詞</span>
-            {{ lyricist1 }}
-          </li>
-          <li>
-            <span class="royaltyInfo_label">編曲</span>
-            {{ arranger1 }}
-          </li>
-          <li>
-            <span class="royaltyInfo_label">権利期間</span>
-            {{ protectionPeriod }}
-          </li>
-          <li>
-            <span class="royaltyInfo_label">
-              組成・運営業者名
-            </span>
-            SYZYGY株式会社
-          </li>
-          <li>
-            <span class="royaltyInfo_label">法的類型</span>
-            匿名組合契約
-          </li>
-          <li>
-            <span class="royaltyInfo_label">出資対象</span>
-            楽曲の著作権使用料
-          </li>
-          <li>
-            <span class="royaltyInfo_label">オークション期間（申込期間）</span>
-            ～{{ auctionEndDate | moment }} {{ auctionEndTime }}
-          </li>
-          <li>
-            <span class="royaltyInfo_label">募集口数</span>
-            {{ auctionAmount }}
-          </li>
-          <!-- <li>
-            <span class="royaltyInfo_label">その他の主な事項</span>
-            {{ otherNotes }}
-          </li> -->
-        </ul>
-      </div>
-    </section>
     <div class="modal_wrapper">
       <!-- コンポーネント MyModal -->
       <MyModal v-if="modal" class="modal-bid" @close="closeModal('modal')">
@@ -389,40 +275,6 @@
             v-model="agreeGuideline"
             label="利用規約に同意する"
           ></v-checkbox>
-
-          <PdfDownload
-            v-if="!displayBidResultFlag && pdfFileBuffer1"
-            :class="confirmDeliveryDocumentFlag1 ? 'pdfChecked' : ''"
-            :value="docDefinition"
-            :pdf-file="pdfFile1"
-            :pdfFileBuffer="pdfFileBuffer1"
-            :fileName="fileName1"
-            :disabled="confirmDeliveryDocumentFlag1"
-            buttonName="交付書面①を確認する"
-            @click="confirmDeliveryDocument(1)"
-          ></PdfDownload>
-          <PdfDownload
-            v-if="!displayBidResultFlag && pdfFileBuffer2"
-            :class="confirmDeliveryDocumentFlag2 ? 'pdfChecked' : ''"
-            :value="docDefinition"
-            :pdf-file="pdfFile2"
-            :pdfFileBuffer="pdfFileBuffer2"
-            :fileName="fileName2"
-            :disabled="confirmDeliveryDocumentFlag2"
-            buttonName="交付書面②を確認する"
-            @click="confirmDeliveryDocument(2)"
-          ></PdfDownload>
-          <PdfDownload
-            v-if="!displayBidResultFlag && pdfFileBuffer3"
-            :class="confirmDeliveryDocumentFlag3 ? 'pdfChecked' : ''"
-            :value="docDefinition"
-            :pdf-file="pdfFile3"
-            :pdfFileBuffer="pdfFileBuffer3"
-            :fileName="fileName3"
-            :disabled="confirmDeliveryDocumentFlag3"
-            buttonName="交付書面③を確認する"
-            @click="confirmDeliveryDocument(3)"
-          ></PdfDownload>
         </div>
         <!-- /default -->
         <!-- footer スロットコンテンツ -->
@@ -483,15 +335,12 @@
   </div>
 </template>
 <script>
-import mapping from "@/assets/json/auctionDBMapping.json";
 import MyModal from "./MyModal.vue";
 import Terms from "./Terms.vue";
 import moment from "moment-timezone";
-import Chart from "@/components/parts/Chart.vue";
 import _ from "lodash";
-import PdfDownload from "@/components/pdf/PdfDownload.vue";
 export default {
-  components: { MyModal, Terms, Chart, PdfDownload },
+  components: { MyModal, Terms },
   filters: {
     moment: function(date) {
       return moment(date).format("YYYY/MM/DD");
@@ -504,7 +353,6 @@ export default {
       modal: false,
       cancelModal: false,
       page: 1,
-      mapping: JSON.parse(JSON.stringify(mapping)),
       token: this.$store.getters["auth/getToken"],
       applicationId: this.$store.getters["datas/getApplicationId"],
       datasotreIdList: this.$store.getters["datas/getDatastores"],
@@ -591,164 +439,6 @@ export default {
       distributionListGroupQuarter: {
         data: [],
         labels: []
-      },
-      // ctx: document.getElementById("bar-chart").getContext("2d"),
-      chart1: {
-        data: {
-          labels: [],
-          datasets: [
-            {
-              label: "分配金",
-              data: [],
-              backgroundColor: "#1b80cb",
-              hoverBackgroundColor: "#2358d1",
-              borderWidth: 0,
-              barThickness: 18,
-              datalabels: {
-                anchor: "end",
-                align: "end",
-                padding: {
-                  bottom: 1
-                },
-                formatter: function(value, context) {
-                  if (!value) return 0;
-                  return String(value)
-                    .split("")
-                    .reverse()
-                    .join("")
-                    .match(/\d{1,3}/g)
-                    .join(",")
-                    .split("")
-                    .reverse()
-                    .join("");
-                }
-              }
-            }
-          ]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          layout: {
-            padding: {
-              top: 20
-            }
-          },
-          legend: {
-            display: false
-          },
-          scales: {
-            xAxes: [
-              {
-                ticks: {
-                  fontSize: 15
-                },
-                scaleLabel: {
-                  display: false,
-                  labelString: "年"
-                },
-                gridLines: {
-                  display: false,
-                  drawBorder: false
-                }
-              }
-            ],
-            yAxes: [
-              {
-                ticks: {
-                  display: false,
-                  beginAtZero: true
-                },
-                gridLines: {
-                  display: false,
-                  drawBorder: false
-                }
-              }
-            ]
-          },
-          plugins: {
-            datalabels: {
-              font: {
-                size: 13
-              }
-            }
-          }
-        }
-      },
-      chart2: {
-        data: {
-          labels: [],
-          datasets: [
-            {
-              label: "分配金",
-              data: [],
-              backgroundColor: "#5255d1",
-              hoverBackgroundColor: "#2358d1",
-              borderWidth: 0,
-              barThickness: 18,
-              datalabels: {
-                anchor: "end",
-                align: "end",
-                padding: {
-                  bottom: 1
-                },
-                formatter: function(value, context) {
-                  if (!value) return 0;
-                  return String(value)
-                    .split("")
-                    .reverse()
-                    .join("")
-                    .match(/\d{1,3}/g)
-                    .join(",")
-                    .split("")
-                    .reverse()
-                    .join("");
-                }
-              }
-            }
-          ]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          layout: {
-            padding: {
-              top: 20
-            }
-          },
-          legend: {
-            display: false
-          },
-          scales: {
-            xAxes: [
-              {
-                ticks: {
-                  fontSize: 15
-                },
-                scaleLabel: {
-                  display: false,
-                  labelString: "年"
-                },
-                gridLines: {
-                  display: false,
-                  drawBorder: false
-                }
-              }
-            ],
-            yAxes: [
-              {
-                ticks: {
-                  display: false,
-                  beginAtZero: true
-                },
-                gridLines: {
-                  display: false,
-                  drawBorder: false
-                }
-              }
-            ]
-          }
-        }
       },
       userInfo: [],
       userStatus: 1,
@@ -877,16 +567,11 @@ export default {
       }
     },
     async getAuctionBidList() {
-      const params = {
-        workspace_id: window.env.VUE_APP_WORKSPACE_ID,
-        url:
-          "/api/v0/applications/" +
-          window.env.VUE_APP_APPLICATION_ID +
-          "/datastores/" +
-          window.env.table.VUE_APP_AUCTIONBIDTABLE_ID +
-          "/items/search",
-        method: "POST",
-        params: {
+      return await this.$hexalink.getItems(
+        this.token,
+        window.env.VUE_APP_APPLICATION_ID,
+        window.env.table.VUE_APP_AUCTIONBIDTABLE_ID,
+        {
           conditions: [
             {
               id: "著作権番号", // Hexalink画⾯で⼊⼒したIDを指定
@@ -903,8 +588,7 @@ export default {
           per_page: 9000,
           use_display_id: true
         }
-      };
-      return (await this.$hexalink.unauthorizedCall(params)).items;
+      );
     },
     async getTransactionList() {
       return await this.$hexalink.getItems(
@@ -930,159 +614,6 @@ export default {
         }
       );
     },
-    async getDistributionList() {
-      const params = {
-        workspace_id: window.env.VUE_APP_WORKSPACE_ID,
-        url:
-          "/api/v0/applications/" +
-          window.env.VUE_APP_APPLICATION_ID +
-          "/datastores/" +
-          window.env.table.VUE_APP_COPYRIGHTDISTRIBUTIONTABLE_ID +
-          "/items/search",
-        method: "POST",
-        params: {
-          conditions: [
-            {
-              id: "著作権番号", // Hexalink画⾯で⼊⼒したIDを指定
-              search_value: [this.musicId],
-              exact_match: true // 完全⼀致で検索
-            },
-            {
-              id: "日付", // Hexalink画⾯で⼊⼒したIDを指定
-              search_value: [
-                moment()
-                  .add("year", -4)
-                  .startOf("year")
-                  .format("YYYY-MM-DDTHH:mm:ss.SSS") + "Z",
-                moment()
-                  .endOf("year")
-                  .format("YYYY-MM-DDTHH:mm:ss.SSS") + "Z"
-              ]
-            }
-          ],
-          page: 1,
-          per_page: 9000,
-          use_display_id: true
-        }
-      };
-      return (await this.$hexalink.unauthorizedCall(params)).items;
-    },
-    async getDistributionListCurrentYear() {
-      let searchFrom = "";
-      let searchTo = "";
-      // 最新の対象楽曲分配金レコードを取得
-      const params = {
-        workspace_id: window.env.VUE_APP_WORKSPACE_ID,
-        url:
-          "/api/v0/applications/" +
-          window.env.VUE_APP_APPLICATION_ID +
-          "/datastores/" +
-          window.env.table.VUE_APP_COPYRIGHTDISTRIBUTIONTABLE_ID +
-          "/items/search",
-        method: "POST",
-        params: {
-          conditions: [
-            {
-              id: "著作権番号", // Hexalink画⾯で⼊⼒したIDを指定
-              search_value: [this.musicId],
-              exact_match: true // 完全⼀致で検索
-            }
-          ],
-          page: 1,
-          per_page: 1,
-          use_display_id: true,
-          sort_field_id: "日付", // Hexalink画⾯で⼊⼒したIDを指定
-          sort_order: "desc"
-        }
-      };
-      const latestRecord = (await this.$hexalink.unauthorizedCall(params))
-        .items;
-      if (!latestRecord.length > 0) return [];
-      const jstMonth = moment(latestRecord[0].日付)
-        .tz("Asia/Tokyo")
-        .format("YYYY-MM")
-        .slice(5, 7);
-      switch (jstMonth) {
-        case "10":
-        case "11":
-        case "12":
-          searchFrom =
-            moment(latestRecord[0].日付)
-              .utc()
-              .add("year", -1)
-              .startOf("year")
-              .format("YYYY-MM-DDTHH:mm:ss.SSS") + "Z";
-          searchTo =
-            moment(latestRecord[0].日付)
-              .utc()
-              .add("year", -1)
-              .endOf("year")
-              .format("YYYY-MM-DDTHH:mm:ss.SSS") + "Z";
-          break;
-        case "01":
-        case "02":
-        case "03":
-          searchFrom =
-            moment(latestRecord[0].日付)
-              .add("year", -1)
-              .format("YYYY-03-31T15:00:00.000") + "Z";
-          searchTo =
-            moment(latestRecord[0].日付).format("YYYY-03-30T15:00:00.000") +
-            "Z";
-          break;
-        case "04":
-        case "05":
-        case "06":
-          searchFrom =
-            moment(latestRecord[0].日付)
-              .utc()
-              .add("year", -1)
-              .format("YYYY-06-30T15:00:00.000") + "Z";
-          searchTo =
-            moment(latestRecord[0].日付).format("YYYY-06-29T15:00:00.000") +
-            "Z";
-          break;
-        case "07":
-        case "08":
-        case "09":
-          searchFrom =
-            moment(latestRecord[0].日付)
-              .utc()
-              .add("year", -1)
-              .format("YYYY-09-30T15:00:00.000") + "Z";
-          searchTo =
-            moment(latestRecord[0].日付).format("YYYY-09-29T15:00:00.000") +
-            "Z";
-          break;
-      }
-      const paramsDate = {
-        workspace_id: window.env.VUE_APP_WORKSPACE_ID,
-        url:
-          "/api/v0/applications/" +
-          window.env.VUE_APP_APPLICATION_ID +
-          "/datastores/" +
-          window.env.table.VUE_APP_COPYRIGHTDISTRIBUTIONTABLE_ID +
-          "/items/search",
-        method: "POST",
-        params: {
-          conditions: [
-            {
-              id: "著作権番号", // Hexalink画⾯で⼊⼒したIDを指定
-              search_value: [this.musicId],
-              exact_match: true // 完全⼀致で検索
-            },
-            {
-              id: "日付", // Hexalink画⾯で⼊⼒したIDを指定
-              search_value: [searchFrom, searchTo]
-            }
-          ],
-          page: 1,
-          per_page: 9000,
-          use_display_id: true
-        }
-      };
-      return await this.$hexalink.unauthorizedCall(paramsDate);
-    },
     async doSend() {
       try {
         if (this.auctionFinishedFlag) {
@@ -1097,7 +628,7 @@ export default {
         // 入札履歴があった場合は更新処理
         if (this.myAuctionBidList.length > 0) {
           var result = await this.updatedDataItem(
-            this.datastoreIds["オークション入札状況DB"],
+            window.env.table.VUE_APP_AUCTIONBIDTABLE_ID,
             this.myAuctionBidList[0].i_id,
             {
               history: {
@@ -1146,7 +677,7 @@ export default {
           var param = {};
           param["item"] = setData;
           var insertResult = await this.insertNewItem(
-            this.datastoreIds["オークション入札状況DB"],
+            window.env.table.VUE_APP_AUCTIONBIDTABLE_ID,
             param
           );
           this.modal = false;
@@ -1172,7 +703,7 @@ export default {
           return false;
         }
         var result = await this.updatedDataItem(
-          this.datastoreIds["オークション入札状況DB"],
+          window.env.table.VUE_APP_AUCTIONBIDTABLE_ID,
           this.myAuctionBidList[0].i_id,
           {
             history: {
@@ -1443,16 +974,11 @@ export default {
           this.confirmDeliveryDocumentFlag3 = false;
         }
         var dataLists = [];
-        const params = {
-          workspace_id: window.env.VUE_APP_WORKSPACE_ID,
-          url:
-            "/api/v0/applications/" +
-            window.env.VUE_APP_APPLICATION_ID +
-            "/datastores/" +
-            window.env.table.VUE_APP_COPYRIGHTTABLE_ID +
-            "/items/search",
-          method: "POST",
-          params: {
+        dataLists = await this.$hexalink.getItems(
+          this.token,
+          window.env.VUE_APP_APPLICATION_ID,
+          window.env.table.VUE_APP_COPYRIGHTTABLE_ID,
+          {
             conditions: [
               {
                 id: "著作権番号", // Hexalink画⾯で⼊⼒したIDを指定
@@ -1464,8 +990,7 @@ export default {
             per_page: 9000,
             use_display_id: true
           }
-        };
-        dataLists = (await this.$hexalink.unauthorizedCall(params)).items;
+        );
         if (dataLists.length == 0 || dataLists[0].HPに掲載可否 != "掲載する") {
           this.$router.push("/notFound");
           return;
@@ -1541,70 +1066,11 @@ export default {
 
         const image1Binary = dataLists[0].image1;
         if (image1Binary) {
-          const params = {
-            workspace_id: window.env.VUE_APP_WORKSPACE_ID,
-            url: "/api/v0/files/" + image1Binary,
-            method: "GET"
-          };
-          const ab = await this.$hexalink.unauthorizedCallFile(params);
+          const ab = await this.$hexalink.getFile(this.token, image1Binary);
           const blob = new Blob([ab], { type: "image/jpeg" });
           this.image1 = window.URL.createObjectURL(blob);
         } else {
           this.image1 = "";
-        }
-        if (dataLists[0].交付書面PDF1) {
-          const params = {
-            workspace_id: window.env.VUE_APP_WORKSPACE_ID,
-            url: "/api/v0/files/" + dataLists[0].交付書面PDF1,
-            method: "GET"
-          };
-          const ab = await this.$hexalink.unauthorizedCallFile(params);
-          const buf = Buffer.alloc(ab.byteLength);
-          const view = new Uint8Array(ab);
-          for (let i = 0; i < buf.length; ++i) {
-            buf[i] = view[i];
-          }
-          this.pdfFileBuffer1 = buf;
-          const blob = new Blob([ab], { type: "application/pdf" });
-          this.pdfFile1 = URL.createObjectURL(blob);
-        } else {
-          this.confirmDeliveryDocumentFlag1 = true;
-        }
-        if (dataLists[0].交付書面PDF2) {
-          const params = {
-            workspace_id: window.env.VUE_APP_WORKSPACE_ID,
-            url: "/api/v0/files/" + dataLists[0].交付書面PDF2,
-            method: "GET"
-          };
-          const ab = await this.$hexalink.unauthorizedCallFile(params);
-          const buf = Buffer.alloc(ab.byteLength);
-          const view = new Uint8Array(ab);
-          for (let i = 0; i < buf.length; ++i) {
-            buf[i] = view[i];
-          }
-          this.pdfFileBuffer2 = buf;
-          const blob = new Blob([ab], { type: "application/pdf" });
-          this.pdfFile2 = URL.createObjectURL(blob);
-        } else {
-          this.confirmDeliveryDocumentFlag2 = true;
-        }
-        if (dataLists[0].交付書面PDF3) {
-          const params = {
-            workspace_id: window.env.VUE_APP_WORKSPACE_ID,
-            url: "/api/v0/files/" + dataLists[0].交付書面PDF3,
-            method: "GET"
-          };
-          const ab = await this.$hexalink.unauthorizedCallFile(params);
-          const buf = Buffer.alloc(ab.byteLength);
-          const view = new Uint8Array(ab);
-          for (let i = 0; i < buf.length; ++i) {
-            buf[i] = view[i];
-          }
-          this.pdfFileBuffer3 = buf;
-          const blob = new Blob([ab], { type: "application/pdf" });
-          this.pdfFile3 = URL.createObjectURL(blob);
-        } else {
-          this.confirmDeliveryDocumentFlag3 = true;
         }
 
         var rpf_bidAmount = "4384d821-8e19-4e08-949b-44cab6efa408";
@@ -1623,16 +1089,11 @@ export default {
         }
 
         var auctionLists = [];
-        const paramsReport = {
-          workspace_id: window.env.VUE_APP_WORKSPACE_ID,
-          url:
-            "/api/v0/applications/" +
-            window.env.VUE_APP_APPLICATION_ID +
-            "/reports/" +
-            window.env.report.VUE_APP_AUCTIONBIDAGGREGATIONREPORT_ID +
-            "/filter",
-          method: "POST",
-          params: {
+        auctionLists = await this.$hexalink.getReports(
+          this.token,
+          window.env.VUE_APP_APPLICATION_ID,
+          window.env.report.VUE_APP_AUCTIONBIDAGGREGATIONREPORT_ID,
+          {
             conditions: [
               {
                 id: "d3e553f2-7281-47b7-96ef-3ac55a72f1ee",
@@ -1641,8 +1102,7 @@ export default {
               }
             ]
           }
-        };
-        auctionLists = await this.$hexalink.unauthorizedCall(paramsReport);
+        );
 
         var auctionListsGroupSort = auctionLists.report_results.sort(function(
           a,
@@ -1693,46 +1153,6 @@ export default {
         this.bidTotalAmount = auctionAmountCount;
         this.auctionListsGroup = auctionListsGroupSort;
 
-        const distributionList = await this.getDistributionList();
-        const distributionCurrentList = await this.getDistributionListCurrentYear();
-        const distributionListGroupYear = this.groupByYear(distributionList);
-        for (let i = 4; i > -1; i--) {
-          this.distributionListGroupYear.labels.push(
-            moment()
-              .add("year", -i)
-              .format("YYYY")
-          );
-        }
-        for (const keyYear of this.distributionListGroupYear.labels) {
-          let yearDistribution = 0;
-          for (const keyMonth in distributionListGroupYear[keyYear]) {
-            yearDistribution += Number(
-              distributionListGroupYear[keyYear][keyMonth].分配金額
-            );
-          }
-          this.distributionListGroupYear.data.push(yearDistribution);
-        }
-        this.chart1.data.labels = this.distributionListGroupYear.labels;
-        this.chart1.data.datasets[0].data = this.distributionListGroupYear.data;
-
-        const distributionListGroupQuarter = this.groupByQuarter(
-          distributionCurrentList
-        );
-        if (distributionListGroupQuarter)
-          this.distributionListGroupQuarter.labels = Object.keys(
-            distributionListGroupQuarter
-          );
-        for (const keyYear in distributionListGroupQuarter) {
-          let quaterDistribution = 0;
-          for (const keyMonth in distributionListGroupQuarter[keyYear]) {
-            quaterDistribution += Number(
-              distributionListGroupQuarter[keyYear][keyMonth].分配金額
-            );
-          }
-          this.distributionListGroupQuarter.data.push(quaterDistribution);
-        }
-        this.chart2.data.labels = this.distributionListGroupQuarter.labels;
-        this.chart2.data.datasets[0].data = this.distributionListGroupQuarter.data;
         this.loaded = true;
 
         this.updateMessage();
@@ -1787,7 +1207,7 @@ export default {
       return await this.$hexalink.getItems(
         this.token,
         this.applicationId,
-        this.datastoreIds["ユーザDB"],
+        window.env.table.VUE_APP_USERINFOTABLE_ID,
         {
           conditions: [
             {

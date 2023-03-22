@@ -125,7 +125,6 @@
 </template>
 <script>
 import moment from "moment-timezone";
-import mapping from "@/assets/json/auctionDBMapping.json";
 export default {
   data() {
     return {
@@ -133,7 +132,6 @@ export default {
       pageSize: 4,
       length: 0,
       token: this.$store.getters["auth/getToken"],
-      mapping: JSON.parse(JSON.stringify(mapping)),
       applicationId: this.$store.getters["datas/getApplicationId"],
       datasotreIdList: this.$store.getters["datas/getDatastores"],
       datastoreIds: this.$store.getters["datas/getDatastoreIds"],
@@ -160,56 +158,18 @@ export default {
         return diff > 0;
       });
       var auctionBidReport = {};
-      const params = {
-        workspace_id: window.env.VUE_APP_WORKSPACE_ID,
-        url:
-          "/api/v0/applications/" +
-          window.env.VUE_APP_APPLICATION_ID +
-          "/reports/" +
-          window.env.report.VUE_APP_AUCTIONLISTREPORT_ID +
-          "/filter",
-        method: "POST",
-        params: {
+      auctionBidReport = await this.$hexalink.getReports(
+        this.token,
+        window.env.VUE_APP_APPLICATION_ID,
+        window.env.report.VUE_APP_AUCTIONLISTREPORT_ID,
+        {
           conditions: []
         }
-      };
-      auctionBidReport = await this.$hexalink.unauthorizedCall(params);
-      // const distributionList = await this.getDistributionList();
-      // const distributionListGroup = distributionList.reduce(function(
-      //   result,
-      //   current
-      // ) {
-      //   const element = result.find(function(p) {
-      //     return p.著作権番号 === current.著作権番号;
-      //   });
-      //   if (element) {
-      //     element.count++; // count
-      //     element.分配金額 += Number(current.分配金額); // sum
-      //   } else {
-      //     result.push({
-      //       著作権番号: current.著作権番号,
-      //       count: 1,
-      //       分配金額: Number(current.分配金額)
-      //     });
-      //   }
-      //   return result;
-      // },
-      // []);
+      );
       for (const listKey in this.auctionList) {
-        // 著作権番号から分配金を取得する
-        this.$set(
-          this.auctionList[listKey],
-          "分配金額",
-          await this.getDistributionList(this.auctionList[listKey].著作権番号)
-        );
         const image1Binary = this.auctionList[listKey].image1;
         if (image1Binary) {
-          const params = {
-            workspace_id: window.env.VUE_APP_WORKSPACE_ID,
-            url: "/api/v0/files/" + image1Binary,
-            method: "GET"
-          };
-          const ab = await this.$hexalink.unauthorizedCallFile(params);
+          const ab = await this.$hexalink.getFile(this.token, image1Binary);
           const blob = new Blob([ab], { type: "image/jpeg" });
           this.auctionList[listKey].image1 = window.URL.createObjectURL(blob);
         } else {
@@ -238,18 +198,6 @@ export default {
             );
           }
         }
-        // for (const key in distributionListGroup) {
-        //   if (
-        //     this.auctionList[listKey].著作権番号 ==
-        //     distributionList[key]["著作権番号"]
-        //   ) {
-        //     this.$set(
-        //       this.auctionList[listKey],
-        //       "分配金額",
-        //       distributionListGroup[key]["分配金額"]
-        //     );
-        //   }
-        // }
       }
       this.auctionList = this.multiSort(this.auctionList, [
         "オークション終了時間",
@@ -269,16 +217,11 @@ export default {
   },
   methods: {
     async getAuctionList(searchConditonApplicabilityOnHomepage) {
-      const params = {
-        workspace_id: window.env.VUE_APP_WORKSPACE_ID,
-        url:
-          "/api/v0/applications/" +
-          window.env.VUE_APP_APPLICATION_ID +
-          "/datastores/" +
-          window.env.table.VUE_APP_COPYRIGHTTABLE_ID +
-          "/items/search",
-        method: "POST",
-        params: {
+      return await this.$hexalink.getItems(
+        this.token,
+        window.env.VUE_APP_APPLICATION_ID,
+        window.env.table.VUE_APP_COPYRIGHTTABLE_ID,
+        {
           conditions: [
             {
               id: "HPに掲載可否", // Hexalink画⾯で⼊⼒したIDを指定
@@ -291,20 +234,14 @@ export default {
           sort_field_id: "オークション終了時間", // Hexalink画⾯で⼊⼒したIDを指定
           sort_order: "asc"
         }
-      };
-      return (await this.$hexalink.unauthorizedCall(params)).items;
+      );
     },
     async getClosedAuctionList() {
-      const params = {
-        workspace_id: window.env.VUE_APP_WORKSPACE_ID,
-        url:
-          "/api/v0/applications/" +
-          window.env.VUE_APP_APPLICATION_ID +
-          "/datastores/" +
-          window.env.table.VUE_APP_COPYRIGHTTABLE_ID +
-          "/items/search",
-        method: "POST",
-        params: {
+      return await this.$hexalink.getItems(
+        this.token,
+        window.env.VUE_APP_APPLICATION_ID,
+        window.env.table.VUE_APP_COPYRIGHTTABLE_ID,
+        {
           conditions: [
             {
               id: "オークション状況", // Hexalink画⾯で⼊⼒したIDを指定
@@ -316,138 +253,7 @@ export default {
           per_page: 9000,
           use_display_id: true
         }
-      };
-      return (await this.$hexalink.unauthorizedCall(params)).items;
-    },
-    async getDistributionList(musicId) {
-      let searchFrom = "";
-      let searchTo = "";
-      const params = {
-        workspace_id: window.env.VUE_APP_WORKSPACE_ID,
-        url:
-          "/api/v0/applications/" +
-          window.env.VUE_APP_APPLICATION_ID +
-          "/datastores/" +
-          window.env.table.VUE_APP_COPYRIGHTDISTRIBUTIONTABLE_ID +
-          "/items/search",
-        method: "POST",
-        params: {
-          conditions: [
-            {
-              id: "著作権番号", // Hexalink画⾯で⼊⼒したIDを指定
-              search_value: [musicId],
-              exact_match: true // 完全⼀致で検索
-            }
-          ],
-          page: 1,
-          per_page: 1,
-          use_display_id: true,
-          sort_field_id: "日付", // Hexalink画⾯で⼊⼒したIDを指定
-          sort_order: "desc"
-        }
-      };
-      const latestRecord = (await this.$hexalink.unauthorizedCall(params))
-        .items;
-      if (!latestRecord.length > 0) return [];
-      const jstMonth = moment(latestRecord[0].日付)
-        .tz("Asia/Tokyo")
-        .format("YYYY-MM")
-        .slice(5, 7);
-      switch (jstMonth) {
-        case "10":
-        case "11":
-        case "12":
-          searchFrom =
-            moment(latestRecord[0].日付)
-              .utc()
-              .add("year", -1)
-              .startOf("year")
-              .format("YYYY-MM-DDTHH:mm:ss.SSS") + "Z";
-          searchTo =
-            moment(latestRecord[0].日付)
-              .utc()
-              .add("year", -1)
-              .endOf("year")
-              .format("YYYY-MM-DDTHH:mm:ss.SSS") + "Z";
-          break;
-        case "01":
-        case "02":
-        case "03":
-          searchFrom =
-            moment(latestRecord[0].日付)
-              .add("year", -1)
-              .format("YYYY-03-31T15:00:00.000") + "Z";
-          searchTo =
-            moment(latestRecord[0].日付).format("YYYY-03-30T15:00:00.000") +
-            "Z";
-          break;
-        case "04":
-        case "05":
-        case "06":
-          searchFrom =
-            moment(latestRecord[0].日付)
-              .utc()
-              .add("year", -1)
-              .format("YYYY-06-30T15:00:00.000") + "Z";
-          searchTo =
-            moment(latestRecord[0].日付).format("YYYY-06-29T15:00:00.000") +
-            "Z";
-          break;
-        case "07":
-        case "08":
-        case "09":
-          searchFrom =
-            moment(latestRecord[0].日付)
-              .utc()
-              .add("year", -1)
-              .format("YYYY-09-30T15:00:00.000") + "Z";
-          searchTo =
-            moment(latestRecord[0].日付).format("YYYY-09-29T15:00:00.000") +
-            "Z";
-          break;
-      }
-      const paramsDate = {
-        workspace_id: window.env.VUE_APP_WORKSPACE_ID,
-        url:
-          "/api/v0/applications/" +
-          window.env.VUE_APP_APPLICATION_ID +
-          "/datastores/" +
-          window.env.table.VUE_APP_COPYRIGHTDISTRIBUTIONTABLE_ID +
-          "/items/search",
-        method: "POST",
-        params: {
-          conditions: [
-            {
-              id: "著作権番号", // Hexalink画⾯で⼊⼒したIDを指定
-              search_value: [musicId],
-              exact_match: true // 完全⼀致で検索
-            },
-            {
-              id: "日付", // Hexalink画⾯で⼊⼒したIDを指定
-              search_value: [searchFrom, searchTo]
-            }
-          ],
-          page: 1,
-          per_page: 9000,
-          use_display_id: true
-        }
-      };
-      const distributionTargetSeasonList = await this.$hexalink.unauthorizedCall(
-        paramsDate
       );
-      const distributionTargetSeasonListGroupQuarter = this.groupByQuarter(
-        distributionTargetSeasonList
-      );
-      let musicDistribution = 0;
-      for (const i in distributionTargetSeasonListGroupQuarter) {
-        for (const j in distributionTargetSeasonListGroupQuarter[i]) {
-          musicDistribution += Number(
-            distributionTargetSeasonListGroupQuarter[i][j].分配金額
-          );
-        }
-      }
-      console.log(musicDistribution);
-      return musicDistribution;
     },
     groupByQuarter(array) {
       if (!array.length > 0) return;
