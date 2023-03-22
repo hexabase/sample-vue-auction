@@ -405,7 +405,7 @@ export default {
         seconds: 0
       },
       agreeGuideline: false,
-      musicId: "",
+      itemId: "",
       myAuctionBidList: [],
       myAuctionResult: "",
       alertMessage: "",
@@ -553,8 +553,8 @@ export default {
         {
           conditions: [
             {
-              id: "著作権番号", // Hexalink画⾯で⼊⼒したIDを指定
-              search_value: [this.musicId],
+              id: "商品番号", // Hexalink画⾯で⼊⼒したIDを指定
+              search_value: [this.itemId],
               exact_match: true // 完全⼀致で検索
             },
             {
@@ -577,8 +577,8 @@ export default {
         {
           conditions: [
             {
-              id: "著作権番号", // Hexalink画⾯で⼊⼒したIDを指定
-              search_value: [this.musicId],
+              id: "商品番号", // Hexalink画⾯で⼊⼒したIDを指定
+              search_value: [this.itemId],
               exact_match: true // 完全⼀致で検索
             },
             {
@@ -644,7 +644,7 @@ export default {
         // 初回入札は登録処理
         else {
           var setData = {};
-          setData["著作権番号"] = this.musicId;
+          setData["商品番号"] = this.itemId;
           setData["会員番号"] = this.userId;
           setData["数量"] = Number(this.bidAmount);
           setData["入札金額"] = Number(this.bidPrice);
@@ -936,7 +936,7 @@ export default {
       try {
         // loading overlay表示
         this.$store.commit("common/setLoading", true);
-        this.musicId = this.$route.params.id;
+        this.itemId = this.$route.params.id;
         this.myAuctionBidList = await this.getAuctionBidList();
         if (
           this.myAuctionBidList.length > 0 &&
@@ -960,8 +960,8 @@ export default {
           {
             conditions: [
               {
-                id: "著作権番号", // Hexalink画⾯で⼊⼒したIDを指定
-                search_value: [this.musicId],
+                id: "商品番号", // Hexalink画⾯で⼊⼒したIDを指定
+                search_value: [this.itemId],
                 exact_match: true // 完全⼀致で検索
               }
             ],
@@ -979,7 +979,7 @@ export default {
         var titleKr = "タイトル（韓国）";
         var explanatoryTextEn = "説明文（英語）";
         var explanatoryTextKr = "説明文（韓国）";
-        this.copyrightNumber = dataLists[0].著作権番号;
+        this.copyrightNumber = dataLists[0].商品番号;
         this.image2 = dataLists[0].image2;
         this.image3 = dataLists[0].image3;
         this.copyrightType = dataLists[0].著作権タイプ;
@@ -1048,7 +1048,7 @@ export default {
             conditions: [
               {
                 id: "d3e553f2-7281-47b7-96ef-3ac55a72f1ee",
-                search_value: [this.musicId],
+                search_value: [this.itemId],
                 exact_match: true
               }
             ]
@@ -1125,11 +1125,11 @@ export default {
             style: ""
           });
           this.fileName1 =
-            "delivery-document1_" + this.userId + "_" + this.musicId;
+            "delivery-document1_" + this.userId + "_" + this.itemId;
           this.fileName2 =
-            "delivery-document2_" + this.userId + "_" + this.musicId;
+            "delivery-document2_" + this.userId + "_" + this.itemId;
           this.fileName3 =
-            "delivery-document3_" + this.userId + "_" + this.musicId;
+            "delivery-document3_" + this.userId + "_" + this.itemId;
           switch (this.userInfo[0]["ステータス"]) {
             case "申請中":
               this.userStatus = 2;
