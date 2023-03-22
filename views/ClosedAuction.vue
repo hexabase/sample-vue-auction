@@ -41,9 +41,6 @@
             <h3 class="auctionList_item_title">
               {{ displayAuctionList[index].タイトル }}
             </h3>
-            <p class="auctionList_item_artist">
-              {{ displayAuctionList[index].歌手1 }}
-            </p>
             <p class="auctionList_item_enddate">
               {{ displayAuctionList[index].オークション終了時間 }} 終了
             </p>

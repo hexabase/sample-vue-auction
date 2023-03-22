@@ -46,9 +46,6 @@
               <h3 class="myCopyright_item_title">
                 {{ displayMyCopyrightsList[index].タイトル }}
               </h3>
-              <p class="myCopyright_item_artist">
-                {{ displayMyCopyrightsList[index].歌手1 }}
-              </p>
               <p class="myCopyright_item_date">
                 保有数：{{ displayMyCopyrightsList[index].数量 }} 口
               </p>
@@ -111,7 +108,6 @@ export default {
         this.myCopyrightsList[myCopyrightskey].image1 = myAuctionList[0].image1;
         this.myCopyrightsList[myCopyrightskey].タイトル =
           myAuctionList[0].タイトル;
-        this.myCopyrightsList[myCopyrightskey].歌手1 = myAuctionList[0].歌手1;
       }
       this.length = Math.ceil(this.myCopyrightsList.length / this.pageSize);
       this.displayMyCopyrightsList = this.myCopyrightsList.slice(

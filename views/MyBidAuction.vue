@@ -40,9 +40,6 @@
               <h3 class="myBidAuction_item_title">
                 {{ displayMyBidAuctionList[index].タイトル }}
               </h3>
-              <p class="myBidAuction_item_artist">
-                {{ displayMyBidAuctionList[index].歌手1 }}
-              </p>
               <p class="myBidAuction_item_date">
                 入札数：{{ displayMyBidAuctionList[index].数量 }} 口
               </p>
@@ -114,8 +111,6 @@ export default {
             myAuctionList[0].image1;
           this.myBidAuctionList[myBidAuctionListkey].タイトル =
             myAuctionList[0].タイトル;
-          this.myBidAuctionList[myBidAuctionListkey].歌手1 =
-            myAuctionList[0].歌手1;
         }
       }
       this.myBidAuctionList = this.myBidAuctionList.filter(v => v);
