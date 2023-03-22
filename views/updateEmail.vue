@@ -124,7 +124,7 @@ export default {
           const userInfo = await this.$hexalink.getItems(
             this.token,
             this.applicationId,
-            this.datastoreIds["ユーザDB"],
+            window.env.table.VUE_APP_USERINFOTABLE_ID,
             {
               conditions: [
                 {
@@ -139,7 +139,7 @@ export default {
             }
           );
           const result = await this.updatedDataItem(
-            this.datastoreIds["ユーザDB"],
+            window.env.table.VUE_APP_USERINFOTABLE_ID,
             userInfo[0].i_id,
             {
               history: {

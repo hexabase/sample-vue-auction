@@ -1,1 +1,1 @@
-# syzygy-BATON-UI
+# sample-vue-auction

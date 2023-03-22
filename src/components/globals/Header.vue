@@ -13,7 +13,7 @@
         <router-link to="/">
           <img
             src="~@/assets/img/logo.png"
-            alt="BATON Marketplace for music royalty"
+            alt="Hexabid Marketplace for music royalty"
           />
         </router-link>
       </h1>
@@ -259,7 +259,7 @@ export default {
       return await this.$hexalink.getItems(
         this.token,
         this.applicationId,
-        this.datastoreIds["ユーザDB"],
+        window.env.table.VUE_APP_USERINFOTABLE_ID,
         {
           conditions: [
             {
