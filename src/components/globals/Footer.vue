@@ -5,7 +5,7 @@
         <a href="/">
           <img
             src="~@/assets/img/logo.png"
-            alt="BATON Marketplace for music royalty"
+            alt="Hexabid Marketplace for music royalty"
           />
         </a>
       </h2>
@@ -45,7 +45,7 @@
         <dd>加入協会：一般社団法人第二種金融商品取引業協会</dd> -->
       </dl>
       <!-- <small class="siteFooter_copy">
-        Copyright 2020 BATON All Rights Reserved.
+        Copyright 2020 Hexabid All Rights Reserved.
       </small> -->
     </div>
   </footer>

@@ -2077,7 +2077,7 @@ export default {
               // loading overlay表示
               this.$store.commit("common/setLoading", true);
               const result = await this.updatedDataItem(
-                this.datastoreIds["ユーザDB"],
+                window.env.table.VUE_APP_USERINFOTABLE_ID,
                 this.userInfo[0].i_id,
                 {
                   history: {
@@ -2205,7 +2205,7 @@ export default {
               // loading overlay表示
               this.$store.commit("common/setLoading", true);
               const result = await this.updatedDataItem(
-                this.datastoreIds["ユーザDB"],
+                window.env.table.VUE_APP_USERINFOTABLE_ID,
                 this.userInfo[0].i_id,
                 {
                   history: {
@@ -2293,7 +2293,7 @@ export default {
               // loading overlay表示
               this.$store.commit("common/setLoading", true);
               const result = await this.updatedDataItem(
-                this.datastoreIds["ユーザDB"],
+                window.env.table.VUE_APP_USERINFOTABLE_ID,
                 this.userInfo[0].i_id,
                 {
                   history: {
@@ -2410,7 +2410,10 @@ export default {
                   this.fileInfo[fileInfoKey].get("filename")
                 );
                 formData.append("application_id", this.applicationId);
-                formData.append("datastore_id", this.datastoreIds["ユーザDB"]);
+                formData.append(
+                  "datastore_id",
+                  window.env.table.VUE_APP_USERINFOTABLE_ID
+                );
 
                 const uploadResult = await this.$hexalink.uploadFile(
                   this.token,
@@ -2433,7 +2436,7 @@ export default {
                   // 添付ファイルの登録処理
                   const actionList = await this.$hexalink.getActionList(
                     this.token,
-                    this.datastoreIds["ユーザDB"],
+                    window.env.table.VUE_APP_USERINFOTABLE_ID,
                     this.userInfo[0].i_id
                   );
 
@@ -2444,7 +2447,7 @@ export default {
                   let params = JSON.stringify({
                     is_force_update: true,
                     history: {
-                      datastore_id: this.datastoreIds["ユーザDB"],
+                      datastore_id: window.env.table.VUE_APP_USERINFOTABLE_ID,
                       comment: "添付ファイルの登録"
                     },
                     changes: changes
@@ -2493,7 +2496,7 @@ export default {
       return await this.$hexalink.getItems(
         this.token,
         this.applicationId,
-        this.datastoreIds["ユーザDB"],
+        window.env.table.VUE_APP_USERINFOTABLE_ID,
         {
           conditions: [
             {
@@ -2511,7 +2514,8 @@ export default {
     async getFileInfo(fileField, itemId) {
       const itemInfo = await this.$hexalink.getItem(
         this.token,
-        this.datastoreIds["ユーザDB"],
+        window.env.VUE_APP_APPLICATION_ID,
+        window.env.table.VUE_APP_USERINFOTABLE_ID,
         itemId
       );
       const fileBinary = this.userInfo[0][fileField];
@@ -2567,7 +2571,7 @@ export default {
         // loading overlay表示
         this.$store.commit("common/setLoading", true);
         const result = await this.updatedDataItem(
-          this.datastoreIds["ユーザDB"],
+          window.env.table.VUE_APP_USERINFOTABLE_ID,
           this.userInfo[0].i_id,
           {
             history: {
@@ -2616,7 +2620,7 @@ export default {
           return;
         }
         const result = await this.updatedDataItem(
-          this.datastoreIds["ユーザDB"],
+          window.env.table.VUE_APP_USERINFOTABLE_ID,
           this.userInfo[0].i_id,
           {
             history: {
@@ -2711,7 +2715,7 @@ export default {
     async switchMailMagazine(e) {
       console.log(e);
       const result = await this.updatedDataItem(
-        this.datastoreIds["ユーザDB"],
+        window.env.table.VUE_APP_USERINFOTABLE_ID,
         this.userInfo[0].i_id,
         {
           changes: [

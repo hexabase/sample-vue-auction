@@ -9,7 +9,7 @@ const defaultConfig = {
   }
 };
 
-const apiDomain = "https://az-api.hexabase.com/api/v0";
+const apiDomain = window.env.VUE_APP_APIDOMAIN;
 
 export default {
   install(Vue) {
@@ -194,11 +194,11 @@ export default {
        * @param {*} itemId
        * @returns
        */
-      async getItem(token, datastoreId, itemId) {
+      async getItem(token, applicationId, datastoreId, itemId) {
         let config = JSON.parse(JSON.stringify(defaultConfig));
         config.headers["Authorization"] = `Bearer ${token}`;
         const result = await axios.get(
-          `${apiDomain}/datastores/${datastoreId}/items/${itemId}`,
+          `${apiDomain}/applications/${applicationId}/datastores/${datastoreId}/items/details/${itemId}`,
           config
         );
         return result.data.field_values;

@@ -16,7 +16,7 @@
         </h3>
         <p class="contactForm_text">
           <span v-if="step === 1">
-            BATONへのお問い合わせは、以下のフォームより送信してください。<br />
+            Hexabidへのお問い合わせは、以下のフォームより送信してください。<br />
             ご不明な点につきましては、
             <router-link to="qa">Q&amp;A</router-link>もご覧ください。
           </span>
@@ -110,7 +110,6 @@
 import FormTextarea from "@/components/parts/form/FormTextarea.vue";
 import FormTextfield from "@/components/parts/form/FormTextfield.vue";
 import FormTextfieldName from "@/components/parts/form/FormTextfieldName.vue";
-import mapping from "@/assets/json/auctionDBMapping.json";
 export default {
   components: {
     FormTextarea,
@@ -121,7 +120,6 @@ export default {
     return {
       step: 1,
       token: this.$store.getters["auth/getToken"],
-      mapping: JSON.parse(JSON.stringify(mapping)),
       applicationId: this.$store.getters["datas/getApplicationId"],
       datastoreIds: this.$store.getters["datas/getDatastoreIds"],
       userId: this.$store.getters["user/getMembershipNumber"],
@@ -149,7 +147,7 @@ export default {
       return await this.$hexalink.getItems(
         this.token,
         this.applicationId,
-        this.datastoreIds["ユーザDB"],
+        window.env.table.VUE_APP_USERINFOTABLE_ID,
         {
           conditions: [
             {
@@ -240,10 +238,9 @@ export default {
     },
     // データアイテムを更新します
     async updatedDataItem(datasotreId, itemId, payload) {
-      const token = window.env.VUE_APP_PERSISTENCETOKEN;
       const applicationId = window.env.VUE_APP_APPLICATION_ID;
       return await this.$hexalink.editItem(
-        token,
+        this.token,
         applicationId,
         datasotreId,
         itemId,
@@ -252,12 +249,11 @@ export default {
     },
     // 新規Itemを作成します
     async insertNewItem(datasotreId, param) {
-      const token = window.env.VUE_APP_PERSISTENCETOKEN;
       const applicationId = window.env.VUE_APP_APPLICATION_ID;
       var result = {};
       try {
         result = await this.$hexalink.createNewItem(
-          token,
+          this.token,
           applicationId,
           datasotreId,
           param

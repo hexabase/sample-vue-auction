@@ -1,5 +1,5 @@
 {
-  "name": "syzygy",
+  "name": "sample-vue-auction",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -21,7 +21,6 @@
     "moment": "^2.27.0",
     "moment-timezone": "^0.5.31",
     "pdf-lib": "^1.12.0",
-    "pdfmake": "git+https://github.com/akifumi-tomimoto/pdfmake.git#0.1",
     "sanitize-html": "^1.27.0",
     "vee-validate": "^3.3.5",
     "vue": "^2.6.10",
@@ -45,9 +44,8 @@
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-vue": "^5.0.0",
-    "node-sass": "^4.14.1",
     "prettier": "^1.19.1",
-    "sass": "^1.26.9",
+    "sass": "^1.59.3",
     "sass-loader": "^8.0.2",
     "vue-cli-plugin-vuetify": "^2.0.3",
     "vue-template-compiler": "^2.6.10",
