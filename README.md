@@ -25,7 +25,6 @@ Download and install or execute cmd to install
 - `hx contexts:set prod --server https://api.hexabase.com --sse https://sse.hexabase.com `
 - `hx contexts:use prod`
 - `hx contexts:login`
-- `hx contexts:login`
 - `hx workspaces:use` *select your workspace
 - `hx projects:restore {Path where you placed the source}\sample_template.zip`
 - if there are no problems, the template application will be restored to your workspace
