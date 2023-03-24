@@ -1,5 +1,10 @@
 # sample-vue-auction
 
+## Summary
+This is sample application for Hexabase.
+
+![https://auctions.hexabase.app](https://auctions.hexabase.app/site-image.png) 
+
 ## Prerequisites 
 Download and install or execute cmd to install
 
