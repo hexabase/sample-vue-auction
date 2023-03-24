@@ -1,7 +1,9 @@
 # sample-vue-auction
 
 ## Summary
-This is sample application for Hexabase.
+This is a sample application for Hexabase.
+
+[https://auctions.hexabase.app](https://auctions.hexabase.app)
 
 ![https://auctions.hexabase.app](https://auctions.hexabase.app/site-image.png) 
 
