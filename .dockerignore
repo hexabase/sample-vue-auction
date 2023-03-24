@@ -1,5 +1,0 @@
-docker/app/Dockerfile
-helm
-node_modules
-dist
-build
