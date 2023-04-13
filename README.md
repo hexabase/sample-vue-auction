@@ -59,3 +59,6 @@ Download and install or execute cmd to install
   - *Limited to email addresses of users who are not yet registered in Hexabase
 - receive an invitation email, so authenticate on the app screen
 - registered as a User master, bidding for auctions, and registering user information
+
+## License
+This repo is licenced under MIT.
